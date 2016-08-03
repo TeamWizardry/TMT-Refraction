@@ -1,0 +1,20 @@
+[
+  {
+    "modid": "refraction",
+    "name": "Refraction",
+    "description": "A mod about light manipulation",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "LordSaad",
+      "murapix",
+      "theCodeWarrior"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
