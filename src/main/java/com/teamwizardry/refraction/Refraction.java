@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction;
 
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
+import com.teamwizardry.refraction.init.InitBlocks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -45,16 +46,19 @@ public class Refraction {
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		proxy.preInit(event);
+
+		InitBlocks.init();
+	}
+
+	@Mod.EventHandler
+	public void init(FMLInitializationEvent event) {
+		proxy.init(event);
 
 	}
 
 	@Mod.EventHandler
-	public void init(FMLInitializationEvent e) {
-
-	}
-
-	@Mod.EventHandler
-	public void postInit(FMLPostInitializationEvent e) {
-
+	public void postInit(FMLPostInitializationEvent event) {
+		proxy.postInit(event);
 	}
 }

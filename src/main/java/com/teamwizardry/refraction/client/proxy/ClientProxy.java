@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.client.proxy;
 
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
+import com.teamwizardry.refraction.init.InitBlocks;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -29,6 +30,6 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void loadModels() {
-		// TODO
+		InitBlocks.initModels();
 	}
 }
