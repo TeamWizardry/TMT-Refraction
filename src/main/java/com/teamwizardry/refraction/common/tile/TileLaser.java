@@ -2,11 +2,11 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.refraction.api.IHeatable;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileLaser extends TileEntity implements ITickable, IHeatable {
 
 	private IBlockState state;
+	private double power = 0;
 
 	public TileLaser() {
 	}
@@ -64,7 +65,15 @@ public class TileLaser extends TileEntity implements ITickable, IHeatable {
 	}
 
 	@Override
-	public void tick() {
+	public void update() {
 
+	}
+
+	public double getPower() {
+		return power;
+	}
+
+	public void setPower(double power) {
+		this.power = power;
 	}
 }
