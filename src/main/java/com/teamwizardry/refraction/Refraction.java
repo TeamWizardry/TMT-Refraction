@@ -52,6 +52,8 @@ public class Refraction {
 
 		ModBlocks.init();
 		ModItems.init();
+
+		proxy.loadModels();
 	}
 
 	@Mod.EventHandler
