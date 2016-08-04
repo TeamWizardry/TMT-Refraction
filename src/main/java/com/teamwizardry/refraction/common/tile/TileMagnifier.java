@@ -3,11 +3,11 @@ package com.teamwizardry.refraction.common.tile;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -66,7 +66,7 @@ public class TileMagnifier extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public void tick() {
+	public void update() {
 		Minecraft.getMinecraft().thePlayer.sendChatMessage("tick");
 		for (int y = pos.getY() + 10; y > pos.getY() + 2; y--) {
 			BlockPos lens = new BlockPos(pos.getX(), y, pos.getZ());

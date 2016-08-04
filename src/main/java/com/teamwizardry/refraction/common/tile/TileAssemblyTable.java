@@ -5,13 +5,13 @@ import com.teamwizardry.refraction.api.IHeatable;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -74,7 +74,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 	}
 
 	@Override
-	public void tick() {
+	public void update() {
 		Minecraft.getMinecraft().thePlayer.sendChatMessage("table tick");
 
 		List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 2, 1)));
