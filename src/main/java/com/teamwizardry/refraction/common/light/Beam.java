@@ -30,4 +30,16 @@ public class Beam
 	{
 		this(initX, initY, initZ, finalX, finalY, finalZ, new Color(red, green, blue, alpha));
 	}
+
+	public void addReflections(Beam... reflections)
+	{
+		for (Beam beam : reflections)
+			ReflectionTracker.addReflection(this, beam);
+	}
+	
+	public void addAsReflection(Beam... sources)
+	{
+		for (Beam beam : sources)
+			ReflectionTracker.addReflection(beam, this);
+	}
 }

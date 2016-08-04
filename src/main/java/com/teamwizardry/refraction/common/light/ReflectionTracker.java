@@ -1,14 +1,21 @@
 package com.teamwizardry.refraction.common.light;
 
-import java.util.HashMap;
-import java.util.List;
+import com.google.common.collect.HashMultimap;
 
 public class ReflectionTracker
 {
-	public static HashMap<Beam, List<Beam>> reflections;
+	public static HashMultimap<Beam, Beam> reflections;
+	public static HashMultimap<Beam, Beam> sources;
 	
 	public static void init()
 	{
-		reflections = new HashMap<Beam, List<Beam>>();
+		reflections = HashMultimap.create();
+		sources = HashMultimap.create();
+	}
+	
+	public static void addReflection(Beam beam, Beam reflection)
+	{
+		reflections.put(beam, reflection);
+		sources.put(reflection, beam);
 	}
 }
