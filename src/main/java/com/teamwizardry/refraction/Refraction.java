@@ -2,6 +2,7 @@ package com.teamwizardry.refraction;
 
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.InitBlocks;
+import com.teamwizardry.refraction.init.InitItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -49,6 +50,7 @@ public class Refraction {
 		proxy.preInit(event);
 
 		InitBlocks.init();
+		InitItems.init();
 	}
 
 	@Mod.EventHandler

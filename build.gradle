@@ -17,6 +17,9 @@ version = "1.0"
 group = "com.teamwizardry"
 archivesBaseName = "refraction"
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 minecraft {
     version = "1.10.2-12.18.1.2011"
     runDir = "run"
@@ -32,9 +35,11 @@ minecraft {
 
 repositories {
     mavenCentral()
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
+        compile 'com.github.TeamWizardry:LibrarianLib:-SNAPSHOT'
 }
 
 processResources {
