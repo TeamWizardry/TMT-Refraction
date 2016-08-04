@@ -94,4 +94,6 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 			}
 		}
 	}
+
+	public ArrayList<Item> getInventory() { return inventory; }
 }
