@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by LordSaad44
  */
-public class ReflectiveAlloy implements IAssemblyRecipe {
+public class RecipeReflectiveAlloy implements IAssemblyRecipe {
 	@Override
 	public ArrayList<Item> getItems() {
 		ArrayList<Item> recipe = new ArrayList<>();
