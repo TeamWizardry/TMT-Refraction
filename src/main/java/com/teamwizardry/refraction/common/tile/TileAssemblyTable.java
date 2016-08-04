@@ -1,11 +1,11 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.refraction.api.AssemblyTableItemHelper;
 import com.teamwizardry.refraction.api.IAssemblyRecipe;
 import com.teamwizardry.refraction.api.IHeatable;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -24,7 +24,7 @@ import java.util.List;
 public class TileAssemblyTable extends TileEntity implements ITickable, IHeatable {
 
 	private IBlockState state;
-	private ArrayList<Item> inventory = new ArrayList<>();
+	private ArrayList<AssemblyTableItemHelper> inventory = new ArrayList<>();
 
 	public TileAssemblyTable() {
 	}
@@ -77,7 +77,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 		List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 2, 1)));
 
 		for (EntityItem item : items) {
-			for (int i = 0; i < item.getEntityItem().stackSize; i++) inventory.add(item.getEntityItem().getItem());
+			for (int i = 0; i < item.getEntityItem().stackSize; i++) inventory.add(new AssemblyTableItemHelper(item.getEntityItem().getItem()));
 
 			worldObj.removeEntity(item);
 		}
@@ -94,4 +94,6 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 			}
 		}
 	}
+
+	public ArrayList<AssemblyTableItemHelper> getInventory() { return inventory; }
 }

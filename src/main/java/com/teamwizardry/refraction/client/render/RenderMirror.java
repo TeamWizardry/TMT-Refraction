@@ -30,7 +30,7 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 	private IBakedModel getBakedModel() {
 		if (bakedModel == null) {
 			try {
-				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_pad.obj")); //MODEL: TODO
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_head.obj")); //MODEL: TODO
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -79,7 +79,7 @@ public class TileMagnifier extends TileEntity implements ITickable {
 				if (worldObj.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS) checkarea = false;
 				if (worldObj.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS) checkarea = false;
 				if (worldObj.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS) checkarea = false;
-				if (worldObj.getBlockState(lens.north().south()).getBlock() != ModBlocks.LENS) checkarea = false;
+				if (worldObj.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS) checkarea = false;
 
 				if (checkarea) {
 					Minecraft.getMinecraft().thePlayer.sendChatMessage("Lense cube at y = " + y);
