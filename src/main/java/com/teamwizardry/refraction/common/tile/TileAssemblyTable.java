@@ -4,6 +4,7 @@ import com.teamwizardry.refraction.api.IAssemblyRecipe;
 import com.teamwizardry.refraction.api.IHeatable;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
@@ -74,24 +75,25 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 
 	@Override
 	public void tick() {
-		if (!worldObj.isRemote) {
-			List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 2, 1)));
+		Minecraft.getMinecraft().thePlayer.sendChatMessage("table tick");
 
-			for (EntityItem item : items) {
-				for (int i = 0; i < item.getEntityItem().stackSize; i++) inventory.add(item.getEntityItem().getItem());
+		List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 2, 1)));
 
-				worldObj.removeEntity(item);
-			}
-			if (!items.isEmpty())
-				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+		for (EntityItem item : items) {
+			for (int i = 0; i < item.getEntityItem().stackSize; i++) inventory.add(item.getEntityItem().getItem());
 
-			for (IAssemblyRecipe recipe : AssemblyRecipes.recipes) {
-				if (temperature < recipe.getMaxTemperature() && temperature < recipe.getMinTemperature()) {
-					if (inventory.equals(recipe.getItems())) {
-						EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, recipe.getResult());
-						worldObj.spawnEntityInWorld(entityItem);
-						inventory.clear();
-					}
+			Minecraft.getMinecraft().thePlayer.sendChatMessage("item found");
+			worldObj.removeEntity(item);
+		}
+		if (!items.isEmpty())
+			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+
+		for (IAssemblyRecipe recipe : AssemblyRecipes.recipes) {
+			if (temperature < recipe.getMaxTemperature() && temperature < recipe.getMinTemperature()) {
+				if (inventory.equals(recipe.getItems())) {
+					EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, recipe.getResult());
+					worldObj.spawnEntityInWorld(entityItem);
+					inventory.clear();
 				}
 			}
 		}

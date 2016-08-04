@@ -2,8 +2,6 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.common.tile.TileMagnifier;
-import com.teamwizardry.refraction.common.tile.TileMirror;
-import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -21,8 +19,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Random;
-
 /**
  * Created by LordSaad44
  */
@@ -38,8 +34,6 @@ public class BlockMagnifier extends Block implements ITileEntityProvider {
 		GameRegistry.registerTileEntity(TileMagnifier.class, "magnifier");
 		GameRegistry.register(new ItemBlock(this), getRegistryName());
 		setCreativeTab(Refraction.tab);
-
-		setTickRandomly(true);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -49,32 +43,11 @@ public class BlockMagnifier extends Block implements ITileEntityProvider {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileMirror();
+		return new TileMagnifier();
 	}
 
 	private TileMagnifier getTE(World world, BlockPos pos) {
 		return (TileMagnifier) world.getTileEntity(pos);
-	}
-
-	@Override
-	public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
-		for (int y = pos.getY() + 10; y > pos.getY() + 2; y--) {
-			BlockPos lens = new BlockPos(pos.getX(), y, pos.getZ());
-			if (worldIn.getBlockState(lens).getBlock() == ModBlocks.LENS) {
-
-				boolean checkarea = true;
-				for (int x = -1; x < 1; x++)
-					for (int z = -1; z < 1; z++) {
-						if (worldIn.getBlockState(new BlockPos(x, y, z)).getBlock() != ModBlocks.LENS) {
-							checkarea = false;
-							break;
-						}
-					}
-				if (checkarea) {
-					// TODO: 3x3 platform of lenses on this y level found HERE
-				}
-			}
-		}
 	}
 
 	@Override
