@@ -11,6 +11,8 @@ public class InitBlocks {
 	public static BlockMagnifier MAGNIFIER;
 	public static BlockDiscoBall DISCO_BALL;
 	public static BlockAssemblyTable ASSEMBLY_TABLE;
+	public static BlockLaser LASER;
+	public static BlockPrism PRISM;
 	public static BlockLens LENS;
 
 	public static void init() {
@@ -19,6 +21,8 @@ public class InitBlocks {
 		MAGNIFIER = new BlockMagnifier();
 		DISCO_BALL = new BlockDiscoBall();
 		ASSEMBLY_TABLE = new BlockAssemblyTable();
+		LASER = new BlockLaser();
+		PRISM = new BlockPrism();
 	}
 
 	public static void initModels() {
@@ -27,5 +31,7 @@ public class InitBlocks {
 		MAGNIFIER.initModel();
 		DISCO_BALL.initModel();
 		ASSEMBLY_TABLE.initModel();
+		LASER.initModel();
+		PRISM.initModel();
 	}
 }

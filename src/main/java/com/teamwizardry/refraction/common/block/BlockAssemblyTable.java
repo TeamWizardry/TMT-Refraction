@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockAssemblyTable  extends Block implements ITileEntityProvider {
 
 	public BlockAssemblyTable() {
-		super(Material.ROCK);
+		super(Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
 		setUnlocalizedName("assembly_table");

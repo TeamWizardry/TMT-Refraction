@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockMirror extends Block implements ITileEntityProvider {
 
 	public BlockMirror() {
-		super(Material.ROCK);
+		super(Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
 		setUnlocalizedName("mirror");

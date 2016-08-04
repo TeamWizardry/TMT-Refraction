@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockDiscoBall extends Block implements ITileEntityProvider {
 
 	public BlockDiscoBall() {
-		super(Material.ROCK);
+		super(Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
 		setUnlocalizedName("disco_ball");

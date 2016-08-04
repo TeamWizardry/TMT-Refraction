@@ -30,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockMagnifier extends Block implements ITileEntityProvider {
 
 	public BlockMagnifier() {
-		super(Material.ROCK);
+		super(Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
 		setUnlocalizedName("magnifier");

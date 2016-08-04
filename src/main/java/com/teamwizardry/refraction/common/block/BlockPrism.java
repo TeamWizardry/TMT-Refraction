@@ -1,7 +1,9 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.tile.TilePrism;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -10,12 +12,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -25,15 +26,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by LordSaad44
  */
-public class BlockLens extends Block {
+public class BlockPrism extends Block implements ITileEntityProvider {
 
-	public BlockLens() {
+	public BlockPrism() {
 		super(Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
-		setUnlocalizedName("lens");
-		setRegistryName("lens");
+		setUnlocalizedName("prism");
+		setRegistryName("prism");
 		GameRegistry.register(this);
+		GameRegistry.registerTileEntity(TilePrism.class, "prism");
 		GameRegistry.register(new ItemBlock(this), getRegistryName());
 		setCreativeTab(Refraction.tab);
 	}
@@ -44,14 +46,18 @@ public class BlockLens extends Block {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TilePrism();
+	}
 
-		return true;
+	private TilePrism getTE(World world, BlockPos pos) {
+		return (TilePrism) world.getTileEntity(pos);
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return new AxisAlignedBB(0, 0, 0, 1, 0.5, 1);
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+
+		return true;
 	}
 
 	@Override
