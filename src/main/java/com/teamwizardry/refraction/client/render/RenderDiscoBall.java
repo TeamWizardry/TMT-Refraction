@@ -19,12 +19,12 @@ import org.lwjgl.opengl.GL11;
 /**
  * Created by LordSaad44
  */
-public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
+public class RenderDiscoBall extends TileEntitySpecialRenderer<TileMirror> {
 
 	private IModel model;
 	private IBakedModel bakedModel;
 
-	public RenderMirror() {
+	public RenderDiscoBall() {
 	}
 
 	private IBakedModel getBakedModel() {

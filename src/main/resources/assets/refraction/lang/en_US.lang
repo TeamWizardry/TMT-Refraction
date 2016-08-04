@@ -1,4 +1,6 @@
 tile.mirror.name=Mirror
+tile.lens.name=Lense
+tile.magnifier.name=Magnifier
 
 item.laser_pen.name=Laser Pen
 
