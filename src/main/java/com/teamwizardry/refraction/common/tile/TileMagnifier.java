@@ -67,20 +67,22 @@ public class TileMagnifier extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
-		for (int y = pos.getY() + 10; y > pos.getY() + 2; y--) {
-			BlockPos lens = new BlockPos(pos.getX(), y, pos.getZ());
+		for (int y = 1; y < 10; y++) {
+			BlockPos lens = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
 			if (worldObj.getBlockState(lens).getBlock() == ModBlocks.LENS) {
 
 				boolean checkarea = true;
-				for (int x = -1; x < 1; x++)
-					for (int z = -1; z < 1; z++) {
-						if (worldObj.getBlockState(new BlockPos(x, y, z)).getBlock() != ModBlocks.LENS) {
-							checkarea = false;
-							break;
-						}
-					}
+				if (worldObj.getBlockState(lens.south()).getBlock() != ModBlocks.LENS) checkarea = false;
+				if (worldObj.getBlockState(lens.north()).getBlock() != ModBlocks.LENS) checkarea = false;
+				if (worldObj.getBlockState(lens.east()).getBlock() != ModBlocks.LENS) checkarea = false;
+				if (worldObj.getBlockState(lens.west()).getBlock() != ModBlocks.LENS) checkarea = false;
+				if (worldObj.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS) checkarea = false;
+				if (worldObj.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS) checkarea = false;
+				if (worldObj.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS) checkarea = false;
+				if (worldObj.getBlockState(lens.north().south()).getBlock() != ModBlocks.LENS) checkarea = false;
+
 				if (checkarea) {
-					Minecraft.getMinecraft().thePlayer.sendChatMessage("LENSES!!");
+					Minecraft.getMinecraft().thePlayer.sendChatMessage("Lense cube at y = " + y);
 					// TODO: 3x3 platform of lenses on this y level found HERE
 				}
 			}
