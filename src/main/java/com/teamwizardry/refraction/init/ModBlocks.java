@@ -5,7 +5,7 @@ import com.teamwizardry.refraction.common.block.*;
 /**
  * Created by LordSaad44
  */
-public class InitBlocks {
+public class ModBlocks {
 
 	public static BlockMirror MIRROR;
 	public static BlockMagnifier MAGNIFIER;

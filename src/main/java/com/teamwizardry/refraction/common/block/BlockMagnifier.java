@@ -3,26 +3,25 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.common.tile.TileMagnifier;
 import com.teamwizardry.refraction.common.tile.TileMirror;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 /**
  * Created by LordSaad44
@@ -39,6 +38,8 @@ public class BlockMagnifier extends Block implements ITileEntityProvider {
 		GameRegistry.registerTileEntity(TileMagnifier.class, "magnifier");
 		GameRegistry.register(new ItemBlock(this), getRegistryName());
 		setCreativeTab(Refraction.tab);
+
+		setTickRandomly(true);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -56,9 +57,24 @@ public class BlockMagnifier extends Block implements ITileEntityProvider {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
+		for (int y = pos.getY() + 10; y > pos.getY() + 2; y--) {
+			BlockPos lens = new BlockPos(pos.getX(), y, pos.getZ());
+			if (worldIn.getBlockState(lens).getBlock() == ModBlocks.LENS) {
 
-		return true;
+				boolean checkarea = true;
+				for (int x = -1; x < 1; x++)
+					for (int z = -1; z < 1; z++) {
+						if (worldIn.getBlockState(new BlockPos(x, y, z)).getBlock() != ModBlocks.LENS) {
+							checkarea = false;
+							break;
+						}
+					}
+				if (checkarea) {
+					// TODO: 3x3 platform of lenses on this y level found HERE
+				}
+			}
+		}
 	}
 
 	@Override

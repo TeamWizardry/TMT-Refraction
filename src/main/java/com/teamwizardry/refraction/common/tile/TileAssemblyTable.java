@@ -1,17 +1,22 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.refraction.api.IAssemblyRecipe;
 import com.teamwizardry.refraction.api.IHeatable;
+import com.teamwizardry.refraction.init.AssemblyRecipes;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.ITickable;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by LordSaad44
@@ -19,7 +24,7 @@ import java.util.ArrayList;
 public class TileAssemblyTable extends TileEntity implements ITickable, IHeatable {
 
 	private IBlockState state;
-	private ArrayList<ItemStack> inventory = new ArrayList<>();
+	private ArrayList<Item> inventory = new ArrayList<>();
 
 	public TileAssemblyTable() {
 	}
@@ -69,6 +74,25 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 
 	@Override
 	public void tick() {
+		if (!worldObj.isRemote) {
+			List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 2, 1)));
 
+			for (EntityItem item : items) {
+				for (int i = 0; i < item.getEntityItem().stackSize; i++) inventory.add(item.getEntityItem().getItem());
+
+				worldObj.removeEntity(item);
+			}
+			if (!items.isEmpty())
+				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+
+			for (IAssemblyRecipe recipe : AssemblyRecipes.recipes) {
+				if (temperature < recipe.getMaxTemperature() && temperature < recipe.getMinTemperature()) {
+					if (inventory.equals(recipe.getItems())) {
+						EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, recipe.getResult());
+						worldObj.spawnEntityInWorld(entityItem);
+					}
+				}
+			}
+		}
 	}
 }

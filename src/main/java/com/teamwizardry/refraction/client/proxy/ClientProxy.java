@@ -3,8 +3,8 @@ package com.teamwizardry.refraction.client.proxy;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.fx.SparkleFX;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
-import com.teamwizardry.refraction.init.InitBlocks;
-import com.teamwizardry.refraction.init.InitItems;
+import com.teamwizardry.refraction.init.ModBlocks;
+import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.OBJLoader;
@@ -34,8 +34,8 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void loadModels() {
-		InitBlocks.initModels();
-		InitItems.initModel();
+		ModBlocks.initModels();
+		ModItems.initModel();
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 /**
  * Created by LordSaad44
  */
-public class InitItems {
+public class ModItems {
 
 	public static ItemLaserPen LASER_PEN;
 	public static ItemScrewDriver SCREW_DRIVER;
