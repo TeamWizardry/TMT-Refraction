@@ -1,5 +1,7 @@
 package com.teamwizardry.refraction.common.proxy;
 
+import com.teamwizardry.refraction.client.fx.SparkleFX;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -26,5 +28,9 @@ public class CommonProxy {
 
 	public void loadModels() {
 
+	}
+
+	public SparkleFX spawnParticleSparkle(World worldIn, double posXIn, double posYIn, double posZIn) {
+		return null;
 	}
 }

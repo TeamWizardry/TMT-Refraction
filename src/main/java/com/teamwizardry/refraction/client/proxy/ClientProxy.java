@@ -1,8 +1,11 @@
 package com.teamwizardry.refraction.client.proxy;
 
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.client.fx.SparkleFX;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.InitBlocks;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -31,5 +34,12 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void loadModels() {
 		InitBlocks.initModels();
+	}
+
+	@Override
+	public SparkleFX spawnParticleSparkle(World worldIn, double posXIn, double posYIn, double posZIn) {
+		SparkleFX particle = new SparkleFX(worldIn, posXIn, posYIn, posZIn);
+		Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+		return particle;
 	}
 }

@@ -1,0 +1,5 @@
+tile.mirror.name=Mirror
+
+item.laser_pen.name=Laser Pen
+
+itemGroup.refraction=Refraction
