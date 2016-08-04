@@ -90,6 +90,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 					if (inventory.equals(recipe.getItems())) {
 						EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, recipe.getResult());
 						worldObj.spawnEntityInWorld(entityItem);
+						inventory.clear();
 					}
 				}
 			}
