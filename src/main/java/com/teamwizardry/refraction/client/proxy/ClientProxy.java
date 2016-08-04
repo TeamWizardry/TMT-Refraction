@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.client.proxy;
 
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.client.LaserRenderer;
 import com.teamwizardry.refraction.client.fx.SparkleFX;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -20,7 +21,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		OBJLoader.INSTANCE.addDomain(Refraction.MOD_ID);
-
+		LaserRenderer.INSTANCE.getClass();
 	}
 
 	@Override
