@@ -1,9 +1,6 @@
 package com.teamwizardry.refraction.init;
 
-import com.teamwizardry.refraction.common.block.BlockDiscoBall;
-import com.teamwizardry.refraction.common.block.BlockLens;
-import com.teamwizardry.refraction.common.block.BlockMagnifier;
-import com.teamwizardry.refraction.common.block.BlockMirror;
+import com.teamwizardry.refraction.common.block.*;
 
 /**
  * Created by LordSaad44
@@ -13,6 +10,7 @@ public class InitBlocks {
 	public static BlockMirror MIRROR;
 	public static BlockMagnifier MAGNIFIER;
 	public static BlockDiscoBall DISCO_BALL;
+	public static BlockAssemblyTable ASSEMBLY_TABLE;
 	public static BlockLens LENS;
 
 	public static void init() {
@@ -20,6 +18,7 @@ public class InitBlocks {
 		LENS = new BlockLens();
 		MAGNIFIER = new BlockMagnifier();
 		DISCO_BALL = new BlockDiscoBall();
+		ASSEMBLY_TABLE = new BlockAssemblyTable();
 	}
 
 	public static void initModels() {
@@ -27,5 +26,6 @@ public class InitBlocks {
 		LENS.initModel();
 		MAGNIFIER.initModel();
 		DISCO_BALL.initModel();
+		ASSEMBLY_TABLE.initModel();
 	}
 }
