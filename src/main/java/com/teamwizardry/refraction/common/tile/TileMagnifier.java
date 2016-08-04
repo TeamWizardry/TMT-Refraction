@@ -67,7 +67,6 @@ public class TileMagnifier extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
-		Minecraft.getMinecraft().thePlayer.sendChatMessage("tick");
 		for (int y = pos.getY() + 10; y > pos.getY() + 2; y--) {
 			BlockPos lens = new BlockPos(pos.getX(), y, pos.getZ());
 			if (worldObj.getBlockState(lens).getBlock() == ModBlocks.LENS) {

@@ -4,7 +4,6 @@ import com.teamwizardry.refraction.api.IAssemblyRecipe;
 import com.teamwizardry.refraction.api.IHeatable;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -75,14 +74,11 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 
 	@Override
 	public void update() {
-		Minecraft.getMinecraft().thePlayer.sendChatMessage("table tick");
-
 		List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 2, 1)));
 
 		for (EntityItem item : items) {
 			for (int i = 0; i < item.getEntityItem().stackSize; i++) inventory.add(item.getEntityItem().getItem());
 
-			Minecraft.getMinecraft().thePlayer.sendChatMessage("item found");
 			worldObj.removeEntity(item);
 		}
 		if (!items.isEmpty())
