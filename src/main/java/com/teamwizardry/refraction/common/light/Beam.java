@@ -29,7 +29,7 @@ public class Beam
 		}
 		
 		Vec3d o = slope.normalize().scale(0.25);
-		int amount = (int)( 128/0.25 );
+		int amount = (int)( finalLoc.subtract(initLoc).lengthVector()/0.25 );
 		
 		double x = initLoc.xCoord;
 		double y = initLoc.yCoord;
