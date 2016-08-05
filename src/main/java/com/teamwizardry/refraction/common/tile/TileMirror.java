@@ -5,13 +5,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.librarianlib.util.Color;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.ILightSink;
+import com.teamwizardry.refraction.common.light.ILightSource;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
 
 /**
  * Created by LordSaad44
  */
-public class TileMirror extends TileEntity {
+public class TileMirror extends TileEntity implements ILightSource, ILightSink {
 
 	private IBlockState state;
 
@@ -60,5 +66,24 @@ public class TileMirror extends TileEntity {
 	@Override
 	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
 		return INFINITE_EXTENT_AABB;
+	}
+
+	@Override
+	public void recieveBeam(Beam... inputs)
+	{
+		for (Beam beam : inputs)
+		{
+			ReflectionTracker.recieveBeam(this, beam);
+			reflect(beam);
+		}
+	}
+	
+	private void reflect(Beam beam)
+	{
+		// TODO: Actual internal raycasting and reflection
+		Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+		Vec3d dir = new Vec3d(0, 1, 0);
+		Color color = beam.color;
+		ReflectionTracker.generateBeam(this, new Beam(worldObj, center, dir, color));
 	}
 }

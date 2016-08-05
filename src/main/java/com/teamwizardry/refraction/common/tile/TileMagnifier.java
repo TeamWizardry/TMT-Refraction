@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,13 +8,19 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.librarianlib.util.Color;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.ILightSource;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.init.ModBlocks;
 
 /**
  * Created by LordSaad44
  */
-public class TileMagnifier extends TileEntity implements ITickable {
+public class TileMagnifier extends TileEntity implements ITickable, ILightSource {
 
 	private IBlockState state;
 
@@ -67,6 +72,7 @@ public class TileMagnifier extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
+		boolean hasLens = false;
 		for (int y = 1; y < 10; y++) {
 			BlockPos lens = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
 			if (worldObj.getBlockState(lens).getBlock() == ModBlocks.LENS) {
@@ -82,10 +88,22 @@ public class TileMagnifier extends TileEntity implements ITickable {
 				if (worldObj.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS) checkarea = false;
 
 				if (checkarea) {
+					hasLens = true;
 					Minecraft.getMinecraft().thePlayer.sendChatMessage("Lense cube at y = " + y);
 					// TODO: 3x3 platform of lenses on this y level found HERE
 				}
 			}
 		}
+		
+		if (hasLens)
+		{
+			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+			Vec3d dir = new Vec3d(0, -1, 0);
+			Color color = new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, Beam.SOLAR_STRENGTH);
+			Beam beam = new Beam(worldObj, center, dir, color);
+			ReflectionTracker.generateBeam(this, beam);
+		}
 	}
+	
+	
 }
