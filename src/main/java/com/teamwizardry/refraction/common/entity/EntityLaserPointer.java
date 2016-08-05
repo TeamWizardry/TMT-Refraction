@@ -49,7 +49,11 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 	
 	@Override
 	public void onUpdate() {
-		if(player.get() == null) {
+		updateRayPos();
+	}
+	
+	public void updateRayPos() {
+		if(player == null || player.get() == null) {
 			this.setDead();
 		} else if( player.get().getActiveItemStack() == null || player.get().getActiveItemStack().getItem() != ModItems.LASER_PEN ) {
 			this.setDead();
@@ -103,13 +107,20 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 	
 	@Override
 	public void writeSpawnData(ByteBuf buffer) {
-		buffer.writeLong(player.get().getPersistentID().getMostSignificantBits());
-		buffer.writeLong(player.get().getPersistentID().getLeastSignificantBits());
+		boolean b = player == null || player.get() == null;
+		buffer.writeBoolean(b);
+		if(!b) {
+			buffer.writeLong(player.get().getPersistentID().getMostSignificantBits());
+			buffer.writeLong(player.get().getPersistentID().getLeastSignificantBits());
+		}
 	}
 	
 	@Override
 	public void readSpawnData(ByteBuf buffer) {
-		UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
-		player = new WeakReference(worldObj.getPlayerEntityByUUID(uuid));
+		boolean b = buffer.readBoolean();
+		if(!b) {
+			UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+			player = new WeakReference(worldObj.getPlayerEntityByUUID(uuid));
+		}
 	}
 }

@@ -51,6 +51,7 @@ public class ItemLaserPen extends Item {
 		playerIn.setActiveHand(hand);
 		if (!worldIn.isRemote) {
 			EntityLaserPointer e = new EntityLaserPointer(worldIn, playerIn);
+			e.updateRayPos();
 			worldIn.spawnEntityInWorld(e);
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
