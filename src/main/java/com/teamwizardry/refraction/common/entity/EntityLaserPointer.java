@@ -4,11 +4,15 @@ import com.google.common.collect.ImmutableList;
 import com.teamwizardry.refraction.common.item.ItemLaserPen;
 import com.teamwizardry.refraction.init.ModItems;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.RayTraceResult;
@@ -24,6 +28,7 @@ import java.util.UUID;
  * Created by TheCodeWarrior
  */
 public class EntityLaserPointer extends EntityLivingBase implements IEntityAdditionalSpawnData {
+	public static final DataParameter<Byte> AXIS_HIT = EntityDataManager.<Byte>createKey(EntityLaserPointer.class, DataSerializers.BYTE);
 	
 	WeakReference<EntityPlayer> player;
 	
@@ -38,6 +43,8 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		this.setSize(0.1F, 0.1F);
 	}
 	
+	
+	
 	@Override
 	public void onEntityUpdate() {
 	}
@@ -45,6 +52,16 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 	@Override
 	protected void damageEntity(DamageSource damageSrc, float damageAmount) {
 		// noop
+	}
+	
+	@Override
+	public boolean isInRangeToRenderDist(double distance) {
+		return true;
+	}
+	
+	@Override
+	public boolean canBeCollidedWith() {
+		return false;
 	}
 	
 	@Override
@@ -62,8 +79,11 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 			Vec3d pos = null;
 			if(res != null) {
 				pos = res.hitVec;
+				this.dataManager.set(AXIS_HIT, (byte)res.sideHit.getAxis().ordinal());
 			} else {
 				pos = player.get().getLook(1).scale(ItemLaserPen.RANGE).add(player.get().getPositionEyes(1));
+				this.dataManager.set(AXIS_HIT, (byte)255);
+				
 			}
 			this.setPositionAndUpdate(pos.xCoord, pos.yCoord, pos.zCoord);
 		}
@@ -77,6 +97,7 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 	@Override
 	protected void entityInit() {
 		super.entityInit();
+		this.dataManager.register(AXIS_HIT, Byte.valueOf((byte)0));
 	}
 	
 	@Override

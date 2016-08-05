@@ -1,10 +1,13 @@
 package com.teamwizardry.refraction.client.proxy;
 
+import com.teamwizardry.librarianlib.fx.shader.ShaderHelper;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.LaserRenderer;
 import com.teamwizardry.refraction.client.fx.SparkleFX;
+import com.teamwizardry.refraction.client.render.RenderLaserPoint;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.ModBlocks;
+import com.teamwizardry.refraction.init.ModEntities;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
@@ -42,6 +45,7 @@ public class ClientProxy extends CommonProxy {
 		super.loadModels();
 		ModBlocks.initModels();
 		ModItems.initModel();
+		ModEntities.initRender();
 	}
 
 	@Override
