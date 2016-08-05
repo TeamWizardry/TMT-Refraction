@@ -1,9 +1,12 @@
 package com.teamwizardry.refraction.common.light;
 
+import java.util.HashSet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import com.google.common.collect.ImmutableList;
 import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 
@@ -19,7 +22,7 @@ public class Beam
 		this.world = world;
 		this.initLoc = initLoc;
 		this.color = color;
-		RayTraceResult trace = world.rayTraceBlocks(initLoc.add(slope.normalize()), slope.normalize().scale(128).add(initLoc), true, false, true);
+		RayTraceResult trace = BeamPulsar.rayTraceBlocks(world, new HashSet<>(ImmutableList.of(new BlockPos(initLoc))), initLoc.add(slope.normalize()), slope.normalize().scale(128).add(initLoc), true, false, true);
 		this.finalLoc = trace.hitVec;
 		TileEntity tile = world.getTileEntity(trace.getBlockPos());
 		if (tile instanceof IBeamHandler)

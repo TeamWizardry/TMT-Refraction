@@ -19,40 +19,27 @@ import com.teamwizardry.librarianlib.util.Color;
  */
 public class BeamPulsar {
 	
-//	public static final int MAX_DEPTH = 500;
-	
 	public static RayTraceResult pulse(World world, BlockPos originPos, Color color, Vec3d origin, Vec3d direction, double range) {
-//		if(depth > MAX_DEPTH)
-//			return;
 		Vec3d end = direction.normalize().scale(range).add(origin);
 		return rayTraceBlocks(world, new HashSet<>(ImmutableList.of(originPos)), origin, end, true, false, true);
-
-//		if(result != null) {
-//			end = result.hitVec;
-//			TileEntity te = world.getTileEntity(result.getBlockPos());
-//			if(te instanceof IBeamHandler) {
-//				( (IBeamHandler) te ).handle(originPos, origin, end, new Color(color.r, color.g, color.b, (float)(color.a-(end.subtract(origin).lengthVector()* BeamConstants.strengthLossPerBlock))), depth);
-//			}
-//		}
 	}
 	
-	
-	private static RayTraceResult rayTraceBlocks(World world, Set<BlockPos> exclude, Vec3d vec31, Vec3d vec32, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
-		if (!Double.isNaN(vec31.xCoord) && !Double.isNaN(vec31.yCoord) && !Double.isNaN(vec31.zCoord)) {
-			if (!Double.isNaN(vec32.xCoord) && !Double.isNaN(vec32.yCoord) && !Double.isNaN(vec32.zCoord)) {
-				int i = MathHelper.floor_double(vec32.xCoord);
-				int j = MathHelper.floor_double(vec32.yCoord);
-				int k = MathHelper.floor_double(vec32.zCoord);
-				int l = MathHelper.floor_double(vec31.xCoord);
-				int i1 = MathHelper.floor_double(vec31.yCoord);
-				int j1 = MathHelper.floor_double(vec31.zCoord);
+	public static RayTraceResult rayTraceBlocks(World world, Set<BlockPos> exclude, Vec3d start, Vec3d end, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
+		if (!Double.isNaN(start.xCoord) && !Double.isNaN(start.yCoord) && !Double.isNaN(start.zCoord)) {
+			if (!Double.isNaN(end.xCoord) && !Double.isNaN(end.yCoord) && !Double.isNaN(end.zCoord)) {
+				int i = MathHelper.floor_double(end.xCoord);
+				int j = MathHelper.floor_double(end.yCoord);
+				int k = MathHelper.floor_double(end.zCoord);
+				int l = MathHelper.floor_double(start.xCoord);
+				int i1 = MathHelper.floor_double(start.yCoord);
+				int j1 = MathHelper.floor_double(start.zCoord);
 				BlockPos blockpos = new BlockPos(l, i1, j1);
 				IBlockState iblockstate = world.getBlockState(blockpos);
 				Block block = iblockstate.getBlock();
 				
 				if(!exclude.contains(blockpos)) {
 					if (( !ignoreBlockWithoutBoundingBox || iblockstate.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB ) && block.canCollideCheck(iblockstate, stopOnLiquid)) {
-						RayTraceResult raytraceresult = iblockstate.collisionRayTrace(world, blockpos, vec31, vec32);
+						RayTraceResult raytraceresult = iblockstate.collisionRayTrace(world, blockpos, start, end);
 						
 						if (raytraceresult != null) {
 							return raytraceresult;
@@ -64,7 +51,7 @@ public class BeamPulsar {
 				int k1 = 200;
 				
 				while (k1-- >= 0) {
-					if (Double.isNaN(vec31.xCoord) || Double.isNaN(vec31.yCoord) || Double.isNaN(vec31.zCoord)) {
+					if (Double.isNaN(start.xCoord) || Double.isNaN(start.yCoord) || Double.isNaN(start.zCoord)) {
 						return null;
 					}
 					
@@ -106,20 +93,20 @@ public class BeamPulsar {
 					double d3 = 999.0D;
 					double d4 = 999.0D;
 					double d5 = 999.0D;
-					double d6 = vec32.xCoord - vec31.xCoord;
-					double d7 = vec32.yCoord - vec31.yCoord;
-					double d8 = vec32.zCoord - vec31.zCoord;
+					double d6 = end.xCoord - start.xCoord;
+					double d7 = end.yCoord - start.yCoord;
+					double d8 = end.zCoord - start.zCoord;
 					
 					if (flag2) {
-						d3 = ( d0 - vec31.xCoord ) / d6;
+						d3 = ( d0 - start.xCoord ) / d6;
 					}
 					
 					if (flag) {
-						d4 = ( d1 - vec31.yCoord ) / d7;
+						d4 = ( d1 - start.yCoord ) / d7;
 					}
 					
 					if (flag1) {
-						d5 = ( d2 - vec31.zCoord ) / d8;
+						d5 = ( d2 - start.zCoord ) / d8;
 					}
 					
 					if (d3 == -0.0D) {
@@ -138,18 +125,18 @@ public class BeamPulsar {
 					
 					if (d3 < d4 && d3 < d5) {
 						enumfacing = i > l ? EnumFacing.WEST : EnumFacing.EAST;
-						vec31 = new Vec3d(d0, vec31.yCoord + d7 * d3, vec31.zCoord + d8 * d3);
+						start = new Vec3d(d0, start.yCoord + d7 * d3, start.zCoord + d8 * d3);
 					} else if (d4 < d5) {
 						enumfacing = j > i1 ? EnumFacing.DOWN : EnumFacing.UP;
-						vec31 = new Vec3d(vec31.xCoord + d6 * d4, d1, vec31.zCoord + d8 * d4);
+						start = new Vec3d(start.xCoord + d6 * d4, d1, start.zCoord + d8 * d4);
 					} else {
 						enumfacing = k > j1 ? EnumFacing.NORTH : EnumFacing.SOUTH;
-						vec31 = new Vec3d(vec31.xCoord + d6 * d5, vec31.yCoord + d7 * d5, d2);
+						start = new Vec3d(start.xCoord + d6 * d5, start.yCoord + d7 * d5, d2);
 					}
 					
-					l = MathHelper.floor_double(vec31.xCoord) - ( enumfacing == EnumFacing.EAST ? 1 : 0 );
-					i1 = MathHelper.floor_double(vec31.yCoord) - ( enumfacing == EnumFacing.UP ? 1 : 0 );
-					j1 = MathHelper.floor_double(vec31.zCoord) - ( enumfacing == EnumFacing.SOUTH ? 1 : 0 );
+					l = MathHelper.floor_double(start.xCoord) - ( enumfacing == EnumFacing.EAST ? 1 : 0 );
+					i1 = MathHelper.floor_double(start.yCoord) - ( enumfacing == EnumFacing.UP ? 1 : 0 );
+					j1 = MathHelper.floor_double(start.zCoord) - ( enumfacing == EnumFacing.SOUTH ? 1 : 0 );
 					blockpos = new BlockPos(l, i1, j1);
 					IBlockState iblockstate1 = world.getBlockState(blockpos);
 					Block block1 = iblockstate1.getBlock();
@@ -157,13 +144,13 @@ public class BeamPulsar {
 					if (!exclude.contains(blockpos)) {
 						if (!ignoreBlockWithoutBoundingBox || iblockstate1.getMaterial() == Material.PORTAL || iblockstate1.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) {
 							if (block1.canCollideCheck(iblockstate1, stopOnLiquid)) {
-								RayTraceResult raytraceresult1 = iblockstate1.collisionRayTrace(world, blockpos, vec31, vec32);
+								RayTraceResult raytraceresult1 = iblockstate1.collisionRayTrace(world, blockpos, start, end);
 								
 								if (raytraceresult1 != null) {
 									return raytraceresult1;
 								}
 							} else {
-								raytraceresult2 = new RayTraceResult(RayTraceResult.Type.MISS, vec31, enumfacing, blockpos);
+								raytraceresult2 = new RayTraceResult(RayTraceResult.Type.MISS, start, enumfacing, blockpos);
 							}
 						}
 					}
