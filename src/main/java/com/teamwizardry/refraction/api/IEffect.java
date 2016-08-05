@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.api;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 /**
@@ -8,5 +8,5 @@ import net.minecraft.world.World;
  */
 public interface IEffect {
 
-	void run(World world, BlockPos pos, int potency);
+	void run(World world, Vec3d pos);
 }
