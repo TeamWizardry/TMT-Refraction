@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -56,7 +57,15 @@ public class BlockLaser extends Block implements ITileEntityProvider {
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-
+		if (heldItem != null) {
+			if (heldItem.getItem() == Items.GLOWSTONE_DUST) {
+				TileLaser laser = getTE(worldIn, pos);
+				if (laser.getPower() < 10350) {
+					laser.setPower(laser.getPower() + 323.4375);
+					--heldItem.stackSize;
+				}
+			}
+		}
 		return true;
 	}
 

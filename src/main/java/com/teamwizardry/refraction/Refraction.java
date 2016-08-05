@@ -1,5 +1,7 @@
 package com.teamwizardry.refraction;
 
+import com.teamwizardry.refraction.common.light.BlockTracker;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -54,6 +56,8 @@ public class Refraction {
 		ModBlocks.init();
 		ModItems.init();
 		ModEntities.init();
+
+		proxy.loadModels();
 	}
 
 	@Mod.EventHandler
@@ -67,5 +71,8 @@ public class Refraction {
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);
+		
+		ReflectionTracker.init();
+		BlockTracker.init();
 	}
 }
