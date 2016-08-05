@@ -51,10 +51,6 @@ public class BlockPrism extends BlockDirectional implements ITileEntityProvider 
 		return new TilePrism();
 	}
 
-	private TilePrism getTE(World world, BlockPos pos) {
-		return (TilePrism) world.getTileEntity(pos);
-	}
-
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 

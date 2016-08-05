@@ -1,11 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.refraction.api.AssemblyTableItemHelper;
-import com.teamwizardry.refraction.api.IAssemblyRecipe;
-import com.teamwizardry.refraction.api.IHeatable;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.ILightSink;
-import com.teamwizardry.refraction.init.AssemblyRecipes;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -19,14 +15,17 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.teamwizardry.refraction.api.AssemblyTableItemHelper;
+import com.teamwizardry.refraction.api.IAssemblyRecipe;
+import com.teamwizardry.refraction.api.IHeatable;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
+import com.teamwizardry.refraction.init.AssemblyRecipes;
 
 /**
  * Created by LordSaad44
  */
-public class TileAssemblyTable extends TileEntity implements ITickable, IHeatable, ILightSink {
+public class TileAssemblyTable extends TileEntity implements ITickable, IHeatable, IBeamHandler {
 
 	private IBlockState state;
 	private ArrayList<AssemblyTableItemHelper> inventory = new ArrayList<>();
@@ -134,11 +133,11 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 	}
 
 	@Override
-	public void recieveBeam(Beam... intputs) {
-		double temp = 0;
-		for (Beam beam : intputs) {
+	public void handle(Beam... intputs) {
+//		double temp = 0;
+//		for (Beam beam : intputs) {
 			// TEMPERATURE HERE
-		}
+//		}
 	}
 
 	public int getCraftingTime() {

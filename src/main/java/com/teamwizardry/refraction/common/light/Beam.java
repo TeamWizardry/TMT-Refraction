@@ -1,14 +1,14 @@
 package com.teamwizardry.refraction.common.light;
 
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.client.render.RenderLaserUtil;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import com.teamwizardry.librarianlib.util.Color;
+import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 
 public class Beam
 {
-	public static final float SOLAR_STRENGTH = 0.125F;
-	public static final float GLOWSTONE_STRENGTH = 0.25F;
 	public Vec3d initLoc;
 	public Vec3d finalLoc;
 	public Color color;
@@ -18,8 +18,14 @@ public class Beam
 	{
 		this.world = world;
 		this.initLoc = initLoc;
-		this.finalLoc = world.rayTraceBlocks(initLoc.add(slope.normalize()), slope.normalize().scale(128).add(initLoc), true, false, true).hitVec;
 		this.color = color;
+		RayTraceResult trace = world.rayTraceBlocks(initLoc.add(slope.normalize()), slope.normalize().scale(128).add(initLoc), true, false, true);
+		this.finalLoc = trace.hitVec;
+		TileEntity tile = world.getTileEntity(trace.getBlockPos());
+		if (tile instanceof IBeamHandler)
+		{
+			ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
+		}
 	}
 	
 	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color)

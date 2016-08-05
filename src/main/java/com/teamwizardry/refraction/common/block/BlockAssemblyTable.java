@@ -53,10 +53,6 @@ public class BlockAssemblyTable  extends Block implements ITileEntityProvider {
 		return new TileAssemblyTable();
 	}
 
-	private TileAssemblyTable getTE(World world, BlockPos pos) {
-		return (TileAssemblyTable) world.getTileEntity(pos);
-	}
-
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 

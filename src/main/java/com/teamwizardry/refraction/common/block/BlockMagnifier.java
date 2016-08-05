@@ -1,7 +1,5 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.common.tile.TileMagnifier;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -18,6 +16,10 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.light.ILightSource;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.common.tile.TileMagnifier;
 
 /**
  * Created by LordSaad44
@@ -46,10 +48,6 @@ public class BlockMagnifier extends Block implements ITileEntityProvider {
 		return new TileMagnifier();
 	}
 
-	private TileMagnifier getTE(World world, BlockPos pos) {
-		return (TileMagnifier) world.getTileEntity(pos);
-	}
-
 	@Override
 	public boolean canRenderInLayer(BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
@@ -64,4 +62,14 @@ public class BlockMagnifier extends Block implements ITileEntityProvider {
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}
+	
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
+	{
+		TileEntity entity = world.getTileEntity(pos);
+		if (entity instanceof ILightSource)
+			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
+		super.breakBlock(world, pos, state);
+	}
+	
 }

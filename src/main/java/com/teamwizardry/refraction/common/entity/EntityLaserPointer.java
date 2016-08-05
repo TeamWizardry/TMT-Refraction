@@ -34,7 +34,7 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 	
 	public EntityLaserPointer(World worldIn, EntityPlayer player) {
 		super(worldIn);
-		this.player = new WeakReference(player);
+		this.player = new WeakReference<>(player);
 		this.setSize(0.1F, 0.1F);
 	}
 	
@@ -141,7 +141,7 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		boolean b = buffer.readBoolean();
 		if(!b) {
 			UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
-			player = new WeakReference(worldObj.getPlayerEntityByUUID(uuid));
+			player = new WeakReference<>(worldObj.getPlayerEntityByUUID(uuid));
 		}
 	}
 }

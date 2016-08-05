@@ -1,41 +1,39 @@
 package com.teamwizardry.refraction.common.light;
 
-import com.google.common.collect.ImmutableList;
-import com.teamwizardry.librarianlib.util.Color;
+import java.util.HashSet;
+import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.util.HashSet;
-import java.util.Set;
+import com.google.common.collect.ImmutableList;
+import com.teamwizardry.librarianlib.util.Color;
 
 /**
  * Created by TheCodeWarrior
  */
 public class BeamPulsar {
 	
-	public static final int MAX_DEPTH = 500;
+//	public static final int MAX_DEPTH = 500;
 	
-	public static void pulse(World world, BlockPos originPos, Color color, Vec3d origin, Vec3d direction, double range, int depth) {
-		if(depth > MAX_DEPTH)
-			return;
+	public static RayTraceResult pulse(World world, BlockPos originPos, Color color, Vec3d origin, Vec3d direction, double range) {
+//		if(depth > MAX_DEPTH)
+//			return;
 		Vec3d end = direction.normalize().scale(range).add(origin);
-		RayTraceResult result = rayTraceBlocks(world, new HashSet<>(ImmutableList.of(originPos)), origin, end, true, false, true);
+		return rayTraceBlocks(world, new HashSet<>(ImmutableList.of(originPos)), origin, end, true, false, true);
 
-		if(result != null) {
-			end = result.hitVec;
-			TileEntity te = world.getTileEntity(result.getBlockPos());
-			if(te instanceof IBeamHandler) {
-				( (IBeamHandler) te ).handle(originPos, origin, end, new Color(color.r, color.g, color.b, (float)(color.a-(end.subtract(origin).lengthVector()* BeamConstants.strengthLossPerBlock))), depth);
-			}
-		}
+//		if(result != null) {
+//			end = result.hitVec;
+//			TileEntity te = world.getTileEntity(result.getBlockPos());
+//			if(te instanceof IBeamHandler) {
+//				( (IBeamHandler) te ).handle(originPos, origin, end, new Color(color.r, color.g, color.b, (float)(color.a-(end.subtract(origin).lengthVector()* BeamConstants.strengthLossPerBlock))), depth);
+//			}
+//		}
 	}
 	
 	

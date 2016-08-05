@@ -1,10 +1,5 @@
 package com.teamwizardry.refraction.client.render;
 
-import com.teamwizardry.librarianlib.gui.GuiTickHandler;
-import com.teamwizardry.librarianlib.math.Geometry;
-import com.teamwizardry.librarianlib.math.Tri;
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.Refraction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,6 +8,10 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
+import com.teamwizardry.librarianlib.gui.GuiTickHandler;
+import com.teamwizardry.librarianlib.math.Geometry;
+import com.teamwizardry.librarianlib.util.Color;
+import com.teamwizardry.refraction.Refraction;
 
 /**
  * Created by TheCodeWarrior

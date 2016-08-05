@@ -51,10 +51,6 @@ public class BlockDiscoBall extends Block implements ITileEntityProvider {
 		return new TileDiscoBall();
 	}
 
-	private TileDiscoBall getTE(World world, BlockPos pos) {
-		return (TileDiscoBall) world.getTileEntity(pos);
-	}
-
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 

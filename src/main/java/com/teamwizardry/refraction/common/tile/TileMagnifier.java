@@ -1,20 +1,17 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.util.List;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -22,12 +19,12 @@ import com.teamwizardry.refraction.init.ModBlocks;
 /**
  * Created by LordSaad44
  */
-public class TileMagnifier extends TileEntity implements ITickable, ILightSource {
+public class TileMagnifier extends TileEntity implements ILightSource {
 
 	private IBlockState state;
-	private Beam beam;
 	
 	public TileMagnifier() {
+		ReflectionTracker.getInstance(worldObj).addSource(this);
 	}
 
 	@Override
@@ -74,7 +71,8 @@ public class TileMagnifier extends TileEntity implements ITickable, ILightSource
 	}
 
 	@Override
-	public void update() {
+	public void generateBeam()
+	{
 		boolean hasLens = false;
 		for (int y = 1; y < 10; y++) {
 			BlockPos lens = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
@@ -92,10 +90,6 @@ public class TileMagnifier extends TileEntity implements ITickable, ILightSource
 
 				if (checkarea) {
 					hasLens = true;
-//					List<EntityPlayer> players = worldObj.playerEntities;
-//					if (players.size() > 0)
-//						players.get(0).addChatMessage(new TextComponentString("Lense cube at y = " + y));
-					// TODO: 3x3 platform of lenses on this y level found HERE
 				}
 			}
 		}
@@ -104,15 +98,9 @@ public class TileMagnifier extends TileEntity implements ITickable, ILightSource
 		{
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			Vec3d dir = new Vec3d(0, -1, 0);
-			Color color = new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, Beam.SOLAR_STRENGTH);
+			Color color = new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.SOLAR_ALPHA);
 			
-			Beam beam = new Beam(worldObj, center, dir, color);
-			if(!ReflectionTracker.getInstance(worldObj).generateBeam(this, beam))
-				this.beam = beam;
-		} else if(this.beam != null){
-			ReflectionTracker.getInstance(worldObj).disableBeam(this.beam);
+			new Beam(worldObj, center, dir, color);
 		}
 	}
-	
-	
 }

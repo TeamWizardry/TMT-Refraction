@@ -1,7 +1,5 @@
 package com.teamwizardry.refraction.client.render;
 
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.common.tile.TileMirror;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -11,11 +9,12 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import org.lwjgl.opengl.GL11;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.tile.TileMirror;
 
 /**
  * Created by LordSaad44

@@ -53,10 +53,6 @@ public class BlockSensor extends BlockDirectional implements ITileEntityProvider
 		return new TileSensor();
 	}
 
-	private TileSensor getTE(World world, BlockPos pos) {
-		return (TileSensor) world.getTileEntity(pos);
-	}
-
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(FACING, facing);

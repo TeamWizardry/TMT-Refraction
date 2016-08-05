@@ -1,23 +1,19 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.ILightSink;
-import com.teamwizardry.refraction.common.light.ILightSource;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
 
 /**
  * Created by LordSaad44
  */
-public class TileMirror extends TileEntity implements ILightSource, ILightSink {
+public class TileMirror extends TileEntity implements IBeamHandler {
 
 	private IBlockState state;
 	private float rotX, rotZ;
@@ -71,22 +67,6 @@ public class TileMirror extends TileEntity implements ILightSource, ILightSink {
 		return INFINITE_EXTENT_AABB;
 	}
 
-	@Override
-	public void recieveBeam(Beam... inputs) {
-		for (Beam beam : inputs) {
-			ReflectionTracker.getInstance(worldObj).recieveBeam(this, beam);
-			reflect(beam);
-		}
-	}
-
-	private void reflect(Beam beam) {
-		// TODO: Actual internal raycasting and reflection
-		Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-		Vec3d dir = new Vec3d(0, 1, 0);
-		Color color = beam.color;
-		ReflectionTracker.getInstance(worldObj).generateBeam(this, new Beam(worldObj, center, dir, color));
-	}
-
 	public float getRotX() {
 		return rotX;
 	}
@@ -105,5 +85,11 @@ public class TileMirror extends TileEntity implements ILightSource, ILightSink {
 		this.rotZ = rotZ;
 		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		markDirty();
+	}
+
+	@Override
+	public void handle(Beam... beams)
+	{
+		
 	}
 }

@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.ILightSink;
+import java.util.Collections;
+import java.util.List;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,14 +12,13 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Collections;
-import java.util.List;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
 
 /**
  * Created by LordSaad44
  */
-public class TileDiscoBall extends TileEntity implements ITickable, ILightSink {
+public class TileDiscoBall extends TileEntity implements ITickable, IBeamHandler {
 
 	private IBlockState state;
 	private List<Beam> beams;
@@ -76,9 +75,9 @@ public class TileDiscoBall extends TileEntity implements ITickable, ILightSink {
 			for (int z = -2; z < 2; z++) {
 				for (int y = -3; y < 0; y++) {
 					if (worldObj.getBlockState(new BlockPos(x, y, z)).getBlock() != Blocks.AIR) {
-						for (Beam beam : beams) {
-							// TODO
-						}
+//						for (Beam beam : beams) {
+//							// TODO
+//						}
 					}
 				}
 			}
@@ -86,7 +85,7 @@ public class TileDiscoBall extends TileEntity implements ITickable, ILightSink {
 	}
 
 	@Override
-	public void recieveBeam(Beam... inputs) {
+	public void handle(Beam... inputs) {
 		Collections.addAll(beams, inputs);
 	}
 }
