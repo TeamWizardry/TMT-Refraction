@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.client.render;
 import com.teamwizardry.librarianlib.gui.GuiTickHandler;
 import com.teamwizardry.librarianlib.math.Geometry;
 import com.teamwizardry.librarianlib.math.Tri;
+import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.Refraction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -20,7 +21,21 @@ public class RenderLaserUtil {
 	
 	static ResourceLocation texture = new ResourceLocation(Refraction.MOD_ID, "textures/laser.png");
 	
-	public static void renderLaser(float r, float g, float b, float a, Vec3d start, Vec3d end) {
+	static boolean drawingLasers = false;
+	
+	public static void startRenderingLasers() {
+		drawingLasers = true;
+		Tessellator tessellator = Tessellator.getInstance();
+		VertexBuffer vb = tessellator.getBuffer();
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+	}
+	
+	public static void finishRenderingLasers() {
+		drawingLasers = false;
+		Tessellator.getInstance().draw();
+	}
+		
+	public static void renderLaser(Color color, Vec3d start, Vec3d end) {
 		float pixelsPerBlock = 32; // float to avoid (float) casts everywhere. Stupid int division.
 		float texSize = 128; // ditto.
 		
@@ -45,14 +60,16 @@ public class RenderLaserUtil {
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer vb = tessellator.getBuffer();
 		
-		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+		if(!drawingLasers)
+			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 		
-		pos(vb, start.add(d)     ).tex(uMin, vMin).color(r,g,b,a).endVertex();
-		pos(vb, start.subtract(d)).tex(uMin, vMax).color(r,g,b,a).endVertex();
-		pos(vb, end.subtract(d)  ).tex(uMax, vMax).color(r,g,b,a).endVertex();
-		pos(vb, end.add(d)       ).tex(uMax, vMin).color(r,g,b,a).endVertex();
+		pos(vb, start.add(d)     ).tex(uMin, vMin).color(color.r, color.g, color.b, color.a).endVertex();
+		pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.r, color.g, color.b, color.a).endVertex();
+		pos(vb, end.subtract(d)  ).tex(uMax, vMax).color(color.r, color.g, color.b, color.a).endVertex();
+		pos(vb, end.add(d)       ).tex(uMax, vMin).color(color.r, color.g, color.b, color.a).endVertex();
 		
-		tessellator.draw();
+		if(!drawingLasers)
+			tessellator.draw();
 	}
 	
 	private static VertexBuffer pos(VertexBuffer vb, Vec3d pos) {

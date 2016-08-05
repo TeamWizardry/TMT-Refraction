@@ -1,5 +1,7 @@
 package com.teamwizardry.refraction.common.light;
 
+import com.teamwizardry.refraction.client.LaserRenderer;
+import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import com.teamwizardry.librarianlib.util.Color;
@@ -18,7 +20,7 @@ public class Beam
 	{
 		this.world = world;
 		this.initLoc = initLoc;
-		this.finalLoc = world.rayTraceBlocks(initLoc, slope.normalize().scale(128).add(initLoc), true, false, true).hitVec;
+		this.finalLoc = world.rayTraceBlocks(initLoc.add(slope.normalize()), slope.normalize().scale(128).add(initLoc), true, false, true).hitVec;
 		this.color = color;
 	}
 	
@@ -70,4 +72,10 @@ public class Beam
 		hash = 31 * end + color;
 		return hash;
 	}
+	
+	public void drawBeam() {
+		RenderLaserUtil.renderLaser(color, initLoc, finalLoc);
+	}
+	
+	
 }

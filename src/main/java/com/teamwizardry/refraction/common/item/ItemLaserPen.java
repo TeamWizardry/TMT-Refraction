@@ -43,7 +43,7 @@ public class ItemLaserPen extends Item {
 	
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
-		return Integer.MAX_VALUE;
+		return 1000;
 	}
 	
 	@Override

@@ -1,9 +1,15 @@
 package com.teamwizardry.refraction.common.light;
 
 import java.lang.ref.WeakReference;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
+import java.util.function.Consumer;
+
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Multiset;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -11,11 +17,11 @@ import com.google.common.collect.HashMultimap;
 
 public class ReflectionTracker
 {
-	private static WeakHashMap<WeakReference<World>, ReflectionTracker> instances = new WeakHashMap<WeakReference<World>, ReflectionTracker>();
-	private static HashMultimap<ILightSource, Beam> sourceBlocks;
-	private static HashMultimap<ILightSink, Beam> sinkBlocks;
-	private static HashMap<Beam, ILightSource> sources;
-	private static HashMap<Beam, ILightSink> sinks;
+	private static WeakHashMap<World, ReflectionTracker> instances = new WeakHashMap<>();
+	private HashMultimap<ILightSource, Beam> sourceBlocks;
+	private HashMultimap<ILightSink, Beam> sinkBlocks;
+	private HashMap<Beam, ILightSource> sources;
+	private HashMap<Beam, ILightSink> sinks;
 
 	public ReflectionTracker()
 	{
@@ -94,11 +100,18 @@ public class ReflectionTracker
 
 	public static ReflectionTracker getInstance(World world)
 	{
+		if(!instances.containsKey(world))
+			addInstance(world);
 		return instances.get(world);
 	}
 	
 	public static boolean addInstance(World world)
 	{
-		return instances.putIfAbsent(new WeakReference<World>(world), new ReflectionTracker()) == null;
+		return instances.putIfAbsent(world, new ReflectionTracker()) == null;
+	}
+	
+	public Collection<Beam> beams()
+	{
+		return sourceBlocks.values();
 	}
 }

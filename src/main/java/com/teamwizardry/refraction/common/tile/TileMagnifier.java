@@ -91,9 +91,9 @@ public class TileMagnifier extends TileEntity implements ITickable, ILightSource
 
 				if (checkarea) {
 					hasLens = true;
-					List<EntityPlayer> players = worldObj.playerEntities;
-					if (players.size() > 0)
-						players.get(0).addChatMessage(new TextComponentString("Lense cube at y = " + y));
+//					List<EntityPlayer> players = worldObj.playerEntities;
+//					if (players.size() > 0)
+//						players.get(0).addChatMessage(new TextComponentString("Lense cube at y = " + y));
 					// TODO: 3x3 platform of lenses on this y level found HERE
 				}
 			}
