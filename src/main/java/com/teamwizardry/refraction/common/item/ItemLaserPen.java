@@ -1,8 +1,10 @@
 package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -18,7 +20,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Created by LordSaad44
  */
 public class ItemLaserPen extends Item {
-
+	
+	public static final double RANGE = 32;
+	
 	public ItemLaserPen() {
 		setRegistryName("laser_pen");
 		setUnlocalizedName("laser_pen");
@@ -31,11 +35,23 @@ public class ItemLaserPen extends Item {
 	public void initModel() {
 		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
-
+	
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack) {
+		return EnumAction.BOW;
+	}
+	
+	@Override
+	public int getMaxItemUseDuration(ItemStack stack) {
+		return Integer.MAX_VALUE;
+	}
+	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		playerIn.setActiveHand(hand);
 		if (!worldIn.isRemote) {
-			// PEW PEW
+			EntityLaserPointer e = new EntityLaserPointer(worldIn, playerIn);
+			worldIn.spawnEntityInWorld(e);
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 	}

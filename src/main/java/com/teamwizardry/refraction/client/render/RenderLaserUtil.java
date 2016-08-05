@@ -14,7 +14,7 @@ import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Created by TheCodeWarrior on 8/4/16.
+ * Created by TheCodeWarrior
  */
 public class RenderLaserUtil {
 	

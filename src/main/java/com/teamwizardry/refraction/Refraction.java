@@ -3,6 +3,7 @@ package com.teamwizardry.refraction;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
 import com.teamwizardry.refraction.init.ModBlocks;
+import com.teamwizardry.refraction.init.ModEntities;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -52,6 +53,7 @@ public class Refraction {
 
 		ModBlocks.init();
 		ModItems.init();
+		ModEntities.init();
 	}
 
 	@Mod.EventHandler

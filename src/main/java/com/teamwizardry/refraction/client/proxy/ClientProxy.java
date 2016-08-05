@@ -7,8 +7,10 @@ import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -20,21 +22,24 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
+		super.preInit(event);
 		OBJLoader.INSTANCE.addDomain(Refraction.MOD_ID);
 		LaserRenderer.INSTANCE.getClass();
 	}
 
 	@Override
 	public void init(FMLInitializationEvent event) {
-
+		super.init(event);
 	}
 
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
+		super.postInit(event);
 	}
 
 	@Override
 	public void loadModels() {
+		super.loadModels();
 		ModBlocks.initModels();
 		ModItems.initModel();
 	}
@@ -44,5 +49,10 @@ public class ClientProxy extends CommonProxy {
 		SparkleFX particle = new SparkleFX(worldIn, posXIn, posYIn, posZIn);
 		Minecraft.getMinecraft().effectRenderer.addEffect(particle);
 		return particle;
+	}
+	
+	@Override
+	public MinecraftServer getServer() {
+		return FMLClientHandler.instance().getServer();
 	}
 }

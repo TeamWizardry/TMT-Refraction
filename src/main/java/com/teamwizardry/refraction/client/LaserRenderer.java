@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Created by TheCodeWarrior on 8/4/16.
+ * Created by TheCodeWarrior
  */
 public class LaserRenderer {
 	public static final LaserRenderer INSTANCE = new LaserRenderer();
@@ -38,6 +38,8 @@ public class LaserRenderer {
 		GlStateManager.alphaFunc(GL11.GL_GEQUAL, 0);
 		
 		RenderLaserUtil.renderLaser(1, 0, 1, 0.5f, new Vec3d(0, 0, 0), new Vec3d(1, 5, 0));
+		
+		GlStateManager.disableBlend();
 		
 		GlStateManager.popMatrix();
 		GlStateManager.popAttrib();
