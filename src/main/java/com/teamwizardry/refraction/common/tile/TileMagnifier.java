@@ -1,7 +1,8 @@
 package com.teamwizardry.refraction.common.tile;
 
+import java.util.List;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -9,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import com.teamwizardry.librarianlib.util.Color;
@@ -89,7 +91,9 @@ public class TileMagnifier extends TileEntity implements ITickable, ILightSource
 
 				if (checkarea) {
 					hasLens = true;
-					Minecraft.getMinecraft().thePlayer.sendChatMessage("Lense cube at y = " + y);
+					List<EntityPlayer> players = worldObj.playerEntities;
+					if (players.size() > 0)
+						players.get(0).addChatMessage(new TextComponentString("Lense cube at y = " + y));
 					// TODO: 3x3 platform of lenses on this y level found HERE
 				}
 			}
