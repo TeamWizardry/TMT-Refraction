@@ -2,12 +2,14 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.common.tile.TileLaser;
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -27,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by LordSaad44
  */
-public class BlockLaser extends Block implements ITileEntityProvider {
+public class BlockLaser extends BlockDirectional implements ITileEntityProvider {
 
 	public BlockLaser() {
 		super(Material.IRON);
@@ -39,6 +41,8 @@ public class BlockLaser extends Block implements ITileEntityProvider {
 		GameRegistry.registerTileEntity(TileLaser.class, "laser");
 		GameRegistry.register(new ItemBlock(this), getRegistryName());
 		setCreativeTab(Refraction.tab);
+
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -67,6 +71,26 @@ public class BlockLaser extends Block implements ITileEntityProvider {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getAdjustedHorizontalFacing()));
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(FACING).getIndex();
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override

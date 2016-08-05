@@ -1,6 +1,6 @@
 {
   "parent":   "item/generated",
   "textures": {
-    "layer0": "wizardry:items/laser_pen"
+    "layer0": "refraction:items/laser_pen"
   }
 }

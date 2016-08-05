@@ -1,6 +1,12 @@
 {
-  "parent": "block/cube_all",
+  "parent": "block/cube",
   "textures": {
-    "all": "blocks/bedrock"
+    "particle": "blocks/bedrock",
+    "down": "blocks/bedrock",
+    "up": "blocks/bedrock",
+    "east": "blocks/bedrock",
+    "west": "blocks/bedrock",
+    "north": "blocks/sponge",
+    "south": "blocks/bedrock"
   }
 }
