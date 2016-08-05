@@ -1,0 +1,69 @@
+package com.teamwizardry.refraction.api;
+
+import net.minecraft.util.math.Vec3d;
+
+public class RotationHelper
+{
+	public static Vec3d toVec3d(float pitch, float yaw)
+	{
+		double sinPitch = Math.sin(pitch);
+		double cosPitch = Math.cos(pitch);
+		double sinYaw = Math.sin(yaw);
+		double cosYaw = Math.cos(yaw);
+		return new Vec3d(cosPitch * cosYaw, sinPitch, cosPitch * sinYaw);
+	}
+
+	/**
+	 * Calculates the spherical coordinates, given a cartesian vector
+	 * 
+	 * @param vec
+	 *            Vector given in (x, y, z)
+	 * @return Vector given in (rho, theta, phi)
+	 */
+	public static Vec3d toSpherical(Vec3d vec)
+	{
+		double x = vec.xCoord;
+		double y = vec.yCoord;
+		double z = vec.zCoord;
+		double radius = Math.sqrt(x * x + y * y + z * z);
+		double theta = Math.atan2(z, x);
+		double phi = Math.atan2(Math.sqrt(x * x + z * z), y);
+		return new Vec3d(radius, theta, phi);
+	}
+
+	/**
+	 * Takes several cartesian vectors, and returns one going in the average
+	 * direction, regardless of vector magnitues
+	 * 
+	 * @param vectors The list of vectors to average. Will be normalized.
+	 * @return The average direction of all the given vectors.
+	 */
+	public static Vec3d averageDirection(Vec3d... vectors)
+	{
+		double x = 0;
+		double y = 0;
+		double z = 0;
+		
+		for (int i = 0; i < vectors.length; i++)
+		{
+			vectors[i] = vectors[i].normalize();
+			x += vectors[i].xCoord;
+			y += vectors[i].yCoord;
+			z += vectors[i].zCoord;
+		}
+		
+		return new Vec3d(x, y, z);
+	}
+	
+	/**
+	 * Calculates the reflection of a vector over a line
+	 * @param vector The vector being reflected 
+	 * @param line The line over which the vector is being reflected
+	 * @return A reflected vector
+	 */
+	public static Vec3d reflect(Vec3d vector, Vec3d line)
+	{
+		line = line.normalize();
+		return vector.scale(-1).add(line.scale(2 * vector.dotProduct(line)));
+	}
+}
