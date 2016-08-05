@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -17,6 +16,11 @@ import java.util.List;
 public class EffectDisperse implements IEffect {
 
 	private static int cooldown = 0;
+	private int potency;
+
+	public EffectDisperse(int potency) {
+		this.potency = potency;
+	}
 
 	private static void setEntityMotionFromVector(Entity entity, Vec3d originalPosVector) {
 		Vec3d entityVector = entity.getPositionVector();
@@ -31,20 +35,20 @@ public class EffectDisperse implements IEffect {
 	}
 
 	@Override
-	public void run(World world, BlockPos pos, int potency) {
+	public void run(World world, Vec3d pos) {
 		if (cooldown >= 10) {
 			List<Entity> entities = null;
 			if (potency < 5)
-				entities = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.getX() - potency, pos.getY() - potency, pos.getZ() - potency, pos.getX() + potency, pos.getY() + potency, pos.getZ() + potency));
+				entities = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.xCoord - potency, pos.yCoord - potency, pos.zCoord - potency, pos.xCoord + potency, pos.yCoord + potency, pos.zCoord + potency));
 			else
-				world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(pos.getX() - potency, pos.getY() - potency, pos.getZ() - potency, pos.getX() + potency, pos.getY() + potency, pos.getZ() + potency));
+				world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(pos.xCoord - potency, pos.yCoord - potency, pos.zCoord - potency, pos.xCoord + potency, pos.yCoord + potency, pos.zCoord + potency));
 
 			if (entities != null) {
 				int pulled = 0;
 				for (Entity entity : entities) {
 					pulled++;
 					if (pulled > 200) break;
-					setEntityMotionFromVector(entity, new Vec3d(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5));
+					setEntityMotionFromVector(entity, pos);
 				}
 			}
 			cooldown = 0;

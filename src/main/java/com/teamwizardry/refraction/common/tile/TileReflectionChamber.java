@@ -1,30 +1,21 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.ILightSink;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by LordSaad44
  */
-public class TileDiscoBall extends TileEntity implements ITickable, ILightSink {
+public class TileReflectionChamber extends TileEntity {
 
 	private IBlockState state;
-	private List<Beam> beams;
 
-	public TileDiscoBall() {
+	public TileReflectionChamber() {
 	}
 
 	@Override
@@ -68,25 +59,5 @@ public class TileDiscoBall extends TileEntity implements ITickable, ILightSink {
 	@Override
 	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
 		return INFINITE_EXTENT_AABB;
-	}
-
-	@Override
-	public void update() {
-		for (int x = -2; x < 2; x++) {
-			for (int z = -2; z < 2; z++) {
-				for (int y = -3; y < 0; y++) {
-					if (worldObj.getBlockState(new BlockPos(x, y, z)).getBlock() != Blocks.AIR) {
-						for (Beam beam : beams) {
-							// TODO
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@Override
-	public void recieveBeam(Beam... inputs) {
-		Collections.addAll(beams, inputs);
 	}
 }
