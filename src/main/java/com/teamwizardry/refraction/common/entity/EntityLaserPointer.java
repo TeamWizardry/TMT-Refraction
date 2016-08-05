@@ -1,38 +1,40 @@
 package com.teamwizardry.refraction.common.entity;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.teamwizardry.refraction.common.item.ItemLaserPen;
 import com.teamwizardry.refraction.init.ModItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
+import java.util.UUID;
 
 /**
  * Created by TheCodeWarrior
  */
-public class EntityLaserPointer extends EntityLivingBase {
+public class EntityLaserPointer extends EntityLivingBase implements IEntityAdditionalSpawnData {
 	
-	final WeakReference<EntityPlayer> player;
+	WeakReference<EntityPlayer> player;
 	
 	public EntityLaserPointer(World worldIn, EntityPlayer player) {
 		super(worldIn);
 		this.player = new WeakReference(player);
+		this.setSize(0.1F, 0.1F);
+	}
+	
+	public EntityLaserPointer(World worldIn) {
+		super(worldIn);
 		this.setSize(0.1F, 0.1F);
 	}
 	
@@ -59,7 +61,6 @@ public class EntityLaserPointer extends EntityLivingBase {
 			} else {
 				pos = player.get().getLook(1).scale(ItemLaserPen.RANGE).add(player.get().getPositionEyes(1));
 			}
-			pos = pos.addVector(0, 2, 0);
 			this.setPositionAndUpdate(pos.xCoord, pos.yCoord, pos.zCoord);
 		}
 	}
@@ -98,5 +99,17 @@ public class EntityLaserPointer extends EntityLivingBase {
 	@Override
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		
+	}
+	
+	@Override
+	public void writeSpawnData(ByteBuf buffer) {
+		buffer.writeLong(player.get().getPersistentID().getMostSignificantBits());
+		buffer.writeLong(player.get().getPersistentID().getLeastSignificantBits());
+	}
+	
+	@Override
+	public void readSpawnData(ByteBuf buffer) {
+		UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
+		player = new WeakReference(worldObj.getPlayerEntityByUUID(uuid));
 	}
 }
