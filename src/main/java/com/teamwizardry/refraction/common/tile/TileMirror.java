@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileMirror extends TileEntity implements ILightSource, ILightSink {
 
 	private IBlockState state;
-	private float pitch, yaw;
+	private float rotX, rotZ;
 
 	public TileMirror() {
 	}
@@ -29,8 +29,8 @@ public class TileMirror extends TileEntity implements ILightSource, ILightSink {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 
-		if (compound.hasKey("pitch")) pitch = compound.getFloat("pitch");
-		if (compound.hasKey("yaw")) yaw = compound.getFloat("yaw");
+		if (compound.hasKey("rotX")) rotX = compound.getFloat("rotX");
+		if (compound.hasKey("rotZ")) rotZ = compound.getFloat("rotZ");
 
 	}
 
@@ -38,8 +38,8 @@ public class TileMirror extends TileEntity implements ILightSource, ILightSink {
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
 
-		compound.setFloat("pitch", pitch);
-		compound.setFloat("yaw", yaw);
+		compound.setFloat("rotX", rotX);
+		compound.setFloat("rotZ", rotZ);
 
 		return compound;
 	}
@@ -87,22 +87,22 @@ public class TileMirror extends TileEntity implements ILightSource, ILightSink {
 		ReflectionTracker.getInstance(worldObj).generateBeam(this, new Beam(worldObj, center, dir, color));
 	}
 
-	public float getPitch() {
-		return pitch;
+	public float getRotX() {
+		return rotX;
 	}
 
-	public void setPitch(float pitch) {
-		this.pitch = pitch;
+	public void setRotX(float rotX) {
+		this.rotX = rotX;
 		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		markDirty();
 	}
 
-	public float getYaw() {
-		return yaw;
+	public float getRotZ() {
+		return rotZ;
 	}
 
-	public void setYaw(float yaw) {
-		this.yaw = yaw;
+	public void setRotZ(float rotZ) {
+		this.rotZ = rotZ;
 		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		markDirty();
 	}

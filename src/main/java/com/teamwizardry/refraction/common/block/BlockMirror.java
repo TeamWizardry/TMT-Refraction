@@ -70,23 +70,23 @@ public class BlockMirror extends Block implements ITileEntityProvider {
 
 					if (side == EnumFacing.NORTH) {
 						if (top) {
-							if (te.getPitch() < 90) te.setPitch(te.getPitch() + jump);
-						} else if (te.getPitch() > -90) te.setPitch(te.getPitch() - jump);
+							if (te.getRotX() < 90) te.setRotX(te.getRotX() + jump);
+						} else if (te.getRotX() > -90) te.setRotX(te.getRotX() - jump);
 
 					} else if (side == EnumFacing.SOUTH) {
 						if (top) {
-							if (te.getPitch() > -90) te.setPitch(te.getPitch() - jump);
-						} else if (te.getPitch() < 90) te.setPitch(te.getPitch() + jump);
+							if (te.getRotX() > -90) te.setRotX(te.getRotX() - jump);
+						} else if (te.getRotX() < 90) te.setRotX(te.getRotX() + jump);
 
 					} else if (side == EnumFacing.EAST) {
 						if (top) {
-							if (te.getYaw() < 90) te.setYaw(te.getYaw() + jump);
-						} else if (te.getYaw() > -90) te.setPitch(te.getYaw() - jump);
+							if (te.getRotZ() < 90) te.setRotZ(te.getRotZ() + jump);
+						} else if (te.getRotZ() > -90) te.setRotZ(te.getRotZ() - jump);
 
 					} else if (side == EnumFacing.WEST) {
 						if (top) {
-							if (te.getYaw() > -90) te.setYaw(te.getYaw() - jump);
-						} else if (te.getYaw() < 90) te.setYaw(te.getYaw() + jump);
+							if (te.getRotZ() > -90) te.setRotZ(te.getRotZ() - jump);
+						} else if (te.getRotZ() < 90) te.setRotZ(te.getRotZ() + jump);
 					}
 				}
 			}

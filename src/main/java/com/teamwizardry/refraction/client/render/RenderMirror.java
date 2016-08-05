@@ -44,11 +44,11 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 	public void renderTileEntityAt(TileMirror te, double x, double y, double z, float partialTicks, int destroyStage) {
 		GlStateManager.pushMatrix();
 
-		GlStateManager.translate(x, y, z); // Translate pad to coords here
+		GlStateManager.translate(x + 0.5, y + 0.75, z + 0.5); // Translate pad to coords here
 		GlStateManager.disableRescaleNormal();
 
-		GlStateManager.rotate(te.getYaw(), 0, 0, 1);
-		GlStateManager.rotate(te.getPitch(), 1, 0, 0);
+		GlStateManager.rotate(te.getRotZ(), 0, 0, 1);
+		GlStateManager.rotate(te.getRotX(), 1, 0, 0);
 		// TODO: pad keeps translating off of center as rotation changes
 
 		RenderHelper.disableStandardItemLighting();
