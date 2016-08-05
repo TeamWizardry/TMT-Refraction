@@ -63,7 +63,7 @@ public class RenderLaserPoint extends Render<EntityLaserPointer> {
 		
 		
 		GlStateManager.depthFunc(GL11.GL_GEQUAL);
-		GlStateManager.depthMask(true);
+//		GlStateManager.depthMask(true);
 		GlStateManager.color(1, 0, 0, 1);
 		
 		Minecraft.getMinecraft().getTextureManager().bindTexture(loc);
@@ -115,9 +115,8 @@ public class RenderLaserPoint extends Render<EntityLaserPointer> {
 		
 		t.draw();
 		
-		GlStateManager.disableBlend();
 		GlStateManager.depthFunc(GL11.GL_LEQUAL);
-		GlStateManager.depthMask(false);
+//		GlStateManager.depthMask(false);
 
 		GlStateManager.popMatrix();
 		
