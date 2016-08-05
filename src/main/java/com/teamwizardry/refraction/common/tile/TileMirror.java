@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.librarianlib.math.Matrix4;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -9,11 +8,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.librarianlib.math.Matrix4;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
-
-import static com.sun.tools.doclint.Entity.times;
-import static net.minecraft.realms.Tezzelator.t;
 
 /**
  * Created by LordSaad44

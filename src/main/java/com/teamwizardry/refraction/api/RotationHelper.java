@@ -35,7 +35,8 @@ public class RotationHelper
 	 * Takes several cartesian vectors, and returns one going in the average
 	 * direction, regardless of vector magnitues
 	 * 
-	 * @param vectors The list of vectors to average. Will be normalized.
+	 * @param vectors
+	 *            The list of vectors to average. Will be normalized.
 	 * @return The average direction of all the given vectors.
 	 */
 	public static Vec3d averageDirection(Vec3d... vectors)
@@ -43,7 +44,7 @@ public class RotationHelper
 		double x = 0;
 		double y = 0;
 		double z = 0;
-		
+
 		for (int i = 0; i < vectors.length; i++)
 		{
 			vectors[i] = vectors[i].normalize();
@@ -51,19 +52,37 @@ public class RotationHelper
 			y += vectors[i].yCoord;
 			z += vectors[i].zCoord;
 		}
-		
+
 		return new Vec3d(x, y, z);
 	}
-	
+
 	/**
 	 * Calculates the reflection of a vector over a line
-	 * @param vector The vector being reflected 
-	 * @param line The line over which the vector is being reflected
+	 * 
+	 * @param vector
+	 *            The vector being reflected
+	 * @param line
+	 *            The line over which the vector is being reflected
 	 * @return A reflected vector
 	 */
-	public static Vec3d reflect(Vec3d vector, Vec3d line)
+	public static Vec3d reflectLine(Vec3d vector, Vec3d line)
 	{
 		line = line.normalize();
 		return vector.scale(-1).add(line.scale(2 * vector.dotProduct(line)));
+	}
+
+	/**
+	 * Calculates the reflection of a vector on a plane
+	 * 
+	 * @param vector
+	 *            The vector being reflected
+	 * @param normal
+	 *            The normal of the plane
+	 * @return A reflected vector
+	 */
+	public static Vec3d reflectPlane(Vec3d vector, Vec3d normal)
+	{
+		normal = normal.normalize();
+		return vector.subtract(normal.scale(vector.dotProduct(normal) * 2));
 	}
 }
