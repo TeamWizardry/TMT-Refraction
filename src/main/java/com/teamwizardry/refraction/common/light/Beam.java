@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.light;
 import java.util.HashSet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -29,6 +30,21 @@ public class Beam
 		{
 			ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
 		}
+		
+		Vec3d o = slope.normalize().scale(0.25);
+		int amount = (int)( finalLoc.subtract(initLoc).lengthVector()/0.25 );
+		
+		double x = initLoc.xCoord;
+		double y = initLoc.yCoord;
+		double z = initLoc.zCoord;
+		
+		for(int i = 0; i < amount; i++) {
+			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0, 0, 0);
+			x += o.xCoord;
+			y += o.yCoord;
+			z += o.zCoord;
+		}
+		
 	}
 	
 	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color)
