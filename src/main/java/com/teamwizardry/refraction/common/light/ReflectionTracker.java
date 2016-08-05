@@ -17,6 +17,8 @@ public class ReflectionTracker
 	{
 		sourceBlocks = HashMultimap.create();
 		sinkBlocks = HashMultimap.create();
+		sources = new HashMap<>();
+		sinks = new HashMap<>();
 	}
 
 	/**
