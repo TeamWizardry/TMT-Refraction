@@ -1,6 +1,9 @@
 package com.teamwizardry.refraction.common.effect;
 
+import com.teamwizardry.librarianlib.util.Color;
+import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.IEffect;
+import com.teamwizardry.refraction.client.fx.SparkleFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
@@ -9,6 +12,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44
@@ -53,5 +57,18 @@ public class EffectDisperse implements IEffect {
 			}
 			cooldown = 0;
 		} else cooldown++;
+
+		for (int i = 0; i < 5; i++) {
+			SparkleFX fx = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
+			fx.blur();
+			fx.setAlpha(0.3f);
+			fx.setScale(0.5f);
+			fx.setAge(30);
+			fx.fadeIn();
+			fx.fadeOut();
+			if (ThreadLocalRandom.current().nextBoolean()) fx.blur();
+			fx.setColor(Color.rgb(0x00008B));
+			fx.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.05), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
+		}
 	}
 }
