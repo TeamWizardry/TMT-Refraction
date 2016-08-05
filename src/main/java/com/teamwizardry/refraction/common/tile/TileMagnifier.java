@@ -25,7 +25,8 @@ import com.teamwizardry.refraction.init.ModBlocks;
 public class TileMagnifier extends TileEntity implements ITickable, ILightSource {
 
 	private IBlockState state;
-
+	private Beam beam;
+	
 	public TileMagnifier() {
 	}
 
@@ -104,8 +105,12 @@ public class TileMagnifier extends TileEntity implements ITickable, ILightSource
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			Vec3d dir = new Vec3d(0, -1, 0);
 			Color color = new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, Beam.SOLAR_STRENGTH);
+			
 			Beam beam = new Beam(worldObj, center, dir, color);
-			ReflectionTracker.getInstance(worldObj).generateBeam(this, beam);
+			if(!ReflectionTracker.getInstance(worldObj).generateBeam(this, beam))
+				this.beam = beam;
+		} else if(this.beam != null){
+			ReflectionTracker.getInstance(worldObj).disableBeam(this.beam);
 		}
 	}
 	
