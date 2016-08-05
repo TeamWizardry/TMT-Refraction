@@ -105,7 +105,7 @@ public class TileMagnifier extends TileEntity implements ITickable, ILightSource
 			Vec3d dir = new Vec3d(0, -1, 0);
 			Color color = new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, Beam.SOLAR_STRENGTH);
 			Beam beam = new Beam(worldObj, center, dir, color);
-			ReflectionTracker.generateBeam(this, beam);
+			ReflectionTracker.getInstance(worldObj).generateBeam(this, beam);
 		}
 	}
 	

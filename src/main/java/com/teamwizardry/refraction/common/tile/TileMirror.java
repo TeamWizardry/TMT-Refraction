@@ -73,7 +73,7 @@ public class TileMirror extends TileEntity implements ILightSource, ILightSink {
 	{
 		for (Beam beam : inputs)
 		{
-			ReflectionTracker.recieveBeam(this, beam);
+			ReflectionTracker.getInstance(worldObj).recieveBeam(this, beam);
 			reflect(beam);
 		}
 	}
@@ -84,6 +84,6 @@ public class TileMirror extends TileEntity implements ILightSource, ILightSink {
 		Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 		Vec3d dir = new Vec3d(0, 1, 0);
 		Color color = beam.color;
-		ReflectionTracker.generateBeam(this, new Beam(worldObj, center, dir, color));
+		ReflectionTracker.getInstance(worldObj).generateBeam(this, new Beam(worldObj, center, dir, color));
 	}
 }
