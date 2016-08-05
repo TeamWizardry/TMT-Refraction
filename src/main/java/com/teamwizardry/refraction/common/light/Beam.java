@@ -1,20 +1,18 @@
 package com.teamwizardry.refraction.common.light;
 
-import com.teamwizardry.refraction.client.LaserRenderer;
+import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import com.teamwizardry.librarianlib.util.Color;
 
 public class Beam
 {
+	public static final float SOLAR_STRENGTH = 0.125F;
+	public static final float GLOWSTONE_STRENGTH = 0.25F;
 	public Vec3d initLoc;
 	public Vec3d finalLoc;
 	public Color color;
 	public World world;
-	
-	public static final float SOLAR_STRENGTH = 0.125F;
-	public static final float GLOWSTONE_STRENGTH = 0.25F;
 	
 	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color)
 	{
@@ -49,8 +47,7 @@ public class Beam
 		if (color.h != beam.color.h) return false;
 		if (color.s != beam.color.s) return false;
 		if (color.v != beam.color.v) return false;
-		if (color.a != beam.color.a) return false; 
-		return true;
+		return color.a == beam.color.a;
 	}
 	
 	@Override
@@ -76,6 +73,4 @@ public class Beam
 	public void drawBeam() {
 		RenderLaserUtil.renderLaser(color, initLoc, finalLoc);
 	}
-	
-	
 }

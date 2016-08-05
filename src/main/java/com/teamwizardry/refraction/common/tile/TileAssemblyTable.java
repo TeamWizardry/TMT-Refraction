@@ -30,6 +30,9 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 
 	private IBlockState state;
 	private ArrayList<AssemblyTableItemHelper> inventory = new ArrayList<>();
+	private int craftingTime = 0;
+	private boolean isCrafting = false;
+	private ItemStack output;
 
 	public TileAssemblyTable() {
 	}
@@ -99,12 +102,29 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 
 		for (IAssemblyRecipe recipe : AssemblyRecipes.recipes) {
-			if (temperature < recipe.getMaxTemperature() && temperature < recipe.getMinTemperature()) {
-				if (inventory.equals(recipe.getItems())) {
-					EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, recipe.getResult());
-					worldObj.spawnEntityInWorld(entityItem);
-					inventory.clear();
-				}
+			//if (temperature < recipe.getMaxTemperature() && temperature < recipe.getMinTemperature()) {
+			boolean match = true;
+			for (int i = 0; i < recipe.getItems().size(); i++) {
+				if (inventory.size() > i) {
+					if (inventory.get(i).getItem() != recipe.getItems().get(i)) match = false;
+				} else match = false;
+			}
+			if (match) {
+				output = recipe.getResult();
+				isCrafting = true;
+			}
+			//}
+		}
+
+		if (isCrafting) {
+			if (craftingTime < 200)
+				craftingTime++;
+			else {
+				inventory.clear();
+				craftingTime = 0;
+				isCrafting = false;
+				EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, output);
+				worldObj.spawnEntityInWorld(entityItem);
 			}
 		}
 	}
@@ -115,6 +135,17 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 
 	@Override
 	public void recieveBeam(Beam... intputs) {
+		double temp = 0;
+		for (Beam beam : intputs) {
+			// TEMPERATURE HERE
+		}
+	}
 
+	public int getCraftingTime() {
+		return craftingTime;
+	}
+
+	public boolean isCrafting() {
+		return isCrafting;
 	}
 }
