@@ -47,7 +47,9 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		GlStateManager.translate(x, y, z); // Translate pad to coords here
 		GlStateManager.disableRescaleNormal();
 
-		// TODO: draw line here and rotate pad according to pitch/yaw.
+		GlStateManager.rotate(te.getYaw(), 0, 0, 1);
+		GlStateManager.rotate(te.getPitch(), 1, 0, 0);
+		// TODO: pad keeps translating off of center as rotation changes
 
 		RenderHelper.disableStandardItemLighting();
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
@@ -70,7 +72,6 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		tessellator.draw();
 
 		RenderHelper.enableStandardItemLighting();
-
 		GlStateManager.popMatrix();
 	}
 }

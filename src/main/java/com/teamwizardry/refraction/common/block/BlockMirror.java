@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.render.RenderMirror;
 import com.teamwizardry.refraction.common.tile.TileMirror;
+import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -59,7 +60,37 @@ public class BlockMirror extends Block implements ITileEntityProvider {
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		TileMirror te = getTE(worldIn, pos);
+		if (!worldIn.isRemote && heldItem != null) {
+			if (heldItem.getItem() == ModItems.SCREW_DRIVER) {
 
+				if (side != EnumFacing.UP && side != EnumFacing.DOWN) {
+					boolean top = hitY >= 0.5f;
+					int jump = playerIn.isSneaking() ? 10 : 1;
+
+					if (side == EnumFacing.NORTH) {
+						if (top) {
+							if (te.getPitch() < 90) te.setPitch(te.getPitch() + jump);
+						} else if (te.getPitch() > -90) te.setPitch(te.getPitch() - jump);
+
+					} else if (side == EnumFacing.SOUTH) {
+						if (top) {
+							if (te.getPitch() > -90) te.setPitch(te.getPitch() - jump);
+						} else if (te.getPitch() < 90) te.setPitch(te.getPitch() + jump);
+
+					} else if (side == EnumFacing.EAST) {
+						if (top) {
+							if (te.getYaw() < 90) te.setYaw(te.getYaw() + jump);
+						} else if (te.getYaw() > -90) te.setPitch(te.getYaw() - jump);
+
+					} else if (side == EnumFacing.WEST) {
+						if (top) {
+							if (te.getYaw() > -90) te.setYaw(te.getYaw() - jump);
+						} else if (te.getYaw() < 90) te.setYaw(te.getYaw() + jump);
+					}
+				}
+			}
+		}
 		return true;
 	}
 

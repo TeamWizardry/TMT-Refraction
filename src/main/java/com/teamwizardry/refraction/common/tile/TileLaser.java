@@ -25,14 +25,14 @@ public class TileLaser extends TileEntity implements ITickable, IHeatable {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 
-		// TODO
+		if (compound.hasKey("power")) power = compound.getDouble("power");
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
 
-		// TODO
+		compound.setDouble("power", power);
 
 		return compound;
 	}

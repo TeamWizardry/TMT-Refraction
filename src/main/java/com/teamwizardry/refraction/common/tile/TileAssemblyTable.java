@@ -1,23 +1,27 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import com.teamwizardry.refraction.api.AssemblyTableItemHelper;
 import com.teamwizardry.refraction.api.IAssemblyRecipe;
 import com.teamwizardry.refraction.api.IHeatable;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ILightSink;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by LordSaad44
@@ -33,16 +37,24 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-
-		// TODO
+		inventory = new ArrayList<>();
+		if (compound.hasKey("inventory")) {
+			NBTTagList list = compound.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
+			for (int i = 0; i < list.tagCount(); i++)
+				inventory.add(new AssemblyTableItemHelper(ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i)).getItem()));
+		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
 
-		// TODO
-
+		if (inventory.size() > 0) {
+			NBTTagList list = new NBTTagList();
+			for (AssemblyTableItemHelper anInventory : inventory)
+				list.appendTag(new ItemStack(anInventory.getItem()).writeToNBT(new NBTTagCompound()));
+			compound.setTag("inventory", list);
+		}
 		return compound;
 	}
 
@@ -78,7 +90,8 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 		List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 2, 1)));
 
 		for (EntityItem item : items) {
-			for (int i = 0; i < item.getEntityItem().stackSize; i++) inventory.add(new AssemblyTableItemHelper(item.getEntityItem().getItem()));
+			for (int i = 0; i < item.getEntityItem().stackSize; i++)
+				inventory.add(new AssemblyTableItemHelper(item.getEntityItem().getItem()));
 
 			worldObj.removeEntity(item);
 		}
@@ -96,11 +109,12 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 		}
 	}
 
-	public ArrayList<AssemblyTableItemHelper> getInventory() { return inventory; }
+	public ArrayList<AssemblyTableItemHelper> getInventory() {
+		return inventory;
+	}
 
 	@Override
-	public void recieveBeam(Beam... intputs)
-	{
-		
+	public void recieveBeam(Beam... intputs) {
+
 	}
 }
