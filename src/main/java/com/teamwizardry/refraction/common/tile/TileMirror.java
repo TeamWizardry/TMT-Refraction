@@ -1,14 +1,19 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.librarianlib.math.Matrix4;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
+
+import static com.sun.tools.doclint.Entity.times;
+import static net.minecraft.realms.Tezzelator.t;
 
 /**
  * Created by LordSaad44
@@ -90,6 +95,17 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 	@Override
 	public void handle(Beam... beams)
 	{
+		Matrix4 matrix = new Matrix4();
+		matrix.rotate(Math.toRadians(getRotZ()), new Vec3d(0, 0, 1));
+		matrix.rotate(Math.toRadians(getRotX()), new Vec3d(1, 0, 0));
 		
+		Vec3d normal = matrix.apply(new Vec3d(0, 1, 0));
+		
+		for( Beam beam : beams ) {
+			Vec3d incomingNormal = beam.finalLoc.subtract(beam.initLoc);
+			Vec3d outgoingNormal = incomingNormal.subtract( normal.scale(incomingNormal.dotProduct(normal)*2) );
+			
+			new Beam(this.worldObj, new Vec3d(this.getPos()).addVector(0.5, 0.5, 0.5), outgoingNormal, beam.color);
+		}
 	}
 }

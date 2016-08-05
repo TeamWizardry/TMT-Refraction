@@ -7,6 +7,7 @@ import java.util.WeakHashMap;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import com.google.common.collect.HashMultimap;
 
@@ -31,7 +32,7 @@ public class ReflectionTracker
 	}
 
 	@SubscribeEvent
-	public void generateBeams(ServerTickEvent event)
+	public void generateBeams(TickEvent.WorldTickEvent event)
 	{
 		if (ticks >= BeamConstants.SOURCE_TIMER)
 		{
@@ -45,19 +46,21 @@ public class ReflectionTracker
 	}
 
 	@SubscribeEvent
-	public void handleBeams(ServerTickEvent event)
+	public void handleBeams(TickEvent.WorldTickEvent event)
 	{
+		HashSet<IBeamHandler> remove = new HashSet<>();
 		for (IBeamHandler handler : delayBuffers.keySet())
 		{
 			int delay = delayBuffers.get(handler);
 			if (delay > 0) delayBuffers.put(handler, delay - 1);
 			else
 			{
-				delayBuffers.remove(handler);
+				remove.add(handler);
 				Set<Beam> beams = sinkBlocks.removeAll(handler);
 				handler.handle(beams.toArray(new Beam[beams.size()]));
 			}
 		}
+		remove.stream().forEach(delayBuffers::remove);
 		for (Beam beam : beams.keySet())
 		{
 			int delay = beams.get(beam);
