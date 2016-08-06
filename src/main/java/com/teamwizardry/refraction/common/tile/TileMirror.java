@@ -18,7 +18,7 @@ import com.teamwizardry.refraction.common.light.IBeamHandler;
 public class TileMirror extends TileEntity implements IBeamHandler {
 
 	private IBlockState state;
-	private float rotX, rotZ;
+	private float rotX, rotY;
 
 	public TileMirror() {
 	}
@@ -28,7 +28,7 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 		super.readFromNBT(compound);
 
 		if (compound.hasKey("rotX")) rotX = compound.getFloat("rotX");
-		if (compound.hasKey("rotZ")) rotZ = compound.getFloat("rotZ");
+		if (compound.hasKey("rotY")) rotY = compound.getFloat("rotY");
 
 	}
 
@@ -37,7 +37,7 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 		compound = super.writeToNBT(compound);
 
 		compound.setFloat("rotX", rotX);
-		compound.setFloat("rotZ", rotZ);
+		compound.setFloat("rotY", rotY);
 
 		return compound;
 	}
@@ -79,12 +79,12 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 		markDirty();
 	}
 
-	public float getRotZ() {
-		return rotZ;
+	public float getRotY() {
+		return rotY;
 	}
 
-	public void setRotZ(float rotZ) {
-		this.rotZ = rotZ;
+	public void setRotY(float rotY) {
+		this.rotY = rotY;
 		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		markDirty();
 	}
@@ -93,16 +93,17 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 	public void handle(Beam... beams)
 	{
 		Matrix4 matrix = new Matrix4();
-		matrix.rotate(Math.toRadians(getRotZ()), new Vec3d(0, 0, 1));
+		matrix.rotate(Math.toRadians(getRotY()), new Vec3d(0, 1, 0));
 		matrix.rotate(Math.toRadians(getRotX()), new Vec3d(1, 0, 0));
 		
 		Vec3d normal = matrix.apply(new Vec3d(0, 1, 0));
 		
 		for( Beam beam : beams ) {
-			Vec3d incomingNormal = beam.finalLoc.subtract(beam.initLoc);
-			Vec3d outgoingNormal = incomingNormal.subtract( normal.scale(incomingNormal.dotProduct(normal)*2) );
+			Vec3d incomingDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 			
-			new Beam(this.worldObj, new Vec3d(this.getPos()).addVector(0.5, 0.5, 0.5), outgoingNormal, beam.color);
+			Vec3d outgoingDir = incomingDir.subtract( normal.scale(incomingDir.dotProduct(normal)*2) );
+			
+			new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color);
 		}
 	}
 }

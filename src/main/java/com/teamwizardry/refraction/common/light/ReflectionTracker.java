@@ -1,9 +1,8 @@
 package com.teamwizardry.refraction.common.light;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
+
+import com.google.common.collect.Multimap;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -14,18 +13,20 @@ import com.google.common.collect.HashMultimap;
 public class ReflectionTracker
 {
 	private static WeakHashMap<World, ReflectionTracker> instances = new WeakHashMap<>();
-	private HashSet<ILightSource> sources;
-	private HashMap<IBeamHandler, Integer> delayBuffers;
-	private HashMultimap<IBeamHandler, Beam> sinkBlocks;
-	private HashMap<Beam, Integer> beams;
+	private Set<ILightSource> sources;
+	private Map<IBeamHandler, Integer> delayBuffers;
+	private Map<IBeamHandler, Integer> delayBufferProcessingSwap;
+	private Multimap<IBeamHandler, Beam> sinkBlocks;
+	private Map<Beam, Integer> beams;;
 
 	private int ticks;
 
 	public ReflectionTracker()
 	{
-		beams = new HashMap<>();
-		sources = new HashSet<>();
-		delayBuffers = new HashMap<>();
+		beams = new WeakHashMap<>();
+		sources = Collections.<ILightSource>newSetFromMap(new WeakHashMap<ILightSource, Boolean>());
+		delayBuffers = new WeakHashMap<>();
+		delayBufferProcessingSwap = new WeakHashMap<>();
 		sinkBlocks = HashMultimap.create();
 		MinecraftForge.EVENT_BUS.register(this);
 		ticks = 0;
@@ -48,19 +49,27 @@ public class ReflectionTracker
 	@SubscribeEvent
 	public void handleBeams(TickEvent.WorldTickEvent event)
 	{
+		Map<IBeamHandler, Integer> temp = delayBuffers;
+		delayBuffers = delayBufferProcessingSwap;
+		
 		HashSet<IBeamHandler> remove = new HashSet<>();
-		for (IBeamHandler handler : delayBuffers.keySet())
+		for (IBeamHandler handler : temp.keySet())
 		{
-			int delay = delayBuffers.get(handler);
-			if (delay > 0) delayBuffers.put(handler, delay - 1);
+			int delay = temp.get(handler);
+			if (delay > 0) temp.put(handler, delay - 1);
 			else
 			{
 				remove.add(handler);
-				Set<Beam> beams = sinkBlocks.removeAll(handler);
+				Collection<Beam> beams = sinkBlocks.removeAll(handler);
 				handler.handle(beams.toArray(new Beam[beams.size()]));
 			}
 		}
-		remove.stream().forEach(delayBuffers::remove);
+		remove.stream().forEach(temp::remove);
+		
+		delayBuffers = temp;
+		delayBufferProcessingSwap.entrySet().stream().forEach((e) -> delayBuffers.put(e.getKey(), e.getValue()));
+		delayBufferProcessingSwap.clear();
+		
 		for (Beam beam : beams.keySet())
 		{
 			int delay = beams.get(beam);

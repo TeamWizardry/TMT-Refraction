@@ -1,7 +1,10 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.teamwizardry.librarianlib.math.MathUtil;
+import com.teamwizardry.librarianlib.math.Matrix4;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.render.RenderMirror;
+import com.teamwizardry.refraction.common.raytrace.Tri;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.block.Block;
@@ -19,12 +22,18 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+
+import static sun.jvm.hotspot.oops.CellTypeState.top;
 
 /**
  * Created by LordSaad44
@@ -63,31 +72,12 @@ public class BlockMirror extends Block implements ITileEntityProvider {
 		TileMirror te = getTE(worldIn, pos);
 		if (!worldIn.isRemote && heldItem != null) {
 			if (heldItem.getItem() == ModItems.SCREW_DRIVER) {
+				int jump = playerIn.isSneaking() ? -1 : 1;
 
-				if (side != EnumFacing.UP && side != EnumFacing.DOWN) {
-					boolean top = hitY >= 0.5f;
-					int jump = playerIn.isSneaking() ? 10 : 1;
-
-					if (side == EnumFacing.NORTH) {
-						if (top) {
-							if (te.getRotX() < 90) te.setRotX(te.getRotX() + jump);
-						} else if (te.getRotX() > -90) te.setRotX(te.getRotX() - jump);
-
-					} else if (side == EnumFacing.SOUTH) {
-						if (top) {
-							if (te.getRotX() > -90) te.setRotX(te.getRotX() - jump);
-						} else if (te.getRotX() < 90) te.setRotX(te.getRotX() + jump);
-
-					} else if (side == EnumFacing.EAST) {
-						if (top) {
-							if (te.getRotZ() < 90) te.setRotZ(te.getRotZ() + jump);
-						} else if (te.getRotZ() > -90) te.setRotZ(te.getRotZ() - jump);
-
-					} else if (side == EnumFacing.WEST) {
-						if (top) {
-							if (te.getRotZ() > -90) te.setRotZ(te.getRotZ() - jump);
-						} else if (te.getRotZ() < 90) te.setRotZ(te.getRotZ() + jump);
-					}
+				if(side.getAxis() == EnumFacing.Axis.Y) {
+					te.setRotY(( te.getRotY()+jump ) % 360);
+				} else {
+					te.setRotX(MathUtil.clamp(te.getRotX() + jump, -90, 90));
 				}
 			}
 		}
@@ -107,5 +97,44 @@ public class BlockMirror extends Block implements ITileEntityProvider {
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
+	}
+	
+	@Nullable
+	@Override
+	public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
+		RayTraceResult superResult = super.collisionRayTrace(blockState, worldIn, pos, startRaw, endRaw);
+		
+		TileMirror tile = (TileMirror) worldIn.getTileEntity(pos);
+		
+		Vec3d start = startRaw.subtract((double)pos.getX(), (double)pos.getY(), (double)pos.getZ());
+		Vec3d end = endRaw.subtract((double)pos.getX(), (double)pos.getY(), (double)pos.getZ());
+		
+		double d = -0.5, D = 0.5;
+		
+		Vec3d
+			v1 = new Vec3d(d, 0, d),
+			v2 = new Vec3d(D, 0, d),
+			v3 = new Vec3d(D, 0, D),
+			v4 = new Vec3d(d, 0, D);
+		
+		Matrix4 matrix = new Matrix4();
+		matrix.translate(new Vec3d(0.5, 0.5, 0.5));
+		matrix.rotate(Math.toRadians(tile.getRotY()), new Vec3d(0, 1, 0));
+		matrix.rotate(Math.toRadians(tile.getRotX()), new Vec3d(1, 0, 0));
+		
+		v1 = matrix.apply(v1);
+		v2 = matrix.apply(v2);
+		v3 = matrix.apply(v3);
+		v4 = matrix.apply(v4);
+		
+		Tri tri1 = new Tri(v1, v2, v3);
+		Tri tri2 = new Tri(v1, v3, v4);
+		
+		Vec3d a = tri1.trace(start, end);
+		if(a == null) a = tri2.trace(start, end);
+		if(a == null)
+			return superResult;
+		
+		return new RayTraceResult(a.add(new Vec3d(pos)), superResult == null ? EnumFacing.UP : superResult.sideHit, pos);
 	}
 }

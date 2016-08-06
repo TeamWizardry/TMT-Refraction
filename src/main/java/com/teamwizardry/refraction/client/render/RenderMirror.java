@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -44,10 +45,12 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 	public void renderTileEntityAt(TileMirror te, double x, double y, double z, float partialTicks, int destroyStage) {
 		GlStateManager.pushMatrix();
 
-		GlStateManager.translate(x + 0.5, y + 0.75, z + 0.5); // Translate pad to coords here
+		GlStateManager.translate(x, y, z); // Translate pad to coords here
+		GlStateManager.translate(0.5, 0.5, 0.5);
+		
 		GlStateManager.disableRescaleNormal();
 
-		GlStateManager.rotate(te.getRotZ(), 0, 0, 1);
+		GlStateManager.rotate(te.getRotY(), 0, 1, 0);
 		GlStateManager.rotate(te.getRotX(), 1, 0, 0);
 		// TODO: pad keeps translating off of center as rotation changes
 
@@ -59,17 +62,33 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 			GlStateManager.shadeModel(GL11.GL_FLAT);
 
 		World world = te.getWorld();
-		GlStateManager.translate(-te.getPos().getX(), -te.getPos().getY(), -te.getPos().getZ());
 
 		Tessellator tessellator = Tessellator.getInstance();
-		tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
-				world,
-				getBakedModel(),
-				world.getBlockState(te.getPos()),
-				te.getPos(),
-				Tessellator.getInstance().getBuffer(), true);
+		VertexBuffer vb = tessellator.getBuffer();
+		
+		GlStateManager.disableTexture2D();
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+		
+		vb.pos( 0.5, 0, -0.5).endVertex();
+		vb.pos(-0.5, 0, -0.5).endVertex();
+		vb.pos(-0.5, 0,  0.5).endVertex();
+		vb.pos( 0.5, 0,  0.5).endVertex();
+		
+		vb.pos( 0.5, 0,  0.5).endVertex();
+		vb.pos(-0.5, 0,  0.5).endVertex();
+		vb.pos(-0.5, 0, -0.5).endVertex();
+		vb.pos( 0.5, 0, -0.5).endVertex();
+		
 		tessellator.draw();
+		GlStateManager.enableTexture2D();
+//		tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+//		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
+//				world,
+//				getBakedModel(),
+//				world.getBlockState(te.getPos()),
+//				te.getPos(),
+//				Tessellator.getInstance().getBuffer(), true);
+//		tessellator.draw();
 
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.popMatrix();

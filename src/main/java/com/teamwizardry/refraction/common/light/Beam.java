@@ -22,24 +22,27 @@ public class Beam
 	{
 		this.world = world;
 		this.initLoc = initLoc;
+		this.finalLoc = slope.normalize().scale(128).add(initLoc);
 		this.color = color;
-		RayTraceResult trace = BeamPulsar.rayTraceBlocks(world, new HashSet<>(ImmutableList.of(new BlockPos(initLoc))), initLoc.add(slope.normalize()), slope.normalize().scale(128).add(initLoc), true, false, true);
-		this.finalLoc = trace.hitVec;
-		TileEntity tile = world.getTileEntity(trace.getBlockPos());
-		if (tile instanceof IBeamHandler)
-		{
-			ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
+		RayTraceResult trace = BeamPulsar.rayTraceBlocks(world, new HashSet<>(ImmutableList.of(new BlockPos(initLoc))), initLoc, finalLoc, true, false, true);
+		if(trace != null) {
+			this.finalLoc = trace.hitVec;
+			
+			TileEntity tile = world.getTileEntity(trace.getBlockPos());
+			if (tile instanceof IBeamHandler) {
+				ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
+			}
 		}
 		
-		Vec3d o = slope.normalize().scale(0.25);
-		int amount = (int)( finalLoc.subtract(initLoc).lengthVector()/0.25 );
+		Vec3d o = slope.normalize().scale(0.5);
+		int amount = (int)( finalLoc.subtract(initLoc).lengthVector()/0.5 );
 		
 		double x = initLoc.xCoord;
 		double y = initLoc.yCoord;
 		double z = initLoc.zCoord;
 		
 		for(int i = 0; i < amount; i++) {
-			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0, 0, 0);
+			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, o.xCoord, o.xCoord, o.xCoord);
 			x += o.xCoord;
 			y += o.yCoord;
 			z += o.zCoord;
