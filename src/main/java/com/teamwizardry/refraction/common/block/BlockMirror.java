@@ -71,21 +71,17 @@ public class BlockMirror extends Block implements ITileEntityProvider, ILaserTra
 		return (TileMirror) world.getTileEntity(pos);
 	}
 
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public void adjust(World worldIn, BlockPos pos, ItemStack stack, EntityPlayer playerIn, EnumFacing side) {
 		TileMirror te = getTE(worldIn, pos);
-		if (!worldIn.isRemote && heldItem != null) {
-			if (heldItem.getItem() == ModItems.SCREW_DRIVER) {
-				float jump = 360F/64 * (playerIn.isSneaking() ? -1 : 1);
-
-				if(side.getAxis() == EnumFacing.Axis.Y) {
-					te.setRotY(( te.getRotY()+jump ) % 360);
-				} else {
-					te.setRotX(MathUtil.clamp(te.getRotX() + jump, -90, 90));
-				}
+		if (!worldIn.isRemote) {
+			float jump = ModItems.SCREW_DRIVER.getRotationMultiplier(stack) * (playerIn.isSneaking() ? -1 : 1);
+			
+			if(side.getAxis() == EnumFacing.Axis.Y) {
+				te.setRotY(( te.getRotY()+jump ) % 360);
+			} else {
+				te.setRotX(MathUtil.clamp(te.getRotX() + jump, -90, 90));
 			}
 		}
-		return true;
 	}
 
 	@Override

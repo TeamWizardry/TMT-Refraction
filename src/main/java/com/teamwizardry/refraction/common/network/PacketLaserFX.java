@@ -30,23 +30,6 @@ public class PacketLaserFX extends PacketBase {
 	@Override
 	public void handle(MessageContext ctx) {
 		LaserRenderer.add(start, end, color);
-//		float density = 2;
-		
-//		Vec3d o = end.subtract(start).normalize().scale(1.0/density);
-//		int amount = (int)( end.subtract(start).lengthVector()*density );
-//
-//		double x = start.xCoord;
-//		double y = start.yCoord;
-//		double z = start.zCoord;
-//
-//		for(int i = 0; i < amount; i++) {
-//			SparkleFX p = new SparkleFX(Minecraft.getMinecraft().theWorld, x, y, z);
-//			p.setAge(0);
-//			Minecraft.getMinecraft().effectRenderer.addEffect(p);
-//			x += o.xCoord;
-//			y += o.yCoord;
-//			z += o.zCoord;
-//		}
 	}
 	
 	@Override

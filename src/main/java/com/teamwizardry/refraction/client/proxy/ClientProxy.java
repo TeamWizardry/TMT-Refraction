@@ -5,6 +5,7 @@ import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.LaserRenderer;
 import com.teamwizardry.refraction.client.fx.SparkleFX;
 import com.teamwizardry.refraction.client.render.RenderLaserPoint;
+import com.teamwizardry.refraction.client.render.ScrewdriverOverlay;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModEntities;
@@ -28,6 +29,7 @@ public class ClientProxy extends CommonProxy {
 		super.preInit(event);
 		OBJLoader.INSTANCE.addDomain(Refraction.MOD_ID);
 		LaserRenderer.INSTANCE.getClass();
+		ScrewdriverOverlay.INSTANCE.getClass();
 	}
 
 	@Override

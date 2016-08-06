@@ -6,6 +6,22 @@ tile.laser.name=Light Amplification By Stimulated Emissions Ouput Device
 tile.prism.name=Triangular Light Trifurcation Prism
 
 item.laser_pen.name=Laser Pen
-item.screw_driver.name=Screw Driver
+item.screw_driver.0.name=Screw Driver (5°)
+item.screw_driver.1.name=Screw Driver (22.5°)
+item.screw_driver.2.name=Screw Driver (45°)
+item.screw_driver.3.name=Screw Driver (90°)
+item.screw_driver.4.name=Screw Driver (1°)
+item.screw_driver.5.name=Screw Driver (1/8°)
+item.screw_driver.6.name=Screw Driver (1/4°)
+item.screw_driver.7.name=Screw Driver (1/2°)
+
+gui.screw_driver.angle.0=5°
+gui.screw_driver.angle.1=22.5°
+gui.screw_driver.angle.2=45°
+gui.screw_driver.angle.3=90°
+gui.screw_driver.angle.4=1/8°
+gui.screw_driver.angle.5=1/4°
+gui.screw_driver.angle.6=1/2°
+gui.screw_driver.angle.7=1°
 
 itemGroup.refraction=Refraction
