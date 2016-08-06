@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import com.google.common.collect.HashMultimap;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class ReflectionTracker
 {
@@ -20,6 +21,23 @@ public class ReflectionTracker
 	private Multimap<IBeamHandler, Beam> sinkBlocks;
 	private Map<Beam, Integer> beams;
 
+	private static class TickTracker {
+		private static final TickTracker INSTANCE = new TickTracker();
+		
+		public static int ticks = 0;
+		
+		private TickTracker() {
+			MinecraftForge.EVENT_BUS.register(this);
+		}
+		
+		@SubscribeEvent
+		public void tick(TickEvent.WorldTickEvent event) {
+			if(event.phase == TickEvent.Phase.START && event.side == Side.SERVER)
+				ticks++;
+		}
+	}
+
+	
 	public ReflectionTracker()
 	{
 		beams = new WeakHashMap<>();
@@ -33,7 +51,9 @@ public class ReflectionTracker
 	@SubscribeEvent
 	public void generateBeams(TickEvent.WorldTickEvent event)
 	{
-		if (GuiTickHandler.ticksInGame % BeamConstants.SOURCE_TIMER == 0)
+		if(event.phase != TickEvent.Phase.START || event.side != Side.SERVER)
+			return;
+		if (TickTracker.ticks % BeamConstants.SOURCE_TIMER == 0)
 		{
 			for (ILightSource source : sources)
 			{
