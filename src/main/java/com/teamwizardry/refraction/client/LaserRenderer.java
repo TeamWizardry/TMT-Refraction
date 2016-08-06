@@ -9,6 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.opengl.GL11;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import com.teamwizardry.refraction.common.light.Beam;
@@ -16,6 +17,7 @@ import com.teamwizardry.refraction.common.light.ReflectionTracker;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by TheCodeWarrior
@@ -23,7 +25,7 @@ import java.util.Map;
 public class LaserRenderer {
 	public static final LaserRenderer INSTANCE = new LaserRenderer();
 	
-	protected Map<LaserRenderInfo, Integer> lasers = new HashMap<>();
+	protected Map<LaserRenderInfo, Integer> lasers = new ConcurrentHashMap<>();
 	
 	public static class LaserRenderInfo {
 		public Vec3d start, end;
@@ -58,7 +60,7 @@ public class LaserRenderer {
 	}
 	
 	public static void add(Vec3d start, Vec3d end, Color color) {
-		INSTANCE.lasers.put(new LaserRenderInfo(start, end, color), GuiTickHandler.ticks + 20);
+		INSTANCE.lasers.put(new LaserRenderInfo(start, end, color), 20);
 	}
 	
 	
@@ -94,7 +96,12 @@ public class LaserRenderer {
 		GlStateManager.popMatrix();
 		GlStateManager.popAttrib();
 		
-		lasers.entrySet().removeIf((e) -> e.getValue() <= GuiTickHandler.ticks);
+		lasers.entrySet().removeIf((e) -> e.getValue() <= 0);
 	}
 	
+	@SubscribeEvent
+	public void tick(TickEvent.WorldTickEvent event) {
+		if(event.phase == TickEvent.Phase.START)
+			lasers.entrySet().stream().forEach((e) -> e.setValue(e.getValue()-1));
+	}
 }
