@@ -28,7 +28,6 @@ public class ReflectionTracker
 		delayBufferProcessingSwap = new WeakHashMap<>();
 		sinkBlocks = HashMultimap.create();
 		MinecraftForge.EVENT_BUS.register(this);
-		ticks = 0;
 	}
 
 	@SubscribeEvent
