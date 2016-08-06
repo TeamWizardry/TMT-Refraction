@@ -81,14 +81,14 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		
 		tessellator.draw();
 		GlStateManager.enableTexture2D();
-//		tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-//		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
-//				world,
-//				getBakedModel(),
-//				world.getBlockState(te.getPos()),
-//				te.getPos(),
-//				Tessellator.getInstance().getBuffer(), true);
-//		tessellator.draw();
+		tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
+				world,
+				getBakedModel(),
+				world.getBlockState(te.getPos()),
+				te.getPos(),
+				Tessellator.getInstance().getBuffer(), true);
+		tessellator.draw();
 
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.popMatrix();

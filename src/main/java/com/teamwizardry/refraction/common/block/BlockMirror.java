@@ -1,6 +1,10 @@
 package com.teamwizardry.refraction.common.block;
 
 import javax.annotation.Nullable;
+
+import com.teamwizardry.librarianlib.math.Box;
+import com.teamwizardry.refraction.api.RotationHelper;
+import com.teamwizardry.refraction.common.light.ILaserTrace;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -15,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -32,10 +37,12 @@ import com.teamwizardry.refraction.common.raytrace.Tri;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import com.teamwizardry.refraction.init.ModItems;
 
+import static jline.internal.Log.trace;
+
 /**
  * Created by LordSaad44
  */
-public class BlockMirror extends Block implements ITileEntityProvider {
+public class BlockMirror extends Block implements ITileEntityProvider, ILaserTrace {
 
 	public BlockMirror() {
 		super(Material.IRON);
@@ -98,7 +105,7 @@ public class BlockMirror extends Block implements ITileEntityProvider {
 	
 	@Nullable
 	@Override
-	public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
+	public RayTraceResult collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
 		RayTraceResult superResult = super.collisionRayTrace(blockState, worldIn, pos, startRaw, endRaw);
 		
 		TileMirror tile = (TileMirror) worldIn.getTileEntity(pos);
@@ -106,32 +113,30 @@ public class BlockMirror extends Block implements ITileEntityProvider {
 		Vec3d start = startRaw.subtract((double)pos.getX(), (double)pos.getY(), (double)pos.getZ());
 		Vec3d end = endRaw.subtract((double)pos.getX(), (double)pos.getY(), (double)pos.getZ());
 		
-		double d = -0.5, D = 0.5;
-		
-		Vec3d
-			v1 = new Vec3d(d, 0, d),
-			v2 = new Vec3d(D, 0, d),
-			v3 = new Vec3d(D, 0, D),
-			v4 = new Vec3d(d, 0, D);
+		start = start.subtract(0.5, 0.5, 0.5);
+		end = end.subtract(0.5, 0.5, 0.5);
 		
 		Matrix4 matrix = new Matrix4();
-		matrix.translate(new Vec3d(0.5, 0.5, 0.5));
-		matrix.rotate(Math.toRadians(tile.getRotY()), new Vec3d(0, 1, 0));
-		matrix.rotate(Math.toRadians(tile.getRotX()), new Vec3d(1, 0, 0));
+		matrix.rotate(-Math.toRadians(tile.getRotX()), new Vec3d(1, 0, 0));
+		matrix.rotate(-Math.toRadians(tile.getRotY()), new Vec3d(0, 1, 0));
 		
-		v1 = matrix.apply(v1);
-		v2 = matrix.apply(v2);
-		v3 = matrix.apply(v3);
-		v4 = matrix.apply(v4);
+		Matrix4 inverse = new Matrix4();
+		inverse.rotate(Math.toRadians(tile.getRotY()), new Vec3d(0, 1, 0));
+		inverse.rotate(Math.toRadians(tile.getRotX()), new Vec3d(1, 0, 0));
 		
-		Tri tri1 = new Tri(v1, v2, v3);
-		Tri tri2 = new Tri(v1, v3, v4);
+		start = matrix.apply(start);
+		end = matrix.apply(end);
+		AxisAlignedBB aabb = new AxisAlignedBB(-0.5, 0, -0.5, 0.5, 0.0001, 0.5);
+		RayTraceResult result = aabb.calculateIntercept(start, end);
+		if(result == null)
+			return null;
+		Vec3d a = result.hitVec;
 		
-		Vec3d a = tri1.trace(start, end);
-		if(a == null) a = tri2.trace(start, end);
-		if(a == null)
-			return superResult;
+		a = inverse.apply(a);
+		a = a.addVector(0.5, 0.5, 0.5);
+		
 		
 		return new RayTraceResult(a.add(new Vec3d(pos)), superResult == null ? EnumFacing.UP : superResult.sideHit, pos);
 	}
+	
 }

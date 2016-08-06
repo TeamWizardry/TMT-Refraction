@@ -39,7 +39,7 @@ public class BeamPulsar {
 				
 				if(!exclude.contains(blockpos)) {
 					if (( !ignoreBlockWithoutBoundingBox || iblockstate.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB ) && block.canCollideCheck(iblockstate, stopOnLiquid)) {
-						RayTraceResult raytraceresult = iblockstate.collisionRayTrace(world, blockpos, start, end);
+						RayTraceResult raytraceresult = block instanceof ILaserTrace ? ((ILaserTrace)block).collisionRayTraceLaser(iblockstate, world, blockpos, start, end) : iblockstate.collisionRayTrace(world, blockpos, start, end);
 						
 						if (raytraceresult != null) {
 							return raytraceresult;
@@ -144,7 +144,7 @@ public class BeamPulsar {
 					if (!exclude.contains(blockpos)) {
 						if (!ignoreBlockWithoutBoundingBox || iblockstate1.getMaterial() == Material.PORTAL || iblockstate1.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) {
 							if (block1.canCollideCheck(iblockstate1, stopOnLiquid)) {
-								RayTraceResult raytraceresult1 = iblockstate1.collisionRayTrace(world, blockpos, start, end);
+								RayTraceResult raytraceresult1 = block1 instanceof ILaserTrace ? ((ILaserTrace)block1).collisionRayTraceLaser(iblockstate1, world, blockpos, start, end) : iblockstate1.collisionRayTrace(world, blockpos, start, end);
 								
 								if (raytraceresult1 != null) {
 									return raytraceresult1;
