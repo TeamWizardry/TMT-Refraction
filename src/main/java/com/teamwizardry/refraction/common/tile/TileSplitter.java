@@ -1,7 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -11,18 +9,17 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.api.RotationHelper;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 
 /**
  * Created by LordSaad44
  */
-public class TilePrism extends TileEntity implements IBeamHandler {
+public class TileSplitter extends TileEntity implements IBeamHandler {
 
 	private IBlockState state;
 
-	public TilePrism() {
+	public TileSplitter() {
 	}
 
 	@Override
@@ -73,35 +70,18 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 	{
 		for (Beam beam : beams)
 		{
-			float red = beam.color.r;
-			float green = beam.color.g;
-			float blue = beam.color.b;
-			
 			Vec3d dir = beam.finalLoc.subtract(beam.initLoc).normalize();
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			boolean vert = (dir.xCoord == 0 && dir.zCoord == 0);
-			
-			int div = (red > 0 ? 1 : 0) + (blue > 0 ? 1 : 0) + (green > 0 ? 1 : 0);
-			
-			if (red > 0)
+			if (vert)
 			{
-				if (vert)
-					new Beam(worldObj, center, new Vec3d(1, 0, 0), new Color(red, 0, 0, beam.color.a / div));
-				else
-					new Beam(worldObj, center, new Vec3d(dir.zCoord, 0, -dir.xCoord), new Color(red, 0, 0, beam.color.a));
+				new Beam(worldObj, center, new Vec3d(1, 0, 0), new Color(beam.color.r, beam.color.g, beam.color.b, beam.color.a / 2));
+				new Beam(worldObj, center, new Vec3d(-1, 0, 0), new Color(beam.color.r, beam.color.g, beam.color.b, beam.color.a / 2));
 			}
-			
-			if (green > 0)
+			else
 			{
-				new Beam(worldObj, center, dir, new Color(0, green, 0, beam.color.a / div));
-			}
-			
-			if (blue > 0)
-			{
-				if (vert)
-					new Beam(worldObj, center, new Vec3d(-1, 0, 0), new Color(0, 0, blue, beam.color.a / div));
-				else
-					new Beam(worldObj, center, new Vec3d(-dir.zCoord, 0, dir.xCoord), new Color(0, 0, blue, beam.color.a));
+				new Beam(worldObj, center, new Vec3d(dir.zCoord, 0, -dir.xCoord), new Color(beam.color.r, beam.color.g, beam.color.b, beam.color.a / 2));
+				new Beam(worldObj, center, new Vec3d(-dir.zCoord, 0, dir.xCoord), new Color(beam.color.r, beam.color.g, beam.color.b, beam.color.a / 2));
 			}
 		}
 	}

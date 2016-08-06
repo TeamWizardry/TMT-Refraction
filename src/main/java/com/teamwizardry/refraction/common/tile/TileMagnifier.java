@@ -74,24 +74,21 @@ public class TileMagnifier extends TileEntity implements ILightSource {
 	public void generateBeam()
 	{
 		boolean hasLens = false;
+		int worldTime = (int)(worldObj.getWorldTime() % 24000L);
+		if (worldTime >= BeamConstants.NIGHT_START && worldTime < BeamConstants.NIGHT_END) return;
 		for (int y = 1; y < 10; y++) {
 			BlockPos lens = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
-			if (worldObj.getBlockState(lens).getBlock() == ModBlocks.LENS) {
-
-				boolean checkarea = true;
-				if (worldObj.getBlockState(lens.south()).getBlock() != ModBlocks.LENS) checkarea = false;
-				if (worldObj.getBlockState(lens.north()).getBlock() != ModBlocks.LENS) checkarea = false;
-				if (worldObj.getBlockState(lens.east()).getBlock() != ModBlocks.LENS) checkarea = false;
-				if (worldObj.getBlockState(lens.west()).getBlock() != ModBlocks.LENS) checkarea = false;
-				if (worldObj.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS) checkarea = false;
-				if (worldObj.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS) checkarea = false;
-				if (worldObj.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS) checkarea = false;
-				if (worldObj.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS) checkarea = false;
-
-				if (checkarea) {
-					hasLens = true;
-				}
-			}
+			if (worldObj.getBlockState(lens).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens))
+			if (worldObj.getBlockState(lens.south()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.south())) continue;
+			if (worldObj.getBlockState(lens.north()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.north())) continue;
+			if (worldObj.getBlockState(lens.east()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.east())) continue;
+			if (worldObj.getBlockState(lens.west()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.west())) continue;
+			if (worldObj.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.south().west())) continue;
+			if (worldObj.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.south().east())) continue;
+			if (worldObj.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.north().west())) continue;
+			if (worldObj.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.north().east())) continue;
+			hasLens = true;
+			break;
 		}
 		
 		if (hasLens)

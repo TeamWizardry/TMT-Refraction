@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.tile.TileLaser;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
@@ -64,8 +65,8 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider 
 		if (heldItem != null) {
 			if (heldItem.getItem() == Items.GLOWSTONE_DUST) {
 				TileLaser laser = getTE(worldIn, pos);
-				if (laser.getPower() < 10350) {
-					laser.setPower(laser.getPower() + 323.4375);
+				if (laser.getPower() < BeamConstants.NIGHT_DURATION) {
+					laser.setPower(laser.getPower() + (BeamConstants.NIGHT_DURATION / 32.0));
 					--heldItem.stackSize;
 				}
 			}
