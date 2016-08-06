@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.light;
 import java.util.*;
 
 import com.google.common.collect.Multimap;
+import com.teamwizardry.librarianlib.gui.GuiTickHandler;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,9 +18,7 @@ public class ReflectionTracker
 	private Map<IBeamHandler, Integer> delayBuffers;
 	private Map<IBeamHandler, Integer> delayBufferProcessingSwap;
 	private Multimap<IBeamHandler, Beam> sinkBlocks;
-	private Map<Beam, Integer> beams;;
-
-	private int ticks;
+	private Map<Beam, Integer> beams;
 
 	public ReflectionTracker()
 	{
@@ -35,15 +34,13 @@ public class ReflectionTracker
 	@SubscribeEvent
 	public void generateBeams(TickEvent.WorldTickEvent event)
 	{
-		if (ticks >= BeamConstants.SOURCE_TIMER)
+		if (GuiTickHandler.ticksInGame % BeamConstants.SOURCE_TIMER == 0)
 		{
-			ticks -= BeamConstants.SOURCE_TIMER;
 			for (ILightSource source : sources)
 			{
 				source.generateBeam();
 			}
 		}
-		else ticks++;
 	}
 
 	@SubscribeEvent
