@@ -87,7 +87,7 @@ public class LaserRenderer {
 		if(tracker != null) {
 			RenderLaserUtil.startRenderingLasers();
 			for (LaserRenderInfo info : lasers.keySet()) {
-				RenderLaserUtil.renderLaser(Color.RED, info.start, info.end);
+				RenderLaserUtil.renderLaser(info.color, info.start, info.end);
 			}
 			RenderLaserUtil.finishRenderingLasers();
 		}

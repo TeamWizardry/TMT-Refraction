@@ -44,7 +44,7 @@ public class RenderLaserUtil {
 		if(normal.yCoord < 0)
 			normal = normal.scale(-1);
 		
-		Vec3d d = normal.scale((0.125)/2.);
+		Vec3d d = normal.scale((0.25*color.a)/2.);
 		
 		double vMin = 0, vMax = 1;
 		double uMin = 0, uMax = 1;
@@ -55,10 +55,10 @@ public class RenderLaserUtil {
 		if(!drawingLasers)
 			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 		
-		pos(vb, start.add(d)     ).tex(uMin, vMin).color(color.r, color.g, color.b, color.a).endVertex();
-		pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.r, color.g, color.b, color.a).endVertex();
-		pos(vb, end.subtract(d)  ).tex(uMax, vMax).color(color.r, color.g, color.b, color.a).endVertex();
-		pos(vb, end.add(d)       ).tex(uMax, vMin).color(color.r, color.g, color.b, color.a).endVertex();
+		pos(vb, start.add(d)     ).tex(uMin, vMin).color(color.r, color.g, color.b, 1).endVertex();
+		pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.r, color.g, color.b, 1).endVertex();
+		pos(vb, end.subtract(d)  ).tex(uMax, vMax).color(color.r, color.g, color.b, 1).endVertex();
+		pos(vb, end.add(d)       ).tex(uMax, vMin).color(color.r, color.g, color.b, 1).endVertex();
 		
 		if(!drawingLasers)
 			tessellator.draw();
