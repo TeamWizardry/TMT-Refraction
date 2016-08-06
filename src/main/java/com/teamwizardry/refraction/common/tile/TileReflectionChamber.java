@@ -82,10 +82,9 @@ public class TileReflectionChamber extends TileEntity implements IBeamHandler {
 			blue += beams[i].color.b;
 			alpha += beams[i].color.a;
 		}
-		red /= beams.length;
-		green /= beams.length;
-		blue /= beams.length;
-		alpha /= beams.length;
+		red = Math.min(red, 1);
+		green = Math.min(green, 1);
+		blue = Math.min(blue, 1);
 		Vec3d out = RotationHelper.averageDirection(angles);
 		new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out, new Color(red, green, blue, alpha));
 	}

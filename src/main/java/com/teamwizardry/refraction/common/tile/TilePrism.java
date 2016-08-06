@@ -79,21 +79,14 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 			
 			Vec3d dir = beam.finalLoc.subtract(beam.initLoc).normalize();
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-			Vec3d vert;
-			
-			if (dir.xCoord == 0 && dir.zCoord == 0)
-			{
-				vert = new Vec3d(0, 0, 1);
-			}
-			else
-			{
-				vert = new Vec3d(0, 1, 0);
-			}
-			Vec3d cross = dir.crossProduct(dir.crossProduct(vert));
+			boolean vert = (dir.xCoord == 0 && dir.zCoord == 0);
 			
 			if (red > 0)
 			{
-				new Beam(worldObj, center, RotationHelper.rotateAroundVector(dir, cross, 90), new Color(red, 0, 0, beam.color.a));
+				if (vert)
+					new Beam(worldObj, center, new Vec3d(1, 0, 0), new Color(red, 0, 0, beam.color.a));
+				else
+					new Beam(worldObj, center, new Vec3d(dir.zCoord, 0, -dir.xCoord), new Color(red, 0, 0, beam.color.a));
 			}
 			
 			if (green > 0)
@@ -103,7 +96,10 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 			
 			if (blue > 0)
 			{
-				new Beam(worldObj, center, RotationHelper.rotateAroundVector(dir, cross, -90), new Color(0, 0, blue, beam.color.a));
+				if (vert)
+					new Beam(worldObj, center, new Vec3d(-1, 0, 0), new Color(0, 0, blue, beam.color.a));
+				else
+					new Beam(worldObj, center, new Vec3d(-dir.zCoord, 0, dir.xCoord), new Color(0, 0, blue, beam.color.a));
 			}
 		}
 	}
