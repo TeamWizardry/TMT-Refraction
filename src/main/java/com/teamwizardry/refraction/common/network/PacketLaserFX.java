@@ -2,6 +2,8 @@ package com.teamwizardry.refraction.common.network;
 
 import com.teamwizardry.librarianlib.network.PacketBase;
 import com.teamwizardry.librarianlib.util.Color;
+import com.teamwizardry.refraction.client.LaserRenderer;
+import com.teamwizardry.refraction.client.fx.ParticleLaser;
 import com.teamwizardry.refraction.client.fx.SparkleFX;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -27,23 +29,24 @@ public class PacketLaserFX extends PacketBase {
 	
 	@Override
 	public void handle(MessageContext ctx) {
-		float density = 2;
+		LaserRenderer.add(start, end, color);
+//		float density = 2;
 		
-		Vec3d o = end.subtract(start).normalize().scale(1.0/density);
-		int amount = (int)( end.subtract(start).lengthVector()*density );
-		
-		double x = start.xCoord;
-		double y = start.yCoord;
-		double z = start.zCoord;
-		
-		for(int i = 0; i < amount; i++) {
-			SparkleFX p = new SparkleFX(Minecraft.getMinecraft().theWorld, x, y, z);
-			p.setAge(0);
-			Minecraft.getMinecraft().effectRenderer.addEffect(p);
-			x += o.xCoord;
-			y += o.yCoord;
-			z += o.zCoord;
-		}
+//		Vec3d o = end.subtract(start).normalize().scale(1.0/density);
+//		int amount = (int)( end.subtract(start).lengthVector()*density );
+//
+//		double x = start.xCoord;
+//		double y = start.yCoord;
+//		double z = start.zCoord;
+//
+//		for(int i = 0; i < amount; i++) {
+//			SparkleFX p = new SparkleFX(Minecraft.getMinecraft().theWorld, x, y, z);
+//			p.setAge(0);
+//			Minecraft.getMinecraft().effectRenderer.addEffect(p);
+//			x += o.xCoord;
+//			y += o.yCoord;
+//			z += o.zCoord;
+//		}
 	}
 	
 	@Override

@@ -1,5 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -11,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by LordSaad44
  */
-public class TilePrism extends TileEntity {
+public class TilePrism extends TileEntity implements IBeamHandler {
 
 	private IBlockState state;
 
@@ -59,5 +61,10 @@ public class TilePrism extends TileEntity {
 	@Override
 	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
 		return INFINITE_EXTENT_AABB;
+	}
+	
+	@Override
+	public void handle(Beam... beams) {
+		
 	}
 }
