@@ -1,16 +1,18 @@
 package com.teamwizardry.refraction.common.light;
 
-import java.util.*;
-
-import com.google.common.collect.Multimap;
-import com.teamwizardry.librarianlib.gui.GuiTickHandler;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
-import com.google.common.collect.HashMultimap;
 import net.minecraftforge.fml.relauncher.Side;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 public class ReflectionTracker
 {
@@ -22,8 +24,6 @@ public class ReflectionTracker
 	private Map<Beam, Integer> beams;
 
 	private static class TickTracker {
-		private static final TickTracker INSTANCE = new TickTracker();
-		
 		public static int ticks = 0;
 		
 		private TickTracker() {

@@ -42,10 +42,16 @@ public class EffectAttract implements IEffect {
 	public void run(World world, Vec3d pos) {
 		if (cooldown >= 10) {
 			List<Entity> entities = null;
-			if (potency < 5)
-				entities = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.xCoord - potency, pos.yCoord - potency, pos.zCoord - potency, pos.xCoord + potency, pos.yCoord + potency, pos.zCoord + potency));
+			if (potency < 50)
+			{
+				int power = potency / 16;
+				entities = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.xCoord - power, pos.yCoord - power, pos.zCoord - power, pos.xCoord + power, pos.yCoord + power, pos.zCoord + power));
+			}
 			else
-				world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(pos.xCoord - potency, pos.yCoord - potency, pos.zCoord - potency, pos.xCoord + potency, pos.yCoord + potency, pos.zCoord + potency));
+			{
+				int power = potency / 16;
+				world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(pos.xCoord - power, pos.yCoord - power, pos.zCoord - power, pos.xCoord + power, pos.yCoord + power, pos.zCoord + power));
+			}
 
 			if (entities != null) {
 				int pulled = 0;

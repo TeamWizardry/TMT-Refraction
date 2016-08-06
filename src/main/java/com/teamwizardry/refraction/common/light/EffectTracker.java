@@ -1,46 +1,122 @@
 package com.teamwizardry.refraction.common.light;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Maps;
-import com.teamwizardry.refraction.api.IEffect;
+import java.lang.ref.WeakReference;
+import java.util.WeakHashMap;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import com.google.common.collect.HashMultimap;
+import com.teamwizardry.librarianlib.util.Color;
+import com.teamwizardry.refraction.api.IEffect;
+import com.teamwizardry.refraction.common.effect.EffectAccelerate;
+import com.teamwizardry.refraction.common.effect.EffectAttract;
+import com.teamwizardry.refraction.common.effect.EffectBonemeal;
+import com.teamwizardry.refraction.common.effect.EffectDisperse;
 
 /**
  * Created by LordSaad44
  */
-public class EffectTracker {
+public class EffectTracker
+{
+	private static WeakHashMap<World, EffectTracker> instances = new WeakHashMap<>();
+	private HashMultimap<Vec3d, IEffect> effects = HashMultimap.create();
+	private int cooldown;
+	private WeakReference<World> world;
 
-	public static EffectTracker INSTANCE = new EffectTracker();
-	private HashMap<Vec3d, IEffect> effects = Maps.newHashMap();
-	private HashMultimap<World, Vec3d> worlds = HashMultimap.create();
-	private int cooldown = 0;
-	private EffectTracker() {}
-
-	public void addEffect(World world, Vec3d pos, IEffect effect) {
-		effects.put(pos, effect);
-		worlds.put(world, pos);
+	public static void addEffect(World world, Vec3d pos, IEffect effect)
+	{
+		if (!instances.containsKey(world))
+			addInstance(world);
+		instances.get(world).effects.put(pos, effect);
 	}
 
-	public void start(int cooldown) { this.cooldown = cooldown; }
+	public static boolean addInstance(World world)
+	{
+		return instances.putIfAbsent(world, new EffectTracker(world)) == null;
+	}
 
-	public void tick() {
-		if (cooldown > 0) {
-			cooldown--;
+	public EffectTracker(World world)
+	{
+		this.world = new WeakReference<>(world);
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
-			for (Vec3d pos : effects.keySet()) {
-				IEffect effect = effects.get(pos);
-				for (World world : worlds.keySet()) {
-					if (worlds.get(world).contains(pos)) {
-						effect.run(world, pos);
+	@SubscribeEvent
+	public void tick(TickEvent.WorldTickEvent event)
+	{
+		if (event.phase == TickEvent.Phase.START && event.side == Side.SERVER)
+		{
+			if (cooldown > 0)
+				cooldown--;
+			else
+			{
+				for (Vec3d pos : effects.keySet())
+				{
+					for (IEffect effect : effects.get(pos))
+					{
+						effect.run(world.get(), pos);
 					}
 				}
+				effects.clear();
+				cooldown = BeamConstants.SOURCE_TIMER;
 			}
-		} else {
-			while (!effects.isEmpty()) effects.clear();
-			while ((!worlds.isEmpty())) worlds.clear();
+		}
+	}
+
+	public static IEffect getEffect(Color color)
+	{
+		float red = color.r;
+		float green = color.g;
+		float blue = color.b;
+		int strength = (int) (color.a * 255);
+
+		if (red > 0)
+		{
+			if (green > 0)
+			{
+				if (blue > 0) // White - Nothing
+				{
+					return null;
+				}
+				else
+				// Yellow - Break Block
+				{
+					return null;
+				}
+			}
+			else if (blue > 0) // Magenta - Push
+			{
+				return new EffectDisperse(strength);
+			}
+			else
+			// Red - Burn
+			{
+				return null;
+			}
+		}
+		else if (green > 0)
+		{
+			if (blue > 0) // Cyan - Pull
+			{
+				return new EffectAttract(strength);
+			}
+			else
+			// Green - Bonemeal
+			{
+				return new EffectBonemeal(strength);
+			}
+		}
+		else if (blue > 0) // Blue - Tile Accelerate
+		{
+			return new EffectAccelerate(strength);
+		}
+		else
+		// Black - Technically Impossible
+		{
+			return null;
 		}
 	}
 }
