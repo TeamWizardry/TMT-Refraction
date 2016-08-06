@@ -85,4 +85,12 @@ public class RotationHelper
 		normal = normal.normalize();
 		return vector.subtract(normal.scale(vector.dotProduct(normal) * 2));
 	}
+	
+	public static Vec3d rotateAroundVector(Vec3d vector, Vec3d axis, float angle)
+	{
+		double cos = Math.cos(angle * Math.PI / 180);
+		double sin = Math.sin(angle * Math.PI / 180);
+		Vec3d cross = vector.crossProduct(axis);
+		return vector.scale(cos).add(cross.scale(sin)).add(axis.scale(axis.dotProduct(vector)).scale(1-cos));
+	}
 }

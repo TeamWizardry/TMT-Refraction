@@ -1,19 +1,17 @@
 package com.teamwizardry.refraction.common.light;
 
 import java.util.HashSet;
-
-import com.teamwizardry.librarianlib.network.PacketHandler;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import com.google.common.collect.ImmutableList;
+import com.teamwizardry.librarianlib.network.PacketHandler;
 import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
 
 public class Beam
 {

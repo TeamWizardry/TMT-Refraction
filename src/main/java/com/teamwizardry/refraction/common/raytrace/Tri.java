@@ -1,9 +1,6 @@
 package com.teamwizardry.refraction.common.raytrace;
 
-import javafx.geometry.BoundingBox;
 import net.minecraft.util.math.Vec3d;
-
-import static net.minecraft.realms.Tezzelator.t;
 
 /**
  * Created by TheCodeWarrior

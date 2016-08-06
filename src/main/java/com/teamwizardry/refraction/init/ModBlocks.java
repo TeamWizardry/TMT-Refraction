@@ -14,6 +14,7 @@ public class ModBlocks {
 	public static BlockLaser LASER;
 	public static BlockPrism PRISM;
 	public static BlockLens LENS;
+	public static BlockReflectionChamber REF_CHAMBER;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -23,6 +24,7 @@ public class ModBlocks {
 		ASSEMBLY_TABLE = new BlockAssemblyTable();
 		LASER = new BlockLaser();
 		PRISM = new BlockPrism();
+		REF_CHAMBER = new BlockReflectionChamber();
 	}
 
 	public static void initModels() {
@@ -33,5 +35,6 @@ public class ModBlocks {
 		ASSEMBLY_TABLE.initModel();
 		LASER.initModel();
 		PRISM.initModel();
+		REF_CHAMBER.initModel();
 	}
 }

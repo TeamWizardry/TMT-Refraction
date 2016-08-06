@@ -1,12 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.math.MathUtil;
-import com.teamwizardry.librarianlib.math.Matrix4;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.client.render.RenderMirror;
-import com.teamwizardry.refraction.common.raytrace.Tri;
-import com.teamwizardry.refraction.common.tile.TileMirror;
-import com.teamwizardry.refraction.init.ModItems;
+import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -30,10 +24,13 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
-
-import static sun.jvm.hotspot.oops.CellTypeState.top;
+import com.teamwizardry.librarianlib.math.MathUtil;
+import com.teamwizardry.librarianlib.math.Matrix4;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.client.render.RenderMirror;
+import com.teamwizardry.refraction.common.raytrace.Tri;
+import com.teamwizardry.refraction.common.tile.TileMirror;
+import com.teamwizardry.refraction.init.ModItems;
 
 /**
  * Created by LordSaad44
@@ -72,7 +69,7 @@ public class BlockMirror extends Block implements ITileEntityProvider {
 		TileMirror te = getTE(worldIn, pos);
 		if (!worldIn.isRemote && heldItem != null) {
 			if (heldItem.getItem() == ModItems.SCREW_DRIVER) {
-				int jump = playerIn.isSneaking() ? -1 : 1;
+				float jump = 360F/64 * (playerIn.isSneaking() ? -1 : 1);
 
 				if(side.getAxis() == EnumFacing.Axis.Y) {
 					te.setRotY(( te.getRotY()+jump ) % 360);
