@@ -16,6 +16,8 @@ import com.google.common.collect.Multimap;
 
 public class ReflectionTracker
 {
+	private static final TickTracker INSTANCE = new TickTracker();
+	
 	private static WeakHashMap<World, ReflectionTracker> instances = new WeakHashMap<>();
 	private Set<ILightSource> sources;
 	private Map<IBeamHandler, Integer> delayBuffers;
@@ -51,6 +53,8 @@ public class ReflectionTracker
 	@SubscribeEvent
 	public void generateBeams(TickEvent.WorldTickEvent event)
 	{
+		if(event.world.isRemote)
+			return;
 		if(event.phase != TickEvent.Phase.START || event.side != Side.SERVER)
 			return;
 		if (TickTracker.ticks % BeamConstants.SOURCE_TIMER == 0)
@@ -65,6 +69,8 @@ public class ReflectionTracker
 	@SubscribeEvent
 	public void handleBeams(TickEvent.WorldTickEvent event)
 	{
+		if(event.world.isRemote)
+			return;
 		Map<IBeamHandler, Integer> temp = delayBuffers;
 		delayBuffers = delayBufferProcessingSwap;
 		
