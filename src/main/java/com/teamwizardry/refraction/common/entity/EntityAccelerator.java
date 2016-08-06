@@ -12,13 +12,13 @@ import net.minecraft.world.World;
 public class EntityAccelerator extends Entity {
 
 	BlockPos pos;
-	int lifetime = 0;
-	int potency = 1;
+	int lifetime;
+	int potency;
 
 	public EntityAccelerator(World world, BlockPos pos, int potency, int lifetime) {
 		super(world);
 		this.pos = pos;
-		this.potency = potency + 1;
+		this.potency = (potency / 16) + 1;
 		this.lifetime = 100 + 50 * lifetime;
 		this.posX = pos.getX();
 		this.posY = pos.getY();
@@ -64,4 +64,5 @@ public class EntityAccelerator extends Entity {
 		compound.setInteger("lifetime", lifetime);
 		compound.setInteger("potency", potency);
 	}
+	
 }
