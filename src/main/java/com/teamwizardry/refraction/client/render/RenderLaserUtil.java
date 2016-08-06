@@ -35,10 +35,6 @@ public class RenderLaserUtil {
 	}
 		
 	public static void renderLaser(Color color, Vec3d start, Vec3d end) {
-		float pixelsPerBlock = 32; // float to avoid (float) casts everywhere. Stupid int division.
-		float texSize = 128; // ditto.
-		
-		int texPixelsWide = 16;
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		
 		GlStateManager.disableCull();
@@ -48,13 +44,10 @@ public class RenderLaserUtil {
 		if(normal.yCoord < 0)
 			normal = normal.scale(-1);
 		
-		Vec3d d = normal.scale((texPixelsWide/pixelsPerBlock)/2.);
+		Vec3d d = normal.scale((0.125)/2.);
 		
-		double vMin = 0, vMax = texPixelsWide/texSize;
-		double uMin = 0, uMax = (end.subtract(start).lengthVector()*pixelsPerBlock)/texSize;
-		
-		uMin -= (GuiTickHandler.ticksInGame+GuiTickHandler.partialTicks)*0.005;
-		uMax -= (GuiTickHandler.ticksInGame+GuiTickHandler.partialTicks)*0.005;
+		double vMin = 0, vMax = 1;
+		double uMin = 0, uMax = 1;
 		
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer vb = tessellator.getBuffer();

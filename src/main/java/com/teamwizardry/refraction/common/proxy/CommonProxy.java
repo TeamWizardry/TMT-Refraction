@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.proxy;
 
 import com.teamwizardry.refraction.client.fx.SparkleFX;
 import com.teamwizardry.refraction.common.CatChaseHandler;
+import com.teamwizardry.refraction.common.core.EventHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -16,6 +17,7 @@ public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent event) {
 		CatChaseHandler.INSTANCE.getClass(); // load the class
+		EventHandler.INSTANCE.getClass(); // ditto
 	}
 
 	public void init(FMLInitializationEvent event) {
