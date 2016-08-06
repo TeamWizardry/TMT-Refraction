@@ -1,7 +1,9 @@
 package com.teamwizardry.refraction;
 
+import com.teamwizardry.librarianlib.network.PacketHandler;
 import com.teamwizardry.refraction.common.light.BlockTracker;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -59,6 +61,8 @@ public class Refraction {
 		ModEntities.init();
 
 		proxy.loadModels();
+		
+		PacketHandler.INSTANCE.register(PacketLaserFX.class, Side.CLIENT);
 	}
 
 	@Mod.EventHandler

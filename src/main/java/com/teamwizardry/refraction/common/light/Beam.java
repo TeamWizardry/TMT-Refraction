@@ -1,6 +1,9 @@
 package com.teamwizardry.refraction.common.light;
 
 import java.util.HashSet;
+
+import com.teamwizardry.librarianlib.network.PacketHandler;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
@@ -10,6 +13,7 @@ import net.minecraft.world.World;
 import com.google.common.collect.ImmutableList;
 import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class Beam
 {
@@ -34,19 +38,8 @@ public class Beam
 			}
 		}
 		
-		Vec3d o = slope.normalize().scale(0.5);
-		int amount = (int)( finalLoc.subtract(initLoc).lengthVector()/0.5 );
-		
-		double x = initLoc.xCoord;
-		double y = initLoc.yCoord;
-		double z = initLoc.zCoord;
-		
-		for(int i = 0; i < amount; i++) {
-			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, o.xCoord, o.xCoord, o.xCoord);
-			x += o.xCoord;
-			y += o.yCoord;
-			z += o.zCoord;
-		}
+		if(!world.isRemote)
+			PacketHandler.net().sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
 		
 	}
 	
