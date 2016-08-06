@@ -15,11 +15,16 @@ public class EntityAccelerator extends Entity {
 	int lifetime;
 	int potency;
 
-	public EntityAccelerator(World world, BlockPos pos, int potency, int lifetime) {
+	public EntityAccelerator(World world) {
 		super(world);
+		setSize(0, 0);
+	}
+	
+	public EntityAccelerator(World world, BlockPos pos, int potency, int lifetime) {
+		this(world);
 		this.pos = pos;
-		this.potency = (potency / 16) + 1;
-		this.lifetime = 100 + 50 * lifetime;
+		this.potency = potency;
+		this.lifetime = lifetime;
 		this.posX = pos.getX();
 		this.posY = pos.getY();
 		this.posZ = pos.getZ();
@@ -28,6 +33,9 @@ public class EntityAccelerator extends Entity {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
+		if(this.worldObj.isRemote)
+			return;
+		
 		if (this.getEntityWorld().getTileEntity(this.pos) instanceof ITickable) {
 			for (int i = 0; i < potency; i++) {
 				if (this.getEntityWorld().getTileEntity(this.pos) != null) {

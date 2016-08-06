@@ -25,6 +25,9 @@ public class Beam
 		this.initLoc = initLoc;
 		this.finalLoc = slope.normalize().scale(128).add(initLoc);
 		this.color = color;
+		if(world.isRemote)
+			return;
+		
 		RayTraceResult trace = EntityTrace.cast(world, initLoc, slope, 128);
 		// RayTraceResult trace = BeamPulsar.rayTraceBlocks(world, new HashSet<>(ImmutableList.of(new BlockPos(initLoc))), initLoc, finalLoc, true, false, true);
 		if (trace != null)
@@ -50,8 +53,7 @@ public class Beam
 			}
 		}
 
-		if (!world.isRemote)
-			PacketHandler.net().sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
+		PacketHandler.net().sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
 
 	}
 
