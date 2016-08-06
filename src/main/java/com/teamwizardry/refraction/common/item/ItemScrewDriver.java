@@ -52,7 +52,10 @@ public class ItemScrewDriver extends Item {
 			if(stack.getTagCompound() == null)
 				stack.setTagCompound(new NBTTagCompound());
 			int i = stack.getTagCompound().getInteger(MODE_TAG);
-			i = (i + (playerIn.isSneaking() ? -1 : 1)) % multipliers.length;
+			i = (i + (playerIn.isSneaking() ? -1 : 1));
+			while(i < 0)
+				i += multipliers.length;
+			i = i % multipliers.length;
 			stack.getTagCompound().setInteger(MODE_TAG, i);
 		}
 		
@@ -80,6 +83,8 @@ public class ItemScrewDriver extends Item {
 		int i = 0;
 		if(stack.getTagCompound() != null)
 			i = stack.getTagCompound().getInteger(MODE_TAG);
+		while(i < 0)
+			i += multipliers.length;
 		return i % multipliers.length;
 	}
 }
