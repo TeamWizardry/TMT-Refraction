@@ -37,7 +37,7 @@ public class EntityAccelerator extends Entity {
 			return;
 		
 		if (this.getEntityWorld().getTileEntity(this.pos) instanceof ITickable) {
-			for (int i = 0; i < (potency / 16); i++) {
+			for (int i = 0; i < (3 * potency / 64); i++) {
 				if (this.getEntityWorld().getTileEntity(this.pos) != null) {
 					((ITickable) this.getEntityWorld().getTileEntity(this.pos)).update();
 				}

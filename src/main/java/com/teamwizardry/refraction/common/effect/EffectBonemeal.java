@@ -28,7 +28,7 @@ public class EffectBonemeal implements IEffect {
 	@Override
 	public void run(World world, Vec3d pos) {
 		if (world.getBlockState(new BlockPos(pos.xCoord, pos.yCoord, pos.zCoord)).getBlock() instanceof IGrowable) {
-			for (int i = 0; i < (potency / 16); i++) ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, new BlockPos(pos.xCoord, pos.yCoord, pos.zCoord));
+			for (int i = 0; i < (3 * potency / 32); i++) ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, new BlockPos(pos.xCoord, pos.yCoord, pos.zCoord));
 		}
 
 		for (int i = 0; i < 5; i++) {
