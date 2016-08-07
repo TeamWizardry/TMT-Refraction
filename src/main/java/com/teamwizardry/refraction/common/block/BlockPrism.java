@@ -1,6 +1,8 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.light.ILaserTrace;
+import com.teamwizardry.refraction.common.raytrace.Tri;
 import com.teamwizardry.refraction.common.tile.TilePrism;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
@@ -17,6 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -27,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by LordSaad44
  */
-public class BlockPrism extends BlockDirectional implements ITileEntityProvider {
+public class BlockPrism extends BlockDirectional implements ITileEntityProvider, ILaserTrace {
 
 	public BlockPrism() {
 		super(Material.GLASS);
@@ -183,5 +187,53 @@ public class BlockPrism extends BlockDirectional implements ITileEntityProvider 
 	@Override
 	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
+	}
+	
+	@Override
+	public RayTraceResult collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
+		
+		Vec3d tip = new Vec3d(0.5, 1, 0.5);
+		Vec3d base = new Vec3d(0.5, 0, 0.5);
+		
+		double l = 0, L = 1-l;
+		Vec3d
+			a = new Vec3d(l, 0.5, l),
+			b = new Vec3d(l, 0.5, L),
+			c = new Vec3d(L, 0.5, L),
+			d = new Vec3d(L, 0.5, l);
+		
+		Tri[] tris = new Tri[] {
+			new Tri(a, b, tip),
+			new Tri(b, c, tip),
+			new Tri(c, d, tip),
+			new Tri(d, a, tip),
+
+			new Tri(a, b, base),
+			new Tri(b, c, base),
+			new Tri(c, d, base),
+			new Tri(d, a, base)
+		};
+		
+		Vec3d start = startRaw.subtract(new Vec3d(pos));
+		Vec3d end = endRaw.subtract(new Vec3d(pos));
+		
+		Vec3d hit = null;
+		double shortestSq = Double.POSITIVE_INFINITY;
+		
+		for(Tri tri : tris) {
+			Vec3d v = tri.trace(start, end);
+			if(v != null) {
+				double distSq = start.subtract(v).lengthSquared();
+				if(distSq < shortestSq) {
+					hit = v;
+					shortestSq = distSq;
+				}
+			}
+		}
+		
+		if(hit == null)
+			return null;
+		
+		return new RayTraceResult(hit.add(new Vec3d(pos)), EnumFacing.UP, pos);
 	}
 }
