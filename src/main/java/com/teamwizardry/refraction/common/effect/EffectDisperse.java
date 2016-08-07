@@ -27,42 +27,29 @@ public class EffectDisperse implements IEffect {
 	}
 
 	private static void setEntityMotionFromVector(Entity entity, Vec3d originalPosVector) {
-		Vec3d entityVector = entity.getPositionVector();
-		Vec3d finalVector = originalPosVector.subtract(entityVector);
-
-		if (Math.sqrt(finalVector.xCoord * finalVector.xCoord + finalVector.yCoord * finalVector.yCoord + finalVector.zCoord * finalVector.zCoord) > 1)
-			finalVector = finalVector.normalize();
-
-		entity.motionX = -finalVector.xCoord * 0.45f;
-		entity.motionY = -finalVector.yCoord * 0.45f;
-		entity.motionZ = -finalVector.zCoord * 0.45f;
+		AxisAlignedBB bb = entity.getEntityBoundingBox();
+		Vec3d entityVector = new Vec3d((bb.minX + bb.maxX)/2.0, (bb.minY+bb.maxY)/2.0,(bb.minZ+bb.maxZ)/2.0);
+		Vec3d finalVector = entityVector.subtract(originalPosVector);
+		double dist = finalVector.lengthVector();
+		finalVector.scale(1.0/dist);
+		if(dist > 1)
+			return;
+		entity.motionX += finalVector.xCoord * (1.0-dist);
+		entity.motionY += finalVector.yCoord * (1.0-dist);
+		entity.motionZ += finalVector.zCoord * (1.0-dist);
 	}
 
 	@Override
 	public void run(World world, Vec3d pos) {
-		if (cooldown >= 10) {
-			List<Entity> entities = null;
-			if (potency < 50)
-			{
-				int power = potency / 16;
-				entities = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.xCoord - power, pos.yCoord - power, pos.zCoord - power, pos.xCoord + power, pos.yCoord + power, pos.zCoord + power));
-			}
-			else
-			{
-				int power = potency / 16;
-				world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(pos.xCoord - power, pos.yCoord - power, pos.zCoord - power, pos.xCoord + power, pos.yCoord + power, pos.zCoord + power));
-			}
-			
-			if (entities != null) {
-				int pulled = 0;
-				for (Entity entity : entities) {
-					pulled++;
-					if (pulled > 200) break;
-					setEntityMotionFromVector(entity, pos);
-				}
-			}
-			cooldown = 0;
-		} else cooldown++;
+		
+		double power = 5;
+		List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.subtract(power, power, power), pos.addVector(power, power, power)));
+		int pulled = 0;
+		for (Entity entity : entities) {
+			pulled++;
+			if (pulled > 200) break;
+			setEntityMotionFromVector(entity, pos);
+		}
 
 		for (int i = 0; i < 5; i++) {
 			SparkleFX fx = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);

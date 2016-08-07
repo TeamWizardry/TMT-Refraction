@@ -43,17 +43,15 @@ public class Beam
 			{
 				try
 				{
-				TileEntity tile = world.getTileEntity(trace.getBlockPos());
-				if (tile instanceof IBeamHandler)
-				{
-					ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
-				}
-				else
-				{
-					IEffect effect = EffectTracker.getEffect(color);
-					BlockPos pos = trace.getBlockPos();
-					if (effect != null) EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
-				}
+					TileEntity tile = world.getTileEntity(trace.getBlockPos());
+					if (tile instanceof IBeamHandler)
+						ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
+					else
+					{
+						IEffect effect = EffectTracker.getEffect(color);
+						BlockPos pos = trace.getBlockPos();
+						if (effect != null) EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
+					}
 				}
 				catch (NullPointerException e) // Don't really care about these NPEs, all they mean is that the BlockPos is outside the world height limit.
 				{}

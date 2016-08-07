@@ -72,7 +72,7 @@ public class BlockMirror extends Block implements ITileEntityProvider, ILaserTra
 			if(side.getAxis() == EnumFacing.Axis.Y) {
 				te.setRotY(( te.getRotY()+jump ) % 360);
 			} else {
-				te.setRotX(MathUtil.clamp(te.getRotX() + jump, -90, 90));
+				te.setRotX(MathUtil.clamp(te.getRotX() + jump, -180, 180));
 			}
 		}
 	}
@@ -96,6 +96,12 @@ public class BlockMirror extends Block implements ITileEntityProvider, ILaserTra
 	@Nullable
 	@Override
 	public RayTraceResult collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
+		double p = 1.0/16.0;
+		
+		AxisAlignedBB aabb = new AxisAlignedBB(p, 0, p, 1-p, p, 1-p).offset(-0.5, -p/2, -0.5);
+		
+		
+		
 		RayTraceResult superResult = super.collisionRayTrace(blockState, worldIn, pos, startRaw, endRaw);
 		
 		TileMirror tile = (TileMirror) worldIn.getTileEntity(pos);
@@ -116,7 +122,6 @@ public class BlockMirror extends Block implements ITileEntityProvider, ILaserTra
 		
 		start = matrix.apply(start);
 		end = matrix.apply(end);
-		AxisAlignedBB aabb = new AxisAlignedBB(-0.5, 0, -0.5, 0.5, 0.0001, 0.5);
 		RayTraceResult result = aabb.calculateIntercept(start, end);
 		if(result == null)
 			return null;
