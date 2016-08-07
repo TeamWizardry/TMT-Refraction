@@ -10,10 +10,10 @@ item.screw_driver.0.name=Screw Driver (5°)
 item.screw_driver.1.name=Screw Driver (22.5°)
 item.screw_driver.2.name=Screw Driver (45°)
 item.screw_driver.3.name=Screw Driver (90°)
-item.screw_driver.4.name=Screw Driver (1°)
-item.screw_driver.5.name=Screw Driver (1/8°)
-item.screw_driver.6.name=Screw Driver (1/4°)
-item.screw_driver.7.name=Screw Driver (1/2°)
+item.screw_driver.4.name=Screw Driver (1/8°)
+item.screw_driver.5.name=Screw Driver (1/4°)
+item.screw_driver.6.name=Screw Driver (1/2°)
+item.screw_driver.7.name=Screw Driver (1°)
 
 gui.screw_driver.angle.0=5°
 gui.screw_driver.angle.1=22.5°

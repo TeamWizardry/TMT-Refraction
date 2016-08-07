@@ -1,6 +1,7 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
+        "0": "refraction:blocks/mirror_normal"
     },
     "elements": [
         {
@@ -8,12 +9,12 @@
             "from": [ -7.0, -0.5000000074505806, -7.0 ], 
             "to": [ 7.0, 0.4999999925494194, 7.0 ], 
             "faces": {
-                "north": { "texture": "#-1", "uv": [ 0.0, 0.0, 14.0, 1.0 ] },
-                "east": { "texture": "#-1", "uv": [ 0.0, 0.0, 14.0, 1.0 ] },
-                "south": { "texture": "#-1", "uv": [ 0.0, 0.0, 14.0, 1.0 ] },
-                "west": { "texture": "#-1", "uv": [ 0.0, 0.0, 14.0, 1.0 ] },
-                "up": { "texture": "#-1", "uv": [ 0.0, 0.0, 14.0, 14.0 ] },
-                "down": { "texture": "#-1", "uv": [ 0.0, 0.0, 14.0, 14.0 ] }
+                "north": { "texture": "#0", "uv": [ 0.0, 0.0, 7.0, 0.5000000000000001 ] },
+                "east": { "texture": "#0", "uv": [ 0.0, 15.0, 7.0, 15.500000000000002 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 7.500000000000002, 7.0, 8.0 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 15.499999999999998, 7.0, 16.0 ] },
+                "up": { "texture": "#0", "uv": [ 0.0, 0.5, 7.0, 7.499999999999998 ] },
+                "down": { "texture": "#0", "uv": [ 0.0, 8.0, 7.0, 15.0 ] }
             }
         }
     ]

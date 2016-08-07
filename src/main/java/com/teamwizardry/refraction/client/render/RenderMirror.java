@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.client.render;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.tile.TileMirror;
+import com.teamwizardry.refraction.common.tile.TileSplitter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -19,19 +20,25 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
+
+import static java.awt.Color.blue;
+import static java.awt.Color.green;
+import static java.awt.Color.red;
 
 /**
  * Created by LordSaad44
  */
 public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 
-	private IBakedModel modelArms, modelMirror;
+	private IBakedModel modelArms, modelMirror, modelMirrorSplitter;
 
 	public RenderMirror() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
+	@SubscribeEvent
 	public void reload(ClientProxy.ResourceReloadEvent event) {
 		modelArms = null;
 		modelMirror = null;
@@ -48,7 +55,7 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 			modelArms = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 					location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 		}
-		if (modelMirror == null) {
+		if (modelMirror == null || modelMirrorSplitter == null) {
 			try {
 				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_head")); //MODEL: TODO
 			} catch (Exception e) {
@@ -56,6 +63,12 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 			}
 			modelMirror = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 				location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
+			modelMirrorSplitter = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
+				location -> {
+					if(location.toString().equals(Refraction.MOD_ID + ":blocks/mirror_normal"))
+						location = new ResourceLocation(Refraction.MOD_ID, "blocks/mirror_splitter");
+					return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+				});
 		}
 	}
 
@@ -82,26 +95,34 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		GlStateManager.translate(0.5, 0, 0.5);
 		GlStateManager.rotate(te.getRotY(), 0, 1, 0);
 		
-		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
-			world,
-			modelArms,
-			world.getBlockState(te.getPos()),
-			BlockPos.ORIGIN,
-			vb, true);
-		tessellator.draw();
+		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelBrightnessColor(
+			modelArms, 1.0F, 1, 1, 1);
+//		GlStateManager.translate(-te.getPos().getX(), -te.getPos().getY(), -te.getPos().getZ());
+//		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+//		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
+//			world,
+//			modelArms,
+//			world.getBlockState(te.getPos()),
+//			te.getPos(),
+//			vb, true);
+//		tessellator.draw();
+//		GlStateManager.translate(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
 		
 		GlStateManager.translate(0, 0.5, 0);
 		GlStateManager.rotate(te.getRotX(), 1, 0, 0);
 		
-		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
-			world,
-			modelMirror,
-			world.getBlockState(te.getPos()),
-			BlockPos.ORIGIN,
-			vb, true);
-		tessellator.draw();
+//		GlStateManager.translate(-te.getPos().getX(), -te.getPos().getY(), -te.getPos().getZ());
+//		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelBrightnessColor(
+			te instanceof TileSplitter ? modelMirrorSplitter : modelMirror, 1.0F, 1, 1, 1);
+//		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
+//			world,
+//			te instanceof TileSplitter ? modelMirrorSplitter : modelMirror,
+//			world.getBlockState(te.getPos()),
+//			te.getPos(),
+//			vb, true);
+//		tessellator.draw();
+//		GlStateManager.translate(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
 
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.popMatrix();
