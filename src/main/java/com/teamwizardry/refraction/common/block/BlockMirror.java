@@ -72,7 +72,7 @@ public class BlockMirror extends Block implements ITileEntityProvider, ILaserTra
 			if(side.getAxis() == EnumFacing.Axis.Y) {
 				te.setRotY(( te.getRotY()+jump ) % 360);
 			} else {
-				te.setRotX(MathUtil.clamp(te.getRotX() + jump, -90, 90));
+				te.setRotX(MathUtil.clamp(te.getRotX() + jump, -180, 180));
 			}
 		}
 	}
