@@ -101,6 +101,9 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 		for( Beam beam : beams ) {
 			Vec3d incomingDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 			
+			if(incomingDir.dotProduct(normal) > 0)
+				continue; // hit the back of the mirror, shouldn't reflect
+			
 			Vec3d outgoingDir = incomingDir.subtract( normal.scale(incomingDir.dotProduct(normal)*2) );
 			
 			new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color);
