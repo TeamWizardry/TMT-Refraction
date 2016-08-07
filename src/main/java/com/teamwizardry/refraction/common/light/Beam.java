@@ -1,10 +1,12 @@
 package com.teamwizardry.refraction.common.light;
 
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import com.teamwizardry.librarianlib.LibrarianLib;
 import com.teamwizardry.librarianlib.network.PacketHandler;
 import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.api.IEffect;
@@ -38,8 +40,10 @@ public class Beam
 				IEffect effect = EffectTracker.getEffect(color);
 				if (effect != null) EffectTracker.addEffect(world, trace.hitVec, effect);
 			}
-			else
+			else if (trace.typeOfHit == RayTraceResult.Type.BLOCK);
 			{
+				try
+				{
 				TileEntity tile = world.getTileEntity(trace.getBlockPos());
 				if (tile instanceof IBeamHandler)
 				{
@@ -48,7 +52,13 @@ public class Beam
 				else
 				{
 					IEffect effect = EffectTracker.getEffect(color);
-//					if (effect != null) EffectTracker.addEffect(world, trace.hitVec, effect);
+					BlockPos pos = trace.getBlockPos();
+					if (effect != null) EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
+				}
+				}
+				catch (NullPointerException e)
+				{
+					LibrarianLib.logger.error(e.getStackTrace());
 				}
 			}
 		}

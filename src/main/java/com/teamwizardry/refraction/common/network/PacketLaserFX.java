@@ -1,15 +1,11 @@
 package com.teamwizardry.refraction.common.network;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import com.teamwizardry.librarianlib.network.PacketBase;
 import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.client.LaserRenderer;
-import com.teamwizardry.refraction.client.fx.ParticleLaser;
-import com.teamwizardry.refraction.client.fx.SparkleFX;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 /**
  * Created by TheCodeWarrior

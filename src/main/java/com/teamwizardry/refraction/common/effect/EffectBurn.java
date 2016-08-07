@@ -26,7 +26,7 @@ public class EffectBurn implements IEffect
 	public void run(World world, Vec3d pos)
 	{
 		int power = potency / 8;
-		AxisAlignedBB axis = new AxisAlignedBB(new BlockPos(pos));
+		AxisAlignedBB axis = new AxisAlignedBB(new BlockPos(pos)).expand(1, 1, 1);
 		List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, axis, Predicates.and(new Predicate<Entity>()
 		{
 			public boolean apply(@Nullable Entity apply)

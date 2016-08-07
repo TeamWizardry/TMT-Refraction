@@ -1,28 +1,16 @@
 package com.teamwizardry.refraction.client.render;
 
-import com.teamwizardry.librarianlib.fx.shader.Shader;
-import com.teamwizardry.librarianlib.fx.shader.ShaderHelper;
-import com.teamwizardry.librarianlib.gui.GuiTickHandler;
-import com.teamwizardry.librarianlib.math.Geometry;
-import com.teamwizardry.librarianlib.math.MathUtil;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
-
-import static com.ibm.icu.impl.duration.impl.DataRecord.EGender.M;
-import static net.minecraft.realms.Tezzelator.t;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 
 /**
  * Created by TheCodeWarrior

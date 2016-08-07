@@ -1,7 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -11,7 +9,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.api.RotationHelper;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 

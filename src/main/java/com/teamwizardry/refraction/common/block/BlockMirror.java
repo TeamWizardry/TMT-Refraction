@@ -1,10 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
 import javax.annotation.Nullable;
-
-import com.teamwizardry.librarianlib.math.Box;
-import com.teamwizardry.refraction.api.RotationHelper;
-import com.teamwizardry.refraction.common.light.ILaserTrace;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -18,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -33,11 +28,9 @@ import com.teamwizardry.librarianlib.math.MathUtil;
 import com.teamwizardry.librarianlib.math.Matrix4;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.render.RenderMirror;
-import com.teamwizardry.refraction.common.raytrace.Tri;
+import com.teamwizardry.refraction.common.light.ILaserTrace;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import com.teamwizardry.refraction.init.ModItems;
-
-import static jline.internal.Log.trace;
 
 /**
  * Created by LordSaad44
@@ -99,6 +92,7 @@ public class BlockMirror extends Block implements ITileEntityProvider, ILaserTra
 		return false;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Nullable
 	@Override
 	public RayTraceResult collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {

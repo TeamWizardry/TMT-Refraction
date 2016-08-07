@@ -1,14 +1,13 @@
 package com.teamwizardry.refraction.client.fx;
 
-import com.teamwizardry.librarianlib.fx.particle.ParticleRenderQueue;
-import com.teamwizardry.librarianlib.fx.particle.QueuedParticle;
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.client.render.RenderLaserUtil;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import com.teamwizardry.librarianlib.fx.particle.ParticleRenderQueue;
+import com.teamwizardry.librarianlib.fx.particle.QueuedParticle;
+import com.teamwizardry.librarianlib.util.Color;
+import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 
 /**
  * Created by TheCodeWarrior
@@ -44,7 +43,7 @@ public class ParticleLaser extends QueuedParticle {
 	}
 	
 	@Override
-	protected ParticleRenderQueue queue() {
+	protected ParticleRenderQueue<ParticleLaser> queue() {
 		return queue;
 	}
 }

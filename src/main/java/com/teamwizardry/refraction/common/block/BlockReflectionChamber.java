@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.block;
 
-import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -11,9 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -66,11 +62,5 @@ public class BlockReflectionChamber extends Block implements ITileEntityProvider
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
-	}
-	
-	@Nullable
-	@Override
-	public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
-		return super.collisionRayTrace(blockState, worldIn, pos, startRaw, endRaw);
 	}
 }

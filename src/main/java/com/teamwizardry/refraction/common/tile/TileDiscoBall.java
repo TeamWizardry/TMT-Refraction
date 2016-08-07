@@ -1,27 +1,24 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.util.Collections;
-import java.util.List;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.refraction.api.IEffect;
 import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.EffectTracker;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 
 /**
  * Created by LordSaad44
  */
-public class TileDiscoBall extends TileEntity implements ITickable, IBeamHandler {
+public class TileDiscoBall extends TileEntity implements IBeamHandler {
 
 	private IBlockState state;
-	private List<Beam> beams;
 
 	public TileDiscoBall() {
 	}
@@ -70,22 +67,18 @@ public class TileDiscoBall extends TileEntity implements ITickable, IBeamHandler
 	}
 
 	@Override
-	public void update() {
-		for (int x = -2; x < 2; x++) {
-			for (int z = -2; z < 2; z++) {
-				for (int y = -3; y < 0; y++) {
-					if (worldObj.getBlockState(new BlockPos(x, y, z)).getBlock() != Blocks.AIR) {
-//						for (Beam beam : beams) {
-//							// TODO
-//						}
+	public void handle(Beam... inputs) {
+		for (Beam beam : inputs)
+		{
+			IEffect effect = EffectTracker.getEffect(beam.color);
+			for (int x = -2; x <= 2; x++) {
+				for (int z = -2; z <= 2; z++) {
+					for (int y = -3; y < 0; y++) {
+						Vec3d vec = new Vec3d(pos.getX() + x + 0.5, pos.getY() + y + 0.5, pos.getZ() + z + 0.5);
+						EffectTracker.addEffect(worldObj, vec, effect);
 					}
 				}
 			}
 		}
-	}
-
-	@Override
-	public void handle(Beam... inputs) {
-		Collections.addAll(beams, inputs);
 	}
 }

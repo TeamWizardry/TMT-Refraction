@@ -1,7 +1,5 @@
 package com.teamwizardry.refraction.client.render;
 
-import com.teamwizardry.librarianlib.math.Vec2d;
-import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,6 +13,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
+import com.teamwizardry.librarianlib.math.Vec2d;
+import com.teamwizardry.refraction.init.ModItems;
 
 /**
  * Created by TheCodeWarrior
@@ -67,7 +67,6 @@ public class ScrewdriverOverlay {
 			vb.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION);
 			vb.pos(0, 0, 0).endVertex();
 			
-			int angles = (int)Math.floor(angle / anglePer);
 			double ang = angle;
 			
 			do {

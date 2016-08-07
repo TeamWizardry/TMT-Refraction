@@ -1,7 +1,6 @@
 package com.teamwizardry.refraction.common.light;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -43,7 +42,7 @@ public class ReflectionTracker
 	public ReflectionTracker()
 	{
 		beams = new WeakHashMap<>();
-		sources = Collections.<ILightSource>newSetFromMap(new WeakHashMap<ILightSource, Boolean>());
+		sources = new HashSet<>();
 		delayBuffers = new WeakHashMap<>();
 		delayBufferProcessingSwap = new WeakHashMap<>();
 		sinkBlocks = HashMultimap.create();

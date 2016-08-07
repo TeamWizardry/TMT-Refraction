@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.client;
 
-import com.teamwizardry.librarianlib.gui.GuiTickHandler;
-import com.teamwizardry.librarianlib.util.Color;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,13 +11,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.opengl.GL11;
+import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
-import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by TheCodeWarrior

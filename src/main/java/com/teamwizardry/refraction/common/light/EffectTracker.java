@@ -14,6 +14,8 @@ import com.teamwizardry.refraction.api.IEffect;
 import com.teamwizardry.refraction.common.effect.EffectAccelerate;
 import com.teamwizardry.refraction.common.effect.EffectAttract;
 import com.teamwizardry.refraction.common.effect.EffectBonemeal;
+import com.teamwizardry.refraction.common.effect.EffectBreak;
+import com.teamwizardry.refraction.common.effect.EffectBurn;
 import com.teamwizardry.refraction.common.effect.EffectDisperse;
 
 /**
@@ -57,7 +59,8 @@ public class EffectTracker
 				{
 					for (IEffect effect : effects.get(pos))
 					{
-						effect.run(world.get(), pos);
+						World w = world.get();
+						if (effect != null && w != null && pos != null) effect.run(w, pos);
 					}
 				}
 				effects.clear();
@@ -84,7 +87,7 @@ public class EffectTracker
 				else
 				// Yellow - Break Block
 				{
-					return null;
+					return new EffectBreak(strength);
 				}
 			}
 			else if (blue > 0) // Magenta - Push
@@ -94,7 +97,7 @@ public class EffectTracker
 			else
 			// Red - Burn
 			{
-				return null;
+				return new EffectBurn(strength);
 			}
 		}
 		else if (green > 0)
