@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -21,22 +20,6 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 	private IBlockState state;
 
 	public TilePrism() {
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-
-		// TODO
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
-
-		// TODO
-
-		return compound;
 	}
 
 	@Override
@@ -83,22 +66,22 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 			if (red > 0)
 			{
 				if (vert)
-					new Beam(worldObj, beam.finalLoc, new Vec3d(1, 0, 0), new Color(red, 0, 0, beam.color.a / div));
+					new Beam(worldObj, beam.finalLoc, new Vec3d(1, 0, 0), new Color(red, 0, 0, beam.color.a / div), beam.hasEffect);
 				else
-					new Beam(worldObj, beam.finalLoc, new Vec3d(dir.zCoord, 0, -dir.xCoord), new Color(red, 0, 0, beam.color.a / div));
+					new Beam(worldObj, beam.finalLoc, new Vec3d(dir.zCoord, 0, -dir.xCoord), new Color(red, 0, 0, beam.color.a / div), beam.hasEffect);
 			}
 			
 			if (green > 0)
 			{
-				new Beam(worldObj, beam.finalLoc, dir, new Color(0, green, 0, beam.color.a / div));
+				new Beam(worldObj, beam.finalLoc, dir, new Color(0, green, 0, beam.color.a / div), beam.hasEffect);
 			}
 			
 			if (blue > 0)
 			{
 				if (vert)
-					new Beam(worldObj, beam.finalLoc, new Vec3d(-1, 0, 0), new Color(0, 0, blue, beam.color.a / div));
+					new Beam(worldObj, beam.finalLoc, new Vec3d(-1, 0, 0), new Color(0, 0, blue, beam.color.a / div), beam.hasEffect);
 				else
-					new Beam(worldObj, beam.finalLoc, new Vec3d(-dir.zCoord, 0, dir.xCoord), new Color(0, 0, blue, beam.color.a / div));
+					new Beam(worldObj, beam.finalLoc, new Vec3d(-dir.zCoord, 0, dir.xCoord), new Color(0, 0, blue, beam.color.a / div), beam.hasEffect	);
 			}
 		}
 	}

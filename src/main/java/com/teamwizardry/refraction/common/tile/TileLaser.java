@@ -101,22 +101,22 @@ public class TileLaser extends TileEntity implements ILightSource
 			switch (face)
 			{
 				case NORTH:
-					new Beam(worldObj, center, new Vec3d(0, 0, 1), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA));
+					new Beam(worldObj, center, new Vec3d(0, 0, 1), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA), true);
 					break;
 				case SOUTH:
-					new Beam(worldObj, center, new Vec3d(0, 0, -1), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA));
+					new Beam(worldObj, center, new Vec3d(0, 0, -1), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA), true);
 					break;
 				case EAST:
-					new Beam(worldObj, center, new Vec3d(-1, 0, 0), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA));
+					new Beam(worldObj, center, new Vec3d(-1, 0, 0), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA), true);
 					break;
 				case WEST:
-					new Beam(worldObj, center, new Vec3d(1, 0, 0), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA));
+					new Beam(worldObj, center, new Vec3d(1, 0, 0), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA), true);
 					break;
 				case UP:
-					new Beam(worldObj, center, new Vec3d(0, 1, 0), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA));
+					new Beam(worldObj, center, new Vec3d(0, 1, 0), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA), true);
 					break;
 				case DOWN:
-					new Beam(worldObj, center, new Vec3d(0, -1, 0), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA));
+					new Beam(worldObj, center, new Vec3d(0, -1, 0), new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA), true);
 					break;
 			}
 			power -= 20;

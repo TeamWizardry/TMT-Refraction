@@ -28,22 +28,6 @@ public class TileMagnifier extends TileEntity implements ILightSource {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-
-		// TODO
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
-
-		// TODO
-
-		return compound;
-	}
-
-	@Override
 	public NBTTagCompound getUpdateTag() {
 		return writeToNBT(new NBTTagCompound());
 	}
@@ -97,7 +81,7 @@ public class TileMagnifier extends TileEntity implements ILightSource {
 			Vec3d dir = new Vec3d(0, -1, 0);
 			Color color = new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.SOLAR_ALPHA);
 			
-			new Beam(worldObj, center, dir, color);
+			new Beam(worldObj, center, dir, color, true);
 		}
 	}
 }
