@@ -1,10 +1,8 @@
 package com.teamwizardry.refraction.common.light;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -42,7 +40,7 @@ public class ReflectionTracker
 	public ReflectionTracker()
 	{
 		beams = new WeakHashMap<>();
-		sources = new HashSet<>();
+		sources = Collections.newSetFromMap(new WeakHashMap<>());
 		delayBuffers = new WeakHashMap<>();
 		delayBufferProcessingSwap = new WeakHashMap<>();
 		sinkBlocks = HashMultimap.create();

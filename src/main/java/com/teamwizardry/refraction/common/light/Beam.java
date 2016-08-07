@@ -42,23 +42,16 @@ public class Beam
 			}
 			else if (trace.typeOfHit == RayTraceResult.Type.BLOCK);
 			{
-				try
-				{
-				TileEntity tile = world.getTileEntity(trace.getBlockPos());
-				if (tile instanceof IBeamHandler)
-				{
-					ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
-				}
-				else
-				{
-					IEffect effect = EffectTracker.getEffect(color);
-					BlockPos pos = trace.getBlockPos();
-					if (effect != null) EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
-				}
-				}
-				catch (NullPointerException e)
-				{
-					LibrarianLib.logger.error(e.getStackTrace());
+				if(trace.getBlockPos() != null) {
+					TileEntity tile = world.getTileEntity(trace.getBlockPos());
+					if (tile instanceof IBeamHandler) {
+						ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
+					} else {
+						IEffect effect = EffectTracker.getEffect(color);
+						BlockPos pos = trace.getBlockPos();
+						if (effect != null)
+							EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
+					}
 				}
 			}
 		}

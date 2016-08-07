@@ -21,9 +21,7 @@ public class EntityTrace
 {
 	/**
 	 * Gets the first block or entity along the given line from the given entity
-	 * 
-	 * @param entity
-	 *            The entity from which to search
+	 *
 	 * @param dir
 	 *            The direction along which to search
 	 * @param distance
@@ -55,6 +53,8 @@ public class EntityTrace
 		{
 			Entity current = list.get(j);
 			AxisAlignedBB axis = current.getEntityBoundingBox().expandXyz(current.getCollisionBorderSize());
+			if(current instanceof EntityItem)
+				axis = axis.expand(0, 0.25, 0);
 			RayTraceResult result = axis.calculateIntercept(pos, cast);
 
 			if (axis.isVecInside(pos))
@@ -91,6 +91,6 @@ public class EntityTrace
 	private static RayTraceResult blockTrace(World world, Vec3d pos, Vec3d ray, double distance)
 	{
 		Vec3d cast = pos.add(ray.normalize().scale(distance));
-		return BeamPulsar.rayTraceBlocks(world, new HashSet<>(ImmutableList.of(new BlockPos(pos))), pos, cast, true, false, true);
+		return BeamPulsar.rayTraceBlocks(world, new HashSet<>(ImmutableList.of(new BlockPos(pos))), pos, cast, false, false, true);
 	}
 }
