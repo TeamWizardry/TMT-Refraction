@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.common.recipe.assemblyrecipe;
+package com.teamwizardry.refraction.common.recipe;
 
 import java.util.ArrayList;
 import net.minecraft.block.Block;

@@ -197,21 +197,29 @@ public class BlockPrism extends BlockDirectional implements ITileEntityProvider,
 		
 		double l = 0, L = 1-l;
 		Vec3d
-			a = new Vec3d(l, 0.5, l),
-			b = new Vec3d(l, 0.5, L),
-			c = new Vec3d(L, 0.5, L),
-			d = new Vec3d(L, 0.5, l);
+			a = new Vec3d(0.5, 0.5, 0),
+			b = new Vec3d(0, 0.5, 0.5),
+			c = new Vec3d(0.5, 0.5, 1),
+			d = new Vec3d(1, 0.5, 0.5);
 		
 		Tri[] tris = new Tri[] {
-			new Tri(a, b, tip),
-			new Tri(b, c, tip),
-			new Tri(c, d, tip),
-			new Tri(d, a, tip),
+				new Tri(tip, a, base),
+				new Tri(tip, c, base),
+				
+				new Tri(b, d, tip),
+				new Tri(b, d, base),
+				
+				new Tri(a, b, d),
+				new Tri(c, b, d)
+//			new Tri(a, b, tip),
+//			new Tri(b, c, tip),
+//			new Tri(c, d, tip),
+//			new Tri(d, a, tip),
 
-			new Tri(a, b, base),
-			new Tri(b, c, base),
-			new Tri(c, d, base),
-			new Tri(d, a, base)
+//			new Tri(a, b, base),
+//			new Tri(b, c, base),
+//			new Tri(c, d, base),
+//			new Tri(d, a, base)
 		};
 		
 		Vec3d start = startRaw.subtract(new Vec3d(pos));

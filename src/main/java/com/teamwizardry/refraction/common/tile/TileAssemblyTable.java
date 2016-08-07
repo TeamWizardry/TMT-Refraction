@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import com.teamwizardry.refraction.api.AssemblyTableItemHelper;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
-import com.teamwizardry.refraction.common.recipe.assemblyrecipe.AssemblyRecipe;
+import com.teamwizardry.refraction.common.recipe.AssemblyRecipe;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
 
 /**

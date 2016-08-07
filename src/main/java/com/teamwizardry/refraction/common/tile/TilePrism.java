@@ -76,7 +76,6 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 			float blue = beam.color.b;
 			
 			Vec3d dir = beam.finalLoc.subtract(beam.initLoc).normalize();
-			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			boolean vert = (dir.xCoord == 0 && dir.zCoord == 0);
 			
 			int div = (red > 0 ? 1 : 0) + (blue > 0 ? 1 : 0) + (green > 0 ? 1 : 0);
@@ -84,22 +83,22 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 			if (red > 0)
 			{
 				if (vert)
-					new Beam(worldObj, center, new Vec3d(1, 0, 0), new Color(red, 0, 0, beam.color.a / div));
+					new Beam(worldObj, beam.finalLoc, new Vec3d(1, 0, 0), new Color(red, 0, 0, beam.color.a / div));
 				else
-					new Beam(worldObj, center, new Vec3d(dir.zCoord, 0, -dir.xCoord), new Color(red, 0, 0, beam.color.a / div));
+					new Beam(worldObj, beam.finalLoc, new Vec3d(dir.zCoord, 0, -dir.xCoord), new Color(red, 0, 0, beam.color.a / div));
 			}
 			
 			if (green > 0)
 			{
-				new Beam(worldObj, center, dir, new Color(0, green, 0, beam.color.a / div));
+				new Beam(worldObj, beam.finalLoc, dir, new Color(0, green, 0, beam.color.a / div));
 			}
 			
 			if (blue > 0)
 			{
 				if (vert)
-					new Beam(worldObj, center, new Vec3d(-1, 0, 0), new Color(0, 0, blue, beam.color.a / div));
+					new Beam(worldObj, beam.finalLoc, new Vec3d(-1, 0, 0), new Color(0, 0, blue, beam.color.a / div));
 				else
-					new Beam(worldObj, center, new Vec3d(-dir.zCoord, 0, dir.xCoord), new Color(0, 0, blue, beam.color.a / div));
+					new Beam(worldObj, beam.finalLoc, new Vec3d(-dir.zCoord, 0, dir.xCoord), new Color(0, 0, blue, beam.color.a / div));
 			}
 		}
 	}

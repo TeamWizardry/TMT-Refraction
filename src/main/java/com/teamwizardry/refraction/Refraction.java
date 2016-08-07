@@ -1,14 +1,5 @@
 package com.teamwizardry.refraction;
 
-import com.teamwizardry.librarianlib.network.PacketHandler;
-import com.teamwizardry.refraction.common.light.BlockTracker;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
-import com.teamwizardry.refraction.common.proxy.CommonProxy;
-import com.teamwizardry.refraction.init.AssemblyRecipes;
-import com.teamwizardry.refraction.init.ModBlocks;
-import com.teamwizardry.refraction.init.ModEntities;
-import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -20,6 +11,16 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.librarianlib.network.PacketHandler;
+import com.teamwizardry.refraction.common.light.BlockTracker;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
+import com.teamwizardry.refraction.common.proxy.CommonProxy;
+import com.teamwizardry.refraction.init.AssemblyRecipes;
+import com.teamwizardry.refraction.init.CraftingRecipes;
+import com.teamwizardry.refraction.init.ModBlocks;
+import com.teamwizardry.refraction.init.ModEntities;
+import com.teamwizardry.refraction.init.ModItems;
 
 @Mod(
 		modid = Refraction.MOD_ID,
@@ -71,6 +72,7 @@ public class Refraction {
 	public void init(FMLInitializationEvent event) {
 		proxy.init(event);
 
+		CraftingRecipes.init();
 		AssemblyRecipes.init();
 
 	}
