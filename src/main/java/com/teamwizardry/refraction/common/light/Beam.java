@@ -6,7 +6,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import com.teamwizardry.librarianlib.LibrarianLib;
 import com.teamwizardry.librarianlib.network.PacketHandler;
 import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.api.IEffect;
@@ -56,10 +55,8 @@ public class Beam
 					if (effect != null) EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
 				}
 				}
-				catch (NullPointerException e)
-				{
-					LibrarianLib.logger.error(e.getStackTrace());
-				}
+				catch (NullPointerException e) // Don't really care about these NPEs, all they mean is that the BlockPos is outside the world height limit.
+				{}
 			}
 		}
 

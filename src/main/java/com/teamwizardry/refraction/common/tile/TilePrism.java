@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.tile;
 
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -85,7 +86,7 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 				if (vert)
 					new Beam(worldObj, center, new Vec3d(1, 0, 0), new Color(red, 0, 0, beam.color.a / div));
 				else
-					new Beam(worldObj, center, new Vec3d(dir.zCoord, 0, -dir.xCoord), new Color(red, 0, 0, beam.color.a));
+					new Beam(worldObj, center, new Vec3d(dir.zCoord, 0, -dir.xCoord), new Color(red, 0, 0, beam.color.a / div));
 			}
 			
 			if (green > 0)
@@ -98,7 +99,7 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 				if (vert)
 					new Beam(worldObj, center, new Vec3d(-1, 0, 0), new Color(0, 0, blue, beam.color.a / div));
 				else
-					new Beam(worldObj, center, new Vec3d(-dir.zCoord, 0, dir.xCoord), new Color(0, 0, blue, beam.color.a));
+					new Beam(worldObj, center, new Vec3d(-dir.zCoord, 0, dir.xCoord), new Color(0, 0, blue, beam.color.a / div));
 			}
 		}
 	}

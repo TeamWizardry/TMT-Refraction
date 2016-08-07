@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
 
 public class ReflectionTracker
 {
@@ -60,7 +61,12 @@ public class ReflectionTracker
 		{
 			for (ILightSource source : sources)
 			{
-				source.generateBeam();
+				try
+				{
+					source.generateBeam();
+				}
+				catch (IllegalArgumentException e)
+				{}
 			}
 		}
 	}
@@ -101,7 +107,7 @@ public class ReflectionTracker
 
 	public void recieveBeam(IBeamHandler handler, Beam beam)
 	{
-		delayBuffers.put(handler, BeamConstants.BUFFER_DELAY);
+		delayBuffers.put(handler, handler instanceof TileReflectionChamber ? BeamConstants.COMBINER_DELAY : BeamConstants.BUFFER_DELAY);	
 		sinkBlocks.put(handler, beam);
 	}
 

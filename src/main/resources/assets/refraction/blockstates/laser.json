@@ -1,18 +1,34 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "refraction:laser"
+    "custom": {
+      "flip-v": true
+    },
+    "model": "refraction:laser.obj",
+    "uvlock": true
   },
+  "inventory": [
+    {}
+  ],
   "variants": {
-    "normal": [{}],
-    "inventory": [{}],
     "facing": {
-      "north": {},
-      "south": {"y": 180},
-      "west": {"y": 270},
-      "east": {"y": 90},
-      "up": {"x": -90},
-      "down": {"x": 90}
+      "up": {
+        "x": 90
+      },
+      "down": {
+        "x": 270
+      },
+      "north": {
+      },
+      "south": {
+        "y": 180
+      },
+      "west": {
+        "y": 270
+      },
+      "east": {
+        "y": 90
+      }
     }
   }
 }

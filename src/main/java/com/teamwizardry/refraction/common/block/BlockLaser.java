@@ -1,8 +1,5 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.common.light.BeamConstants;
-import com.teamwizardry.refraction.common.tile.TileLaser;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -26,6 +23,11 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.light.BeamConstants;
+import com.teamwizardry.refraction.common.light.ILightSource;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.common.tile.TileLaser;
 
 /**
  * Created by LordSaad44
@@ -75,8 +77,8 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider 
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getAdjustedHorizontalFacing()));
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getStateFromMeta(meta).withProperty(FACING, facing);
 	}
 
 	@Override
@@ -107,5 +109,14 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider 
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
+	}
+	
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
+	{
+		TileEntity entity = world.getTileEntity(pos);
+		if (entity instanceof ILightSource)
+			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
+		super.breakBlock(world, pos, state);
 	}
 }
