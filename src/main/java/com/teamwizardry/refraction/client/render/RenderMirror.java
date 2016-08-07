@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,9 +13,12 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -22,72 +26,81 @@ import org.lwjgl.opengl.GL11;
  */
 public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 
-	private IModel model;
-	private IBakedModel bakedModel;
+	private IBakedModel modelArms, modelMirror;
 
 	public RenderMirror() {
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	private IBakedModel getBakedModel() {
-		if (bakedModel == null) {
+	public void reload(ClientProxy.ResourceReloadEvent event) {
+		modelArms = null;
+		modelMirror = null;
+	}
+	
+	private void getBakedModels() {
+		IModel model = null;
+		if (modelArms == null) {
 			try {
-				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_head.obj")); //MODEL: TODO
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_arms")); //MODEL: TODO
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			bakedModel = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
+			modelArms = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 					location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 		}
-		return bakedModel;
+		if (modelMirror == null) {
+			try {
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_head")); //MODEL: TODO
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			modelMirror = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
+				location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
+		}
 	}
 
 	@Override
 	public void renderTileEntityAt(TileMirror te, double x, double y, double z, float partialTicks, int destroyStage) {
 		GlStateManager.pushMatrix();
-
-		GlStateManager.translate(x, y, z); // Translate pad to coords here
-		GlStateManager.translate(0.5, 0.5, 0.5);
+		getBakedModels();
+		World world = te.getWorld();
 		
-		GlStateManager.disableRescaleNormal();
-
-		GlStateManager.rotate(te.getRotY(), 0, 1, 0);
-		GlStateManager.rotate(te.getRotX(), 1, 0, 0);
-		// TODO: pad keeps translating off of center as rotation changes
-
+		Tessellator tessellator = Tessellator.getInstance();
+		VertexBuffer vb = tessellator.getBuffer();
+		
 		RenderHelper.disableStandardItemLighting();
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		if (Minecraft.isAmbientOcclusionEnabled())
 			GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		else
 			GlStateManager.shadeModel(GL11.GL_FLAT);
-
-		World world = te.getWorld();
-
-		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vb = tessellator.getBuffer();
 		
-		GlStateManager.disableTexture2D();
-		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 		
-		vb.pos( 0.5, 0, -0.5).endVertex();
-		vb.pos(-0.5, 0, -0.5).endVertex();
-		vb.pos(-0.5, 0,  0.5).endVertex();
-		vb.pos( 0.5, 0,  0.5).endVertex();
+		GlStateManager.translate(x, y, z); // Translate pad to coords here
+		GlStateManager.disableRescaleNormal();
 		
-		vb.pos( 0.5, 0,  0.5).endVertex();
-		vb.pos(-0.5, 0,  0.5).endVertex();
-		vb.pos(-0.5, 0, -0.5).endVertex();
-		vb.pos( 0.5, 0, -0.5).endVertex();
+		GlStateManager.translate(0.5, 0, 0.5);
+		GlStateManager.rotate(te.getRotY(), 0, 1, 0);
 		
-		tessellator.draw();
-		GlStateManager.enableTexture2D();
-		tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
-				world,
-				getBakedModel(),
-				world.getBlockState(te.getPos()),
-				te.getPos(),
-				Tessellator.getInstance().getBuffer(), true);
+			world,
+			modelArms,
+			world.getBlockState(te.getPos()),
+			BlockPos.ORIGIN,
+			vb, true);
+		tessellator.draw();
+		
+		GlStateManager.translate(0, 0.5, 0);
+		GlStateManager.rotate(te.getRotX(), 1, 0, 0);
+		
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
+			world,
+			modelMirror,
+			world.getBlockState(te.getPos()),
+			BlockPos.ORIGIN,
+			vb, true);
 		tessellator.draw();
 
 		RenderHelper.enableStandardItemLighting();
