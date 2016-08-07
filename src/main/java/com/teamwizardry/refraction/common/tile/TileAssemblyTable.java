@@ -126,12 +126,21 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 					for (int j = 0; j < inventItems.size(); j++)
 					{
 						if (i < 0 || j < 0) continue;
-						if (ItemStack.areItemsEqual(recipeItems.get(i), inventItems.get(i)))
+						try
+						{
+						if (ItemStack.areItemsEqual(recipeItems.get(i), inventItems.get(j)))
 						{
 							recipeItems.remove(i);
 							inventItems.remove(i);
 							i--;
 							j--;
+						}
+						}
+						catch (IndexOutOfBoundsException e)
+						{
+							i = 0;
+							j = 0;
+							break;
 						}
 					}
 				}
@@ -155,7 +164,6 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 				isCrafting = false;
 				EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, output);
 				worldObj.spawnEntityInWorld(entityItem);
-				this.markDirty();
 			}
 		}
 	}

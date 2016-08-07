@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.common.block.BlockMirror;
+import com.teamwizardry.refraction.common.block.BlockSplitter;
 
 /**
  * Created by LordSaad44
@@ -44,7 +45,13 @@ public class ItemScrewDriver extends Item {
 		if(block instanceof BlockMirror) {
 			( (BlockMirror) block ).adjust(worldIn, pos, stack, playerIn, facing);
 			return EnumActionResult.SUCCESS;
-		} else {
+		}
+		else if (block instanceof BlockSplitter)
+		{
+			((BlockSplitter) block).adjust(worldIn, pos, stack, playerIn, facing);
+			return EnumActionResult.SUCCESS;
+		}
+		else {
 			if(stack.getTagCompound() == null)
 				stack.setTagCompound(new NBTTagCompound());
 			int i = stack.getTagCompound().getInteger(MODE_TAG);
