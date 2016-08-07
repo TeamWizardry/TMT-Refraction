@@ -70,9 +70,9 @@ public class BlockMirror extends Block implements ITileEntityProvider, ILaserTra
 			float jump = ModItems.SCREW_DRIVER.getRotationMultiplier(stack) * (playerIn.isSneaking() ? -1 : 1);
 			
 			if(side.getAxis() == EnumFacing.Axis.Y) {
-				te.setRotY(( te.getRotY()+jump ) % 360);
+				te.setRotY((te.getRotY()+jump) % 360);
 			} else {
-				te.setRotX(MathUtil.clamp(te.getRotX() + jump, -180, 180));
+				te.setRotX((te.getRotX()+jump) % 360);
 			}
 		}
 	}

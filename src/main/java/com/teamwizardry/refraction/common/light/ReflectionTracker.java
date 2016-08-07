@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.light;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -66,6 +67,7 @@ public class ReflectionTracker
 				catch (IllegalArgumentException e)
 				{}
 			}
+			sources.removeIf((e) -> e instanceof TileEntity && ((TileEntity)e).isInvalid());
 		}
 	}
 
