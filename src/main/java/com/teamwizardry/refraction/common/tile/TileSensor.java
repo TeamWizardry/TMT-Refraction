@@ -7,13 +7,16 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
 
 /**
  * Created by LordSaad44
  */
-public class TileSensor extends TileEntity {
+public class TileSensor extends TileEntity implements IBeamHandler {
 
 	private IBlockState state;
+	private Beam[] beams = new Beam[]{};
 
 	public TileSensor() {
 	}
@@ -59,5 +62,16 @@ public class TileSensor extends TileEntity {
 	@Override
 	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
 		return INFINITE_EXTENT_AABB;
+	}
+	
+	@Override
+	public void handle(Beam... beams)
+	{
+		this.beams = beams;
+	}
+	
+	public Beam[] getBeams()
+	{
+		return beams;
 	}
 }

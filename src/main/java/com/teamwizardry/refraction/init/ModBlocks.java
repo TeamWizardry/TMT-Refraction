@@ -16,6 +16,7 @@ public class ModBlocks {
 	public static BlockLens LENS;
 	public static BlockReflectionChamber REF_CHAMBER;
 	public static BlockSplitter SPLITTER;
+	public static BlockSensor SENSOR;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -27,6 +28,7 @@ public class ModBlocks {
 		PRISM = new BlockPrism();
 		REF_CHAMBER = new BlockReflectionChamber();
 		SPLITTER = new BlockSplitter();
+		SENSOR = new BlockSensor();
 	}
 
 	public static void initModels() {
@@ -39,5 +41,6 @@ public class ModBlocks {
 		PRISM.initModel();
 		REF_CHAMBER.initModel();
 		SPLITTER.initModel();
+		SENSOR.initModel();
 	}
 }
