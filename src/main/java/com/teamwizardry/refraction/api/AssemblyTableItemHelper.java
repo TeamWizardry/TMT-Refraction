@@ -1,16 +1,16 @@
 package com.teamwizardry.refraction.api;
 
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 /**
  * Created by LordSaad44
  */
 public class AssemblyTableItemHelper {
 
-	private Item item;
+	private ItemStack item;
 	private float shift = 0;
 
-	public AssemblyTableItemHelper(Item item) {
+	public AssemblyTableItemHelper(ItemStack item) {
 		this.item = item;
 	}
 
@@ -22,11 +22,11 @@ public class AssemblyTableItemHelper {
 		this.shift = shift;
 	}
 
-	public Item getItem() {
+	public ItemStack getItemStack() {
 		return item;
 	}
 
-	public void setItem(Item item) {
+	public void setItemStack(ItemStack item) {
 		this.item = item;
 	}
 }

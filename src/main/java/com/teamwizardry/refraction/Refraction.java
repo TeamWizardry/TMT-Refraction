@@ -24,7 +24,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Mod(
 		modid = Refraction.MOD_ID,
 		name = Refraction.MOD_NAME,
-		version = Refraction.VERSION
+		version = Refraction.VERSION,
+		dependencies = Refraction.DEPENDENCIES
 )
 public class Refraction {
 
@@ -33,6 +34,7 @@ public class Refraction {
 	public static final String VERSION = "1.0";
 	public static final String CLIENT = "com.teamwizardry.refraction.client.proxy.ClientProxy";
 	public static final String SERVER = "com.teamwizardry.refraction.common.proxy.CommonProxy";
+	public static final String DEPENDENCIES = "required-after:librarianlib";
 
 	@SidedProxy(clientSide = CLIENT, serverSide = SERVER)
 	public static CommonProxy proxy;

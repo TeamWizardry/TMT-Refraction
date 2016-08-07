@@ -11,7 +11,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.api.IHeatable;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
@@ -20,7 +19,7 @@ import com.teamwizardry.refraction.common.light.ReflectionTracker;
 /**
  * Created by LordSaad44
  */
-public class TileLaser extends TileEntity implements IHeatable, ILightSource
+public class TileLaser extends TileEntity implements ILightSource
 {
 
 	private IBlockState state;

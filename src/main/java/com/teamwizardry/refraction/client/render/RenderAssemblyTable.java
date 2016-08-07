@@ -1,13 +1,12 @@
 package com.teamwizardry.refraction.client.render;
 
-import com.teamwizardry.librarianlib.math.shapes.Circle3D;
-import com.teamwizardry.refraction.common.tile.TileAssemblyTable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
+import com.teamwizardry.librarianlib.math.shapes.Circle3D;
+import com.teamwizardry.refraction.common.tile.TileAssemblyTable;
 
 /**
  * Created by LordSaad44
@@ -44,7 +43,7 @@ public class RenderAssemblyTable extends TileEntitySpecialRenderer<TileAssemblyT
 			GlStateManager.rotate((float) shifted, 0, 1, 0);
 			GlStateManager.scale(0.3, 0.3, 0.3);
 
-			Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(te.getInventory().get(i).getItem()), ItemCameraTransforms.TransformType.NONE);
+			Minecraft.getMinecraft().getRenderItem().renderItem(te.getInventory().get(i).getItemStack(), ItemCameraTransforms.TransformType.NONE);
 			GlStateManager.popMatrix();
 		}
 	}

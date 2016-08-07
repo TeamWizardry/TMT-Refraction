@@ -58,6 +58,8 @@ public class ReflectionTracker
 			return;
 		if (TickTracker.ticks % BeamConstants.SOURCE_TIMER == 0)
 		{
+			Set<ILightSource> lights = new HashSet<>();
+			lights.addAll(sources);
 			for (ILightSource source : sources)
 			{
 				try

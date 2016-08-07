@@ -78,7 +78,9 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider 
 
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return this.getStateFromMeta(meta).withProperty(FACING, facing);
+		if (placer.rotationPitch > 45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.DOWN);
+		if (placer.rotationPitch < -45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.UP);
+		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing());
 	}
 
 	@Override

@@ -16,64 +16,72 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import com.teamwizardry.refraction.api.AssemblyTableItemHelper;
-import com.teamwizardry.refraction.api.IAssemblyRecipe;
-import com.teamwizardry.refraction.api.IHeatable;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
+import com.teamwizardry.refraction.common.recipe.assemblyrecipe.AssemblyRecipe;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
 
 /**
  * Created by LordSaad44
  */
-public class TileAssemblyTable extends TileEntity implements ITickable, IHeatable, IBeamHandler {
+public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHandler
+{
 
 	private IBlockState state;
 	private ArrayList<AssemblyTableItemHelper> inventory = new ArrayList<>();
 	private int craftingTime = 0;
 	private boolean isCrafting = false;
 	private ItemStack output;
+	private int temperature;
 
-	public TileAssemblyTable() {
-	}
+	public TileAssemblyTable()
+	{}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound compound)
+	{
 		super.readFromNBT(compound);
 		inventory = new ArrayList<>();
-		if (compound.hasKey("inventory")) {
+		if (compound.hasKey("inventory"))
+		{
 			NBTTagList list = compound.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
 			for (int i = 0; i < list.tagCount(); i++)
-				inventory.add(new AssemblyTableItemHelper(ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i)).getItem()));
+				inventory.add(new AssemblyTableItemHelper(ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i))));
 		}
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound compound)
+	{
 		compound = super.writeToNBT(compound);
 
-		if (inventory.size() > 0) {
+		if (inventory.size() > 0)
+		{
 			NBTTagList list = new NBTTagList();
 			for (AssemblyTableItemHelper anInventory : inventory)
-				list.appendTag(new ItemStack(anInventory.getItem()).writeToNBT(new NBTTagCompound()));
+				list.appendTag(anInventory.getItemStack().writeToNBT(new NBTTagCompound()));
 			compound.setTag("inventory", list);
 		}
 		return compound;
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag() {
+	public NBTTagCompound getUpdateTag()
+	{
 		return writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
+	public SPacketUpdateTileEntity getUpdatePacket()
+	{
 		NBTTagCompound tag = new NBTTagCompound();
 		writeToNBT(tag);
 		return new SPacketUpdateTileEntity(pos, 0, tag);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+	{
 		super.onDataPacket(net, packet);
 		readFromNBT(packet.getNbtCompound());
 
@@ -83,68 +91,97 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IHeatabl
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
+	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox()
+	{
 		return INFINITE_EXTENT_AABB;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void update() {
+	public void update()
+	{
 		List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos, pos.add(1, 2, 1)));
 
-		for (EntityItem item : items) {
+		for (EntityItem item : items)
+		{
 			for (int i = 0; i < item.getEntityItem().stackSize; i++)
-				inventory.add(new AssemblyTableItemHelper(item.getEntityItem().getItem()));
+				inventory.add(new AssemblyTableItemHelper(item.getEntityItem()));
 
 			worldObj.removeEntity(item);
 		}
 		if (!items.isEmpty())
 			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 
-		for (IAssemblyRecipe recipe : AssemblyRecipes.recipes) {
-			//if (temperature < recipe.getMaxTemperature() && temperature < recipe.getMinTemperature()) {
-			boolean match = true;
-			for (int i = 0; i < recipe.getItems().size(); i++) {
-				if (inventory.size() > i) {
-					if (inventory.get(i).getItem() != recipe.getItems().get(i)) match = false;
-				} else match = false;
+		for (AssemblyRecipe recipe : AssemblyRecipes.recipes)
+		{
+			if (temperature < recipe.getMaxStrength() && temperature > recipe.getMinStrength())
+			{
+				boolean match = true;
+				ArrayList<ItemStack> recipeItems = (ArrayList<ItemStack>) recipe.getItems().clone();
+				ArrayList<ItemStack> inventItems = new ArrayList<>();
+				for (AssemblyTableItemHelper item : inventory)
+					inventItems.add(item.getItemStack());
+				for (int i = 0; i < recipeItems.size(); i++)
+				{
+					for (int j = 0; j < inventItems.size(); j++)
+					{
+						if (i < 0 || j < 0) continue;
+						if (ItemStack.areItemsEqual(recipeItems.get(i), inventItems.get(i)))
+						{
+							recipeItems.remove(i);
+							inventItems.remove(i);
+							i--;
+							j--;
+						}
+					}
+				}
+				if (recipeItems.size() != 0 || inventItems.size() != 0) match = false;
+				if (match)
+				{
+					output = recipe.getResult();
+					isCrafting = true;
+				}
 			}
-			if (match) {
-				output = recipe.getResult();
-				isCrafting = true;
-			}
-			//}
 		}
 
-		if (isCrafting) {
+		if (isCrafting)
+		{
 			if (craftingTime < 200)
 				craftingTime++;
-			else {
+			else
+			{
 				inventory.clear();
 				craftingTime = 0;
 				isCrafting = false;
 				EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, output);
 				worldObj.spawnEntityInWorld(entityItem);
+				this.markDirty();
 			}
 		}
 	}
 
-	public ArrayList<AssemblyTableItemHelper> getInventory() {
+	public ArrayList<AssemblyTableItemHelper> getInventory()
+	{
 		return inventory;
 	}
 
 	@Override
-	public void handle(Beam... intputs) {
-//		double temp = 0;
-//		for (Beam beam : intputs) {
-			// TEMPERATURE HERE
-//		}
+	public void handle(Beam... intputs)
+	{
+		temperature = 0;
+		for (Beam beam : intputs)
+		{
+			temperature += (int)(beam.color.a * 256);
+		}
 	}
 
-	public int getCraftingTime() {
+	public int getCraftingTime()
+	{
 		return craftingTime;
 	}
 
-	public boolean isCrafting() {
+	public boolean isCrafting()
+	{
 		return isCrafting;
 	}
 }
