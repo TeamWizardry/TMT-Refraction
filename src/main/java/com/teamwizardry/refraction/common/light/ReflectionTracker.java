@@ -1,8 +1,11 @@
 package com.teamwizardry.refraction.common.light;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -60,7 +63,7 @@ public class ReflectionTracker
 		{
 			Set<ILightSource> lights = new HashSet<>();
 			lights.addAll(sources);
-			for (ILightSource source : sources)
+			for (ILightSource source : lights)
 			{
 				try
 				{

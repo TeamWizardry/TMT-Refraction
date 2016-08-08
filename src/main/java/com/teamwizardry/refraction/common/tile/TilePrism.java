@@ -1,10 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.sun.corba.se.spi.ior.IOR;
-import com.teamwizardry.librarianlib.network.PacketHandler;
-import com.teamwizardry.refraction.common.block.BlockPrism;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -14,12 +9,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.librarianlib.network.PacketHandler;
 import com.teamwizardry.librarianlib.util.Color;
+import com.teamwizardry.refraction.common.block.BlockPrism;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
-
-import static com.sun.tools.internal.xjc.reader.Ring.add;
-import static sun.jvm.hotspot.oops.CellTypeState.ref;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
 
 /**
  * Created by LordSaad44
@@ -119,7 +114,7 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 			
 		}
 		
-		new Beam(worldObj, hitPos, ref, color, hasEffect);
+		new Beam(worldObj, hitPos, ref, color);
 	}
 	
 	private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {

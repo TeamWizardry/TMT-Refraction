@@ -5,25 +5,32 @@
       "flip-v": true
     },
     "model": "refraction:prism.obj",
+    "transform": "forge:default-block",
     "uvlock": true
   },
-  "inventory": [
-    {}
-  ],
   "variants": {
     "facing": {
       "up": {
+        "x": 180
       },
       "down": {
       },
       "north": {
+        "x": 90
       },
       "south": {
+        "x": 90,
+        "y": 180
       },
       "west": {
+        "x": 90,
+        "y": 270
       },
       "east": {
+        "x": 90,
+        "y": 90
       }
-    }
+    },
+    "inventory": [{}]
   }
 }

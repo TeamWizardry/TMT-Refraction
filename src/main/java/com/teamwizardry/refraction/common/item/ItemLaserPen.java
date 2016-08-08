@@ -1,7 +1,6 @@
 package com.teamwizardry.refraction.common.item;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -14,11 +13,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.BeamConstants;
 
 /**
  * Created by LordSaad44
@@ -60,11 +56,4 @@ public class ItemLaserPen extends Item {
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 	}
-	
-	@Override
-    public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
-    {
-//		if (getMaxItemUseDuration(stack) % BeamConstants.SOURCE_TIMER == 0)
-//			new Beam(player.worldObj, player, new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA), false);
-    }
 }

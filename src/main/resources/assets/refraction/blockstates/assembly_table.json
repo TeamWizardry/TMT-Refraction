@@ -1,7 +1,11 @@
 {
-  "variants": {
-    "normal": {
-      "model": "refraction:assembly_table"
+    "forge_marker": 1,
+    "defaults": {
+        "custom": { "flip-v": true },
+        "model": "refraction:assembly_table"
+    },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{}]
     }
-  }
 }

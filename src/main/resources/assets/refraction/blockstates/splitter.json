@@ -1,13 +1,19 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "refraction:mirror_base",
-    "textures": {
-        "0": "refraction:blocks/mirror_splitter"
+    "forge_marker": 1,
+    "defaults": {
+		"model": "refraction:mirror_base",
+		"textures": {
+			"0": "refraction:blocks/mirror_splitter"
+		}
+    },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{
+        	"model": "carpet_white",
+        	"textures":
+        	{
+        		"wool": "refraction:items/splitter"
+        	}
+        }]
     }
-  },
-  "variants": {
-    "normal": [{}],
-    "inventory": [{}]
-  }
 }

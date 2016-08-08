@@ -25,8 +25,8 @@ public class TileSplitter extends TileMirror {
 			Vec3d incomingDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 			Vec3d outgoingDir = incomingDir.subtract( normal.scale(incomingDir.dotProduct(normal)*2) );
 			
-			new Beam(this.worldObj, beam.finalLoc, incomingDir, new Color(beam.color.r, beam.color.g, beam.color.b, beam.color.a / 2), beam.hasEffect);
-			new Beam(this.worldObj, beam.finalLoc, outgoingDir, new Color(beam.color.r, beam.color.g, beam.color.b, beam.color.a / 2), beam.hasEffect);
+			new Beam(this.worldObj, beam.finalLoc, incomingDir, new Color(beam.color.r, beam.color.g, beam.color.b, beam.color.a / 2));
+			new Beam(this.worldObj, beam.finalLoc, outgoingDir, new Color(beam.color.r, beam.color.g, beam.color.b, beam.color.a / 2));
 		}
 	}
 }
