@@ -194,26 +194,26 @@ public class BlockPrism extends BlockDirectional implements ITileEntityProvider,
 	@Override
 	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
 		
-		Vec3d tip = new Vec3d(0.5, 1, 0.5);
-		Vec3d base = new Vec3d(0.5, 0, 0.5);
-		
-		double l = 0.125, L = 1-l;
 		Vec3d
-			a = new Vec3d(l, 0.501, l),
-			b = new Vec3d(l, 0.501, L),
-			c = new Vec3d(L, 0.501, L),
-			d = new Vec3d(L, 0.501, l);
+			a = new Vec3d(0, 0, 0),
+			b = new Vec3d(1, 0, 0.5),
+			c = new Vec3d(0, 0, 1),
+			A = a.addVector(0, 1, 0),
+			B = b.addVector(0, 1, 0),
+			C = c.addVector(0, 1, 0);
 		
 		Tri[] tris = new Tri[] {
-			new Tri(a, b, tip),
-			new Tri(b, c, tip),
-			new Tri(c, d, tip),
-			new Tri(d, a, tip),
-
-			new Tri(base, b, a), // backward so normals face correct direction
-			new Tri(base, c, b),
-			new Tri(base, d, c),
-			new Tri(base, a, d)
+			new Tri(a, b, c),
+			new Tri(A, C, B),
+			
+			new Tri(a, c, C),
+			new Tri(a, C, A),
+			
+			new Tri(a, A, B),
+			new Tri(a, B, b),
+			
+			new Tri(b, B, C),
+			new Tri(b, C, c),
 		};
 		
 		Vec3d start = startRaw.subtract(new Vec3d(pos));

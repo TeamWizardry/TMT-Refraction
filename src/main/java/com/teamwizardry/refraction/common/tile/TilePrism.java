@@ -63,7 +63,7 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 	@Override
 	public void handle(Beam... beams)
 	{
-		glassIOR = 1.4;
+		glassIOR = 1.2;
 		double redIOR = 0.6, greenIOR = 0.4, blueIOR = 0.2;
 		
 		IBlockState state = this.worldObj.getBlockState(pos);
