@@ -42,14 +42,14 @@ public class EffectAttract implements IEffect {
 	public void run(World world, Vec3d pos) {
 		if (cooldown >= 10) {
 			List<Entity> entities = null;
-			if (potency < 50)
+			if (potency < 128)
 			{
-				int power = potency / 16;
+				int power = 3 * potency / 32 / 2;
 				entities = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.xCoord - power, pos.yCoord - power, pos.zCoord - power, pos.xCoord + power, pos.yCoord + power, pos.zCoord + power));
 			}
 			else
 			{
-				int power = potency / 16;
+				int power = 3 * potency / 32 / 2;
 				world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(pos.xCoord - power, pos.yCoord - power, pos.zCoord - power, pos.xCoord + power, pos.yCoord + power, pos.zCoord + power));
 			}
 
