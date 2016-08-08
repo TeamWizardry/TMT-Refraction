@@ -1,7 +1,11 @@
 {
-  "variants": {
-    "normal": {
-      "model": "refraction:disco_ball"
+    "forge_marker": 1,
+    "defaults": {
+        "custom": { "flip-v": true },
+        "model": "refraction:disco_ball"
+    },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{}]
     }
-  }
 }

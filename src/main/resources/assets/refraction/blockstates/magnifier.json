@@ -2,7 +2,8 @@
   "forge_marker": 1,
   "defaults": {
     "custom": { "flip-v": true },
-    "model": "refraction:magnifier.obj"
+    "model": "refraction:magnifier.obj",
+    "transform": "forge:default-block"
   },
   "variants": {
     "normal": [{}],

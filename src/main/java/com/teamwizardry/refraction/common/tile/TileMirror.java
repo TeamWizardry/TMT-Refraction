@@ -125,7 +125,7 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 			
 			Vec3d outgoingDir = incomingDir.subtract( normal.scale(incomingDir.dotProduct(normal)*2) );
 			
-			new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color, beam.hasEffect);
+			new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color);
 		}
 	}
 }

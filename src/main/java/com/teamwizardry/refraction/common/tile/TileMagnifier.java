@@ -81,7 +81,7 @@ public class TileMagnifier extends TileEntity implements ILightSource {
 			Vec3d dir = new Vec3d(0, -1, 0);
 			Color color = new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.SOLAR_ALPHA);
 			
-			new Beam(worldObj, center, dir, color, true);
+			new Beam(worldObj, center, dir, color);
 		}
 	}
 }

@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.refraction.Refraction;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -21,6 +20,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.refraction.Refraction;
 
 /**
  * Created by LordSaad44
@@ -41,12 +41,6 @@ public class BlockLens extends Block {
 	@SideOnly(Side.CLIENT)
 	public void initModel() {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-	}
-
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-
-		return true;
 	}
 
 	@Override

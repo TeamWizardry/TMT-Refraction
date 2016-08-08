@@ -5,11 +5,9 @@
       "flip-v": true
     },
     "model": "refraction:laser.obj",
+    "transform": "forge:default-block",
     "uvlock": true
   },
-  "inventory": [
-    {}
-  ],
   "variants": {
     "facing": {
       "up": {
@@ -29,6 +27,7 @@
       "east": {
         "y": 90
       }
-    }
+    },
+    "inventory": [{}]
   }
 }
