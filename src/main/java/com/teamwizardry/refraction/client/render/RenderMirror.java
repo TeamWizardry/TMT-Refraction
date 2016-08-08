@@ -76,6 +76,7 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 	public void renderTileEntityAt(TileMirror te, double x, double y, double z, float partialTicks, int destroyStage) {
 		GlStateManager.pushMatrix();
 		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		getBakedModels();
 		World world = te.getWorld();
 		
