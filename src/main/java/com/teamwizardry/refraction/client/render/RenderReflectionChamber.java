@@ -35,13 +35,14 @@ public class RenderReflectionChamber extends TileEntitySpecialRenderer<TileRefle
 	@SubscribeEvent
 	public void reload(ClientProxy.ResourceReloadEvent event) {
 		model = null;
+		getBakedModels();
 	}
 	
 	private void getBakedModels() {
 		IModel model = null;
 		if (this.model == null) {
 			try {
-				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/reflection_chamber_center.obj")); //MODEL: TODO
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/reflection_chamber_inside.obj")); //MODEL: TODO
 				this.model = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 					location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 			} catch (Exception e) {
@@ -52,7 +53,6 @@ public class RenderReflectionChamber extends TileEntitySpecialRenderer<TileRefle
 	
 	@Override
 	public void renderTileEntityAt(TileReflectionChamber te, double x, double y, double z, float partialTicks, int destroyStage) {
-		getBakedModels();
 		
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		if (Minecraft.isAmbientOcclusionEnabled())

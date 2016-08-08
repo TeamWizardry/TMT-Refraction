@@ -64,7 +64,7 @@ public class ItemLaserPen extends Item {
 	@Override
     public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
     {
-		if (getMaxItemUseDuration(stack) % BeamConstants.SOURCE_TIMER == 0)
-			new Beam(player.worldObj, player, new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA), false);
+//		if (getMaxItemUseDuration(stack) % BeamConstants.SOURCE_TIMER == 0)
+//			new Beam(player.worldObj, player, new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.GLOWSTONE_ALPHA), false);
     }
 }
