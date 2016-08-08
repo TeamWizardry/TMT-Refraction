@@ -1,6 +1,6 @@
 {
   "parent":   "item/generated",
   "textures": {
-    "layer0": "refraction:items/laser_pointer"
+    "layer0": "refraction:items/reflective_alloy"
   }
 }

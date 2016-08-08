@@ -18,7 +18,7 @@ import com.teamwizardry.refraction.common.light.IBeamHandler;
 public class TileMirror extends TileEntity implements IBeamHandler {
 
 	private IBlockState state;
-	private float rotX, rotY;
+	private float rotX, rotY, rotXPowered = Float.NaN, rotYPowered = Float.NaN;
 
 	public TileMirror() {
 	}
@@ -29,6 +29,8 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 
 		if (compound.hasKey("rotX")) rotX = compound.getFloat("rotX");
 		if (compound.hasKey("rotY")) rotY = compound.getFloat("rotY");
+		if (compound.hasKey("rotXPowered")) rotXPowered = compound.getFloat("rotXPowered");
+		if (compound.hasKey("rotYPowered")) rotYPowered = compound.getFloat("rotYPowered");
 
 	}
 
@@ -38,7 +40,10 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 
 		compound.setFloat("rotX", rotX);
 		compound.setFloat("rotY", rotY);
-
+		if(!Float.isNaN(rotXPowered))
+			compound.setFloat("rotXPowered", rotXPowered);
+		if(!Float.isNaN(rotYPowered))
+			compound.setFloat("rotYPowered", rotYPowered);
 		return compound;
 	}
 
@@ -70,21 +75,35 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 	}
 
 	public float getRotX() {
+		if(Float.isNaN(rotXPowered))
+			return rotX;
+		if(worldObj.isBlockPowered(pos) || worldObj.isBlockIndirectlyGettingPowered(pos) > 0)
+			return rotXPowered;
 		return rotX;
 	}
 
 	public void setRotX(float rotX) {
-		this.rotX = rotX;
+		if(worldObj.isBlockPowered(pos) || worldObj.isBlockIndirectlyGettingPowered(pos) > 0)
+			this.rotXPowered = rotX;
+		else
+			this.rotX = rotX;
 		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		markDirty();
 	}
 
 	public float getRotY() {
+		if(Float.isNaN(rotYPowered))
+			return rotY;
+		if(worldObj.isBlockPowered(pos) || worldObj.isBlockIndirectlyGettingPowered(pos) > 0)
+			return rotYPowered;
 		return rotY;
 	}
 
 	public void setRotY(float rotY) {
-		this.rotY = rotY;
+		if(worldObj.isBlockPowered(pos) || worldObj.isBlockIndirectlyGettingPowered(pos) > 0)
+			this.rotYPowered = rotY;
+		else
+			this.rotY = rotY;
 		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		markDirty();
 	}

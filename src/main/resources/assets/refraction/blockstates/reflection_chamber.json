@@ -1,7 +1,7 @@
 {
   "variants": {
     "normal": {
-      "model": "refraction:magnifier"
+      "model": "refraction:reflection_chamber.obj"
     }
   }
 }

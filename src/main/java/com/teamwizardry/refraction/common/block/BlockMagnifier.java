@@ -47,12 +47,12 @@ public class BlockMagnifier extends Block implements ITileEntityProvider {
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileMagnifier();
 	}
-
+	
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.CUTOUT;
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.TRANSLUCENT;
 	}
-
+	
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;

@@ -53,12 +53,12 @@ public class BlockLens extends Block {
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return new AxisAlignedBB(0, 0, 0, 1, 0.5, 1);
 	}
-
+	
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.CUTOUT;
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.TRANSLUCENT;
 	}
-
+	
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;

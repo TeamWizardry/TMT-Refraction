@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.raytrace;
 
+import com.teamwizardry.librarianlib.math.Geometry;
 import net.minecraft.util.math.Vec3d;
 
 /**
@@ -7,13 +8,15 @@ import net.minecraft.util.math.Vec3d;
  */
 public class Tri {
 	
-	protected Vec3d a, b, c;
+	public Vec3d a, b, c;
 	
 	public Tri(Vec3d a, Vec3d b, Vec3d c) {
 		this.a = a;
 		this.b = b;
 		this.c = c;
 	}
+	
+	public Vec3d normal() { return Geometry.getNormal(a, b, c); }
 	
 	public Vec3d trace(Vec3d start, Vec3d end) {
 		return intersectLineTriangle(start, end, a, b, c);

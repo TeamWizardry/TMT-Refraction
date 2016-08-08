@@ -75,6 +75,7 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 	@Override
 	public void renderTileEntityAt(TileMirror te, double x, double y, double z, float partialTicks, int destroyStage) {
 		GlStateManager.pushMatrix();
+		GlStateManager.enableBlend();
 		getBakedModels();
 		World world = te.getWorld();
 		
@@ -97,34 +98,15 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		
 		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelBrightnessColor(
 			modelArms, 1.0F, 1, 1, 1);
-//		GlStateManager.translate(-te.getPos().getX(), -te.getPos().getY(), -te.getPos().getZ());
-//		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-//		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
-//			world,
-//			modelArms,
-//			world.getBlockState(te.getPos()),
-//			te.getPos(),
-//			vb, true);
-//		tessellator.draw();
-//		GlStateManager.translate(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
 		
 		GlStateManager.translate(0, 0.5, 0);
 		GlStateManager.rotate(te.getRotX(), 1, 0, 0);
 		
-//		GlStateManager.translate(-te.getPos().getX(), -te.getPos().getY(), -te.getPos().getZ());
-//		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelBrightnessColor(
 			te instanceof TileSplitter ? modelMirrorSplitter : modelMirror, 1.0F, 1, 1, 1);
-//		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
-//			world,
-//			te instanceof TileSplitter ? modelMirrorSplitter : modelMirror,
-//			world.getBlockState(te.getPos()),
-//			te.getPos(),
-//			vb, true);
-//		tessellator.draw();
-//		GlStateManager.translate(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
-
+		
 		RenderHelper.enableStandardItemLighting();
+		GlStateManager.disableBlend();
 		GlStateManager.popMatrix();
 	}
 }
