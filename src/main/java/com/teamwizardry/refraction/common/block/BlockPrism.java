@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.math.Geometry;
+import com.teamwizardry.librarianlib.math.Matrix4;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.common.light.ILaserTrace;
 import com.teamwizardry.refraction.common.raytrace.Tri;
@@ -194,6 +195,33 @@ public class BlockPrism extends BlockDirectional implements ITileEntityProvider,
 	@Override
 	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
 		
+		EnumFacing facing = blockState.getValue(FACING);
+		
+		Matrix4 matrixA = new Matrix4();
+		Matrix4 matrixB = new Matrix4();
+//		matrixA.translate(new Vec3d(-0.5, -0.5, -0.5));
+//		matrixB.translate(new Vec3d(0.5, 0.5, 0.5));
+		switch(facing) {
+			case UP:
+			case DOWN:
+			case EAST:
+				break;
+			case NORTH:
+				matrixA.rotate(Math.toRadians(270), new Vec3d(0, -1, 0));
+				matrixB.rotate(Math.toRadians(270), new Vec3d(0, 1, 0));
+				break;
+			case SOUTH:
+				matrixA.rotate(Math.toRadians(90), new Vec3d(0, -1, 0));
+				matrixB.rotate(Math.toRadians(90), new Vec3d(0, 1, 0));
+				break;
+			case WEST:
+				matrixA.rotate(Math.toRadians(180), new Vec3d(0, -1, 0));
+				matrixB.rotate(Math.toRadians(180), new Vec3d(0, 1, 0));
+				break;
+		}
+//		matrixA.translate(new Vec3d(0.5, 0.5, 0.5));
+//		matrixB.translate(new Vec3d(-0.5, -0.5, -0.5));
+		
 		Vec3d
 			a = new Vec3d(0, 0, 0),
 			b = new Vec3d(1, 0, 0.5),
@@ -216,8 +244,8 @@ public class BlockPrism extends BlockDirectional implements ITileEntityProvider,
 			new Tri(b, C, c),
 		};
 		
-		Vec3d start = startRaw.subtract(new Vec3d(pos));
-		Vec3d end = endRaw.subtract(new Vec3d(pos));
+		Vec3d start = matrixA.apply(startRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
+		Vec3d end = matrixA.apply(endRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
 		
 		Tri hitTri = null;
 		Vec3d hit = null;
@@ -238,7 +266,7 @@ public class BlockPrism extends BlockDirectional implements ITileEntityProvider,
 		if(hit == null)
 			return null;
 		
-		return new RayTraceResultData<Vec3d>(hit.add(new Vec3d(pos)), EnumFacing.UP, pos).data(hitTri.normal());
+		return new RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
 	}
 	
 	public static class RayTraceResultData<T> extends RayTraceResult {

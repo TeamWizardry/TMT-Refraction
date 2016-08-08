@@ -11,19 +11,19 @@
     {}
   ],
   "variants": {
-    "facing": {
-      "up": {
-      },
-      "down": {
-      },
-      "north": {
-      },
-      "south": {
-      },
-      "west": {
-      },
-      "east": {
+      "facing": {
+        "up": {},
+        "down": {},
+        "north": {
+			"y":270
+        },
+        "south": {
+          "y": 90
+        },
+        "west": {
+          "y": 180
+        },
+        "east": {}
       }
-    }
   }
 }
