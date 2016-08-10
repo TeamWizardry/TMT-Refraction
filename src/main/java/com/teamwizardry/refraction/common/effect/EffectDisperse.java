@@ -1,15 +1,13 @@
 package com.teamwizardry.refraction.common.effect;
 
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import com.teamwizardry.refraction.api.IEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.IEffect;
-import com.teamwizardry.refraction.client.fx.SparkleFX;
+
+import java.util.List;
 
 /**
  * Created by LordSaad44
@@ -39,7 +37,7 @@ public class EffectDisperse implements IEffect {
 	public void run(World world, Vec3d pos) {
 		
 		int power = 3 * potency / 32 / 2;
-		List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.subtract(power, power, power), pos.addVector(power, power, power)));
+		List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(new BlockPos(pos.subtract(power, power, power)), new BlockPos(pos.addVector(power, power, power))));
 		int pulled = 0;
 		for (Entity entity : entities) {
 			pulled++;
