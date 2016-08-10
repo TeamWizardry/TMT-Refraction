@@ -47,17 +47,17 @@ public class EffectDisperse implements IEffect {
 			setEntityMotionFromVector(entity, pos);
 		}
 
-		for (int i = 0; i < 5; i++) {
-			SparkleFX fx = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
-			fx.blur();
-			fx.setAlpha(0.3f);
-			fx.setScale(0.5f);
-			fx.setAge(30);
-			fx.fadeIn();
-			fx.fadeOut();
-			if (ThreadLocalRandom.current().nextBoolean()) fx.blur();
-			fx.setColor(Color.rgb(0x00008B));
-			fx.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.05), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
-		}
+//		for (int i = 0; i < 5; i++) {
+//			SparkleFX fx = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
+//			fx.blur();
+//			fx.setAlpha(0.3f);
+//			fx.setScale(0.5f);
+//			fx.setAge(30);
+//			fx.fadeIn();
+//			fx.fadeOut();
+//			if (ThreadLocalRandom.current().nextBoolean()) fx.blur();
+//			fx.setColor(Color.rgb(0x00008B));
+//			fx.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.05), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
+//		}
 	}
 }

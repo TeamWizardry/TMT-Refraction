@@ -15,10 +15,4 @@ public class EventHandler {
 	private EventHandler() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
-	
-	@SubscribeEvent
-	public void stitch(TextureStitchEvent.Pre event) {
-		event.getMap().registerSprite(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle"));
-		event.getMap().registerSprite(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle_blurred"));
-	}
 }

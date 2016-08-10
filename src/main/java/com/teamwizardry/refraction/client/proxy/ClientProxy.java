@@ -1,5 +1,7 @@
 package com.teamwizardry.refraction.client.proxy;
 
+import com.teamwizardry.refraction.client.EventHandlerClient;
+import com.teamwizardry.refraction.common.core.EventHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
@@ -33,6 +35,7 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		OBJLoader.INSTANCE.addDomain(Refraction.MOD_ID);
 		LaserRenderer.INSTANCE.getClass();
 		ScrewdriverOverlay.INSTANCE.getClass();
+		EventHandlerClient.INSTANCE.getClass(); // ditto
 	}
 
 	@Override

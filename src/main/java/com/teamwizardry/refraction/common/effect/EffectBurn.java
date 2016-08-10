@@ -50,45 +50,45 @@ public class EffectBurn implements IEffect
 			Color orangeRed = Color.rgb(0xFF4500);
 			Color gray = Color.rgb(0x696969);
 			
-			SparkleFX center = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
-			center.blur();
-			center.setAlpha(0.3f);
-			center.setScale(0.5f);
-			center.setAge(5);
-			center.fadeIn();
-			center.fadeOut();
-			center.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.05), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
-			center.setColor(yellow);
-			
-			SparkleFX flame = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
-			flame.blur();
-			flame.setAlpha(0.3f);
-			flame.setScale(0.5f);
-			flame.setAge(5);
-			flame.fadeIn();
-			flame.fadeOut();
-			flame.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.06, 0.2), ThreadLocalRandom.current().nextDouble(0.06, 0.1), ThreadLocalRandom.current().nextDouble(0.06, 0.2)));
-			flame.setColor(orange);
-			
-			SparkleFX flame2 = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
-			flame2.blur();
-			flame2.setAlpha(0.3f);
-			flame2.setScale(0.5f);
-			flame2.setAge(5);
-			flame2.fadeIn();
-			flame2.fadeOut();
-			flame2.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.06, 0.2), ThreadLocalRandom.current().nextDouble(0.06, 0.1), ThreadLocalRandom.current().nextDouble(0.06, 0.2)));
-			flame2.setColor(orangeRed);
-			
-			SparkleFX edge = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
-			edge.blur();
-			edge.setAlpha(0.3f);
-			edge.setScale(0.5f);
-			edge.setAge(5);
-			edge.fadeIn();
-			edge.fadeOut();
-			edge.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.06, 0.2), ThreadLocalRandom.current().nextDouble(0.12, 0.2), ThreadLocalRandom.current().nextDouble(0.06, 0.2)));
-			edge.setColor(gray);
+//			SparkleFX center = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
+//			center.blur();
+//			center.setAlpha(0.3f);
+//			center.setScale(0.5f);
+//			center.setAge(5);
+//			center.fadeIn();
+//			center.fadeOut();
+//			center.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.05), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
+//			center.setColor(yellow);
+//
+//			SparkleFX flame = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
+//			flame.blur();
+//			flame.setAlpha(0.3f);
+//			flame.setScale(0.5f);
+//			flame.setAge(5);
+//			flame.fadeIn();
+//			flame.fadeOut();
+//			flame.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.06, 0.2), ThreadLocalRandom.current().nextDouble(0.06, 0.1), ThreadLocalRandom.current().nextDouble(0.06, 0.2)));
+//			flame.setColor(orange);
+//
+//			SparkleFX flame2 = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
+//			flame2.blur();
+//			flame2.setAlpha(0.3f);
+//			flame2.setScale(0.5f);
+//			flame2.setAge(5);
+//			flame2.fadeIn();
+//			flame2.fadeOut();
+//			flame2.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.06, 0.2), ThreadLocalRandom.current().nextDouble(0.06, 0.1), ThreadLocalRandom.current().nextDouble(0.06, 0.2)));
+//			flame2.setColor(orangeRed);
+//
+//			SparkleFX edge = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
+//			edge.blur();
+//			edge.setAlpha(0.3f);
+//			edge.setScale(0.5f);
+//			edge.setAge(5);
+//			edge.fadeIn();
+//			edge.fadeOut();
+//			edge.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.06, 0.2), ThreadLocalRandom.current().nextDouble(0.12, 0.2), ThreadLocalRandom.current().nextDouble(0.06, 0.2)));
+//			edge.setColor(gray);
 		}
 	}
 }

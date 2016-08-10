@@ -96,7 +96,7 @@ public class LaserRenderer {
 	}
 	
 	@SubscribeEvent
-	public void tick(TickEvent.WorldTickEvent event) {
+	public void tick(TickEvent.ClientTickEvent event) {
 		if(event.phase == TickEvent.Phase.START)
 			lasers.entrySet().stream().forEach((e) -> e.setValue(e.getValue()-1));
 	}

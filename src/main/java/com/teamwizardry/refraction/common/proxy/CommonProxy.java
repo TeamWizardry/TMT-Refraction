@@ -17,7 +17,6 @@ public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent event) {
 		CatChaseHandler.INSTANCE.getClass(); // load the class
-		EventHandler.INSTANCE.getClass(); // ditto
 	}
 
 	public void init(FMLInitializationEvent event) {

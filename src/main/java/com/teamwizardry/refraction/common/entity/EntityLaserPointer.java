@@ -22,6 +22,8 @@ import com.google.common.collect.ImmutableList;
 import com.teamwizardry.refraction.common.item.ItemLaserPen;
 import com.teamwizardry.refraction.init.ModItems;
 
+import static com.teamwizardry.librarianlib.gui.GuiTickHandler.partialTicks;
+
 /**
  * Created by TheCodeWarrior
  */
@@ -73,18 +75,28 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		} else if( player.get().getActiveItemStack() == null || player.get().getActiveItemStack().getItem() != ModItems.LASER_PEN ) {
 			this.setDead();
 		} else {
-			RayTraceResult res = player.get().rayTrace(ItemLaserPen.RANGE, 1);
+			RayTraceResult res = rayTrace(player.get(), ItemLaserPen.RANGE);
 			Vec3d pos = null;
 			if(res != null) {
 				pos = res.hitVec;
+				this.markPotionsDirty();
 				this.dataManager.set(AXIS_HIT, (byte)res.sideHit.getAxis().ordinal());
 			} else {
 				pos = player.get().getLook(1).scale(ItemLaserPen.RANGE).add(player.get().getPositionEyes(1));
+				this.markPotionsDirty();
 				this.dataManager.set(AXIS_HIT, (byte)255);
 				
 			}
 			this.setPositionAndUpdate(pos.xCoord, pos.yCoord, pos.zCoord);
 		}
+	}
+	
+	public RayTraceResult rayTrace(EntityPlayer player, double blockReachDistance)
+	{
+		Vec3d vec3d = new Vec3d(player.posX, player.posY + (double)player.getEyeHeight(), player.posZ);
+		Vec3d vec3d1 = this.getVectorForRotation(player.rotationPitch, player.rotationYawHead);
+		Vec3d vec3d2 = vec3d.addVector(vec3d1.xCoord * blockReachDistance, vec3d1.yCoord * blockReachDistance, vec3d1.zCoord * blockReachDistance);
+		return player.worldObj.rayTraceBlocks(vec3d, vec3d2, false, false, true);
 	}
 	
 	@Override
