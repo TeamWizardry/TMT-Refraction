@@ -31,18 +31,18 @@ public class EffectBonemeal implements IEffect {
 			for (int i = 0; i < (3 * potency / 32); i++) ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, new BlockPos(pos.xCoord, pos.yCoord, pos.zCoord));
 		}
 
-//		for (int i = 0; i < 5; i++) {
-//			SparkleFX fx = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5), pos.yCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5), pos.zCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5));
-//			fx.blur();
-//			fx.setAlpha(0.3f);
-//			fx.setScale(0.5f);
-//			fx.setAge(30);
-//			fx.fadeIn();
-//			fx.fadeOut();
-//			if (ThreadLocalRandom.current().nextBoolean()) fx.blur();
-//			fx.setColor(Color.rgb(0x008000));
-//			fx.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
-//			fx.setJitter(10, ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1));
-//		}
+		for (int i = 0; i < 5; i++) {
+			SparkleFX fx = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5), pos.yCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5), pos.zCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5));
+			fx.blur();
+			fx.setAlpha(0.3f);
+			fx.setScale(0.5f);
+			fx.setAge(30);
+			fx.fadeIn();
+			fx.fadeOut();
+			if (ThreadLocalRandom.current().nextBoolean()) fx.blur();
+			fx.setColor(Color.rgb(0x008000));
+			fx.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
+			fx.setJitter(10, ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1));
+		}
 	}
 }

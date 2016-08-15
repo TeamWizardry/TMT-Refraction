@@ -1,0 +1,18 @@
+{
+  "light_bridge_01":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_01", "stream": true}]},
+  "light_bridge_02":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_02", "stream": true}]},
+  "light_bridge_03":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_03", "stream": true}]},
+  "light_bridge_04":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_04", "stream": true}]},
+  "light_bridge_05":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_05", "stream": true}]},
+  "light_bridge_06":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_06", "stream": true}]},
+  "light_bridge_07":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_07", "stream": true}]},
+  "light_bridge_08":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_08", "stream": true}]},
+  "light_bridge_09":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_09", "stream": true}]},
+  "light_bridge_10":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_10", "stream": true}]},
+  "light_bridge_11":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_11", "stream": true}]},
+  "light_bridge_12":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_12", "stream": true}]},
+  "light_bridge_13":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_13", "stream": true}]},
+  "light_bridge_14":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_14", "stream": true}]},
+  "light_bridge_15":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_15", "stream": true}]},
+  "light_bridge_16":     {"category": "block", "sounds": [{"name": "refraction:light_bridge_16", "stream": true}]}
+}
