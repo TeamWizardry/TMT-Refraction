@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.util.Color;
+import com.teamwizardry.refraction.api.ISpamSoundTileEntity;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
@@ -19,15 +20,18 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * Created by LordSaad44
  */
-public class TileLaser extends TileEntity implements ILightSource, ITickable {
+public class TileLaser extends TileEntity implements ILightSource, ITickable, ISpamSoundTileEntity {
 
 	private IBlockState state;
 	private double power = 0;
-	private int light_bridge_queue = 0;
+	private int hum_queue = -1;
 	private int soundTicker = 0;
+	private boolean shouldEmitSound = false;
 
 	public TileLaser() {
 		ReflectionTracker.getInstance(worldObj).addSource(this);
@@ -37,8 +41,8 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 
-		if (compound.hasKey("power"))
-			power = compound.getDouble("power");
+		if (compound.hasKey("power")) power = compound.getDouble("power");
+		if (compound.hasKey("shouldEmitySound")) shouldEmitSound = compound.getBoolean("shouldEmitSound");
 	}
 
 	@Override
@@ -46,6 +50,7 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable {
 		compound = super.writeToNBT(compound);
 
 		compound.setDouble("power", power);
+		compound.setBoolean("shouldEmitSound", shouldEmitSound);
 
 		return compound;
 	}
@@ -117,14 +122,20 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable {
 
 	@Override
 	public void update() {
-		if (power > 0)
-			if (soundTicker > 20 * 4.5) {
+		if (shouldEmitSound && power > 0)
+			if (soundTicker > 20 * 2) {
 				soundTicker = 0;
 
-				worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(), ModSounds.light_bridges.get(light_bridge_queue), SoundCategory.BLOCKS, 0.3F, 1F);
+				worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(), ModSounds.electrical_hums.get(ThreadLocalRandom.current().nextInt(0, ModSounds.electrical_hums.size() - 1)), SoundCategory.BLOCKS, 0.1F, 1F);
 
-				if (light_bridge_queue + 1 >= ModSounds.light_bridges.size()) light_bridge_queue = 0;
-				else light_bridge_queue++;
 			} else soundTicker++;
 	}
+
+	public void setShouldEmitSound(boolean shouldEmitSound) {
+		this.shouldEmitSound = shouldEmitSound;
+	}
+
+	@Override
+	public boolean isEmittingSound() {
+		return shouldEmitSound;	}
 }

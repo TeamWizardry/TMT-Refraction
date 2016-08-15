@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class ModSounds {
 
 	public static final ArrayList<SoundEvent> light_bridges = new ArrayList<>();
+	public static final ArrayList<SoundEvent> electrical_hums = new ArrayList<>();
 
 	public static SoundEvent LIGHT_BRIDGE_01;
 	public static SoundEvent LIGHT_BRIDGE_02;
@@ -34,6 +35,22 @@ public class ModSounds {
 	public static SoundEvent LIGHT_BRIDGE_18;
 	public static SoundEvent LIGHT_BRIDGE_19;
 	public static SoundEvent LIGHT_BRIDGE_20;
+	public static SoundEvent ELECTRICAL_HUM_01;
+	public static SoundEvent ELECTRICAL_HUM_02;
+	public static SoundEvent ELECTRICAL_HUM_03;
+	public static SoundEvent ELECTRICAL_HUM_04;
+	public static SoundEvent ELECTRICAL_HUM_05;
+	public static SoundEvent ELECTRICAL_HUM_06;
+	public static SoundEvent ELECTRICAL_HUM_07;
+	public static SoundEvent ELECTRICAL_HUM_08;
+	public static SoundEvent ELECTRICAL_HUM_09;
+	public static SoundEvent ELECTRICAL_HUM_10;
+	public static SoundEvent ELECTRICAL_HUM_11;
+	public static SoundEvent ELECTRICAL_HUM_12;
+	public static SoundEvent ELECTRICAL_HUM_13;
+	public static SoundEvent ELECTRICAL_HUM_14;
+	public static SoundEvent ELECTRICAL_HUM_15;
+	public static SoundEvent ELECTRICAL_HUM_16;
 
 	public static void init() {
 		LIGHT_BRIDGE_01 = registerSound("light_bridge_01");
@@ -76,6 +93,39 @@ public class ModSounds {
 		light_bridges.add(LIGHT_BRIDGE_18);
 		light_bridges.add(LIGHT_BRIDGE_19);
 		light_bridges.add(LIGHT_BRIDGE_20);
+
+		ELECTRICAL_HUM_01 = registerSound("electrical_hum_01");
+		ELECTRICAL_HUM_02 = registerSound("electrical_hum_02");
+		ELECTRICAL_HUM_03 = registerSound("electrical_hum_03");
+		ELECTRICAL_HUM_04 = registerSound("electrical_hum_04");
+		ELECTRICAL_HUM_05 = registerSound("electrical_hum_05");
+		ELECTRICAL_HUM_06 = registerSound("electrical_hum_06");
+		ELECTRICAL_HUM_07 = registerSound("electrical_hum_07");
+		ELECTRICAL_HUM_08 = registerSound("electrical_hum_08");
+		ELECTRICAL_HUM_09 = registerSound("electrical_hum_09");
+		ELECTRICAL_HUM_10 = registerSound("electrical_hum_10");
+		ELECTRICAL_HUM_11 = registerSound("electrical_hum_11");
+		ELECTRICAL_HUM_12 = registerSound("electrical_hum_12");
+		ELECTRICAL_HUM_13 = registerSound("electrical_hum_13");
+		ELECTRICAL_HUM_14 = registerSound("electrical_hum_14");
+		ELECTRICAL_HUM_15 = registerSound("electrical_hum_15");
+		ELECTRICAL_HUM_16 = registerSound("electrical_hum_16");
+		electrical_hums.add(ELECTRICAL_HUM_01);
+		electrical_hums.add(ELECTRICAL_HUM_02);
+		electrical_hums.add(ELECTRICAL_HUM_03);
+		electrical_hums.add(ELECTRICAL_HUM_04);
+		electrical_hums.add(ELECTRICAL_HUM_05);
+		electrical_hums.add(ELECTRICAL_HUM_06);
+		electrical_hums.add(ELECTRICAL_HUM_07);
+		electrical_hums.add(ELECTRICAL_HUM_08);
+		electrical_hums.add(ELECTRICAL_HUM_09);
+		electrical_hums.add(ELECTRICAL_HUM_10);
+		electrical_hums.add(ELECTRICAL_HUM_11);
+		electrical_hums.add(ELECTRICAL_HUM_12);
+		electrical_hums.add(ELECTRICAL_HUM_13);
+		electrical_hums.add(ELECTRICAL_HUM_14);
+		electrical_hums.add(ELECTRICAL_HUM_15);
+		electrical_hums.add(ELECTRICAL_HUM_16);
 	}
 
 	private static SoundEvent registerSound(String soundName) {

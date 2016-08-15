@@ -1,12 +1,17 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.ISpamSound;
+import com.teamwizardry.refraction.common.light.BeamConstants;
+import com.teamwizardry.refraction.common.light.ILightSource;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.common.tile.TileLaser;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,16 +29,11 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.common.light.BeamConstants;
-import com.teamwizardry.refraction.common.light.ILightSource;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.common.tile.TileLaser;
 
 /**
  * Created by LordSaad44
  */
-public class BlockLaser extends BlockDirectional implements ITileEntityProvider {
+public class BlockLaser extends BlockDirectional implements ITileEntityProvider, ISpamSound {
 
 	public BlockLaser() {
 		super(Material.IRON);
@@ -45,6 +45,7 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider 
 		GameRegistry.registerTileEntity(TileLaser.class, "laser");
 		GameRegistry.register(new ItemBlock(this), getRegistryName());
 		setCreativeTab(Refraction.tab);
+		setTickRandomly(true);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
@@ -56,7 +57,8 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider 
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileLaser();
+		TileLaser te = new TileLaser();
+		return te;
 	}
 
 	private TileLaser getTE(World world, BlockPos pos) {
@@ -78,9 +80,15 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider 
 	}
 
 	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		getTE(worldIn, pos).setShouldEmitSound(shouldEmitSound(worldIn, pos));
+	}
+
+	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		if (placer.rotationPitch > 45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.UP);
 		if (placer.rotationPitch < -45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.DOWN);
+
 		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing());
 	}
 
@@ -113,10 +121,9 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider 
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}
-	
+
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state)
-	{
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity entity = world.getTileEntity(pos);
 		if (entity instanceof ILightSource)
 			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
