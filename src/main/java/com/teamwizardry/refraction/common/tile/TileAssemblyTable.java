@@ -1,7 +1,9 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
+import com.teamwizardry.refraction.common.recipe.AssemblyRecipe;
+import com.teamwizardry.refraction.init.AssemblyRecipes;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -15,11 +17,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.refraction.api.AssemblyTableItemHelper;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
-import com.teamwizardry.refraction.common.recipe.AssemblyRecipe;
-import com.teamwizardry.refraction.init.AssemblyRecipes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by LordSaad44
@@ -28,7 +28,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 {
 
 	private IBlockState state;
-	private ArrayList<AssemblyTableItemHelper> inventory = new ArrayList<>();
+	private ArrayList<ItemStack> inventory = new ArrayList<>();
 	private int craftingTime = 0;
 	private boolean isCrafting = false;
 	private ItemStack output;
@@ -46,7 +46,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 		{
 			NBTTagList list = compound.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
 			for (int i = 0; i < list.tagCount(); i++)
-				inventory.add(new AssemblyTableItemHelper(ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i))));
+				inventory.add(ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i)));
 		}
 	}
 
@@ -58,8 +58,8 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 		if (inventory.size() > 0)
 		{
 			NBTTagList list = new NBTTagList();
-			for (AssemblyTableItemHelper anInventory : inventory)
-				list.appendTag(anInventory.getItemStack().writeToNBT(new NBTTagCompound()));
+			for (ItemStack anInventory : inventory)
+				list.appendTag(anInventory.writeToNBT(new NBTTagCompound()));
 			compound.setTag("inventory", list);
 		}
 		return compound;
@@ -105,7 +105,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 		for (EntityItem item : items)
 		{
 			for (int i = 0; i < item.getEntityItem().stackSize; i++)
-				inventory.add(new AssemblyTableItemHelper(item.getEntityItem()));
+				inventory.add(item.getEntityItem());
 
 			worldObj.removeEntity(item);
 		}
@@ -119,8 +119,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 				boolean match = true;
 				ArrayList<ItemStack> recipeItems = (ArrayList<ItemStack>) recipe.getItems().clone();
 				ArrayList<ItemStack> inventItems = new ArrayList<>();
-				for (AssemblyTableItemHelper item : inventory)
-					inventItems.add(item.getItemStack());
+				inventItems.addAll(inventory);
 				for (int i = 0; i < recipeItems.size(); i++)
 				{
 					for (int j = 0; j < inventItems.size(); j++)
@@ -168,7 +167,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 		}
 	}
 
-	public ArrayList<AssemblyTableItemHelper> getInventory()
+	public ArrayList<ItemStack> getInventory()
 	{
 		return inventory;
 	}

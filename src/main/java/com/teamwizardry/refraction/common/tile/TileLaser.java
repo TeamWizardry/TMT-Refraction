@@ -29,7 +29,6 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IS
 
 	private IBlockState state;
 	private double power = 0;
-	private int hum_queue = -1;
 	private int soundTicker = 0;
 	private boolean shouldEmitSound = false;
 
@@ -137,5 +136,6 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IS
 
 	@Override
 	public boolean isEmittingSound() {
-		return shouldEmitSound;	}
+		return shouldEmitSound;
+	}
 }

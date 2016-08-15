@@ -8,7 +8,6 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -29,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by LordSaad44
  */
-public class BlockAssemblyTable  extends Block implements ITileEntityProvider {
+public class BlockAssemblyTable extends Block implements ITileEntityProvider {
 
 	public BlockAssemblyTable() {
 		super(Material.IRON);
@@ -54,9 +53,26 @@ public class BlockAssemblyTable  extends Block implements ITileEntityProvider {
 		return new TileAssemblyTable();
 	}
 
+	private TileAssemblyTable getTE(World world, BlockPos pos) {
+		return (TileAssemblyTable) world.getTileEntity(pos);
+	}
+
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-
+		if (heldItem != null) {
+			TileAssemblyTable table = getTE(worldIn, pos);
+			if (!playerIn.isSneaking()) {
+				table.getInventory().add(heldItem);
+				--heldItem.stackSize;
+			} else {
+				for (int i = 0; i < heldItem.stackSize; i++) {
+					ItemStack clone = heldItem.copy();
+					clone.stackSize = 1;
+					table.getInventory().add(clone);
+					--heldItem.stackSize;
+				}
+			}
+		}
 		return true;
 	}
 

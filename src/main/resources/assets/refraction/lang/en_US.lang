@@ -2,7 +2,7 @@ tile.mirror.name=Mirror
 tile.lens.name=Lens
 tile.magnifier.name=Magnifier
 tile.assembly_table.name=Laser Assembly Table
-tile.laser.name=Light Amplification By Stimulated Emissions Ouput Device
+tile.laser.name=Light Amplification By Stimulated Emissions of Radiation Output Device
 tile.prism.name=Triangular Light Trifurcation Prism
 
 item.laser_pen.name=Laser Pen
