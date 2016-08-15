@@ -122,7 +122,7 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IS
 
 	@Override
 	public void update() {
-		if (shouldEmitSound && power > 0)
+		if (shouldEmitSound && power >= 20)
 			if (soundTicker > 20 * 2) {
 				soundTicker = 0;
 
