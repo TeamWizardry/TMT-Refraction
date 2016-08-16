@@ -2,7 +2,7 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.ISpamSound;
-import com.teamwizardry.refraction.api.ISpamSoundTileEntity;
+import com.teamwizardry.refraction.api.ISpamSoundProvider;
 import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
@@ -34,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by LordSaad44
  */
-public class BlockLaser extends BlockDirectional implements ITileEntityProvider, ISpamSound {
+public class BlockLaser extends BlockDirectional implements ITileEntityProvider, ISpamSoundProvider {
 
 	public BlockLaser() {
 		super(Material.IRON);
@@ -128,8 +128,8 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider,
 		TileEntity entity = world.getTileEntity(pos);
 		if (entity instanceof ILightSource)
 			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
-		if (entity instanceof ISpamSoundTileEntity)
-			((ISpamSoundTileEntity) entity).setShouldEmitSound(false);
+		if (entity instanceof ISpamSound)
+			((ISpamSound) entity).setShouldEmitSound(false);
 		recalculateAllSurroundingSpammables(world, pos);
 		super.breakBlock(world, pos, state);
 	}
