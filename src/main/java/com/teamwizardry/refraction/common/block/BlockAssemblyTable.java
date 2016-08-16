@@ -59,18 +59,21 @@ public class BlockAssemblyTable extends Block implements ITileEntityProvider {
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (heldItem != null) {
+		if (!worldIn.isRemote) {
 			TileAssemblyTable table = getTE(worldIn, pos);
-			if (!playerIn.isSneaking()) {
+
+			if (heldItem != null && heldItem.stackSize > 0) {
 				table.getInventory().add(heldItem);
 				--heldItem.stackSize;
-			} else {
-				for (int i = 0; i < heldItem.stackSize; i++) {
-					ItemStack clone = heldItem.copy();
-					clone.stackSize = 1;
-					table.getInventory().add(clone);
-					--heldItem.stackSize;
-				}
+				playerIn.openContainer.detectAndSendChanges();
+				worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
+
+			} else if (!table.getInventory().isEmpty()) {
+				ItemStack stack = table.getInventory().get(table.getInventory().size() - 1);
+				playerIn.setHeldItem(hand, stack);
+				playerIn.openContainer.detectAndSendChanges();
+				table.getInventory().remove(stack);
+				worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
 			}
 		}
 		return true;

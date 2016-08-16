@@ -81,7 +81,7 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider,
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		getTE(worldIn, pos).setShouldEmitSound(shouldEmitSound(worldIn, pos));
+		getTE(worldIn, pos).setShouldEmitSound(shouldEmitSound(worldIn, pos, true));
 	}
 
 	@Override
@@ -127,6 +127,7 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider,
 		TileEntity entity = world.getTileEntity(pos);
 		if (entity instanceof ILightSource)
 			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
+		recalculateAllSurroundingSpammables(world, pos);
 		super.breakBlock(world, pos, state);
 	}
 }
