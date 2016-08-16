@@ -6,4 +6,5 @@ package com.teamwizardry.refraction.api;
 public interface ISpamSoundTileEntity {
 
 	boolean isEmittingSound();
+	void setShouldEmitSound(boolean shouldEmitSound);
 }

@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.ISpamSound;
+import com.teamwizardry.refraction.api.ISpamSoundTileEntity;
 import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
@@ -81,7 +82,7 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider,
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		getTE(worldIn, pos).setShouldEmitSound(shouldEmitSound(worldIn, pos, true));
+		getTE(worldIn, pos).setShouldEmitSound(shouldEmitSound(worldIn, pos));
 	}
 
 	@Override
@@ -127,6 +128,8 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider,
 		TileEntity entity = world.getTileEntity(pos);
 		if (entity instanceof ILightSource)
 			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
+		if (entity instanceof ISpamSoundTileEntity)
+			((ISpamSoundTileEntity) entity).setShouldEmitSound(false);
 		recalculateAllSurroundingSpammables(world, pos);
 		super.breakBlock(world, pos, state);
 	}

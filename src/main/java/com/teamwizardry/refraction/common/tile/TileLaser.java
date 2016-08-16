@@ -130,6 +130,7 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IS
 			} else soundTicker++;
 	}
 
+	@Override
 	public void setShouldEmitSound(boolean shouldEmitSound) {
 		this.shouldEmitSound = shouldEmitSound;
 	}
