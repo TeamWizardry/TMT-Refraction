@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.api.ISpamSoundTileEntity;
+import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
@@ -25,7 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by LordSaad44
  */
-public class TileLaser extends TileEntity implements ILightSource, ITickable, ISpamSoundTileEntity {
+public class TileLaser extends TileEntity implements ILightSource, ITickable, ITileSpamSound {
 
 	private IBlockState state;
 	private double power = 0;
