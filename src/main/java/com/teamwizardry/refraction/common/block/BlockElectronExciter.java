@@ -3,10 +3,9 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.ISpamSoundProvider;
 import com.teamwizardry.refraction.api.ITileSpamSound;
-import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.common.tile.TileLaser;
+import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -15,16 +14,14 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -32,18 +29,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * Created by LordSaad44
+ * Created by Saad on 8/16/2016.
  */
-public class BlockLaser extends BlockDirectional implements ITileEntityProvider, ISpamSoundProvider {
+public class BlockElectronExciter extends BlockDirectional implements ITileEntityProvider, ISpamSoundProvider {
 
-	public BlockLaser() {
+	public BlockElectronExciter() {
 		super(Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		setUnlocalizedName("laser");
-		setRegistryName("laser");
+		setUnlocalizedName("electron_exciter");
+		setRegistryName("electron_exciter");
 		GameRegistry.register(this);
-		GameRegistry.registerTileEntity(TileLaser.class, "laser");
+		GameRegistry.registerTileEntity(TileElectronExciter.class, "electron_exciter");
 		GameRegistry.register(new ItemBlock(this), getRegistryName());
 		setCreativeTab(Refraction.tab);
 
@@ -57,26 +54,12 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider,
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		TileLaser te = new TileLaser();
+		TileElectronExciter te = new TileElectronExciter();
 		return te;
 	}
 
-	private TileLaser getTE(World world, BlockPos pos) {
-		return (TileLaser) world.getTileEntity(pos);
-	}
-
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (heldItem != null) {
-			if (heldItem.getItem() == Items.GLOWSTONE_DUST) {
-				TileLaser laser = getTE(worldIn, pos);
-				if (laser.getPower() < BeamConstants.NIGHT_DURATION) {
-					laser.setPower(laser.getPower() + (BeamConstants.NIGHT_DURATION / 32.0));
-					--heldItem.stackSize;
-				}
-			}
-		}
-		return true;
+	private TileElectronExciter getTE(World world, BlockPos pos) {
+		return (TileElectronExciter) world.getTileEntity(pos);
 	}
 
 	@Override
@@ -90,6 +73,28 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider,
 		if (placer.rotationPitch < -45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.DOWN);
 
 		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing());
+	}
+
+	@Override
+	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+		TileElectronExciter te = (TileElectronExciter) world.getTileEntity(pos);
+		if (te == null) return;
+
+		if (te.isLinked()) {
+			if (te.getLink() != neighbor && world.getBlockState(neighbor).getBlock() == this) return;
+			te.setLink(null);
+			te.invokeUpdate();
+		} else {
+			if (world.getBlockState(neighbor).getBlock() != this) return;
+			TileElectronExciter link = (TileElectronExciter) world.getTileEntity(neighbor);
+			if (link == null) return;
+			if (link.isLinked()) return;
+
+			te.setLink(neighbor);
+			link.setLink(pos);
+			te.invokeUpdate();
+			link.invokeUpdate();
+		}
 	}
 
 	@Override
@@ -130,6 +135,12 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider,
 		if (entity instanceof ITileSpamSound)
 			((ITileSpamSound) entity).setShouldEmitSound(false);
 		recalculateAllSurroundingSpammables(world, pos);
+
+		TileElectronExciter te = getTE(world, pos);
+		if (te.isLinked()) {
+			getTE(world, te.getLink()).setLink(null);
+			te.setLink(null);
+		}
 		super.breakBlock(world, pos, state);
 	}
 }

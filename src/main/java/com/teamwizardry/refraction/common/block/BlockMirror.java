@@ -1,12 +1,16 @@
 package com.teamwizardry.refraction.common.block;
 
-import javax.annotation.Nullable;
+import com.teamwizardry.librarianlib.math.Matrix4;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.client.render.RenderMirror;
+import com.teamwizardry.refraction.common.light.ILaserTrace;
+import com.teamwizardry.refraction.common.tile.TileMirror;
+import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -25,12 +29,8 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.librarianlib.math.Matrix4;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.client.render.RenderMirror;
-import com.teamwizardry.refraction.common.light.ILaserTrace;
-import com.teamwizardry.refraction.common.tile.TileMirror;
-import com.teamwizardry.refraction.init.ModItems;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by LordSaad44
@@ -99,9 +99,9 @@ public class BlockMirror extends Block implements ITileEntityProvider, ILaserTra
 		double p = 1.0/16.0;
 		
 		AxisAlignedBB aabb = new AxisAlignedBB(p, 0, p, 1-p, p, 1-p).offset(-0.5, -p/2, -0.5);
-		
-		
-		
+
+
+
 		RayTraceResult superResult = super.collisionRayTrace(blockState, worldIn, pos, startRaw, endRaw);
 		
 		TileMirror tile = (TileMirror) worldIn.getTileEntity(pos);

@@ -30,7 +30,7 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IT
 	private IBlockState state;
 	private double power = 0;
 	private int soundTicker = 0;
-	private boolean shouldEmitSound = false;
+	private boolean emittingSound = false;
 
 	public TileLaser() {
 		ReflectionTracker.getInstance(worldObj).addSource(this);
@@ -41,7 +41,7 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IT
 		super.readFromNBT(compound);
 
 		if (compound.hasKey("power")) power = compound.getDouble("power");
-		if (compound.hasKey("shouldEmitySound")) shouldEmitSound = compound.getBoolean("shouldEmitSound");
+		if (compound.hasKey("emitting_sound")) emittingSound = compound.getBoolean("emitting_sound");
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IT
 		compound = super.writeToNBT(compound);
 
 		compound.setDouble("power", power);
-		compound.setBoolean("shouldEmitSound", shouldEmitSound);
+		compound.setBoolean("emitting_sound", emittingSound);
 
 		return compound;
 	}
@@ -121,7 +121,7 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IT
 
 	@Override
 	public void update() {
-		if (shouldEmitSound && power >= 20)
+		if (emittingSound && power >= 20)
 			if (soundTicker > 20 * 2) {
 				soundTicker = 0;
 
@@ -132,11 +132,11 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IT
 
 	@Override
 	public void setShouldEmitSound(boolean shouldEmitSound) {
-		this.shouldEmitSound = shouldEmitSound;
+		this.emittingSound = shouldEmitSound;
 	}
 
 	@Override
 	public boolean isEmittingSound() {
-		return shouldEmitSound;
+		return emittingSound;
 	}
 }

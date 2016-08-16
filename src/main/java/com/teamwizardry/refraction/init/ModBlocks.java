@@ -16,6 +16,7 @@ public class ModBlocks {
 	public static BlockLens LENS;
 	public static BlockReflectionChamber REF_CHAMBER;
 	public static BlockSplitter SPLITTER;
+	public static BlockElectronExciter ELECTRON_EXCITER;
 //	public static BlockSensor SENSOR;
 
 	public static void init() {
@@ -28,6 +29,7 @@ public class ModBlocks {
 		PRISM = new BlockPrism();
 		REF_CHAMBER = new BlockReflectionChamber();
 		SPLITTER = new BlockSplitter();
+		ELECTRON_EXCITER = new BlockElectronExciter();
 //		SENSOR = new BlockSensor();
 	}
 
@@ -41,6 +43,7 @@ public class ModBlocks {
 		PRISM.initModel();
 		REF_CHAMBER.initModel();
 		SPLITTER.initModel();
+		ELECTRON_EXCITER.initModel();
 //		SENSOR.initModel();
 	}
 }

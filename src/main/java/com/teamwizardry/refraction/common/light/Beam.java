@@ -1,17 +1,17 @@
 package com.teamwizardry.refraction.common.light;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import com.teamwizardry.librarianlib.network.PacketHandler;
 import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.api.IEffect;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.raytrace.EntityTrace;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class Beam
 {
@@ -53,7 +53,7 @@ public class Beam
 						if (effect != null) EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
 					}
 				}
-				catch (NullPointerException e) // Don't really care about these NPEs, all they mean is that the BlockPos is outside the world height limit.
+				catch (NullPointerException ignored) // Don't really care about these NPEs, all they mean is that the BlockPos is outside the world height limit.
 				{}
 			}
 		}
