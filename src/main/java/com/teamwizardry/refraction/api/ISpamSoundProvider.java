@@ -5,7 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Created by Saad on 8/15/2016.
+ * Created by Saad on 8/16/2016.
  */
 public interface ISpamSoundProvider {
 
@@ -16,7 +16,7 @@ public interface ISpamSoundProvider {
 					BlockPos newPos = new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
 					IBlockState state = world.getBlockState(newPos);
 					if (state.getBlock() == world.getBlockState(pos).getBlock() && state.getBlock() instanceof ISpamSoundProvider) {
-						ISpamSound te = (ISpamSound) world.getTileEntity(newPos);
+						ITileSpamSound te = (ITileSpamSound) world.getTileEntity(newPos);
 						if (te != null) if (te.isEmittingSound()) {
 							return false;
 						}
@@ -34,7 +34,7 @@ public interface ISpamSoundProvider {
 					IBlockState state = world.getBlockState(newPos);
 					if (state.getBlock() instanceof ISpamSoundProvider) {
 						ISpamSoundProvider spamSound = (ISpamSoundProvider) state.getBlock();
-						ISpamSound entity = (ISpamSound) world.getTileEntity(newPos);
+						ITileSpamSound entity = (ITileSpamSound) world.getTileEntity(newPos);
 						if (entity != null) entity.setShouldEmitSound(spamSound.shouldEmitSound(world, newPos));
 					}
 				}

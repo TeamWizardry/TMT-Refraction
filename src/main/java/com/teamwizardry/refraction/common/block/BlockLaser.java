@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.ISpamSound;
 import com.teamwizardry.refraction.api.ISpamSoundProvider;
+import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
@@ -128,8 +128,8 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider,
 		TileEntity entity = world.getTileEntity(pos);
 		if (entity instanceof ILightSource)
 			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
-		if (entity instanceof ISpamSound)
-			((ISpamSound) entity).setShouldEmitSound(false);
+		if (entity instanceof ITileSpamSound)
+			((ITileSpamSound) entity).setShouldEmitSound(false);
 		recalculateAllSurroundingSpammables(world, pos);
 		super.breakBlock(world, pos, state);
 	}
