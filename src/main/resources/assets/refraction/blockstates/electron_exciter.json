@@ -1,0 +1,33 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "custom": {
+      "flip-v": true
+    },
+    "model": "refraction:laser.obj",
+    "transform": "forge:default-block",
+    "uvlock": true
+  },
+  "variants": {
+    "facing": {
+      "up": {
+        "x": 90
+      },
+      "down": {
+        "x": 270
+      },
+      "north": {
+      },
+      "south": {
+        "y": 180
+      },
+      "west": {
+        "y": 270
+      },
+      "east": {
+        "y": 90
+      }
+    },
+    "inventory": [{}]
+  }
+}

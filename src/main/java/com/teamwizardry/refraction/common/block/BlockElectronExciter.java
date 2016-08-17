@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.EnumRelativeFacing;
 import com.teamwizardry.refraction.api.ISpamSoundProvider;
 import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.common.light.ILightSource;
@@ -10,6 +11,7 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -34,6 +36,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class BlockElectronExciter extends BlockDirectional implements ITileEntityProvider, ISpamSoundProvider {
 
+	public static final PropertyEnum<EnumRelativeFacing> LINKED_BLOCK = PropertyEnum.create("linked_block", EnumRelativeFacing.class);
+
 	public BlockElectronExciter() {
 		super(Material.IRON);
 		setHardness(1F);
@@ -45,7 +49,7 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 		GameRegistry.register(new ItemBlock(this), getRegistryName());
 		setCreativeTab(Refraction.tab);
 
-		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LINKED_BLOCK, EnumRelativeFacing.FRONT));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -84,9 +88,15 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 			if (te.getLink() != neighbor && world.getBlockState(neighbor).getBlock() == this) return;
 			te.setLink(null);
 			te.invokeUpdate();
-			Minecraft.getMinecraft().thePlayer.sendChatMessage("Linked was removed");
+			world.getBlockState(pos).withProperty(LINKED_BLOCK, EnumRelativeFacing.FRONT);
 		} else {
 			if (world.getBlockState(neighbor).getBlock() != this) return;
+
+			EnumFacing blockFacing = world.getBlockState(pos).getValue(FACING);
+			EnumRelativeFacing facing = EnumRelativeFacing.convertFacingToRelative(blockFacing, pos, neighbor);
+			Minecraft.getMinecraft().thePlayer.sendChatMessage(facing + "");
+			if (facing == EnumRelativeFacing.BACK || facing == EnumRelativeFacing.FRONT) return;
+
 			TileElectronExciter link = (TileElectronExciter) world.getTileEntity(neighbor);
 			if (link == null) return;
 			if (link.isLinked()) return;
@@ -95,7 +105,6 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 			link.setLink(pos);
 			te.invokeUpdate();
 			link.invokeUpdate();
-			Minecraft.getMinecraft().thePlayer.sendChatMessage("NEW link detected. attaching");
 		}
 	}
 
@@ -111,7 +120,7 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, LINKED_BLOCK);
 	}
 
 	@Override
@@ -138,11 +147,6 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 			((ITileSpamSound) entity).setShouldEmitSound(false);
 		recalculateAllSurroundingSpammables(world, pos);
 
-		/*TileElectronExciter te = getTE(world, pos);
-		if (te.isLinked()) {
-			getTE(world, te.getLink()).setLink(null);
-			te.setLink(null);
-		}*/
 		super.breakBlock(world, pos, state);
 	}
 }
