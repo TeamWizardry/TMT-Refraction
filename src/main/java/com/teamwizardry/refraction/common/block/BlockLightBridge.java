@@ -31,11 +31,12 @@ import javax.annotation.Nullable;
  */
 public class BlockLightBridge extends BlockDirectional {
 
-	protected static final AxisAlignedBB AABB_UP = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.1875D, 1.0D, 1.0D); // TODO
-	protected static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.1875D, 1.0D, 1.0D);
-	protected static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.8125D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-	protected static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.1875D);
-	protected static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.0D, 0.0D, 0.8125D, 1.0D, 1.0D, 1.0D);
+	private static final AxisAlignedBB AABB_UP = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.1875D, 1.0D);
+	private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.0D, 0.1875D, 0.0D, 1.0D, 0.0D, 1.0D); //TODO: its still AABB_UP somehow
+	private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.1875D, 1.0D, 1.0D);
+	private static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.8125D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+	private static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.1875D);
+	private static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.8125D, 1.0D, 1.0D, 1.0D);
 
 	public BlockLightBridge() {
 		super(Material.GLASS);
@@ -68,6 +69,8 @@ public class BlockLightBridge extends BlockDirectional {
 				return AABB_SOUTH;
 			case NORTH:
 				return AABB_NORTH;
+			case DOWN:
+				return AABB_DOWN;
 			default:
 				return AABB_UP;
 		}
@@ -85,18 +88,11 @@ public class BlockLightBridge extends BlockDirectional {
 				return AABB_WEST;
 			case EAST:
 				return AABB_EAST;
+			case DOWN:
+				return AABB_DOWN;
 			default:
 				return AABB_UP;
 		}
-	}
-
-	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		return worldIn.getBlockState(pos.west()).isSideSolid(worldIn, pos.west(), EnumFacing.EAST) ||
-				worldIn.getBlockState(pos.east()).isSideSolid(worldIn, pos.east(), EnumFacing.WEST) ||
-				worldIn.getBlockState(pos.north()).isSideSolid(worldIn, pos.north(), EnumFacing.SOUTH) ||
-				worldIn.getBlockState(pos.south()).isSideSolid(worldIn, pos.south(), EnumFacing.NORTH) ||
-				worldIn.getBlockState(pos.south()).isSideSolid(worldIn, pos.south(), EnumFacing.UP);
 	}
 
 	private boolean canBlockStay(World worldIn, BlockPos pos, EnumFacing facing) {
@@ -105,35 +101,27 @@ public class BlockLightBridge extends BlockDirectional {
 
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		if (facing.getAxis().isHorizontal() && canBlockStay(worldIn, pos, facing)) {
 			return this.getDefaultState().withProperty(FACING, facing);
-		} else {
-			for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL) {
-				if (canBlockStay(worldIn, pos, enumfacing)) {
-					return this.getDefaultState().withProperty(FACING, enumfacing);
-				}
-			}
-
-			return this.getDefaultState();
-		}
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		EnumFacing enumfacing;
-
 		switch (meta & 7) {
-			case 0:
+			case 1:
 				enumfacing = EnumFacing.EAST;
 				break;
-			case 1:
+			case 2:
 				enumfacing = EnumFacing.WEST;
 				break;
-			case 2:
+			case 3:
 				enumfacing = EnumFacing.SOUTH;
 				break;
-			case 3:
+			case 4:
 				enumfacing = EnumFacing.NORTH;
+				break;
+			case 5:
+				enumfacing = EnumFacing.DOWN;
 				break;
 			default:
 				enumfacing = EnumFacing.UP;
@@ -146,19 +134,22 @@ public class BlockLightBridge extends BlockDirectional {
 		int i;
 		switch (state.getValue(FACING)) {
 			case EAST:
-				i = 0;
-				break;
-			case WEST:
 				i = 1;
 				break;
-			case SOUTH:
+			case WEST:
 				i = 2;
 				break;
-			case NORTH:
+			case SOUTH:
 				i = 3;
 				break;
-			default:
+			case NORTH:
 				i = 4;
+				break;
+			case DOWN:
+				i = 5;
+				break;
+			default:
+				i = 0;
 				break;
 		}
 		return i;

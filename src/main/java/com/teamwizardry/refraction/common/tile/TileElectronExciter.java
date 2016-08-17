@@ -43,9 +43,11 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
 		compound.setBoolean("emitting_sound", emittingSound);
-		compound.setInteger("link_x", link.getX());
-		compound.setInteger("link_y", link.getY());
-		compound.setInteger("link_z", link.getZ());
+		if (link != null) {
+			compound.setInteger("link_x", link.getX());
+			compound.setInteger("link_y", link.getY());
+			compound.setInteger("link_z", link.getZ());
+		}
 		return compound;
 	}
 

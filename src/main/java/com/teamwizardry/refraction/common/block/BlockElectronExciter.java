@@ -12,6 +12,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -54,8 +55,7 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		TileElectronExciter te = new TileElectronExciter();
-		return te;
+		return new TileElectronExciter();
 	}
 
 	private TileElectronExciter getTE(World world, BlockPos pos) {
@@ -84,6 +84,7 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 			if (te.getLink() != neighbor && world.getBlockState(neighbor).getBlock() == this) return;
 			te.setLink(null);
 			te.invokeUpdate();
+			Minecraft.getMinecraft().thePlayer.sendChatMessage("Linked was removed");
 		} else {
 			if (world.getBlockState(neighbor).getBlock() != this) return;
 			TileElectronExciter link = (TileElectronExciter) world.getTileEntity(neighbor);
@@ -94,6 +95,7 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 			link.setLink(pos);
 			te.invokeUpdate();
 			link.invokeUpdate();
+			Minecraft.getMinecraft().thePlayer.sendChatMessage("NEW link detected. attaching");
 		}
 	}
 
@@ -136,11 +138,11 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 			((ITileSpamSound) entity).setShouldEmitSound(false);
 		recalculateAllSurroundingSpammables(world, pos);
 
-		TileElectronExciter te = getTE(world, pos);
+		/*TileElectronExciter te = getTE(world, pos);
 		if (te.isLinked()) {
 			getTE(world, te.getLink()).setLink(null);
 			te.setLink(null);
-		}
+		}*/
 		super.breakBlock(world, pos, state);
 	}
 }

@@ -17,6 +17,7 @@ public class ModBlocks {
 	public static BlockReflectionChamber REF_CHAMBER;
 	public static BlockSplitter SPLITTER;
 	public static BlockElectronExciter ELECTRON_EXCITER;
+	public static BlockLightBridge LIGHT_BRIDGE;
 //	public static BlockSensor SENSOR;
 
 	public static void init() {
@@ -30,6 +31,7 @@ public class ModBlocks {
 		REF_CHAMBER = new BlockReflectionChamber();
 		SPLITTER = new BlockSplitter();
 		ELECTRON_EXCITER = new BlockElectronExciter();
+		LIGHT_BRIDGE = new BlockLightBridge();
 //		SENSOR = new BlockSensor();
 	}
 
@@ -44,6 +46,7 @@ public class ModBlocks {
 		REF_CHAMBER.initModel();
 		SPLITTER.initModel();
 		ELECTRON_EXCITER.initModel();
+		LIGHT_BRIDGE.initModel();
 //		SENSOR.initModel();
 	}
 }
