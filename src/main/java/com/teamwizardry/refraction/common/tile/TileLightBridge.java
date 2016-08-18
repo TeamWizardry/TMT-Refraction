@@ -118,7 +118,7 @@ public class TileLightBridge extends TileEntity implements ITickable {
 						setSource(pos.offset(direction));
 
 						if (worldObj.getBlockState(pos.offset(direction.getOpposite())).getBlock() == Blocks.AIR)
-							worldObj.setBlockState(pos.offset(direction.getOpposite()), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, state.getValue(BlockDirectional.FACING)));
+							//worldObj.setBlockState(pos.offset(direction.getOpposite()), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, state.getValue(BlockDirectional.FACING)));
 
 						placed = true;
 					}
@@ -127,7 +127,7 @@ public class TileLightBridge extends TileEntity implements ITickable {
 		} else {
 			setSource(source);
 			if (worldObj.getBlockState(pos.offset(finalFacing.getOpposite())).getBlock() == Blocks.AIR)
-				worldObj.setBlockState(pos.offset(finalFacing.getOpposite()), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, state.getValue(BlockDirectional.FACING)));
+				//worldObj.setBlockState(pos.offset(finalFacing.getOpposite()), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, state.getValue(BlockDirectional.FACING)));
 			placed = true;
 		}
 	}

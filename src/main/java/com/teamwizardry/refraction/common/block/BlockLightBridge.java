@@ -1,8 +1,9 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.client.render.RenderLightBridge;
 import com.teamwizardry.refraction.common.tile.TileLightBridge;
-import net.minecraft.block.Block;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -24,12 +25,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 /**
  * Created by Saad on 8/16/2016.
@@ -65,6 +66,7 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 	@SideOnly(Side.CLIENT)
 	public void initModel() {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileLightBridge.class, new RenderLightBridge());
 	}
 
 	@Override
@@ -107,13 +109,8 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 	}
 
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-
-	}
-
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		world.markBlockRangeForRenderUpdate(pos.add(-1, -1, -1), pos.add(1, 1, 1));
 	}
 
 	@Override
@@ -182,17 +179,20 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 		return new BlockStateContainer(this, FACING);
 	}
 
+
+	private boolean isSameBlock(IBlockAccess world, BlockPos pos) {
+		return world.getBlockState(pos).getBlock() == ModBlocks.LIGHT_BRIDGE;
+	}
+
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-		IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
-		Block block = iblockstate.getBlock();
-		return blockState != iblockstate || block != this && block != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+		return false;
 	}
 
 	@Override

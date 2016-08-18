@@ -35,7 +35,6 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		LaserRenderer.INSTANCE.getClass();
 		ScrewdriverOverlay.INSTANCE.getClass();
 		EventHandlerClient.INSTANCE.getClass(); // ditto
-
 		ModBlocks.initModels();
 		ModItems.initModel();
 		ModEntities.initRender();
