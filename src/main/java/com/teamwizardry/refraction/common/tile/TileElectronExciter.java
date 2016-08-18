@@ -1,8 +1,10 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.refraction.api.ITileSpamSound;
+import com.teamwizardry.refraction.common.block.BlockLightBridge;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,6 +26,8 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 	private boolean emittingSound = false;
 	private BlockPos link = null;
 	private boolean hasCardinalBeam = false;
+	private Beam cardinalBeam = null;
+	private EnumFacing cardinalBeamFacing = null;
 
 	public TileElectronExciter() {
 	}
@@ -87,31 +91,65 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 			if (!linked.isLinked()) return;
 			if (!linked.hasCardinalBeam) return;
 
-			// TODO: place blocks
+			BlockLightBridge lightBridge = ModBlocks.LIGHT_BRIDGE;
+			switch (cardinalBeamFacing) {
+				case NORTH: {
+					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
+					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, 0, -1))), bridge);
+					break;
+				}
+				case SOUTH: {
+					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
+					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, 0, 1))), bridge);
+					break;
+				}
+				case EAST: {
+					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
+					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(-1, 0, 0))), bridge);
+					break;
+				}
+				case WEST: {
+					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
+					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(1, 0, 0))), bridge);
+					break;
+				}
+				case UP: {
+					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.NORTH);
+					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, -1, 0))), bridge);
+					break;
+				}
+				case DOWN: {
+					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.NORTH);
+					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, 1, 0))), bridge);
+					break;
+				}
+			}
 		}
 	}
 
 	@Override
 	public void handle(Beam... intputs) {
-		if (hasCardinalBeam) return;
 		boolean match = false;
 		for (Beam beam : intputs) {
 			Vec3d sub = beam.finalLoc.subtract(beam.initLoc);
 			EnumFacing facing = null;
 			if (sub.yCoord == 0 && sub.xCoord == 0 && sub.zCoord > 0) facing = EnumFacing.NORTH;
-			if (sub.yCoord == 0 && sub.xCoord == 0 && sub.zCoord < 0) facing = EnumFacing.SOUTH;
-			if (sub.yCoord == 0 && sub.xCoord > 0 && sub.zCoord == 0) facing = EnumFacing.EAST;
-			if (sub.yCoord == 0 && sub.xCoord < 0 && sub.zCoord == 0) facing = EnumFacing.WEST;
-			if (sub.yCoord > 0 && sub.xCoord == 0 && sub.zCoord == 0) facing = EnumFacing.UP;
-			if (sub.yCoord < 0 && sub.xCoord == 0 && sub.zCoord == 0) facing = EnumFacing.DOWN;
+			else if (sub.yCoord == 0 && sub.xCoord == 0 && sub.zCoord < 0) facing = EnumFacing.SOUTH;
+			else if (sub.yCoord == 0 && sub.xCoord > 0 && sub.zCoord == 0) facing = EnumFacing.EAST;
+			else if (sub.yCoord == 0 && sub.xCoord < 0 && sub.zCoord == 0) facing = EnumFacing.WEST;
+			else if (sub.yCoord > 0 && sub.xCoord == 0 && sub.zCoord == 0) facing = EnumFacing.UP;
+			else if (sub.yCoord < 0 && sub.xCoord == 0 && sub.zCoord == 0) facing = EnumFacing.DOWN;
 
 			if (facing != null)
-				if (facing == worldObj.getBlockState(pos).getValue(BlockDirectional.FACING).getOpposite()) {
+				if (facing == worldObj.getBlockState(pos).getValue(BlockDirectional.FACING)) {
+					cardinalBeamFacing = facing;
 					match = true;
+					cardinalBeam = beam;
 					break;
 				}
 		}
 		hasCardinalBeam = match;
+		if (match) invokeUpdate();
 	}
 
 	@Override

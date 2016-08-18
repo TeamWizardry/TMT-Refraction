@@ -1,7 +1,14 @@
 package com.teamwizardry.refraction.client.proxy;
 
+import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.EventHandlerClient;
-import com.teamwizardry.refraction.common.core.EventHandler;
+import com.teamwizardry.refraction.client.LaserRenderer;
+import com.teamwizardry.refraction.client.fx.SparkleFX;
+import com.teamwizardry.refraction.client.render.ScrewdriverOverlay;
+import com.teamwizardry.refraction.common.proxy.CommonProxy;
+import com.teamwizardry.refraction.init.ModBlocks;
+import com.teamwizardry.refraction.init.ModEntities;
+import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
@@ -14,14 +21,6 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.client.LaserRenderer;
-import com.teamwizardry.refraction.client.fx.SparkleFX;
-import com.teamwizardry.refraction.client.render.ScrewdriverOverlay;
-import com.teamwizardry.refraction.common.proxy.CommonProxy;
-import com.teamwizardry.refraction.init.ModBlocks;
-import com.teamwizardry.refraction.init.ModEntities;
-import com.teamwizardry.refraction.init.ModItems;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
@@ -36,6 +35,10 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		LaserRenderer.INSTANCE.getClass();
 		ScrewdriverOverlay.INSTANCE.getClass();
 		EventHandlerClient.INSTANCE.getClass(); // ditto
+
+		ModBlocks.initModels();
+		ModItems.initModel();
+		ModEntities.initRender();
 	}
 
 	@Override
@@ -48,14 +51,6 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		super.postInit(event);
 		if(Minecraft.getMinecraft().getResourceManager() instanceof IReloadableResourceManager)
 			( (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager() ).registerReloadListener(this);
-	}
-
-	@Override
-	public void loadModels() {
-		super.loadModels();
-		ModBlocks.initModels();
-		ModItems.initModel();
-		ModEntities.initRender();
 	}
 
 	@Override

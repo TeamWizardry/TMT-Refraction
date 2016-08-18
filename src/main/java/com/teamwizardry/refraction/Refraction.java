@@ -1,11 +1,7 @@
 package com.teamwizardry.refraction;
 
-import com.teamwizardry.librarianlib.network.PacketHandler;
-import com.teamwizardry.refraction.common.light.BlockTracker;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
-import com.teamwizardry.refraction.init.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -54,30 +50,16 @@ public class Refraction {
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		proxy.preInit(event);
-
-		ModSounds.init();
-		ModBlocks.init();
-		ModItems.init();
-		ModEntities.init();
-
-		proxy.loadModels();
-		
-		PacketHandler.INSTANCE.register(PacketLaserFX.class, Side.CLIENT);
 	}
 
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.init(event);
-
-		CraftingRecipes.init();
-		AssemblyRecipes.init();
-
 	}
 
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);
-		BlockTracker.init();
 	}
 
 	@Mod.EventHandler

@@ -57,8 +57,7 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider,
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		TileLaser te = new TileLaser();
-		return te;
+		return new TileLaser();
 	}
 
 	private TileLaser getTE(World world, BlockPos pos) {

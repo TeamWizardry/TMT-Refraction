@@ -1,8 +1,10 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.tile.TileLightBridge;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -11,6 +13,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
@@ -25,11 +29,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockLightBridge extends BlockDirectional {
+public class BlockLightBridge extends BlockDirectional implements ITileEntityProvider {
 
 	private static final AxisAlignedBB AABB_UP = new AxisAlignedBB(0.0D, 0.40625D, 0.0D, 1.0D, 0.59375D, 1.0D);
 	private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.0D, 0.40625D, 0.0D, 1.0D, 0.59375D, 1.0D);
@@ -45,10 +50,16 @@ public class BlockLightBridge extends BlockDirectional {
 		setUnlocalizedName("light_bridge");
 		setRegistryName("light_bridge");
 		GameRegistry.register(this);
+		GameRegistry.registerTileEntity(TileLightBridge.class, "light_bridge");
 		GameRegistry.register(new ItemBlock(this), getRegistryName());
 		setCreativeTab(Refraction.tab);
+		setTickRandomly(true);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+	}
+
+	private TileLightBridge getTE(World world, BlockPos pos) {
+		return (TileLightBridge) world.getTileEntity(pos);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -95,13 +106,14 @@ public class BlockLightBridge extends BlockDirectional {
 		}
 	}
 
-	private boolean canBlockStay(World worldIn, BlockPos pos, EnumFacing facing) {
-		return worldIn.getBlockState(pos.offset(facing.getOpposite())).isSideSolid(worldIn, pos.offset(facing.getOpposite()), facing);
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-			return this.getDefaultState().withProperty(FACING, facing);
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+
 	}
 
 	@Override
@@ -191,5 +203,10 @@ public class BlockLightBridge extends BlockDirectional {
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TileLightBridge();
 	}
 }
