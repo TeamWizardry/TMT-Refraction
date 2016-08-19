@@ -106,7 +106,6 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 			te.setLink(neighbor);
 			link.setLink(pos);
 			te.invokeUpdate();
-			link.invokeUpdate();
 		}
 	}
 

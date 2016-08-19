@@ -94,33 +94,75 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 			BlockLightBridge lightBridge = ModBlocks.LIGHT_BRIDGE;
 			switch (cardinalBeamFacing) {
 				case NORTH: {
+					BlockPos pos = new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, 0, -1)));
 					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
-					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, 0, -1))), bridge);
+					worldObj.setBlockState(pos, bridge);
+					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos);
+					if (tileLightBridge != null) {
+						tileLightBridge.setDirection(EnumFacing.SOUTH);
+						tileLightBridge.setSource(pos);
+						tileLightBridge.createNextBlock();
+					}
 					break;
 				}
 				case SOUTH: {
+					BlockPos pos = new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, 0, 1)));
 					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
-					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, 0, 1))), bridge);
+					worldObj.setBlockState(pos, bridge);
+					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos);
+					if (tileLightBridge != null) {
+						tileLightBridge.setDirection(EnumFacing.NORTH);
+						tileLightBridge.setSource(pos);
+						tileLightBridge.createNextBlock();
+					}
 					break;
 				}
 				case EAST: {
+					BlockPos pos = new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(-1, 0, 0)));
 					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
-					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(-1, 0, 0))), bridge);
+					worldObj.setBlockState(pos, bridge);
+					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos);
+					if (tileLightBridge != null) {
+						tileLightBridge.setDirection(EnumFacing.WEST);
+						tileLightBridge.setSource(pos);
+						tileLightBridge.createNextBlock();
+					}
 					break;
 				}
 				case WEST: {
+					BlockPos pos = new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(1, 0, 0)));
 					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
-					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(1, 0, 0))), bridge);
+					worldObj.setBlockState(pos, bridge);
+					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos);
+					if (tileLightBridge != null) {
+						tileLightBridge.setDirection(EnumFacing.EAST);
+						tileLightBridge.setSource(pos);
+						tileLightBridge.createNextBlock();
+					}
 					break;
 				}
 				case UP: {
+					BlockPos pos = new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, -1, 0)));
 					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.NORTH);
-					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, -1, 0))), bridge);
+					worldObj.setBlockState(pos, bridge);
+					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos);
+					if (tileLightBridge != null) {
+						tileLightBridge.setDirection(EnumFacing.DOWN);
+						tileLightBridge.setSource(pos);
+						tileLightBridge.createNextBlock();
+					}
 					break;
 				}
 				case DOWN: {
+					BlockPos pos = new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, 1, 0)));
 					IBlockState bridge = lightBridge.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.NORTH);
-					worldObj.setBlockState(new BlockPos(cardinalBeam.finalLoc.add(new Vec3d(0, 1, 0))), bridge);
+					worldObj.setBlockState(pos, bridge);
+					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos);
+					if (tileLightBridge != null) {
+						tileLightBridge.setDirection(EnumFacing.UP);
+						tileLightBridge.setSource(pos);
+						tileLightBridge.createNextBlock();
+					}
 					break;
 				}
 			}

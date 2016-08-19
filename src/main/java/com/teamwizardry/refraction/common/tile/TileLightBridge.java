@@ -1,7 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.refraction.init.ModBlocks;
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,20 +7,32 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 
 /**
  * Created by Saad on 8/18/2016.
  */
-public class TileLightBridge extends TileEntity implements ITickable {
+public class TileLightBridge extends TileEntity {
 
 	private IBlockState state;
 	private BlockPos source;
-	private boolean placed = false;
+	private EnumFacing direction;
 
 	public TileLightBridge() {
+	}
+
+	void createNextBlock() {
+		if (source != null && direction != null) {
+			IBlockState state = worldObj.getBlockState(pos.offset(direction));
+			if (state.getBlock() == Blocks.AIR) {
+				worldObj.setBlockState(pos.offset(direction), worldObj.getBlockState(pos));
+				TileLightBridge bridge = (TileLightBridge) worldObj.getTileEntity(pos.offset(direction));
+				if (bridge == null) return;
+				bridge.setSource(source);
+				bridge.setDirection(direction);
+				bridge.createNextBlock();
+			}
+		}
 	}
 
 	@Override
@@ -32,7 +42,7 @@ public class TileLightBridge extends TileEntity implements ITickable {
 		if (compound.hasKey("source_x")) x = compound.getInteger("source_x");
 		if (compound.hasKey("source_y")) y = compound.getInteger("source_y");
 		if (compound.hasKey("source_z")) z = compound.getInteger("source_z");
-		if (compound.hasKey("placed")) placed = compound.getBoolean("placed");
+		if (compound.hasKey("direction")) direction = EnumFacing.byName(compound.getString("direction"));
 		source = new BlockPos(x, y, z);
 	}
 
@@ -44,7 +54,7 @@ public class TileLightBridge extends TileEntity implements ITickable {
 			compound.setInteger("source_y", source.getY());
 			compound.setInteger("source_z", source.getZ());
 		}
-		compound.setBoolean("placed", placed);
+		if (direction != null) compound.setString("direction", direction.getName());
 		return compound;
 	}
 
@@ -69,66 +79,13 @@ public class TileLightBridge extends TileEntity implements ITickable {
 		worldObj.notifyBlockUpdate(pos, state, state, 3);
 	}
 
-	public BlockPos getSource() {
-		return source;
-	}
-
 	public void setSource(BlockPos source) {
 		this.source = source;
 	}
 
-	@Override
-	public void update() {
-		if (placed && source != null) return;
-		boolean match = false;
-		BlockPos source = null;
-		EnumFacing finalFacing = null;
+	public EnumFacing getDirection() { return this.direction; }
 
-		for (EnumFacing direction : EnumFacing.VALUES) {
-			if (worldObj.getBlockState(pos.offset(direction)).getBlock() == ModBlocks.LIGHT_BRIDGE) {
-				TileLightBridge link = (TileLightBridge) worldObj.getTileEntity(pos.offset(direction));
-				if (link != null && link.getSource() != null) {
-					source = link.getSource();
-
-					BlockPos sub = pos.subtract(new Vec3i(source.getX(), source.getY(), source.getZ()));
-					EnumFacing facing = null;
-					if (sub.getY() == 0 && sub.getX() == 0 && sub.getZ() > 0) facing = EnumFacing.NORTH;
-					else if (sub.getY() == 0 && sub.getX() == 0 && sub.getZ() < 0) facing = EnumFacing.SOUTH;
-					else if (sub.getY() == 0 && sub.getX() > 0 && sub.getZ() == 0) facing = EnumFacing.EAST;
-					else if (sub.getY() == 0 && sub.getX() < 0 && sub.getZ() == 0) facing = EnumFacing.WEST;
-					else if (sub.getY() > 0 && sub.getX() == 0 && sub.getZ() == 0) facing = EnumFacing.UP;
-					else if (sub.getY() < 0 && sub.getX() == 0 && sub.getZ() == 0) facing = EnumFacing.DOWN;
-
-					if (facing != null) {
-						finalFacing = facing;
-						match = true;
-						break;
-					}
-				}
-			}
-		}
-
-		if (!match) {
-			for (EnumFacing direction : EnumFacing.VALUES) {
-				BlockPos offset = pos.offset(direction);
-				IBlockState adjacent = worldObj.getBlockState(offset);
-				if (adjacent.getBlock() == ModBlocks.ELECTRON_EXCITER) {
-					if (adjacent.getValue(BlockDirectional.FACING) == direction) {
-
-						setSource(pos.offset(direction));
-
-						if (worldObj.getBlockState(pos.offset(direction.getOpposite())).getBlock() == Blocks.AIR)
-							//worldObj.setBlockState(pos.offset(direction.getOpposite()), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, state.getValue(BlockDirectional.FACING)));
-
-						placed = true;
-					}
-				}
-			}
-		} else {
-			setSource(source);
-			if (worldObj.getBlockState(pos.offset(finalFacing.getOpposite())).getBlock() == Blocks.AIR)
-				//worldObj.setBlockState(pos.offset(finalFacing.getOpposite()), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, state.getValue(BlockDirectional.FACING)));
-			placed = true;
-		}
+	public void setDirection(EnumFacing direction) {
+		this.direction = direction;
 	}
 }
