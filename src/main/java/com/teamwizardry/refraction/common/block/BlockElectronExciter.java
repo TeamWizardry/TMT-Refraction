@@ -1,7 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.EnumRelativeFacing;
 import com.teamwizardry.refraction.api.ISpamSoundProvider;
 import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.common.light.ILightSource;
@@ -14,7 +13,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -37,7 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class BlockElectronExciter extends BlockDirectional implements ITileEntityProvider, ISpamSoundProvider {
 
-	public static final PropertyEnum<EnumRelativeFacing> LINKED_BLOCK = PropertyEnum.create("linked_block", EnumRelativeFacing.class);
+	public static final PropertyEnum<EnumFacing> LINKED_BLOCK = PropertyEnum.create("linked_block", EnumFacing.class);
 
 	public BlockElectronExciter() {
 		super(Material.IRON);
@@ -50,7 +49,7 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 		GameRegistry.register(new ItemBlock(this), getRegistryName());
 		setCreativeTab(Refraction.tab);
 
-		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LINKED_BLOCK, EnumRelativeFacing.FRONT));
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LINKED_BLOCK, EnumFacing.NORTH));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -85,26 +84,20 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
 		TileElectronExciter te = (TileElectronExciter) world.getTileEntity(pos);
 		if (te == null) return;
+		if (world.getBlockState(neighbor).getBlock() != this) return;
+		EnumFacing front = world.getBlockState(pos).getValue(FACING);
+		Vec3i diff = pos.subtract(neighbor);
+		EnumFacing directionChange = EnumFacing.getFacingFromVector(diff.getX(), diff.getY(), diff.getZ());
 
-		if (te.isLinked()) {
-			if (te.getLink() != neighbor && world.getBlockState(neighbor).getBlock() == this) return;
-			te.setLink(null);
+		if (directionChange == front || directionChange == front.getOpposite()) return;
+
+		IBlockState link = world.getBlockState(neighbor);
+		if (link.getBlock() != this) {
 			te.invokeUpdate();
-			world.getBlockState(pos).withProperty(LINKED_BLOCK, EnumRelativeFacing.FRONT);
+			world.getBlockState(pos).withProperty(LINKED_BLOCK, front);
 		} else {
-			if (world.getBlockState(neighbor).getBlock() != this) return;
-
-			EnumFacing blockFacing = world.getBlockState(pos).getValue(FACING);
-			EnumRelativeFacing facing = EnumRelativeFacing.convertFacingToRelative(blockFacing, pos, neighbor);
-			Minecraft.getMinecraft().thePlayer.sendChatMessage(facing + "");
-			if (facing == EnumRelativeFacing.BACK || facing == EnumRelativeFacing.FRONT) return;
-
-			TileElectronExciter link = (TileElectronExciter) world.getTileEntity(neighbor);
-			if (link == null) return;
-			if (link.isLinked()) return;
-
-			te.setLink(neighbor);
-			link.setLink(pos);
+			world.getBlockState(pos).withProperty(LINKED_BLOCK, directionChange);
+			link.withProperty(LINKED_BLOCK, directionChange.getOpposite());
 			te.invokeUpdate();
 		}
 	}

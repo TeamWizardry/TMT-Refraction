@@ -24,7 +24,6 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 
 	private IBlockState state;
 	private boolean emittingSound = false;
-	private BlockPos link = null;
 	private boolean hasCardinalBeam = false;
 	private Beam cardinalBeam = null;
 	private EnumFacing cardinalBeamFacing = null;
@@ -36,22 +35,12 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		if (compound.hasKey("emitting_sound")) emittingSound = compound.getBoolean("emitting_sound");
-		int x = 0, y = 0, z = 0;
-		if (compound.hasKey("link_x")) x = compound.getInteger("link_x");
-		if (compound.hasKey("link_y")) y = compound.getInteger("link_y");
-		if (compound.hasKey("link_z")) z = compound.getInteger("link_z");
-		link = new BlockPos(x, y, z);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
 		compound.setBoolean("emitting_sound", emittingSound);
-		if (link != null) {
-			compound.setInteger("link_x", link.getX());
-			compound.setInteger("link_y", link.getY());
-			compound.setInteger("link_z", link.getZ());
-		}
 		return compound;
 	}
 
@@ -84,12 +73,7 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 
 	public void invokeUpdate() {
 		if (!worldObj.isRemote) {
-			if (!isLinked()) return;
 			if (!hasCardinalBeam) return;
-			TileElectronExciter linked = (TileElectronExciter) worldObj.getTileEntity(link);
-			if (linked == null) return;
-			if (!linked.isLinked()) return;
-			if (!linked.hasCardinalBeam) return;
 
 			BlockLightBridge lightBridge = ModBlocks.LIGHT_BRIDGE;
 			switch (cardinalBeamFacing) {
@@ -170,9 +154,9 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 	}
 
 	@Override
-	public void handle(Beam... intputs) {
+	public void handle(Beam... inputs) {
 		boolean match = false;
-		for (Beam beam : intputs) {
+		for (Beam beam : inputs) {
 			Vec3d sub = beam.finalLoc.subtract(beam.initLoc);
 			EnumFacing facing = null;
 			if (sub.yCoord == 0 && sub.xCoord == 0 && sub.zCoord > 0) facing = EnumFacing.NORTH;
@@ -202,18 +186,6 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 	@Override
 	public void setShouldEmitSound(boolean shouldEmitSound) {
 		emittingSound = shouldEmitSound;
-	}
-
-	public boolean isLinked() {
-		return link != null;
-	}
-
-	public BlockPos getLink() {
-		return link;
-	}
-
-	public void setLink(BlockPos link) {
-		this.link = link;
 	}
 
 	public boolean hasCardinalBeam() {

@@ -10,6 +10,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
@@ -38,7 +39,7 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 
 	public BlockLightBridge() {
 		super(Material.GLASS);
-		setHardness(9999F);
+		setBlockUnbreakable();
 		setSoundType(SoundType.GLASS);
 		setUnlocalizedName("light_bridge");
 		setRegistryName("light_bridge");
@@ -155,5 +156,18 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileLightBridge();
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileLightBridge bridge = (TileLightBridge) world.getTileEntity(pos);
+		if (bridge != null && bridge.getDirection() != null) {
+			IBlockState front = world.getBlockState(pos.offset(bridge.getDirection()));
+			IBlockState back = world.getBlockState(pos.offset(bridge.getDirection().getOpposite()));
+			if (front.getBlock() == this) world.setBlockState(pos.offset(bridge.getDirection()), Blocks.AIR.getDefaultState());
+			if (back.getBlock() == this) world.setBlockState(pos.offset(bridge.getDirection().getOpposite()), Blocks.AIR.getDefaultState());
+		}
+
+		super.breakBlock(world, pos, state);
 	}
 }
