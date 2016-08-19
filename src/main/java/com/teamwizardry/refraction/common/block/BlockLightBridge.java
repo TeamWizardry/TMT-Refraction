@@ -1,7 +1,5 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.common.tile.TileLightBridge;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -24,6 +22,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.tile.TileLightBridge;
 
 /**
  * Created by Saad on 8/16/2016.
@@ -59,7 +59,10 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return this.getDefaultState().withProperty(FACING, facing);
+		if (placer.rotationPitch > 45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.UP);
+		if (placer.rotationPitch < -45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.DOWN);
+
+		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing().getOpposite());
 	}
 
 	@Override

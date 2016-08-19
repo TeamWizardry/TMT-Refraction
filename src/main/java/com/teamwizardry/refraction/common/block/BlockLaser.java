@@ -88,7 +88,7 @@ public class BlockLaser extends BlockDirectional implements ITileEntityProvider,
 		if (placer.rotationPitch > 45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.UP);
 		if (placer.rotationPitch < -45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.DOWN);
 
-		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing());
+		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing().getOpposite());
 	}
 
 	@Override
