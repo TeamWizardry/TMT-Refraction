@@ -10,11 +10,9 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -23,7 +21,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -36,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class BlockElectronExciter extends BlockDirectional implements ITileEntityProvider, ISpamSoundProvider {
 
-	public static final PropertyEnum<EnumFacing> LINKED_BLOCK = PropertyEnum.create("linked_block", EnumFacing.class);
+	//public static final PropertyEnum<EnumFacing> LINKED_BLOCK = PropertyEnum.create("linked_block", EnumFacing.class);
 
 	public BlockElectronExciter() {
 		super(Material.IRON);
@@ -49,12 +46,12 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 		GameRegistry.register(new ItemBlock(this), getRegistryName());
 		setCreativeTab(Refraction.tab);
 
-		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LINKED_BLOCK, EnumFacing.NORTH));
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void initModel() {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(BlockElectronExciter.LINKED_BLOCK).build());
+		//ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(BlockElectronExciter.LINKED_BLOCK).build());
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
 
@@ -82,7 +79,7 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 
 	@Override
 	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		TileElectronExciter te = (TileElectronExciter) world.getTileEntity(pos);
+	/*	TileElectronExciter te = (TileElectronExciter) world.getTileEntity(pos);
 		if (te == null) return;
 		if (world.getBlockState(neighbor).getBlock() != this) return;
 		EnumFacing front = world.getBlockState(pos).getValue(FACING);
@@ -92,6 +89,7 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 		if (directionChange == front || directionChange == front.getOpposite()) return;
 
 		IBlockState link = world.getBlockState(neighbor);
+		if (link.getValue(FACING) != world.getBlockState(pos).getValue(FACING)) return;
 		if (link.getBlock() != this) {
 			te.invokeUpdate();
 			world.getBlockState(pos).withProperty(LINKED_BLOCK, front);
@@ -99,7 +97,7 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 			world.getBlockState(pos).withProperty(LINKED_BLOCK, directionChange);
 			link.withProperty(LINKED_BLOCK, directionChange.getOpposite());
 			te.invokeUpdate();
-		}
+		}*/
 	}
 
 	@Override
@@ -114,7 +112,7 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, LINKED_BLOCK);
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
