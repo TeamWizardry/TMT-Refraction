@@ -1,5 +1,7 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.tile.TileLightBridge;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -22,8 +24,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.common.tile.TileLightBridge;
 
 /**
  * Created by Saad on 8/16/2016.
@@ -88,13 +88,13 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 		else if (bridge.getDirection() != null) {
 			switch (bridge.getDirection()) {
 				case EAST:
-					return AABB_UP.offset(0, 0, 0.5);
-				case WEST:
 					return AABB_UP.offset(0, 0, -0.5);
+				case WEST:
+					return AABB_UP.offset(0, 0, 0.5);
 				case SOUTH:
-					return AABB_UP.offset(-0.5, 0, 0);
-				case NORTH:
 					return AABB_UP.offset(0.5, 0, 0);
+				case NORTH:
+					return AABB_UP.offset(-0.5, 0, 0);
 				case DOWN:
 					return AABB_DOWN;
 				default:
