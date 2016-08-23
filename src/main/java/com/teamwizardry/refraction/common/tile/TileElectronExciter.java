@@ -133,7 +133,7 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 					TileElectronExciter tileNeighbor = (TileElectronExciter) worldObj.getTileEntity(pos.offset(EnumFacing.NORTH));
 					if (tileNeighbor == null) return;
 					if (!tileNeighbor.hasCardinalBeam) return;
-					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
+					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN);
 					worldObj.setBlockState(pos.offset(front), bridge);
 					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos.offset(front));
 					if (tileLightBridge != null) {
@@ -150,7 +150,7 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 					TileElectronExciter tileNeighbor = (TileElectronExciter) worldObj.getTileEntity(pos.offset(EnumFacing.SOUTH));
 					if (tileNeighbor == null) return;
 					if (!tileNeighbor.hasCardinalBeam) return;
-					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
+					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN);
 					worldObj.setBlockState(pos.offset(front), bridge);
 					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos.offset(front));
 					if (tileLightBridge != null) {

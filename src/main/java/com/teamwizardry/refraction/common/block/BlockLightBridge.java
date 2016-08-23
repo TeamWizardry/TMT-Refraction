@@ -137,7 +137,7 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
+		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
@@ -167,8 +167,10 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 		if (bridge != null && bridge.getDirection() != null) {
 			IBlockState front = world.getBlockState(pos.offset(bridge.getDirection()));
 			IBlockState back = world.getBlockState(pos.offset(bridge.getDirection().getOpposite()));
-			if (front.getBlock() == this) world.setBlockState(pos.offset(bridge.getDirection()), Blocks.AIR.getDefaultState());
-			if (back.getBlock() == this) world.setBlockState(pos.offset(bridge.getDirection().getOpposite()), Blocks.AIR.getDefaultState());
+			if (front.getBlock() == this)
+				world.setBlockState(pos.offset(bridge.getDirection()), Blocks.AIR.getDefaultState());
+			if (back.getBlock() == this)
+				world.setBlockState(pos.offset(bridge.getDirection().getOpposite()), Blocks.AIR.getDefaultState());
 		}
 
 		super.breakBlock(world, pos, state);
