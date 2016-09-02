@@ -1,5 +1,10 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.refraction.common.block.BlockPrism;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -9,12 +14,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.librarianlib.network.PacketHandler;
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.common.block.BlockPrism;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
+
+import java.awt.*;
 
 /**
  * Created by LordSaad44
@@ -68,19 +69,19 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 		
 		for (Beam beam : beams)
 		{
-			float red = beam.color.r;
-			float green = beam.color.g;
-			float blue = beam.color.b;
-			float alphaPer = beam.color.a/(red+green+blue);
+			float red = beam.color.getRed();
+			float green = beam.color.getGreen();
+			float blue = beam.color.getBlue();
+			float alphaPer = beam.color.getAlpha()/(red+green+blue);
 			
 			Vec3d dir = beam.finalLoc.subtract(beam.initLoc).normalize();
 			
 			Vec3d ref = dir;
 			Vec3d hitPos = beam.finalLoc;
 			
-			if(beam.color.r != 0) fireColor(b, state, hitPos, ref, redIOR,   new Color(beam.color.r, 0, 0, alphaPer*beam.color.r), true);
-			if(beam.color.g != 0) fireColor(b, state, hitPos, ref, greenIOR, new Color(0, beam.color.g, 0, alphaPer*beam.color.g), true);
-			if(beam.color.b != 0) fireColor(b, state, hitPos, ref, blueIOR,  new Color(0, 0, beam.color.b, alphaPer*beam.color.b), true);
+			if(beam.color.getRed() != 0) fireColor(b, state, hitPos, ref, redIOR,   new Color(beam.color.getRed(), 0, 0, alphaPer*beam.color.getRed()), true);
+			if(beam.color.getGreen() != 0) fireColor(b, state, hitPos, ref, greenIOR, new Color(0, beam.color.getGreen(), 0, alphaPer*beam.color.getGreen()), true);
+			if(beam.color.getBlue() != 0) fireColor(b, state, hitPos, ref, blueIOR,  new Color(0, 0, beam.color.getBlue(), alphaPer*beam.color.getBlue()), true);
 		}
 	}
 	
@@ -123,7 +124,7 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 	}
 	
 	private void showBeam(Vec3d start, Vec3d end, Color color) {
-		PacketHandler.net().sendToAllAround(new PacketLaserFX(start, end, color),
+		PacketHandler.INSTANCE.getNetwork().sendToAllAround(new PacketLaserFX(start, end, color),
 			new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
 	}
 }

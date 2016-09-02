@@ -1,22 +1,18 @@
 package com.teamwizardry.refraction.common.light;
 
-import java.lang.ref.WeakReference;
-import java.util.WeakHashMap;
+import com.google.common.collect.HashMultimap;
+import com.teamwizardry.refraction.api.IEffect;
+import com.teamwizardry.refraction.common.effect.*;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import com.google.common.collect.HashMultimap;
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.api.IEffect;
-import com.teamwizardry.refraction.common.effect.EffectAccelerate;
-import com.teamwizardry.refraction.common.effect.EffectAttract;
-import com.teamwizardry.refraction.common.effect.EffectBonemeal;
-import com.teamwizardry.refraction.common.effect.EffectBreak;
-import com.teamwizardry.refraction.common.effect.EffectBurn;
-import com.teamwizardry.refraction.common.effect.EffectDisperse;
+
+import java.awt.*;
+import java.lang.ref.WeakReference;
+import java.util.WeakHashMap;
 
 /**
  * Created by LordSaad44
@@ -71,10 +67,10 @@ public class EffectTracker
 
 	public static IEffect getEffect(Color color)
 	{
-		float red = color.r;
-		float green = color.g;
-		float blue = color.b;
-		int strength = (int) (color.a * 255);
+		float red = color.getRed();
+		float green = color.getGreen();
+		float blue = color.getBlue();
+		int strength = (int) (color.getAlpha() * 255);
 
 		if (red > 0)
 		{

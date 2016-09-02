@@ -133,7 +133,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 	public void handle(Beam... intputs) {
 		temperature = 0;
 		for (Beam beam : intputs) {
-			temperature += (int) (beam.color.a * 256);
+			temperature += (int) (beam.color.getAlpha() * 256);
 		}
 	}
 

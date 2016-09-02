@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.proxy;
 
-import com.teamwizardry.librarianlib.network.PacketHandler;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.refraction.client.fx.SparkleFX;
 import com.teamwizardry.refraction.common.CatChaseHandler;
 import com.teamwizardry.refraction.common.light.BlockTracker;
@@ -26,7 +26,7 @@ public class CommonProxy {
 		ModItems.init();
 		ModEntities.init();
 
-		PacketHandler.INSTANCE.register(PacketLaserFX.class, Side.CLIENT);
+		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
 	}
 
 	public void init(FMLInitializationEvent event) {

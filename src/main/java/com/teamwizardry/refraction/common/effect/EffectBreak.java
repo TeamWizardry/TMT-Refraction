@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import com.teamwizardry.librarianlib.util.Color;
+import java.awt.Color;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.IEffect;
 import com.teamwizardry.refraction.client.fx.SparkleFX;

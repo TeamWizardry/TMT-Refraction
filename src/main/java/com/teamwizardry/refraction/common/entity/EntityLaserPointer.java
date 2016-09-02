@@ -1,9 +1,9 @@
 package com.teamwizardry.refraction.common.entity;
 
+import com.google.common.collect.ImmutableList;
+import com.teamwizardry.refraction.common.item.ItemLaserPen;
+import com.teamwizardry.refraction.init.ModItems;
 import io.netty.buffer.ByteBuf;
-import java.lang.ref.WeakReference;
-import java.util.UUID;
-import javax.annotation.Nullable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -18,11 +18,11 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import com.google.common.collect.ImmutableList;
-import com.teamwizardry.refraction.common.item.ItemLaserPen;
-import com.teamwizardry.refraction.init.ModItems;
 
-import static com.teamwizardry.librarianlib.gui.GuiTickHandler.partialTicks;
+import javax.annotation.Nullable;
+import java.lang.ref.WeakReference;
+import java.util.UUID;
+
 
 /**
  * Created by TheCodeWarrior

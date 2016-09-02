@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.IEffect;
 import com.teamwizardry.refraction.client.fx.SparkleFX;
@@ -12,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -40,7 +40,7 @@ public class EffectBonemeal implements IEffect {
 			fx.fadeIn();
 			fx.fadeOut();
 			if (ThreadLocalRandom.current().nextBoolean()) fx.blur();
-			fx.setColor(Color.rgb(0x008000));
+			fx.setColor(new Color(0x008000));
 			fx.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
 			fx.setJitter(10, ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1));
 		}

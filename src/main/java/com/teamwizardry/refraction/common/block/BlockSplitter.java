@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.math.Matrix4;
+import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.render.RenderMirror;
 import com.teamwizardry.refraction.common.light.ILaserTrace;

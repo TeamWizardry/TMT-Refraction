@@ -1,7 +1,6 @@
 package com.teamwizardry.refraction.common.light;
 
-import com.teamwizardry.librarianlib.network.PacketHandler;
-import com.teamwizardry.librarianlib.util.Color;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.refraction.api.IEffect;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
@@ -12,6 +11,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+
+import java.awt.*;
 
 public class Beam
 {
@@ -58,7 +59,7 @@ public class Beam
 			}
 		}
 
-		PacketHandler.net().sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
+		PacketHandler.INSTANCE.getNetwork().sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
 
 	}
 
@@ -78,33 +79,25 @@ public class Beam
 	}
 
 	@Override
-	public boolean equals(Object other)
-	{
+	public boolean equals(Object other) {
 		if (!(other instanceof Beam))
 			return false;
 		Beam beam = (Beam) other;
-		if (!initLoc.equals(beam.initLoc))
-			return false;
-		if (!finalLoc.equals(beam.finalLoc))
-			return false;
-		if (color.h != beam.color.h)
-			return false;
-		if (color.s != beam.color.s)
-			return false;
-		if (color.v != beam.color.v)
-			return false;
-		return color.a == beam.color.a;
+		float[] self = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+		float[] others = Color.RGBtoHSB(beam.color.getRed(), beam.color.getBlue(), beam.color.getGreen(), null);
+		return initLoc.equals(beam.initLoc) && finalLoc.equals(beam.finalLoc) && self[0] == others[0] && self[1] == others[1] && self[2] == others[2] && color.getAlpha() == beam.color.getAlpha();
 	}
 
 	@Override
 	public int hashCode()
 	{
+		float[] self = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
 		int start = initLoc.hashCode();
 		int end = finalLoc.hashCode();
-		long h = Double.doubleToLongBits(this.color.h);
-		long s = Double.doubleToLongBits(this.color.s);
-		long v = Double.doubleToLongBits(this.color.v);
-		long a = Double.doubleToLongBits(this.color.a);
+		long h = Double.doubleToLongBits(self[0]);
+		long s = Double.doubleToLongBits(self[1]);
+		long v = Double.doubleToLongBits(self[2]);
+		long a = Double.doubleToLongBits(this.color.getAlpha());
 		int color = (int) (h ^ h >>> 32);
 		color = 31 * color + (int) (s ^ s >>> 32);
 		color = 31 * color + (int) (v ^ v >>> 32);

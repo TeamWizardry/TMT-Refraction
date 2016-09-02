@@ -1,11 +1,12 @@
 package com.teamwizardry.refraction.common.network;
 
+import com.teamwizardry.librarianlib.common.network.PacketBase;
+import com.teamwizardry.refraction.client.LaserRenderer;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import com.teamwizardry.librarianlib.network.PacketBase;
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.client.LaserRenderer;
+
+import java.awt.*;
 
 /**
  * Created by TheCodeWarrior
@@ -45,9 +46,9 @@ public class PacketLaserFX extends PacketBase {
 		buf.writeFloat((float)end.yCoord);
 		buf.writeFloat((float)end.zCoord);
 		
-		buf.writeFloat((float)color.r);
-		buf.writeFloat((float)color.g);
-		buf.writeFloat((float)color.b);
-		buf.writeFloat((float)color.a);
+		buf.writeFloat((float)color.getRed());
+		buf.writeFloat((float)color.getGreen());
+		buf.writeFloat((float)color.getBlue());
+		buf.writeFloat((float)color.getAlpha());
 	}
 }

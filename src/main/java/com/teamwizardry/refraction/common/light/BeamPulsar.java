@@ -12,7 +12,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import com.google.common.collect.ImmutableList;
-import com.teamwizardry.librarianlib.util.Color;
+import java.awt.Color;
 
 /**
  * Created by TheCodeWarrior

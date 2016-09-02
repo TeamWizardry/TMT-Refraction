@@ -110,9 +110,9 @@ public class BlockSensor extends Block implements ITileEntityProvider {
 		{
 			for (Beam beam : ((TileSensor) entity).getBeams())
 			{
-				if (beam.color.r > 0) red = true;
-				if (beam.color.g > 0) green = true;
-				if (beam.color.b > 0) blue = true;
+				if (beam.color.getRed() > 0) red = true;
+				if (beam.color.getGreen() > 0) green = true;
+				if (beam.color.getBlue() > 0) blue = true;
 			}
 		}
 		return (red ? 8 : 0) + (green ? 4 : 0) + (blue ? 2 : 0);
@@ -127,7 +127,7 @@ public class BlockSensor extends Block implements ITileEntityProvider {
 		{
 			for (Beam beam : ((TileSensor) entity).getBeams())
 			{
-				strength += beam.color.a;
+				strength += beam.color.getAlpha();
 			}
 		}
 		strength *= 256;

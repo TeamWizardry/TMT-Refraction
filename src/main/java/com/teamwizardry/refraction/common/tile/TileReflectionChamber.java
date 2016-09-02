@@ -1,5 +1,8 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.refraction.api.RotationHelper;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -8,10 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.api.RotationHelper;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
+
+import java.awt.*;
 
 /**
  * Created by LordSaad44
@@ -69,10 +70,10 @@ public class TileReflectionChamber extends TileEntity implements IBeamHandler
 		for (int i = 0; i < beams.length; i++)
 		{
 			angles[i] = beams[i].finalLoc.subtract(beams[i].initLoc);
-			red += beams[i].color.r;
-			green += beams[i].color.g;
-			blue += beams[i].color.b;
-			alpha += beams[i].color.a;
+			red += beams[i].color.getRed();
+			green += beams[i].color.getGreen();
+			blue += beams[i].color.getBlue();
+			alpha += beams[i].color.getAlpha();
 		}
 		red = Math.min(red, 1);
 		green = Math.min(green, 1);

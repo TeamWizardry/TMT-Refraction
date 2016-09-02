@@ -1,18 +1,19 @@
 package com.teamwizardry.refraction.client.fx;
 
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleRenderQueue;
+import com.teamwizardry.librarianlib.client.fx.particle.QueuedParticle;
+import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import com.teamwizardry.librarianlib.fx.particle.ParticleRenderQueue;
-import com.teamwizardry.librarianlib.fx.particle.QueuedParticle;
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.client.render.RenderLaserUtil;
+
+import java.awt.*;
 
 /**
  * Created by TheCodeWarrior
  */
-public class ParticleLaser extends QueuedParticle {
+public class ParticleLaser extends QueuedParticle<ParticleLaser> {
 	public static final ParticleRenderQueue<ParticleLaser> queue = new ParticleRenderQueue<ParticleLaser>(false) {
 		@Override
 		public String name() {
@@ -22,7 +23,7 @@ public class ParticleLaser extends QueuedParticle {
 		@Override
 		public void renderParticles(Tessellator tessellator) {
 			RenderLaserUtil.startRenderingLasers();
-			for(ParticleLaser laser : renderQueue) {
+			for(ParticleLaser laser : getRenderQueue()) {
 				RenderLaserUtil.renderLaser(laser.color == null ? Color.WHITE : laser.color, laser.start, laser.end);
 			}
 			RenderLaserUtil.finishRenderingLasers();

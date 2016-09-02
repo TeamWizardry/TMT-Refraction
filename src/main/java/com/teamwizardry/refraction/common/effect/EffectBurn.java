@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.common.effect;
 
-import io.netty.util.internal.ThreadLocalRandom;
-import java.util.List;
-import javax.annotation.Nullable;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.teamwizardry.refraction.api.IEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.EntitySelectors;
@@ -10,12 +10,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.IEffect;
-import com.teamwizardry.refraction.client.fx.SparkleFX;
+
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.List;
 
 public class EffectBurn implements IEffect
 {
@@ -45,10 +43,10 @@ public class EffectBurn implements IEffect
 		
 		for (int i = 0; i < 10; i++)
 		{
-			Color yellow = Color.rgb(0xFFFF00);
-			Color orange = Color.rgb(0xFF8C00);
-			Color orangeRed = Color.rgb(0xFF4500);
-			Color gray = Color.rgb(0x696969);
+			Color yellow = new Color(0xFFFF00);
+			Color orange = new Color(0xFF8C00);
+			Color orangeRed = new Color(0xFF4500);
+			Color gray = new Color(0x696969);
 			
 //			SparkleFX center = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord, pos.yCoord, pos.zCoord);
 //			center.blur();

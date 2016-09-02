@@ -1,5 +1,7 @@
 package com.teamwizardry.refraction.client.render;
 
+import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
+import com.teamwizardry.refraction.Refraction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -8,10 +10,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
-import com.teamwizardry.librarianlib.gui.GuiTickHandler;
-import com.teamwizardry.librarianlib.math.Geometry;
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.Refraction;
+
+import java.awt.*;
 
 /**
  * Created by TheCodeWarrior
@@ -39,12 +39,12 @@ public class RenderLaserUtil {
 		
 		GlStateManager.disableCull();
 		
-		Vec3d playerEyes = Minecraft.getMinecraft().thePlayer.getPositionEyes(GuiTickHandler.partialTicks);
-		Vec3d normal = Geometry.getNormal(start, end, playerEyes);
+		Vec3d playerEyes = Minecraft.getMinecraft().thePlayer.getPositionEyes(ClientTickHandler.getPartialTicks());
+		Vec3d normal = (end.subtract(start)).crossProduct(playerEyes.subtract(start)); //(b.subtract(a)).crossProduct(c.subtract(a));
 		if(normal.yCoord < 0)
 			normal = normal.scale(-1);
 		
-		Vec3d d = normal.scale((0.25*color.a)/2.);
+		Vec3d d = normal.scale((0.25*color.getAlpha())/2.);
 		
 		double vMin = 0, vMax = 1;
 		double uMin = 0, uMax = 1;
@@ -55,10 +55,10 @@ public class RenderLaserUtil {
 		if(!drawingLasers)
 			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 		
-		pos(vb, start.add(d)     ).tex(uMin, vMin).color(color.r, color.g, color.b, 1).endVertex();
-		pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.r, color.g, color.b, 1).endVertex();
-		pos(vb, end.subtract(d)  ).tex(uMax, vMax).color(color.r, color.g, color.b, 1).endVertex();
-		pos(vb, end.add(d)       ).tex(uMax, vMin).color(color.r, color.g, color.b, 1).endVertex();
+		pos(vb, start.add(d)     ).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), 1).endVertex();
+		pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), 1).endVertex();
+		pos(vb, end.subtract(d)  ).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), 1).endVertex();
+		pos(vb, end.add(d)       ).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), 1).endVertex();
 		
 		if(!drawingLasers)
 			tessellator.draw();

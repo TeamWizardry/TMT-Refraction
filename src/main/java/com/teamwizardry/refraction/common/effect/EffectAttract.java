@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.IEffect;
 import com.teamwizardry.refraction.client.fx.SparkleFX;
@@ -11,6 +10,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.awt.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -76,7 +76,7 @@ public class EffectAttract implements IEffect {
 			fx.fadeIn();
 			fx.fadeOut();
 			if (ThreadLocalRandom.current().nextBoolean()) fx.blur();
-			fx.setColor(Color.rgb(0x00008B));
+			fx.setColor(new Color(0x00008B));
 			fx.setMotion(motion);
 		}
 	}

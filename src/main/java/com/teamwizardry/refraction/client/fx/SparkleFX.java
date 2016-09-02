@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.client.fx;
 
-import com.teamwizardry.librarianlib.util.Color;
 import com.teamwizardry.refraction.Refraction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -8,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -45,9 +45,9 @@ public class SparkleFX extends Particle {
 	}
 
 	public void setColor(Color color) {
-		particleRed = color.r;
-		particleBlue = color.b;
-		particleGreen = color.b;
+		particleRed = color.getRed();
+		particleBlue = color.getBlue();
+		particleGreen = color.getGreen();
 	}
 
 	public void setMotion(Vec3d motion) {

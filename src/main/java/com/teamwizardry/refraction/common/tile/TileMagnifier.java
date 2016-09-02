@@ -1,5 +1,10 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.BeamConstants;
+import com.teamwizardry.refraction.common.light.ILightSource;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -9,12 +14,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.librarianlib.util.Color;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.BeamConstants;
-import com.teamwizardry.refraction.common.light.ILightSource;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.init.ModBlocks;
+
+import java.awt.*;
 
 /**
  * Created by LordSaad44
@@ -79,7 +80,7 @@ public class TileMagnifier extends TileEntity implements ILightSource {
 		{
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			Vec3d dir = new Vec3d(0, -1, 0);
-			Color color = new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, BeamConstants.SOLAR_ALPHA);
+			Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.SOLAR_ALPHA);
 			
 			new Beam(worldObj, center, dir, color);
 		}

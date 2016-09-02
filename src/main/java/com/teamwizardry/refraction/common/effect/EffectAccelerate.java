@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.librarianlib.util.Color;
+import java.awt.Color;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.IEffect;
 import com.teamwizardry.refraction.client.fx.SparkleFX;

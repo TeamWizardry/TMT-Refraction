@@ -1,5 +1,7 @@
 package com.teamwizardry.refraction.client.render;
 
+import com.teamwizardry.librarianlib.common.util.math.Vec2d;
+import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -13,8 +15,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
-import com.teamwizardry.librarianlib.math.Vec2d;
-import com.teamwizardry.refraction.init.ModItems;
 
 /**
  * Created by TheCodeWarrior
@@ -71,11 +71,11 @@ public class ScrewdriverOverlay {
 			
 			do {
 				Vec2d v = rot(vec, ang);
-				vb.pos(v.x, v.y, 0).endVertex();
+				vb.pos(v.getX(), v.getY(), 0).endVertex();
 				ang -= anglePer;
 			} while(ang > 0);
 			
-			vb.pos(vec.x, vec.y, 0).endVertex();
+			vb.pos(vec.getX(), vec.getY(), 0).endVertex();
 			
 			tessellator.draw();
 			GlStateManager.enableTexture2D();
@@ -95,7 +95,7 @@ public class ScrewdriverOverlay {
 		double cs = Math.cos(theta);
 		double sn = Math.sin(theta);
 		
-		return new Vec2d(vec.x * cs - vec.y * sn, vec.x * sn + vec.y * cs);
+		return new Vec2d(vec.getX() * cs - vec.getY() * sn, vec.getX() * sn + vec.getY() * cs);
 	}
 	
 	private ItemStack getItemInHand(Item item) {
