@@ -54,6 +54,13 @@ public class BlockAssemblyTable extends BlockModContainer {
 				playerIn.openContainer.detectAndSendChanges();
 				worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
 
+			} else if (table.getOutput() != null) {
+				ItemStack stack = table.getOutput();
+				playerIn.setHeldItem(hand, stack);
+				playerIn.openContainer.detectAndSendChanges();
+				table.setOutput(null);
+				worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
+
 			} else if (!table.getInventory().isEmpty()) {
 				ItemStack stack = table.getInventory().get(table.getInventory().size() - 1);
 				playerIn.setHeldItem(hand, stack);

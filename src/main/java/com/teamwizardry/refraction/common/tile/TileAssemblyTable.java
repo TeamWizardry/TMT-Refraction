@@ -87,40 +87,39 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 	@SuppressWarnings("unchecked")
 	@Override
 	public void update() {
-		if(!worldObj.isRemote) {
+		if (worldObj.isRemote) return;
 
-			if (isCrafting) {
-				if (craftingTime < 200)
-					craftingTime++;
-				else {
-					craftingTime = 0;
-					isCrafting = false;
-					inventory.add(output);
-				}
+		if (isCrafting) {
+			if (craftingTime < 200)
+				craftingTime++;
+			else {
+				craftingTime = 0;
+				isCrafting = false;
+				inventory.add(output);
 			}
-			if (temperature > 0) temperature--;
+		}
+		if (temperature > 0) temperature--;
 
-			if (inventory.isEmpty()) return;
-			for (AssemblyRecipe recipe : AssemblyRecipes.recipes) {
+		if (inventory.isEmpty()) return;
+		for (AssemblyRecipe recipe : AssemblyRecipes.recipes) {
 
-				if (recipe.getItems().size() != inventory.size()) continue;
-				if (temperature > recipe.getMaxStrength()) continue;
-				if (temperature < recipe.getMinStrength()) continue;
+			if (recipe.getItems().size() != inventory.size()) continue;
+			if (temperature > recipe.getMaxStrength()) continue;
+			if (temperature < recipe.getMinStrength()) continue;
 
-				boolean match = true;
+			boolean match = true;
 
-				for (ItemStack recipeItem : recipe.getItems())
-					if (!ItemStack.areItemsEqual(recipeItem, inventory.get(recipe.getItems().indexOf(recipeItem)))) {
-						match = false;
-						break;
-					}
-
-				if (match) {
-					output = recipe.getResult();
-					isCrafting = true;
-					inventory.clear();
-					worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+			for (ItemStack recipeItem : recipe.getItems())
+				if (!ItemStack.areItemsEqual(recipeItem, inventory.get(recipe.getItems().indexOf(recipeItem)))) {
+					match = false;
+					break;
 				}
+
+			if (match) {
+				output = recipe.getResult();
+				isCrafting = true;
+				inventory.clear();
+				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 			}
 		}
 	}
@@ -133,7 +132,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 	public void handle(Beam... intputs) {
 		temperature = 0;
 		for (Beam beam : intputs) {
-			temperature += (int) (beam.color.getAlpha() * 256);
+			temperature += beam.color.getAlpha() * 256;
 		}
 	}
 
@@ -143,5 +142,13 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 
 	public boolean isCrafting() {
 		return isCrafting;
+	}
+
+	public ItemStack getOutput() {
+		return output;
+	}
+
+	public void setOutput(ItemStack output) {
+		this.output = output;
 	}
 }
