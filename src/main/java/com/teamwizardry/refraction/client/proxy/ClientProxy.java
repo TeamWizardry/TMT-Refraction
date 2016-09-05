@@ -8,7 +8,6 @@ import com.teamwizardry.refraction.client.render.ScrewdriverOverlay;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModEntities;
-import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
@@ -35,9 +34,8 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		LaserRenderer.INSTANCE.getClass();
 		ScrewdriverOverlay.INSTANCE.getClass();
 		EventHandlerClient.INSTANCE.getClass(); // ditto
-		ModBlocks.initModels();
-		ModItems.initModel();
 		ModEntities.initRender();
+		ModBlocks.initModels();
 	}
 
 	@Override
@@ -48,8 +46,8 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
-		if(Minecraft.getMinecraft().getResourceManager() instanceof IReloadableResourceManager)
-			( (IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager() ).registerReloadListener(this);
+		if (Minecraft.getMinecraft().getResourceManager() instanceof IReloadableResourceManager)
+			((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
 	}
 
 	@Override
@@ -58,20 +56,20 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		Minecraft.getMinecraft().effectRenderer.addEffect(particle);
 		return particle;
 	}
-	
+
 	@Override
 	public MinecraftServer getServer() {
 		return FMLClientHandler.instance().getServer();
 	}
-	
+
 	@Override
 	public void onResourceManagerReload(IResourceManager resourceManager) {
 		MinecraftForge.EVENT_BUS.post(new ResourceReloadEvent(resourceManager));
 	}
-	
+
 	public static class ResourceReloadEvent extends Event {
 		public final IResourceManager resourceManager;
-		
+
 		public ResourceReloadEvent(IResourceManager manager) {
 			resourceManager = manager;
 		}

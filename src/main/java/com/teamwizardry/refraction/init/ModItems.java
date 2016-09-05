@@ -18,10 +18,4 @@ public class ModItems {
 		SCREW_DRIVER = new ItemScrewDriver();
 		REFLECTIVE_ALLOY = new ItemReflectiveAlloy();
 	}
-
-	public static void initModel() {
-		LASER_PEN.initModel();
-		SCREW_DRIVER.initModel();
-		REFLECTIVE_ALLOY.initModel();
-	}
 }

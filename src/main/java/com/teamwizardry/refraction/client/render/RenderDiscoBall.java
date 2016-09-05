@@ -1,5 +1,7 @@
 package com.teamwizardry.refraction.client.render;
 
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.tile.TileDiscoBall;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -13,13 +15,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import org.lwjgl.opengl.GL11;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.common.tile.TileMirror;
 
 /**
  * Created by LordSaad44
  */
-public class RenderDiscoBall extends TileEntitySpecialRenderer<TileMirror> {
+public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
 
 	private IModel model;
 	private IBakedModel bakedModel;
@@ -41,7 +41,7 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileMirror> {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileMirror te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void renderTileEntityAt(TileDiscoBall te, double x, double y, double z, float partialTicks, int destroyStage) {
 		GlStateManager.pushMatrix();
 
 		GlStateManager.translate(x, y, z); // Translate pad to coords here

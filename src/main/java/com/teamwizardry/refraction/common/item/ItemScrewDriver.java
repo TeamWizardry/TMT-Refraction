@@ -1,9 +1,12 @@
 package com.teamwizardry.refraction.common.item;
 
+import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
+import com.teamwizardry.librarianlib.common.base.item.ItemMod;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.block.BlockMirror;
+import com.teamwizardry.refraction.common.block.BlockSplitter;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
@@ -11,18 +14,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.common.block.BlockMirror;
-import com.teamwizardry.refraction.common.block.BlockSplitter;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by LordSaad44
  */
-public class ItemScrewDriver extends Item {
+public class ItemScrewDriver extends ItemMod {
 
 	public static final String MODE_TAG = "mode";
 	protected static final float[] multipliers = { // out of order so it defaults to 5
@@ -31,11 +28,8 @@ public class ItemScrewDriver extends Item {
 	};
 	
 	public ItemScrewDriver() {
-		setRegistryName("screw_driver");
-		setUnlocalizedName("screw_driver");
-		GameRegistry.register(this);
+		super("screw_driver");
 		setMaxStackSize(1);
-		setCreativeTab(Refraction.tab);
 	}
 	
 	@Override
@@ -72,12 +66,7 @@ public class ItemScrewDriver extends Item {
 			i = stack.getTagCompound().getInteger(MODE_TAG);
 		return super.getUnlocalizedName(stack) + "." + (i % multipliers.length);
 	}
-	
-	@SideOnly(Side.CLIENT)
-	public void initModel() {
-		ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-	}
-	
+
 	public float getRotationMultiplier(ItemStack stack) {
 		return multipliers[getRotationIndex(stack)];
 	}
@@ -89,5 +78,11 @@ public class ItemScrewDriver extends Item {
 		while(i < 0)
 			i += multipliers.length;
 		return i % multipliers.length;
+	}
+
+	@Nullable
+	@Override
+	public ModCreativeTab getCreativeTab() {
+		return Refraction.tab;
 	}
 }

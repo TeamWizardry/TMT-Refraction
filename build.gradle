@@ -36,10 +36,12 @@ minecraft {
 repositories {
     mavenCentral()
     maven { url "https://jitpack.io" }
+    maven { url "http://dvs1.progwml6.com/files/maven" }
 }
 
 dependencies {
     compile 'com.github.TeamWizardry:LibrarianLib:b4808de628'
+    deobfCompile "mezz.jei:jei_1.9.4:3.4.0.204"
 }
 
 processResources {

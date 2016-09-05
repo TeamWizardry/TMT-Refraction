@@ -1,18 +1,17 @@
 package com.teamwizardry.refraction;
 
+import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import com.teamwizardry.refraction.init.ModItems;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 
 @Mod(
 		modid = Refraction.MOD_ID,
@@ -27,23 +26,18 @@ public class Refraction {
 	public static final String VERSION = "1.0";
 	public static final String CLIENT = "com.teamwizardry.refraction.client.proxy.ClientProxy";
 	public static final String SERVER = "com.teamwizardry.refraction.common.proxy.CommonProxy";
-	public static final String DEPENDENCIES = "required-after:librarianlib";
+	public static final String DEPENDENCIES = "required-before:librarianlib";
 
 	@SidedProxy(clientSide = CLIENT, serverSide = SERVER)
 	public static CommonProxy proxy;
 	@Mod.Instance
 	public static Refraction instance;
 
-	public static CreativeTabs tab = new CreativeTabs(MOD_NAME) {
+	public static ModCreativeTab tab = new ModCreativeTab(MOD_NAME) {
+		@NotNull
 		@Override
-		public String getTabLabel() {
-			return MOD_ID;
-		}
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public Item getTabIconItem() {
-			return Item.getItemFromBlock(Blocks.BARRIER);
+		public ItemStack getIconItemStack() {
+			return new ItemStack(ModItems.SCREW_DRIVER);
 		}
 	};
 

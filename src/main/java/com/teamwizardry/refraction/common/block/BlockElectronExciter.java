@@ -1,21 +1,19 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
+import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.ISpamSoundProvider;
 import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -23,41 +21,25 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockElectronExciter extends BlockDirectional implements ITileEntityProvider, ISpamSoundProvider {
+public class BlockElectronExciter extends BlockModContainer implements ISpamSoundProvider {
 
 	//public static final PropertyEnum<EnumFacing> LINKED_BLOCK = PropertyEnum.create("linked_block", EnumFacing.class);
+	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
 	public BlockElectronExciter() {
-		super(Material.IRON);
+		super("electron_exciter", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		setUnlocalizedName("electron_exciter");
-		setRegistryName("electron_exciter");
-		GameRegistry.register(this);
 		GameRegistry.registerTileEntity(TileElectronExciter.class, "electron_exciter");
-		GameRegistry.register(new ItemBlock(this), getRegistryName());
 		setCreativeTab(Refraction.tab);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void initModel() {
-		//ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(BlockElectronExciter.LINKED_BLOCK).build());
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileElectronExciter();
 	}
 
 	private TileElectronExciter getTE(World world, BlockPos pos) {
@@ -140,5 +122,17 @@ public class BlockElectronExciter extends BlockDirectional implements ITileEntit
 		recalculateAllSurroundingSpammables(world, pos);
 
 		super.breakBlock(world, pos, state);
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
+		return new TileElectronExciter();
+	}
+
+	@Nullable
+	@Override
+	public ModCreativeTab getCreativeTab() {
+		return Refraction.tab;
 	}
 }

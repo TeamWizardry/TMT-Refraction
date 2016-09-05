@@ -1,10 +1,5 @@
 package com.teamwizardry.refraction.client.fx;
 
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleRenderQueue;
-import com.teamwizardry.librarianlib.client.fx.particle.QueuedParticle;
-import com.teamwizardry.refraction.client.render.RenderLaserUtil;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -13,8 +8,8 @@ import java.awt.*;
 /**
  * Created by TheCodeWarrior
  */
-public class ParticleLaser extends QueuedParticle<ParticleLaser> {
-	public static final ParticleRenderQueue<ParticleLaser> queue = new ParticleRenderQueue<ParticleLaser>(false) {
+public class ParticleLaser /* extends QueuedParticle<ParticleLaser> */{
+	/*public static final ParticleRenderQueue<ParticleLaser> queue = new ParticleRenderQueue<ParticleLaser>(false) {
 		@Override
 		public String name() {
 			return "laser";
@@ -28,23 +23,23 @@ public class ParticleLaser extends QueuedParticle<ParticleLaser> {
 			}
 			RenderLaserUtil.finishRenderingLasers();
 		}
-	};
+	};*/
 	
 	protected Vec3d start, end;
 	protected Color color;
 	
 	public ParticleLaser(World worldIn, double posXIn, double posYIn, double posZIn, double endX, double endY, double endZ, Color color) {
-		super(worldIn, posXIn, posYIn, posZIn);
+		/*super(worldIn, posXIn, posYIn, posZIn);
 		start = new Vec3d(posXIn, posYIn, posZIn);
 		end = new Vec3d(endX, endY, endZ);
 		this.color = color;
 		
 		setEntityBoundingBox(new AxisAlignedBB(posXIn, posYIn, posZIn, endX, endY, endZ));
-		
+		*/
 	}
 	
-	@Override
+/*	@Override
 	protected ParticleRenderQueue<ParticleLaser> queue() {
 		return queue;
-	}
+	}*/
 }

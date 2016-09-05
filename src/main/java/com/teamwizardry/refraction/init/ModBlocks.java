@@ -18,7 +18,7 @@ public class ModBlocks {
 	public static BlockSplitter SPLITTER;
 	public static BlockElectronExciter ELECTRON_EXCITER;
 	public static BlockLightBridge LIGHT_BRIDGE;
-//	public static BlockSensor SENSOR;
+	public static BlockSensor SENSOR;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -32,21 +32,15 @@ public class ModBlocks {
 		SPLITTER = new BlockSplitter();
 		ELECTRON_EXCITER = new BlockElectronExciter();
 		LIGHT_BRIDGE = new BlockLightBridge();
-//		SENSOR = new BlockSensor();
+		SENSOR = new BlockSensor();
 	}
 
 	public static void initModels() {
-		MIRROR.initModel();
-		LENS.initModel();
-		MAGNIFIER.initModel();
-		DISCO_BALL.initModel();
 		ASSEMBLY_TABLE.initModel();
-		LASER.initModel();
-		PRISM.initModel();
-		REF_CHAMBER.initModel();
-		SPLITTER.initModel();
-		ELECTRON_EXCITER.initModel();
+		DISCO_BALL.initModel();
 		LIGHT_BRIDGE.initModel();
-//		SENSOR.initModel();
+		MIRROR.initModel();
+		REF_CHAMBER.initModel();
+
 	}
 }

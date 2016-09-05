@@ -1,22 +1,20 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
+import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.common.light.ILaserTrace;
 import com.teamwizardry.refraction.common.raytrace.Tri;
 import com.teamwizardry.refraction.common.tile.TilePrism;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -25,36 +23,23 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by LordSaad44
  */
-public class BlockPrism extends BlockDirectional implements ITileEntityProvider, ILaserTrace {
+public class BlockPrism extends BlockModContainer implements ILaserTrace {
+
+	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
 	public BlockPrism() {
-		super(Material.GLASS);
+		super("prism", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
-		setUnlocalizedName("prism");
-		setRegistryName("prism");
-		GameRegistry.register(this);
 		GameRegistry.registerTileEntity(TilePrism.class, "prism");
-		GameRegistry.register(new ItemBlock(this), getRegistryName());
-		setCreativeTab(Refraction.tab);
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void initModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TilePrism();
 	}
 
 	@Override
@@ -267,8 +252,22 @@ public class BlockPrism extends BlockDirectional implements ITileEntityProvider,
 		
 		return new RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
 	}
-	
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
+		return new TilePrism();
+	}
+
+	@Nullable
+	@Override
+	public ModCreativeTab getCreativeTab() {
+		return Refraction.tab;
+	}
+
 	public static class RayTraceResultData<T> extends RayTraceResult {
+		
+		public T data;
 		
 		public RayTraceResultData(Vec3d hitVecIn, EnumFacing sideHitIn, BlockPos blockPosIn)
 		{
@@ -294,8 +293,6 @@ public class BlockPrism extends BlockDirectional implements ITileEntityProvider,
 		{
 			super(entityHitIn, hitVecIn);
 		}
-		
-		public T data;
 		
 		public RayTraceResultData<T> data(T data) {
 			this.data = data;

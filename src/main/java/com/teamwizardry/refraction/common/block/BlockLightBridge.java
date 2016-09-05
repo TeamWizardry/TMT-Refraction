@@ -1,18 +1,17 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
+import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.client.render.RenderLightBridge;
 import com.teamwizardry.refraction.common.tile.TileLightBridge;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -20,15 +19,18 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockLightBridge extends BlockDirectional implements ITileEntityProvider {
+public class BlockLightBridge extends BlockModContainer {
+
+	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
 	private static final AxisAlignedBB AABB_UP = new AxisAlignedBB(0.0D, 0.40625D, 0.0D, 1.0D, 0.59375D, 1.0D);
 	private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.0D, 0.40625D, 0.0D, 1.0D, 0.59375D, 1.0D);
@@ -38,15 +40,10 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 	private static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.59375D, 1.0D, 1.0D, 0.40625D);
 
 	public BlockLightBridge() {
-		super(Material.GLASS);
+		super("light_bridge", Material.GLASS);
 		setBlockUnbreakable();
 		setSoundType(SoundType.GLASS);
-		setUnlocalizedName("light_bridge");
-		setRegistryName("light_bridge");
-		GameRegistry.register(this);
 		GameRegistry.registerTileEntity(TileLightBridge.class, "light_bridge");
-		GameRegistry.register(new ItemBlock(this), getRegistryName());
-		setCreativeTab(Refraction.tab);
 		setTickRandomly(true);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
@@ -54,7 +51,7 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 
 	@SideOnly(Side.CLIENT)
 	public void initModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileLightBridge.class, new RenderLightBridge());
 	}
 
 	@Override
@@ -157,11 +154,6 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileLightBridge();
-	}
-
-	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileLightBridge bridge = (TileLightBridge) world.getTileEntity(pos);
 		if (bridge != null && bridge.getDirection() != null) {
@@ -174,5 +166,17 @@ public class BlockLightBridge extends BlockDirectional implements ITileEntityPro
 		}
 
 		super.breakBlock(world, pos, state);
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
+		return new TileLightBridge();
+	}
+
+	@Nullable
+	@Override
+	public ModCreativeTab getCreativeTab() {
+		return Refraction.tab;
 	}
 }

@@ -1,42 +1,30 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.refraction.Refraction;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by LordSaad44
  */
-public class BlockLens extends Block {
+public class BlockLens extends BlockMod {
 
 	public BlockLens() {
-		super(Material.GLASS);
+		super("lens", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
-		setUnlocalizedName("lens");
-		setRegistryName("lens");
-		GameRegistry.register(this);
-		GameRegistry.register(new ItemBlock(this), getRegistryName());
-		setCreativeTab(Refraction.tab);
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void initModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
 
 	@Override
@@ -65,5 +53,12 @@ public class BlockLens extends Block {
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
+	}
+
+
+	@Nullable
+	@Override
+	public ModCreativeTab getCreativeTab() {
+		return Refraction.tab;
 	}
 }
