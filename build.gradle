@@ -39,7 +39,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.TeamWizardry:LibrarianLib:-SNAPSHOT'
+    compile 'com.github.TeamWizardry:LibrarianLib:b4808de628'
 }
 
 processResources {
