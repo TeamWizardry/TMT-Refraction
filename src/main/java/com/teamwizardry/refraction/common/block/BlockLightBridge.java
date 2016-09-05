@@ -7,6 +7,7 @@ import com.teamwizardry.refraction.client.render.RenderLightBridge;
 import com.teamwizardry.refraction.common.tile.TileLightBridge;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -31,13 +32,17 @@ import org.jetbrains.annotations.Nullable;
 public class BlockLightBridge extends BlockModContainer {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
+	public static final PropertyBool VERTICAL = PropertyBool.create("vertical");
 
-	private static final AxisAlignedBB AABB_UP = new AxisAlignedBB(0.0D, 0.40625D, 0.0D, 1.0D, 0.59375D, 1.0D);
-	private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.0D, 0.40625D, 0.0D, 1.0D, 0.59375D, 1.0D);
-	private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.40625D, 0.0D, 0.0D, 0.59375D, 1.0D, 1.0D);
-	private static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.59375D, 0.0D, 0.0D, 0.40625D, 1.0D, 1.0D);
-	private static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.0D, 0.0D, 0.40625D, 1.0D, 1.0D, 0.59375D);
-	private static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.59375D, 1.0D, 1.0D, 0.40625D);
+	private static final AxisAlignedBB AABB_VERT_EW = new AxisAlignedBB(0, 0, 0.40625, 1, 1, 0.59375);
+	private static final AxisAlignedBB AABB_VERT_NS = new AxisAlignedBB(0.40625, 0, 0, 0.59375, 1, 1);
+	private static final AxisAlignedBB AABB_HORIZ = new AxisAlignedBB(0, 0.40625, 0, 1, 0.59375, 1);
+//	private static final AxisAlignedBB AABB_UP = new AxisAlignedBB(0.0D, 0.40625D, 0.0D, 1.0D, 0.59375D, 1.0D);
+//	private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.0D, 0.40625D, 0.0D, 1.0D, 0.59375D, 1.0D);
+//	private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.40625D, 0.0D, 0.0D, 0.59375D, 1.0D, 1.0D);
+//	private static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.59375D, 0.0D, 0.0D, 0.40625D, 1.0D, 1.0D);
+//	private static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.0D, 0.0D, 0.40625D, 1.0D, 1.0D, 0.59375D);
+//	private static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.59375D, 1.0D, 1.0D, 0.40625D);
 
 	public BlockLightBridge() {
 		super("light_bridge", Material.GLASS);
@@ -46,7 +51,7 @@ public class BlockLightBridge extends BlockModContainer {
 		GameRegistry.registerTileEntity(TileLightBridge.class, "light_bridge");
 		setTickRandomly(true);
 
-		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(VERTICAL, false));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -56,80 +61,92 @@ public class BlockLightBridge extends BlockModContainer {
 
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		if (placer.rotationPitch > 45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.UP);
-		if (placer.rotationPitch < -45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.DOWN);
-
-		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing().getOpposite());
+		EnumFacing placerFacing = placer.getAdjustedHorizontalFacing();
+		IBlockState state = getStateFromMeta(meta);
+		
+		if (placer.rotationPitch > 45)
+		{
+			state = state.withProperty(FACING, EnumFacing.DOWN);
+			switch (placerFacing)
+			{
+				case NORTH:
+				case SOUTH:
+				default:
+					return state.withProperty(VERTICAL, false);
+				case EAST:
+				case WEST:
+					return state.withProperty(VERTICAL, true);
+			}
+		}
+		if (placer.rotationPitch < -45)
+		{
+			state = state.withProperty(FACING, EnumFacing.UP);
+			switch (placerFacing)
+			{
+				case NORTH:
+				case SOUTH:
+				default:
+					return state.withProperty(VERTICAL, false);
+				case EAST:
+				case WEST:
+					return state.withProperty(VERTICAL, true);
+						
+			}
+		}
+		
+		if (hitY > 0.5) // Place Vertically
+		{
+			if (placerFacing != null)
+				return state.withProperty(FACING, placerFacing).withProperty(VERTICAL, true);
+			return state.withProperty(FACING, EnumFacing.NORTH).withProperty(VERTICAL, true);
+		}
+		else
+		{
+			if (placerFacing != null)
+				return state.withProperty(FACING, placerFacing).withProperty(VERTICAL, false);
+			return state.withProperty(FACING, EnumFacing.NORTH).withProperty(VERTICAL, false);
+		}
 	}
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing enumfacing = state.getValue(FACING);
-
-		TileLightBridge bridge = (TileLightBridge) source.getTileEntity(pos);
-		if (bridge == null)
-			switch (enumfacing) {
-				case EAST:
-					return AABB_EAST;
-				case WEST:
-					return AABB_WEST;
-				case SOUTH:
-					return AABB_SOUTH;
-				case NORTH:
-					return AABB_NORTH;
-				case DOWN:
-					return AABB_DOWN;
-				default:
-					return AABB_UP;
-			}
-		else if (bridge.getDirection() != null) {
-			switch (bridge.getDirection()) {
-				case EAST:
-					return AABB_UP.offset(0, 0, -0.5);
-				case WEST:
-					return AABB_UP.offset(0, 0, 0.5);
-				case SOUTH:
-					return AABB_UP.offset(0.5, 0, 0);
-				case NORTH:
-					return AABB_UP.offset(-0.5, 0, 0);
-				case DOWN:
-					return AABB_DOWN;
-				default:
-					return AABB_UP;
-			}
-		} else {
-			switch (enumfacing) {
-				case EAST:
-					return AABB_EAST;
-				case WEST:
-					return AABB_WEST;
-				case SOUTH:
-					return AABB_SOUTH;
-				case NORTH:
-					return AABB_NORTH;
-				case DOWN:
-					return AABB_DOWN;
-				default:
-					return AABB_UP;
-			}
+		boolean isVert = state.getValue(VERTICAL);
+		
+		switch (enumfacing)
+		{
+			case UP:
+			case DOWN:
+				return isVert ? AABB_VERT_NS : AABB_VERT_EW;
+			case NORTH:
+			case SOUTH:
+				return isVert ? AABB_VERT_NS : AABB_HORIZ;
+			case EAST:
+			case WEST:
+				return isVert ? AABB_VERT_EW : AABB_HORIZ;
+			default:
+				return AABB_HORIZ;
 		}
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
+		meta = meta % 12;
+		if (meta < 6)
+			return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta)).withProperty(VERTICAL, false);
+		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta - 6)).withProperty(VERTICAL, true);
 
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getIndex();
+		return state.getValue(FACING).getIndex() + (state.getValue(VERTICAL).booleanValue() ? 0 : 6);
 	}
 
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, VERTICAL);
 	}
 
 	@SideOnly(Side.CLIENT)
