@@ -16,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,9 +34,14 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IT
 	private boolean emittingSound = false;
 
 	public TileLaser() {
-		ReflectionTracker.getInstance(worldObj).addSource(this);
 	}
-
+	
+	@Override
+	protected void setWorldCreate(World worldIn) {
+		super.setWorldCreate(worldIn);
+		ReflectionTracker.getInstance(worldIn).addSource(this);
+	}
+	
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);

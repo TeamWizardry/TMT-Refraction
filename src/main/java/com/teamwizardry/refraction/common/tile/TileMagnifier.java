@@ -12,6 +12,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -25,9 +26,15 @@ public class TileMagnifier extends TileEntity implements ILightSource {
 	private IBlockState state;
 	
 	public TileMagnifier() {
-		ReflectionTracker.getInstance(worldObj).addSource(this);
+		
 	}
-
+	
+	@Override
+	protected void setWorldCreate(World worldIn) {
+		super.setWorldCreate(worldIn);
+		ReflectionTracker.getInstance(worldIn).addSource(this);
+	}
+	
 	@Override
 	public NBTTagCompound getUpdateTag() {
 		return writeToNBT(new NBTTagCompound());

@@ -40,11 +40,11 @@ public class RenderLaserUtil {
 		GlStateManager.disableCull();
 		
 		Vec3d playerEyes = Minecraft.getMinecraft().thePlayer.getPositionEyes(ClientTickHandler.getPartialTicks());
-		Vec3d normal = (end.subtract(start)).crossProduct(playerEyes.subtract(start)); //(b.subtract(a)).crossProduct(c.subtract(a));
+		Vec3d normal = (end.subtract(start)).crossProduct(playerEyes.subtract(start)).normalize(); //(b.subtract(a)).crossProduct(c.subtract(a));
 		if(normal.yCoord < 0)
 			normal = normal.scale(-1);
 		
-		Vec3d d = normal.scale((0.25*color.getAlpha())/2.);
+		Vec3d d = normal.scale((0.25*color.getAlpha()/255f)/2.);
 		
 		double vMin = 0, vMax = 1;
 		double uMin = 0, uMax = 1;
@@ -55,10 +55,10 @@ public class RenderLaserUtil {
 		if(!drawingLasers)
 			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 		
-		pos(vb, start.add(d)     ).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), 1).endVertex();
-		pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), 1).endVertex();
-		pos(vb, end.subtract(d)  ).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), 1).endVertex();
-		pos(vb, end.add(d)       ).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), 1).endVertex();
+		pos(vb, start.add(d)     ).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), 255).endVertex();
+		pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), 255).endVertex();
+		pos(vb, end.subtract(d)  ).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), 255).endVertex();
+		pos(vb, end.add(d)       ).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), 255).endVertex();
 		
 		if(!drawingLasers)
 			tessellator.draw();
