@@ -30,9 +30,9 @@ public class TileMagnifier extends TileEntity implements ILightSource {
 	}
 	
 	@Override
-	protected void setWorldCreate(World worldIn) {
-		super.setWorldCreate(worldIn);
-		ReflectionTracker.getInstance(worldIn).addSource(this);
+	public void onLoad() {
+		super.onLoad();
+		ReflectionTracker.getInstance(worldObj).addSource(this);
 	}
 	
 	@Override

@@ -37,9 +37,9 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IT
 	}
 	
 	@Override
-	protected void setWorldCreate(World worldIn) {
-		super.setWorldCreate(worldIn);
-		ReflectionTracker.getInstance(worldIn).addSource(this);
+	public void onLoad() {
+		super.onLoad();
+		ReflectionTracker.getInstance(worldObj).addSource(this);
 	}
 	
 	@Override

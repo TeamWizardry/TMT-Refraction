@@ -9,6 +9,7 @@ import java.util.WeakHashMap;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -50,6 +51,11 @@ public class ReflectionTracker
 		delayBufferProcessingSwap = new WeakHashMap<>();
 		sinkBlocks = HashMultimap.create();
 		MinecraftForge.EVENT_BUS.register(this);
+	}
+	
+	@SubscribeEvent
+	public void unload(WorldEvent.Unload event) {
+		instances.remove(event.getWorld());
 	}
 
 	@SubscribeEvent
