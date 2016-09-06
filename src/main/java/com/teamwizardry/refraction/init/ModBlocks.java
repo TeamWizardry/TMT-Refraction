@@ -41,6 +41,5 @@ public class ModBlocks {
 		LIGHT_BRIDGE.initModel();
 		MIRROR.initModel();
 		REF_CHAMBER.initModel();
-
 	}
 }

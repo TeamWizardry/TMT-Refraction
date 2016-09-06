@@ -69,10 +69,10 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 		
 		for (Beam beam : beams)
 		{
-			float red = beam.color.getRed();
-			float green = beam.color.getGreen();
-			float blue = beam.color.getBlue();
-			float alphaPer = beam.color.getAlpha()/(red+green+blue);
+			int red = beam.color.getRed();
+			int green = beam.color.getGreen();
+			int blue = beam.color.getBlue();
+			int alphaPer = beam.color.getAlpha()/(red+green+blue);
 			
 			Vec3d dir = beam.finalLoc.subtract(beam.initLoc).normalize();
 			

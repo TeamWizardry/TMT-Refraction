@@ -60,7 +60,7 @@ public class TileReflectionChamber extends TileEntity implements IBeamHandler
 	public void handle(Beam... beams)
 	{
 		Vec3d[] angles;
-		float red, green, blue, alpha;
+		int red, green, blue, alpha;
 
 		angles = new Vec3d[beams.length];
 		red = 0;
@@ -75,9 +75,10 @@ public class TileReflectionChamber extends TileEntity implements IBeamHandler
 			blue += beams[i].color.getBlue();
 			alpha += beams[i].color.getAlpha();
 		}
-		red = Math.min(red, 1);
-		green = Math.min(green, 1);
-		blue = Math.min(blue, 1);
+		red = Math.min(red, 255);
+		green = Math.min(green, 255);
+		blue = Math.min(blue, 255);
+		alpha = Math.min(alpha, 255);
 		Vec3d out = RotationHelper.averageDirection(angles);
 		new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out, new Color(red, green, blue, alpha));
 

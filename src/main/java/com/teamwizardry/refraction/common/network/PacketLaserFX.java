@@ -33,7 +33,7 @@ public class PacketLaserFX extends PacketBase {
 	public void fromBytes(ByteBuf buf) {
 		start = new Vec3d(buf.readFloat(), buf.readFloat(), buf.readFloat());
 		end = new Vec3d(buf.readFloat(), buf.readFloat(), buf.readFloat());
-		color = new Color(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
+		color = new Color(buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt());
 	}
 	
 	@Override
@@ -46,9 +46,9 @@ public class PacketLaserFX extends PacketBase {
 		buf.writeFloat((float)end.yCoord);
 		buf.writeFloat((float)end.zCoord);
 		
-		buf.writeFloat((float)color.getRed());
-		buf.writeFloat((float)color.getGreen());
-		buf.writeFloat((float)color.getBlue());
-		buf.writeFloat((float)color.getAlpha());
+		buf.writeInt(color.getRed());
+		buf.writeInt(color.getGreen());
+		buf.writeInt(color.getBlue());
+		buf.writeInt(color.getAlpha());
 	}
 }

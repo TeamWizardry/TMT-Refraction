@@ -10,8 +10,8 @@ public class BeamConstants {
 	public static final int BUFFER_DELAY = 1;
 	public static final int COMBINER_DELAY = 4;
 	public static final int SOURCE_TIMER = 20;
-	public static final float SOLAR_ALPHA = 32F/256F;
-	public static final float GLOWSTONE_ALPHA = 64F/256F;
+	public static final int SOLAR_ALPHA = 32;
+	public static final int GLOWSTONE_ALPHA = 64;
 	
 	public static final int NIGHT_START = 12600;
 	public static final int NIGHT_END = 23400;
