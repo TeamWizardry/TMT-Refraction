@@ -1,10 +1,17 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
+import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpColorFade;
+import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
+import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
+import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.common.recipe.AssemblyRecipe;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -12,11 +19,15 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44
@@ -88,17 +99,55 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 	@Override
 	public void update() {
 		if (worldObj.isRemote) return;
+		if (temperature > 0) temperature--;
+	}
+
+	public ArrayList<ItemStack> getInventory() {
+		return inventory;
+	}
+
+	@Override
+	public void handle(Beam... intputs) {
+		if (worldObj.isRemote) return;
+
+		temperature = 0;
+		for (Beam beam : intputs) {
+			temperature += beam.color.getAlpha();
+		}
 
 		if (isCrafting) {
-			if (craftingTime < 200)
+			if (craftingTime < 50) {
 				craftingTime++;
-			else {
-				craftingTime = 0;
+				ParticleBuilder builder = new ParticleBuilder(5);
+				builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
+				builder.setColorFunction(new InterpColorFade(Color.RED, 1, 255, 1));
+				if (ThreadLocalRandom.current().nextBoolean())
+				builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle_blurred"));
+				else builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle"));
+				ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(20, 40), 0, (aFloat, particleBuilder) -> {
+					builder.setScale(ThreadLocalRandom.current().nextFloat());
+					builder.addMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.01, 0.01), ThreadLocalRandom.current().nextDouble(0.005, 0.01), ThreadLocalRandom.current().nextDouble(-0.01, 0.01)));
+					builder.setLifetime(ThreadLocalRandom.current().nextInt(10, 20));
+				});
+			} else {
 				isCrafting = false;
-				inventory.add(output);
+				ParticleBuilder builder = new ParticleBuilder(5);
+				builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
+				builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
+				if (ThreadLocalRandom.current().nextBoolean())
+					builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle_blurred"));
+				else builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle"));
+				ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(20, 40), 0, (aFloat, particleBuilder) -> {
+					builder.setScale(ThreadLocalRandom.current().nextFloat());
+					builder.addMotion(new Vec3d(0, 0.005, 0));
+					builder.setLifetime(ThreadLocalRandom.current().nextInt(10, 20));
+					builder.addPositionOffset(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.4, 0.4), 0, ThreadLocalRandom.current().nextDouble(-0.4, 0.4)));
+				});
+
+				Minecraft.getMinecraft().thePlayer.sendChatMessage(output + "");
 			}
+			return;
 		}
-		if (temperature > 0) temperature--;
 
 		if (inventory.isEmpty()) return;
 		for (AssemblyRecipe recipe : AssemblyRecipes.recipes) {
@@ -118,21 +167,10 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 			if (match) {
 				output = recipe.getResult();
 				isCrafting = true;
+				craftingTime = 0;
 				inventory.clear();
 				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 			}
-		}
-	}
-
-	public ArrayList<ItemStack> getInventory() {
-		return inventory;
-	}
-
-	@Override
-	public void handle(Beam... intputs) {
-		temperature = 0;
-		for (Beam beam : intputs) {
-			temperature += beam.color.getAlpha() * 256;
 		}
 	}
 
@@ -145,7 +183,8 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 	}
 
 	public ItemStack getOutput() {
-		return output;
+		if (!isCrafting) return output;
+		else return null;
 	}
 
 	public void setOutput(ItemStack output) {

@@ -49,8 +49,10 @@ public class BlockAssemblyTable extends BlockModContainer {
 			TileAssemblyTable table = getTE(worldIn, pos);
 
 			if (heldItem != null && heldItem.stackSize > 0) {
-				table.getInventory().add(heldItem);
+				ItemStack stack = heldItem.copy();
+				stack.stackSize = 1;
 				--heldItem.stackSize;
+				table.getInventory().add(stack);
 				playerIn.openContainer.detectAndSendChanges();
 				worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
 

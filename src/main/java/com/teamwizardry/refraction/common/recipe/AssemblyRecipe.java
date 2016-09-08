@@ -1,19 +1,20 @@
 package com.teamwizardry.refraction.common.recipe;
 
-import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
 
 /**
  * Created by LordSaad44
  */
 public class AssemblyRecipe {
 
-	private ArrayList<ItemStack> items;
-	private float maxStrength;
-	private float minStrength;
-	private ItemStack result;
+	private final ArrayList<ItemStack> items;
+	private final float maxStrength;
+	private final float minStrength;
+	private final ItemStack result;
 	
 	public AssemblyRecipe(ItemStack result, float minStrength, float maxStrength, Object... items)
 	{
