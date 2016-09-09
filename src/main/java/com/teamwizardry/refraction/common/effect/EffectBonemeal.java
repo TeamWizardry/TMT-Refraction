@@ -25,11 +25,6 @@ public class EffectBonemeal implements IEffect {
 		this.potency = potency;
 	}
 	
-	public Color getColor()
-	{
-		return new Color(0, 255, 0);
-	}
-
 	@Override
 	public void run(World world, Vec3d pos) {
 		if (world.getBlockState(new BlockPos(pos.xCoord, pos.yCoord, pos.zCoord)).getBlock() instanceof IGrowable) {
@@ -49,5 +44,10 @@ public class EffectBonemeal implements IEffect {
 			fx.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
 			fx.setJitter(10, ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1));
 		}
+	}
+
+	@Override
+	public Color getColor() {
+		return Color.GREEN;
 	}
 }

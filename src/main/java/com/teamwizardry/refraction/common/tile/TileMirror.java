@@ -1,5 +1,9 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.refraction.api.IPrecisionTile;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -8,14 +12,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.librarianlib.common.util.math.Matrix4;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
 
 /**
  * Created by LordSaad44
  */
-public class TileMirror extends TileEntity implements IBeamHandler {
+public class TileMirror extends TileEntity implements IBeamHandler, IPrecisionTile {
 
 	private IBlockState state;
 	private float rotX, rotY, rotXPowered = Float.NaN, rotYPowered = Float.NaN;
@@ -74,6 +75,7 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 		return INFINITE_EXTENT_AABB;
 	}
 
+	@Override
 	public float getRotX() {
 		if(Float.isNaN(rotXPowered))
 			return rotX;
@@ -82,6 +84,7 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 		return rotX;
 	}
 
+	@Override
 	public void setRotX(float rotX) {
 		if(worldObj.isBlockPowered(pos) || worldObj.isBlockIndirectlyGettingPowered(pos) > 0)
 			this.rotXPowered = rotX;
@@ -91,6 +94,7 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 		markDirty();
 	}
 
+	@Override
 	public float getRotY() {
 		if(Float.isNaN(rotYPowered))
 			return rotY;
@@ -99,6 +103,7 @@ public class TileMirror extends TileEntity implements IBeamHandler {
 		return rotY;
 	}
 
+	@Override
 	public void setRotY(float rotY) {
 		if(worldObj.isBlockPowered(pos) || worldObj.isBlockIndirectlyGettingPowered(pos) > 0)
 			this.rotYPowered = rotY;

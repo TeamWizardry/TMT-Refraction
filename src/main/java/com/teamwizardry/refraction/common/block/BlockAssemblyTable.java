@@ -49,26 +49,26 @@ public class BlockAssemblyTable extends BlockModContainer {
 			TileAssemblyTable table = getTE(worldIn, pos);
 
 			if (heldItem != null && heldItem.stackSize > 0) {
-				table.getInventory().add(heldItem);
+				ItemStack stack = heldItem.copy();
+				stack.stackSize = 1;
 				--heldItem.stackSize;
+				table.getInventory().add(stack);
 				playerIn.openContainer.detectAndSendChanges();
-				worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
 
 			} else if (table.getOutput() != null) {
 				ItemStack stack = table.getOutput();
 				playerIn.setHeldItem(hand, stack);
 				playerIn.openContainer.detectAndSendChanges();
 				table.setOutput(null);
-				worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
 
 			} else if (!table.getInventory().isEmpty()) {
 				ItemStack stack = table.getInventory().get(table.getInventory().size() - 1);
 				playerIn.setHeldItem(hand, stack);
 				playerIn.openContainer.detectAndSendChanges();
 				table.getInventory().remove(stack);
-				worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
 			}
 		}
+		worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
 		return true;
 	}
 

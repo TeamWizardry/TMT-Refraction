@@ -26,11 +26,6 @@ public class EffectAttract implements IEffect {
 		this.potency = potency;
 	}
 	
-	public Color getColor()
-	{
-		return new Color(0, 255, 255);
-	}
-
 	private static void setEntityMotionFromVector(Entity entity, Vec3d originalPosVector) {
 		Vec3d entityVector = entity.getPositionVector();
 		Vec3d finalVector = originalPosVector.subtract(entityVector);
@@ -84,5 +79,10 @@ public class EffectAttract implements IEffect {
 			fx.setColor(new Color(0x00008B));
 			fx.setMotion(motion);
 		}
+	}
+
+	@Override
+	public Color getColor() {
+		return Color.CYAN;
 	}
 }

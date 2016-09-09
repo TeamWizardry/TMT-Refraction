@@ -38,7 +38,6 @@ public class ModBlocks {
 	public static void initModels() {
 		ASSEMBLY_TABLE.initModel();
 		DISCO_BALL.initModel();
-		LIGHT_BRIDGE.initModel();
 		MIRROR.initModel();
 		REF_CHAMBER.initModel();
 	}

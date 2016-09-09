@@ -1,13 +1,11 @@
 package com.teamwizardry.refraction.common.effect;
 
-import java.util.concurrent.ThreadLocalRandom;
+import com.teamwizardry.refraction.api.IEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import java.awt.Color;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.IEffect;
-import com.teamwizardry.refraction.client.fx.SparkleFX;
+
+import java.awt.*;
 
 public class EffectBreak implements IEffect
 {
@@ -16,11 +14,6 @@ public class EffectBreak implements IEffect
 	public EffectBreak(int potency)
 	{
 		this.potency = potency;
-	}
-	
-	public Color getColor()
-	{
-		return new Color(255, 255, 0);
 	}
 	
 	@Override
@@ -46,5 +39,10 @@ public class EffectBreak implements IEffect
 //			fx.setColor(Color.rgb(0xFFFF00));
 //			fx.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.05), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
 //		}
+	}
+
+	@Override
+	public Color getColor() {
+		return Color.YELLOW;
 	}
 }

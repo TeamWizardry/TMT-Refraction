@@ -1,13 +1,13 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.IEffect;
+import java.awt.Color;
+import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import java.awt.Color;
-import java.util.List;
+import com.teamwizardry.refraction.api.IEffect;
 
 /**
  * Created by LordSaad44
@@ -20,11 +20,6 @@ public class EffectDisperse implements IEffect {
 		this.potency = potency;
 	}
 	
-	public Color getColor()
-	{
-		return new Color(255, 0, 255);
-	}
-
 	private static void setEntityMotionFromVector(Entity entity, Vec3d originalPosVector) {
 		AxisAlignedBB bb = entity.getEntityBoundingBox();
 		Vec3d entityVector = new Vec3d((bb.minX + bb.maxX)/2.0, (bb.minY+bb.maxY)/2.0,(bb.minZ+bb.maxZ)/2.0);
@@ -62,5 +57,10 @@ public class EffectDisperse implements IEffect {
 //			fx.setColor(Color.rgb(0x00008B));
 //			fx.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.05), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
 //		}
+	}
+
+	@Override
+	public Color getColor() {
+		return Color.MAGENTA;
 	}
 }

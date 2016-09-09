@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.common.light.ILaserTrace;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
@@ -27,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Created by LordSaad44
  */
-public class BlockSplitter extends BlockModContainer implements ILaserTrace {
+public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPrecision {
 
 	public BlockSplitter() {
 		super("splitter", Material.IRON);
