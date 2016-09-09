@@ -24,6 +24,12 @@ public class EffectTracker
 	private int cooldown;
 	private WeakReference<World> world;
 
+	public EffectTracker(World world)
+	{
+		this.world = new WeakReference<>(world);
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
 	public static void addEffect(World world, Vec3d pos, IEffect effect)
 	{
 		if (!instances.containsKey(world))
@@ -36,41 +42,12 @@ public class EffectTracker
 		return instances.putIfAbsent(world, new EffectTracker(world)) == null;
 	}
 
-	public EffectTracker(World world)
-	{
-		this.world = new WeakReference<>(world);
-		MinecraftForge.EVENT_BUS.register(this);
-	}
-
-	@SubscribeEvent
-	public void tick(TickEvent.WorldTickEvent event)
-	{
-		if (event.phase == TickEvent.Phase.START && event.side == Side.SERVER)
-		{
-			if (cooldown > 0)
-				cooldown--;
-			else
-			{
-				for (Vec3d pos : effects.keySet())
-				{
-					for (IEffect effect : effects.get(pos))
-					{
-						World w = world.get();
-						if (effect != null && w != null && pos != null) effect.run(w, pos);
-					}
-				}
-				effects.clear();
-				cooldown = BeamConstants.SOURCE_TIMER;
-			}
-		}
-	}
-
 	public static IEffect getEffect(Color color)
 	{
-		float red = color.getRed();
-		float green = color.getGreen();
-		float blue = color.getBlue();
-		int strength = (int) (color.getAlpha() * 255);
+		int red = color.getRed();
+		int green = color.getGreen();
+		int blue = color.getBlue();
+		int strength = color.getAlpha();
 
 		if (red > 0)
 		{
@@ -116,6 +93,29 @@ public class EffectTracker
 		// Black - Technically Impossible
 		{
 			return null;
+		}
+	}
+
+	@SubscribeEvent
+	public void tick(TickEvent.WorldTickEvent event)
+	{
+		if (event.phase == TickEvent.Phase.START && event.side == Side.SERVER)
+		{
+			if (cooldown > 0)
+				cooldown--;
+			else
+			{
+				for (Vec3d pos : effects.keySet())
+				{
+					for (IEffect effect : effects.get(pos))
+					{
+						World w = world.get();
+						if (effect != null && w != null && pos != null) effect.run(w, pos);
+					}
+				}
+				effects.clear();
+				cooldown = BeamConstants.SOURCE_TIMER;
+			}
 		}
 	}
 }

@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.teamwizardry.refraction.api.IEffect;
 import net.minecraft.entity.Entity;
@@ -11,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.List;
 
@@ -29,13 +27,7 @@ public class EffectBurn implements IEffect
 	{
 		int power = 3 * potency / 32;
 		AxisAlignedBB axis = new AxisAlignedBB(new BlockPos(pos)).expand(1, 1, 1);
-		List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, axis, Predicates.and(new Predicate<Entity>()
-		{
-			public boolean apply(@Nullable Entity apply)
-			{
-				return apply != null && (apply.canBeCollidedWith() || apply instanceof EntityItem);
-			}
-		}, EntitySelectors.NOT_SPECTATING));
+		List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, axis, Predicates.and(apply -> apply != null && (apply.canBeCollidedWith() || apply instanceof EntityItem), EntitySelectors.NOT_SPECTATING));
 		for (Entity entity : entities)
 		{
 			entity.setFire(power);
@@ -88,5 +80,10 @@ public class EffectBurn implements IEffect
 //			edge.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.06, 0.2), ThreadLocalRandom.current().nextDouble(0.12, 0.2), ThreadLocalRandom.current().nextDouble(0.06, 0.2)));
 //			edge.setColor(gray);
 		}
+	}
+
+	@Override
+	public Color getColor() {
+		return Color.RED;
 	}
 }

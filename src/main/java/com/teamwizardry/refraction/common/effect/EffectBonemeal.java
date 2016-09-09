@@ -45,4 +45,9 @@ public class EffectBonemeal implements IEffect {
 			fx.setJitter(10, ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1));
 		}
 	}
+
+	@Override
+	public Color getColor() {
+		return Color.GREEN;
+	}
 }

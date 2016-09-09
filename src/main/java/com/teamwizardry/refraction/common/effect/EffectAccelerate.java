@@ -1,15 +1,12 @@
 package com.teamwizardry.refraction.common.effect;
 
-import java.awt.Color;
-import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.IEffect;
-import com.teamwizardry.refraction.client.fx.SparkleFX;
 import com.teamwizardry.refraction.common.entity.EntityAccelerator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.awt.*;
 
 /**
  * Created by LordSaad44
@@ -38,5 +35,10 @@ public class EffectAccelerate implements IEffect {
 //			fx.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
 //			fx.setJitter(2, 0.1, 0.1, 0.1);
 //		}
+	}
+
+	@Override
+	public Color getColor() {
+		return Color.BLUE;
 	}
 }

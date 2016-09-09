@@ -80,4 +80,9 @@ public class EffectAttract implements IEffect {
 			fx.setMotion(motion);
 		}
 	}
+
+	@Override
+	public Color getColor() {
+		return Color.CYAN;
+	}
 }

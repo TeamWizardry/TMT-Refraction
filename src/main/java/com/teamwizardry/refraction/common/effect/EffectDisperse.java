@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -57,5 +58,10 @@ public class EffectDisperse implements IEffect {
 //			fx.setColor(Color.rgb(0x00008B));
 //			fx.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(0.03, 0.1), ThreadLocalRandom.current().nextDouble(0.03, 0.05), ThreadLocalRandom.current().nextDouble(0.03, 0.1)));
 //		}
+	}
+
+	@Override
+	public Color getColor() {
+		return Color.MAGENTA;
 	}
 }
