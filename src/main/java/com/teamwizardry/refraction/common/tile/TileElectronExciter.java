@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.refraction.api.ITileSpamSound;
+import com.teamwizardry.refraction.common.block.BlockLightBridge;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -35,7 +36,7 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 		super.readFromNBT(compound);
 		if (compound.hasKey("emitting_sound")) emittingSound = compound.getBoolean("emitting_sound");
 
-		if (compound.hasKey("has_cardinal_beam")) hasCardinalBeam = compound.getBoolean("has_cardianl_beam");
+		if (compound.hasKey("has_cardinal_beam")) hasCardinalBeam = compound.getBoolean("has_cardinal_beam");
 
 		int x = 0, y = 0, z = 0;
 		if (compound.hasKey("beam_source_x")) x = compound.getInteger("beam_source_x");
@@ -91,7 +92,28 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 		if (hasCardinalBeam) {
 			EnumFacing front = worldObj.getBlockState(pos).getValue(BlockDirectional.FACING);
 
-			switch (front) {
+			for (EnumFacing neighborFacing : EnumFacing.VALUES) {
+				IBlockState neighbor = worldObj.getBlockState(pos.offset(neighborFacing));
+				if (neighbor.getBlock() != ModBlocks.ELECTRON_EXCITER) continue;
+				if (neighbor.getValue(BlockDirectional.FACING) != front) continue;
+				TileElectronExciter tileNeighbor = (TileElectronExciter) worldObj.getTileEntity(pos.offset(neighborFacing));
+				if (tileNeighbor == null) continue;
+				if (!tileNeighbor.hasCardinalBeam) continue;
+
+				IBlockState bridge;
+				if (neighborFacing == EnumFacing.UP || neighborFacing == EnumFacing.DOWN)
+				bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, front).withProperty(BlockLightBridge.VERTICAL, true);
+				else bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, front).withProperty(BlockLightBridge.VERTICAL, false);
+
+				worldObj.setBlockState(pos.offset(front), bridge);
+				TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos.offset(front));
+				if (tileLightBridge != null) {
+					tileLightBridge.setDirection(front);
+					tileLightBridge.setSource(pos);
+					tileLightBridge.createNextBlock();
+				}
+			}
+			/*switch (front) {
 				case NORTH: {
 					IBlockState neighbor = worldObj.getBlockState(pos.offset(EnumFacing.WEST));
 					if (neighbor.getBlock() != ModBlocks.ELECTRON_EXCITER) return;
@@ -99,7 +121,7 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 					TileElectronExciter tileNeighbor = (TileElectronExciter) worldObj.getTileEntity(pos.offset(EnumFacing.WEST));
 					if (tileNeighbor == null) return;
 					if (!tileNeighbor.hasCardinalBeam) return;
-					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
+					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.NORTH).withProperty(BlockLightBridge.VERTICAL, false);
 					worldObj.setBlockState(pos.offset(front), bridge);
 					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos.offset(front));
 					if (tileLightBridge != null) {
@@ -116,7 +138,7 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 					TileElectronExciter tileNeighbor = (TileElectronExciter) worldObj.getTileEntity(pos.offset(EnumFacing.EAST));
 					if (tileNeighbor == null) return;
 					if (!tileNeighbor.hasCardinalBeam) return;
-					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
+					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.SOUTH).withProperty(BlockLightBridge.VERTICAL, false);
 					worldObj.setBlockState(pos.offset(front), bridge);
 					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos.offset(front));
 					if (tileLightBridge != null) {
@@ -133,7 +155,7 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 					TileElectronExciter tileNeighbor = (TileElectronExciter) worldObj.getTileEntity(pos.offset(EnumFacing.NORTH));
 					if (tileNeighbor == null) return;
 					if (!tileNeighbor.hasCardinalBeam) return;
-					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN);
+					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.EAST).withProperty(BlockLightBridge.VERTICAL, false);
 					worldObj.setBlockState(pos.offset(front), bridge);
 					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos.offset(front));
 					if (tileLightBridge != null) {
@@ -150,7 +172,7 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 					TileElectronExciter tileNeighbor = (TileElectronExciter) worldObj.getTileEntity(pos.offset(EnumFacing.SOUTH));
 					if (tileNeighbor == null) return;
 					if (!tileNeighbor.hasCardinalBeam) return;
-					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN);
+					IBlockState bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.WEST).withProperty(BlockLightBridge.VERTICAL, false);
 					worldObj.setBlockState(pos.offset(front), bridge);
 					TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos.offset(front));
 					if (tileLightBridge != null) {
@@ -160,7 +182,7 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 					}
 					break;
 				}
-			}
+			}*/
 		} else {
 			EnumFacing frontDirection = worldObj.getBlockState(pos).getValue(BlockDirectional.FACING);
 			BlockPos front = pos.offset(frontDirection);
