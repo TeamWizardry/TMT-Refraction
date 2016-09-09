@@ -6,7 +6,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
+import java.awt.Color;
 import java.util.List;
 
 /**
@@ -18,6 +18,11 @@ public class EffectDisperse implements IEffect {
 
 	public EffectDisperse(int potency) {
 		this.potency = potency;
+	}
+	
+	public Color getColor()
+	{
+		return new Color(255, 0, 255);
 	}
 
 	private static void setEntityMotionFromVector(Entity entity, Vec3d originalPosVector) {

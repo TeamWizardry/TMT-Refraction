@@ -25,6 +25,11 @@ public class EffectAttract implements IEffect {
 	public EffectAttract(int potency) {
 		this.potency = potency;
 	}
+	
+	public Color getColor()
+	{
+		return new Color(0, 255, 255);
+	}
 
 	private static void setEntityMotionFromVector(Entity entity, Vec3d originalPosVector) {
 		Vec3d entityVector = entity.getPositionVector();

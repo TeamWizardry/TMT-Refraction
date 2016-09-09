@@ -18,6 +18,11 @@ public class EffectBreak implements IEffect
 		this.potency = potency;
 	}
 	
+	public Color getColor()
+	{
+		return new Color(255, 255, 0);
+	}
+	
 	@Override
 	public void run(World world, Vec3d vec)
 	{

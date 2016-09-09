@@ -23,6 +23,12 @@ public class EffectAccelerate implements IEffect {
 	}
 
 	@Override
+	public Color getColor()
+	{
+		return new Color(0, 0, 255);
+	}
+	
+	@Override
 	public void run(World world, Vec3d pos) {
 		EntityAccelerator a = new EntityAccelerator(world, new BlockPos(pos.xCoord, pos.yCoord, pos.zCoord), potency, 5);
 		world.spawnEntityInWorld(a);

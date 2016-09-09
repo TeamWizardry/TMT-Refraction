@@ -1,24 +1,25 @@
 package com.teamwizardry.refraction.common.light;
 
-import com.google.common.collect.HashMultimap;
-import com.teamwizardry.refraction.api.IEffect;
-import com.teamwizardry.refraction.common.effect.*;
+import java.awt.Color;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.WeakHashMap;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-import java.awt.*;
-import java.lang.ref.WeakReference;
-import java.util.WeakHashMap;
+import com.google.common.collect.HashMultimap;
+import com.teamwizardry.refraction.api.IEffect;
 
 /**
  * Created by LordSaad44
  */
 public class EffectTracker
 {
+	public static ArrayList<IEffect> effectRegistry = new ArrayList<>();
+	
 	private static WeakHashMap<World, EffectTracker> instances = new WeakHashMap<>();
 	private HashMultimap<Vec3d, IEffect> effects = HashMultimap.create();
 	private int cooldown;
@@ -67,55 +68,39 @@ public class EffectTracker
 
 	public static IEffect getEffect(Color color)
 	{
-		float red = color.getRed();
-		float green = color.getGreen();
-		float blue = color.getBlue();
-		int strength = (int) (color.getAlpha() * 255);
-
-		if (red > 0)
+		double whiteDist = getColorDistance(color, Color.WHITE);
+		
+		double closestDist = whiteDist;
+		IEffect closestColor = null;
+		
+		for (IEffect effect : effectRegistry)
 		{
-			if (green > 0)
+			double dist = getColorDistance(color, effect.getColor());
+			if (dist < closestDist)
 			{
-				if (blue > 0) // White - Nothing
-				{
-					return null;
-				}
-				else
-				// Yellow - Break Block
-				{
-					return new EffectBreak(strength);
-				}
-			}
-			else if (blue > 0) // Magenta - Push
-			{
-				return new EffectDisperse(strength);
-			}
-			else
-			// Red - Burn
-			{
-				return new EffectBurn(strength);
+				closestDist = dist;
+				closestColor = effect;
 			}
 		}
-		else if (green > 0)
-		{
-			if (blue > 0) // Cyan - Pull
-			{
-				return new EffectAttract(strength);
-			}
-			else
-			// Green - Bonemeal
-			{
-				return new EffectBonemeal(strength);
-			}
-		}
-		else if (blue > 0) // Blue - Tile Accelerate
-		{
-			return new EffectAccelerate(strength);
-		}
-		else
-		// Black - Technically Impossible
-		{
-			return null;
-		}
+		
+		return closestColor;
+	}
+	
+	private static double getColorDistance(Color one, Color two)
+	{
+		if (one == null || two == null) return Double.MAX_VALUE;
+		double meanRed = (one.getRed() + two.getRed()) / 2.0;
+		int r = one.getRed() - two.getRed();
+		int g = one.getGreen() - two.getGreen();
+		int b = one.getBlue() - two.getBlue();
+		double weightR = 2 + meanRed/256;
+		double weightG = 4;
+		double weightB = 2 + (255-meanRed)/256;
+		return Math.sqrt(weightR*r*r + weightG*g*g + weightB*b*b);
+	}
+	
+	public static void registerEffect(IEffect effect)
+	{
+		effectRegistry.add(effect);
 	}
 }

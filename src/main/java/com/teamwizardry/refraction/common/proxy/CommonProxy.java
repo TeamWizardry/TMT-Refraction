@@ -25,6 +25,7 @@ public class CommonProxy {
 		ModBlocks.init();
 		ModItems.init();
 		ModEntities.init();
+		ModEffects.init();
 
 		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
 	}

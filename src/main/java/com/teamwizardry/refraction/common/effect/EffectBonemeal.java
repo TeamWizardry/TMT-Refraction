@@ -24,6 +24,11 @@ public class EffectBonemeal implements IEffect {
 	public EffectBonemeal(int potency) {
 		this.potency = potency;
 	}
+	
+	public Color getColor()
+	{
+		return new Color(0, 255, 0);
+	}
 
 	@Override
 	public void run(World world, Vec3d pos) {
