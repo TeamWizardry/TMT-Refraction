@@ -17,12 +17,12 @@ public class RenderAssemblyTable extends TileEntitySpecialRenderer<TileAssemblyT
 		tick++;
 		if (tick > 360) tick = 0;
 
-		if (te.getOutput() != null) {
+		if (te.getOutput() != null && !te.isCrafting()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x + 0.5, y + 1.25, z + 0.5);
 			GlStateManager.scale(0.5, 0.5, 0.5);
 			GlStateManager.rotate(tick, 0, 1, 0);
-			Minecraft.getMinecraft().getRenderItem().renderItem(te.getInventory().get(0), ItemCameraTransforms.TransformType.NONE);
+			Minecraft.getMinecraft().getRenderItem().renderItem(te.getOutput(), ItemCameraTransforms.TransformType.NONE);
 			GlStateManager.popMatrix();
 		}
 	}

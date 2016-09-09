@@ -11,7 +11,6 @@ import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.common.recipe.AssemblyRecipe;
 import com.teamwizardry.refraction.init.AssemblyRecipes;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -53,6 +52,11 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 			for (int i = 0; i < list.tagCount(); i++)
 				inventory.add(ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i)));
 		}
+
+		if (compound.hasKey("output")) output = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("output"));
+		if (compound.hasKey("is_crafting")) isCrafting = compound.getBoolean("is_crafting");
+		if (compound.hasKey("crafting_time")) craftingTime = compound.getInteger("crafting_time");
+		if (compound.hasKey("temperature")) temperature = compound.getInteger("temperature");
 	}
 
 	@Override
@@ -65,6 +69,13 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 				list.appendTag(anInventory.writeToNBT(new NBTTagCompound()));
 			compound.setTag("inventory", list);
 		}
+
+		if (output != null) compound.setTag("output", output.writeToNBT(new NBTTagCompound()));
+		else compound.removeTag("output");
+		compound.setBoolean("is_crafting", isCrafting);
+		compound.setInteger("crafting_time", craftingTime);
+		compound.setInteger("temperature", temperature);
+
 		return compound;
 	}
 
@@ -131,6 +142,8 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 				});
 			} else {
 				isCrafting = false;
+				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+
 				ParticleBuilder builder = new ParticleBuilder(5);
 				builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
 				builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
@@ -143,8 +156,6 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 					builder.setLifetime(ThreadLocalRandom.current().nextInt(10, 20));
 					builder.addPositionOffset(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.4, 0.4), 0, ThreadLocalRandom.current().nextDouble(-0.4, 0.4)));
 				});
-
-				Minecraft.getMinecraft().thePlayer.sendChatMessage(output + "");
 			}
 			return;
 		}
