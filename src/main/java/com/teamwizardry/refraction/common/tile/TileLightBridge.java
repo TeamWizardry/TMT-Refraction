@@ -83,7 +83,9 @@ public class TileLightBridge extends TileEntity {
 		this.source = source;
 	}
 
-	public EnumFacing getDirection() { return this.direction; }
+	public EnumFacing getDirection() {
+		return this.direction;
+	}
 
 	public void setDirection(EnumFacing direction) {
 		this.direction = direction;

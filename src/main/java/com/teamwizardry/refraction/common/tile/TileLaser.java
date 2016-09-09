@@ -5,9 +5,11 @@ import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModSounds;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -15,8 +17,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,13 +37,13 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IT
 
 	public TileLaser() {
 	}
-	
+
 	@Override
 	public void onLoad() {
 		super.onLoad();
 		ReflectionTracker.getInstance(worldObj).addSource(this);
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
@@ -122,6 +124,15 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IT
 					break;
 			}
 			power -= 20;
+		} else {
+			EnumFacing frontDirection = worldObj.getBlockState(pos).getValue(BlockDirectional.FACING);
+			BlockPos front = pos.offset(frontDirection);
+			IBlockState blockFront = worldObj.getBlockState(front);
+			if (blockFront.getBlock() != ModBlocks.LIGHT_BRIDGE) return;
+			TileLightBridge bridge = (TileLightBridge) worldObj.getTileEntity(front);
+			if (bridge == null) return;
+			if (bridge.getDirection() == frontDirection || bridge.getDirection() == frontDirection.getOpposite())
+				worldObj.setBlockState(front, Blocks.AIR.getDefaultState());
 		}
 	}
 
