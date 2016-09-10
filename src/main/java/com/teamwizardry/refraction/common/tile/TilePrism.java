@@ -22,6 +22,7 @@ import java.awt.*;
  */
 public class TilePrism extends TileEntity implements IBeamHandler {
 
+	public static double airIOR = 1, glassIOR = 1.75;
 	private IBlockState state;
 
 	public TilePrism() {
@@ -53,78 +54,70 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
 		return INFINITE_EXTENT_AABB;
 	}
-	
-	public static double airIOR = 1, glassIOR = 1.75;
-	
+
 	@Override
-	public void handle(Beam... beams)
-	{
+	public void handle(Beam... beams) {
 		glassIOR = 1.2;
 		double redIOR = 0.6, greenIOR = 0.4, blueIOR = 0.2;
-		
+
 		IBlockState state = this.worldObj.getBlockState(pos);
-		if(!( state.getBlock() instanceof  BlockPrism))
+		if (!(state.getBlock() instanceof BlockPrism))
 			return;
-		BlockPrism b = (BlockPrism)state.getBlock();
-		
-		for (Beam beam : beams)
-		{
+		BlockPrism b = (BlockPrism) state.getBlock();
+
+		for (Beam beam : beams) {
 			int red = beam.color.getRed();
 			int green = beam.color.getGreen();
 			int blue = beam.color.getBlue();
-			int alphaPer = beam.color.getAlpha()/(red+green+blue);
-			
-			Vec3d dir = beam.finalLoc.subtract(beam.initLoc).normalize();
-			
-			Vec3d ref = dir;
+			int alphaPer = beam.color.getAlpha() / 3;
+
 			Vec3d hitPos = beam.finalLoc;
-			
-			if(beam.color.getRed() != 0) fireColor(b, state, hitPos, ref, redIOR,   new Color(beam.color.getRed(), 0, 0, alphaPer*beam.color.getRed()), true);
-			if(beam.color.getGreen() != 0) fireColor(b, state, hitPos, ref, greenIOR, new Color(0, beam.color.getGreen(), 0, alphaPer*beam.color.getGreen()), true);
-			if(beam.color.getBlue() != 0) fireColor(b, state, hitPos, ref, blueIOR,  new Color(0, 0, beam.color.getBlue(), alphaPer*beam.color.getBlue()), true);
+
+			if (beam.color.getRed() != 0)
+				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, alphaPer), true);
+			if (beam.color.getGreen() != 0)
+				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, alphaPer), true);
+			if (beam.color.getBlue() != 0)
+				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), alphaPer), true);
 		}
 	}
-	
+
 	private void fireColor(BlockPrism block, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean hasEffect) {
 		BlockPrism.RayTraceResultData<Vec3d> r = block.collisionRayTraceLaser(state, worldObj, pos, hitPos.subtract(ref), hitPos.add(ref));
-		if(r == null)
-			return;
+		if (r == null) return;
 		Vec3d normal = r.data;
-		ref = refracted(airIOR+IORMod, glassIOR+IORMod, ref, normal).normalize();
+		ref = refracted(airIOR + IORMod, glassIOR + IORMod, ref, normal).normalize();
 		hitPos = r.hitVec;
-		
-		for(int i = 0; i < 5; i++) {
-			
+
+		for (int i = 0; i < 5; i++) {
+
 			r = block.collisionRayTraceLaser(state, worldObj, pos, hitPos.add(ref), hitPos);
 			// trace backward so we don't hit hitPos first
-			
-			if(r == null)
-				break;
+
+			if (r == null) break;
 			else {
-				
 				normal = r.data.scale(-1);
 				Vec3d oldRef = ref;
-				ref = refracted(glassIOR+IORMod, airIOR+IORMod, ref, normal).normalize();
-				if(Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
+				ref = refracted(glassIOR + IORMod, airIOR + IORMod, ref, normal).normalize();
+				if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
 					ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
 					break;
 				}
 				showBeam(hitPos, r.hitVec, color);
 				hitPos = r.hitVec;
 			}
-			
 		}
-		
+
 		new Beam(worldObj, hitPos, ref, color);
 	}
-	
+
 	private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {
-		double r = from/to, c = -normal.dotProduct(vec);
-		return vec.scale(r).add(   normal.scale((r*c) - Math.sqrt( 1- (r*r)*( 1-(c*c) ) ))   );
+		double r = from / to, c = -normal.dotProduct(vec);
+		return vec.scale(r).add(normal.scale((r * c) - Math.sqrt(1 - (r * r) * (1 - (c * c)))));
 	}
-	
+
 	private void showBeam(Vec3d start, Vec3d end, Color color) {
 		PacketHandler.INSTANCE.getNetwork().sendToAllAround(new PacketLaserFX(start, end, color),
-			new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
+				new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
 	}
 }
