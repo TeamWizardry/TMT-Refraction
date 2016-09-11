@@ -6,7 +6,11 @@ package com.teamwizardry.refraction.api;
 public class GraphPointObject {
 	public int x, y;
 	public ColorType colorType;
-	public GraphPointObject(int x, int y, ColorType type) {}
+	public GraphPointObject(int x, int y, ColorType type) {
+		this.x = x;
+		this.y = y;
+		this.colorType = type;
+	}
 
 	public enum ColorType {
 		R, G, B, A

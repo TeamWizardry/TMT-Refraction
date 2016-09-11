@@ -1,8 +1,10 @@
 package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
+import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.api.IPrecisionTile;
 import com.teamwizardry.refraction.init.ModItems;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -112,12 +115,14 @@ public class ScrewdriverOverlay {
 
 	@SubscribeEvent
 	public void highlight(DrawBlockHighlightEvent event) {
-		BlockPos hit = event.getTarget().getBlockPos();
-		/*IBlockState target = event.getPlayer().getEntityWorld().getBlockState(hit);
-		if (target.getBlock() instanceof IPrecision) {
-			highlighting = hit;
-		} else highlighting = null;
-	*/}
+		if (event.getTarget() != null && event.getTarget().typeOfHit == RayTraceResult.Type.BLOCK) {
+			BlockPos hit = event.getTarget().getBlockPos();
+			IBlockState target = event.getPlayer().getEntityWorld().getBlockState(hit);
+			if (target.getBlock() instanceof IPrecision) {
+				highlighting = hit;
+			} else highlighting = null;
+		}
+	}
 
 	private Vec2d rot(Vec2d vec, double deg) {
 		double theta = Math.toRadians(deg);

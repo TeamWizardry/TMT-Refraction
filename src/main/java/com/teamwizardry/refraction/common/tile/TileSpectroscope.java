@@ -1,18 +1,18 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.refraction.api.GraphPointObject;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
 
 import java.awt.*;
 import java.util.ArrayList;
-
-import static com.teamwizardry.refraction.api.GraphPointObject.ColorType;
 
 /**
  * Created by Saad on 9/11/2016.
@@ -20,7 +20,8 @@ import static com.teamwizardry.refraction.api.GraphPointObject.ColorType;
 public class TileSpectroscope extends TileEntity implements IBeamHandler {
 
 	private IBlockState state;
-	private ArrayList<GraphPointObject> points = new ArrayList<>();
+
+	private ArrayList<Color> points = new ArrayList<>();
 
 	public TileSpectroscope() {
 	}
@@ -28,11 +29,24 @@ public class TileSpectroscope extends TileEntity implements IBeamHandler {
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
+		if (compound.hasKey("points")) {
+			NBTTagList list = compound.getTagList("points", Constants.NBT.TAG_INT);
+			points.clear();
+			for (int i = 0; i < list.tagCount(); i++) {
+				points.add(new Color(list.getIntAt(i)));
+			}
+		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
+
+		if (points.size() > 0) {
+			NBTTagList list = new NBTTagList();
+			for (Color point : points) list.appendTag(new NBTTagInt(point.getRGB()));
+			compound.setTag("points", list);
+		}
 
 		return compound;
 	}
@@ -60,15 +74,9 @@ public class TileSpectroscope extends TileEntity implements IBeamHandler {
 
 	@Override
 	public void handle(Beam... beams) {
-		ArrayList<GraphPointObject> remove = new ArrayList<>();
-		for (GraphPointObject point : points) {
-			if (point.x == 0) {
-				remove.add(point);
-				continue;
-			}
-			point.x--;
-		}
-		points.removeAll(remove);
+		if (worldObj.isRemote) return;
+
+		if (points.size() >= 16) points.remove(0);
 
 		float h = -1, s = -1, v = -1;
 		int alpha = 0;
@@ -91,13 +99,11 @@ public class TileSpectroscope extends TileEntity implements IBeamHandler {
 			alpha += color.getAlpha();
 		}
 		Color color = new Color(Color.HSBtoRGB(h, s, v));
-		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
-
-		points.add(new GraphPointObject(16, (int) ((color.getRed() * 16.0) / 255.0), ColorType.R));
-		points.add(new GraphPointObject(16, (int) ((color.getGreen() * 16.0) / 255.0), ColorType.G));
-		points.add(new GraphPointObject(16, (int) ((color.getBlue() * 16.0) / 255.0), ColorType.B));
-		points.add(new GraphPointObject(16, (int) ((color.getAlpha() * 16.0) / 255.0), ColorType.A));
+		points.add(new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255)));
+		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 	}
 
-	public ArrayList<GraphPointObject> getPoints() { return points; }
+	public ArrayList<Color> getPoints() {
+		return points;
+	}
 }

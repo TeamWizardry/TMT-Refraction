@@ -4,7 +4,6 @@ import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.render.RenderSpectroscope;
-import com.teamwizardry.refraction.common.tile.TileAssemblyTable;
 import com.teamwizardry.refraction.common.tile.TileSpectroscope;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -49,9 +48,6 @@ public class BlockSpectroscope extends BlockModContainer {
 
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		if (placer.rotationPitch > 45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.UP);
-		if (placer.rotationPitch < -45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.DOWN);
-
 		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing().getOpposite());
 	}
 
@@ -88,7 +84,7 @@ public class BlockSpectroscope extends BlockModContainer {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
-		return new TileAssemblyTable();
+		return new TileSpectroscope();
 	}
 
 	@Nullable
