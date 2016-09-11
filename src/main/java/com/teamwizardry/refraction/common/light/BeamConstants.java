@@ -8,7 +8,7 @@ public class BeamConstants {
 	
 	public static final int BEAM_RANGE = 128;
 	public static final int BUFFER_DELAY = 1;
-	public static final int COMBINER_DELAY = 4;
+	public static final int COMBINER_DELAY = 20;
 	public static final int SOURCE_TIMER = 20;
 	public static final int SOLAR_ALPHA = 32;
 	public static final int GLOWSTONE_ALPHA = 64;

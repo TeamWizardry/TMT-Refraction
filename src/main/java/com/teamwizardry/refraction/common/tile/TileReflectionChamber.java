@@ -17,31 +17,27 @@ import java.awt.*;
 /**
  * Created by LordSaad44
  */
-public class TileReflectionChamber extends TileEntity implements IBeamHandler
-{
+public class TileReflectionChamber extends TileEntity implements IBeamHandler {
 
 	private IBlockState state;
 
-	public TileReflectionChamber()
-	{}
+	public TileReflectionChamber() {
+	}
 
 	@Override
-	public NBTTagCompound getUpdateTag()
-	{
+	public NBTTagCompound getUpdateTag() {
 		return writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket()
-	{
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
 		writeToNBT(tag);
 		return new SPacketUpdateTileEntity(pos, 0, tag);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
-	{
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
 		super.onDataPacket(net, packet);
 		readFromNBT(packet.getNbtCompound());
 
@@ -51,36 +47,41 @@ public class TileReflectionChamber extends TileEntity implements IBeamHandler
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox()
-	{
+	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
 		return INFINITE_EXTENT_AABB;
 	}
 
 	@Override
-	public void handle(Beam... beams)
-	{
-		Vec3d[] angles;
-		int red, green, blue, alpha;
+	public void handle(Beam... beams) {
+		Vec3d[] angles = new Vec3d[beams.length];
+		float h = -1, s = -1, v = -1;
 
-		angles = new Vec3d[beams.length];
-		red = 0;
-		green = 0;
-		blue = 0;
-		alpha = 0;
-		for (int i = 0; i < beams.length; i++)
-		{
+		int alpha = 0;
+		for (int i = 0; i < beams.length; i++) {
+			Color color = beams[i].color;
+
+			float[] hsvVals = new float[3];
+			Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsvVals);
+
+			if (h < 0) h = hsvVals[0];
+			else h = (h + hsvVals[0]) / 2;
+
+			if (s < 0) s = hsvVals[1];
+			else s = (s + hsvVals[1]) / 2;
+
+			if (v < 0) v = hsvVals[2];
+			else v = (v + hsvVals[2]) / 2;
+
+			alpha += color.getAlpha();
+
 			angles[i] = beams[i].finalLoc.subtract(beams[i].initLoc);
-			red += beams[i].color.getRed();
-			green += beams[i].color.getGreen();
-			blue += beams[i].color.getBlue();
-			alpha += beams[i].color.getAlpha();
 		}
-		red = Math.min(red, 255);
-		green = Math.min(green, 255);
-		blue = Math.min(blue, 255);
-		alpha = Math.min(alpha, 255);
+
+		Color color = new Color(Color.HSBtoRGB(h, s, v));
+		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
+
 		Vec3d out = RotationHelper.averageDirection(angles);
-		new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out, new Color(red, green, blue, alpha));
+		new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out, color);
 
 	}
 }

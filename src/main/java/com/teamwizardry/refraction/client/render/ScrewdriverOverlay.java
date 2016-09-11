@@ -1,10 +1,8 @@
 package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
-import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.api.IPrecisionTile;
 import com.teamwizardry.refraction.init.ModItems;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -115,11 +113,11 @@ public class ScrewdriverOverlay {
 	@SubscribeEvent
 	public void highlight(DrawBlockHighlightEvent event) {
 		BlockPos hit = event.getTarget().getBlockPos();
-		IBlockState target = event.getPlayer().getEntityWorld().getBlockState(hit);
+		/*IBlockState target = event.getPlayer().getEntityWorld().getBlockState(hit);
 		if (target.getBlock() instanceof IPrecision) {
 			highlighting = hit;
 		} else highlighting = null;
-	}
+	*/}
 
 	private Vec2d rot(Vec2d vec, double deg) {
 		double theta = Math.toRadians(deg);
