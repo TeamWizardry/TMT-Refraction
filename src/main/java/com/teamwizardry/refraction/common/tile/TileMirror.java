@@ -10,8 +10,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by LordSaad44
@@ -67,12 +65,6 @@ public class TileMirror extends TileEntity implements IBeamHandler, IPrecisionTi
 
 		state = worldObj.getBlockState(pos);
 		worldObj.notifyBlockUpdate(pos, state, state, 3);
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
-		return INFINITE_EXTENT_AABB;
 	}
 
 	@Override
