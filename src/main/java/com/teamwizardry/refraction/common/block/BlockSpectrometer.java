@@ -3,8 +3,8 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.client.render.RenderSpectroscope;
-import com.teamwizardry.refraction.common.tile.TileSpectroscope;
+import com.teamwizardry.refraction.client.render.RenderSpectrometer;
+import com.teamwizardry.refraction.common.tile.TileSpectrometer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -25,25 +25,25 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Created by Saad on 9/10/2016.
  */
-public class BlockSpectroscope extends BlockModContainer {
+public class BlockSpectrometer extends BlockModContainer {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
-	public BlockSpectroscope() {
-		super("spectroscope", Material.IRON);
+	public BlockSpectrometer() {
+		super("spectrometer", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		GameRegistry.registerTileEntity(TileSpectroscope.class, "spectroscope");
+		GameRegistry.registerTileEntity(TileSpectrometer.class, "spectrometer");
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 
-	private TileSpectroscope getTE(World world, BlockPos pos) {
-		return (TileSpectroscope) world.getTileEntity(pos);
+	private TileSpectrometer getTE(World world, BlockPos pos) {
+		return (TileSpectrometer) world.getTileEntity(pos);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void initModel() {
-		ClientRegistry.bindTileEntitySpecialRenderer(TileSpectroscope.class, new RenderSpectroscope());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileSpectrometer.class, new RenderSpectrometer());
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class BlockSpectroscope extends BlockModContainer {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
-		return new TileSpectroscope();
+		return new TileSpectrometer();
 	}
 
 	@Nullable

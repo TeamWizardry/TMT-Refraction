@@ -19,7 +19,7 @@ public class ModBlocks {
 	public static BlockElectronExciter ELECTRON_EXCITER;
 	public static BlockLightBridge LIGHT_BRIDGE;
 	public static BlockSensor SENSOR;
-	public static BlockSpectroscope SPECTROSCOPE;
+	public static BlockSpectrometer SPECTROSCOPE;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -34,7 +34,7 @@ public class ModBlocks {
 		ELECTRON_EXCITER = new BlockElectronExciter();
 		LIGHT_BRIDGE = new BlockLightBridge();
 		SENSOR = new BlockSensor();
-		SPECTROSCOPE = new BlockSpectroscope();
+		SPECTROSCOPE = new BlockSpectrometer();
 	}
 
 	public static void initModels() {
