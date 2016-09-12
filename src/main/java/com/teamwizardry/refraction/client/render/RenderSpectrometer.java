@@ -13,26 +13,35 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * Created by Saad on 9/11/2016.
  */
 public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectrometer> {
 
-	int tick = 0;
-
 	public void renderTileEntityAt(TileSpectrometer te, double x, double y, double z, float partialTicks, int destroyStage) {
-		if (tick < 360) tick++;
-		else tick = 0;
-
-		if (te.getColor() == null) return;
 		VertexBuffer buffer = Tessellator.getInstance().getBuffer();
 		EnumFacing value = te.getWorld().getBlockState(te.getPos()).getValue(BlockDirectional.FACING);
 		double psh = 0.1, psw = 1;
-		float transparency = 0.5f;
+		float transparency = te.getTransparency();
 
-		double r = te.getColor().getRed() / 255.0;
-		double g = te.getColor().getGreen() / 255.0;
-		double b = te.getColor().getBlue() / 255.0;
+		double r = 0;
+		double g = 0;
+		double b = 0;
+		if (te.getColor() != null) {
+			r = te.getColor().getRed() / 255.0;
+			g = te.getColor().getGreen() / 255.0;
+			b = te.getColor().getBlue() / 255.0;
+
+			if (ThreadLocalRandom.current().nextInt(50) == 0)
+				r += ThreadLocalRandom.current().nextDouble(-0.03, 0.03);
+			if (ThreadLocalRandom.current().nextInt(50) == 0)
+				g += ThreadLocalRandom.current().nextDouble(-0.03, 0.03);
+			if (ThreadLocalRandom.current().nextInt(50) == 0)
+				b += ThreadLocalRandom.current().nextDouble(-0.03, 0.03);
+
+		}
 		if (value == EnumFacing.EAST || value == EnumFacing.WEST) {
 			r *= -1;
 			g *= -1;
