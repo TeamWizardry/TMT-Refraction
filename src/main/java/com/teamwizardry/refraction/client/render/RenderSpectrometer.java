@@ -13,8 +13,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 /**
  * Created by Saad on 9/11/2016.
  */
@@ -33,14 +31,6 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 			r = te.getColor().getRed() / 255.0;
 			g = te.getColor().getGreen() / 255.0;
 			b = te.getColor().getBlue() / 255.0;
-
-			if (ThreadLocalRandom.current().nextInt(50) == 0)
-				r += ThreadLocalRandom.current().nextDouble(-0.03, 0.03);
-			if (ThreadLocalRandom.current().nextInt(50) == 0)
-				g += ThreadLocalRandom.current().nextDouble(-0.03, 0.03);
-			if (ThreadLocalRandom.current().nextInt(50) == 0)
-				b += ThreadLocalRandom.current().nextDouble(-0.03, 0.03);
-
 		}
 		if (value == EnumFacing.EAST || value == EnumFacing.WEST) {
 			r *= -1;

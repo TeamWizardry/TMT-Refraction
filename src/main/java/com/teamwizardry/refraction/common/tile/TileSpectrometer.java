@@ -7,22 +7,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 
 import java.awt.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Saad on 9/11/2016.
  */
-public class TileSpectrometer extends TileEntity implements IBeamHandler {
+public class TileSpectrometer extends TileEntity implements IBeamHandler, ITickable {
 
 	private IBlockState state;
 
 	private Color color;
-	private int tick = 0;
-	private int cooldown = 0;
-	private boolean cooldownActive = false;
 	private float transparency = 0.5f;
+	private Beam[] beams;
 
 	public TileSpectrometer() {
 	}
@@ -67,28 +65,22 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler {
 
 	@Override
 	public void handle(Beam... beams) {
-		if (tick < 360) tick++;
-		else tick = 0;
+		this.beams = beams;
+	}
 
-		if (!cooldownActive && ThreadLocalRandom.current().nextInt(50) == 0) cooldownActive = true;
-		if (cooldownActive) {
-			if (cooldown < 50) cooldown++;
-			else {
-				cooldown = 0;
-				cooldownActive = false;
-			}
-			float wave = (float) Math.sin(Math.toRadians(tick));
-			if (wave > ThreadLocalRandom.current().nextDouble(0.1, 0.3)
-					&& wave < ThreadLocalRandom.current().nextDouble(0.5, 0.7)) transparency = wave;
-		}
-		if (!cooldownActive && transparency < ThreadLocalRandom.current().nextDouble(0.5, 0.7)) {
-			float wave = (float) Math.sin(Math.toRadians(tick));
-			if (wave > ThreadLocalRandom.current().nextDouble(0.1, 0.3)
-					&& wave < ThreadLocalRandom.current().nextDouble(0.5, 0.7)) transparency = wave;
-		}
+	public Color getColor() {
+		return color;
+	}
 
+	public float getTransparency() {
+		return transparency;
+	}
+
+	@Override
+	public void update() {
 		if (worldObj.isRemote) return;
-		if (color == null) color = new Color(0, 0, 0, 255);
+		if (color == null) color = new Color(0, 0, 0, 0);
+		if (beams == null) return;
 
 		float h = -1, s = -1, v = -1;
 		int alpha = 0;
@@ -114,10 +106,10 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler {
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
 
 		if (beams.length > 0) {
-			int r = (color.getRed() - this.color.getRed()) / 5;
-			int g = (color.getGreen() - this.color.getGreen()) / 5;
-			int b = (color.getBlue() - this.color.getBlue()) / 5;
-			int a = (color.getAlpha() - this.color.getAlpha()) / 5;
+			int r = (color.getRed() - this.color.getRed()) / 10;
+			int g = (color.getGreen() - this.color.getGreen()) / 10;
+			int b = (color.getBlue() - this.color.getBlue()) / 10;
+			int a = (color.getAlpha() - this.color.getAlpha()) / 10;
 
 			this.color = new Color(this.color.getRed() + r, this.color.getGreen() + g, this.color.getBlue() + b, this.color.getAlpha() + a);
 		} else {
@@ -127,17 +119,11 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler {
 				this.color = new Color(this.color.getRed(), this.color.getGreen() - 1, this.color.getBlue(), this.color.getAlpha());
 			if (this.color.getBlue() > 0)
 				this.color = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue() - 1, this.color.getAlpha());
-			if (this.color.getAlpha() > 0)
+			if (this.color.getAlpha() > 0) {
 				this.color = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), this.color.getAlpha() - 1);
+				transparency = this.color.getTransparency();
+			}
 		}
 		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public float getTransparency() {
-		return transparency;
 	}
 }
