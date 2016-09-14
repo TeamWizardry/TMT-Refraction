@@ -1,23 +1,19 @@
 package com.teamwizardry.refraction.api;
 
-import java.awt.Color;
+import com.teamwizardry.refraction.common.light.Beam;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import com.teamwizardry.refraction.common.light.Beam;
+
+import java.awt.*;
 
 /**
  * Created by LordSaad44
  */
 public class Effect implements Cloneable {
 	
-	public enum EffectType
-	{
-		SINGLE, BEAM
-	}
-
 	public Beam beam;
 	protected int potency;
-	
+
 	public Effect setPotency(int potency)
 	{
 		this.potency = potency;
@@ -50,8 +46,13 @@ public class Effect implements Cloneable {
 		{
 			clone = (Effect) clone();
 		}
-		catch (CloneNotSupportedException e)
+		catch (CloneNotSupportedException ignored)
 		{}
 		return clone;
+	}
+	
+	public enum EffectType
+	{
+		SINGLE, BEAM
 	}
 }
