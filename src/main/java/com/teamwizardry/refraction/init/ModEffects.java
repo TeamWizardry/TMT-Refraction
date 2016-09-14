@@ -12,11 +12,11 @@ public class ModEffects
 {
 	public static void init()
 	{
-		EffectTracker.registerEffect(new EffectAccelerate(0));
-		EffectTracker.registerEffect(new EffectAttract(0));
-		EffectTracker.registerEffect(new EffectBonemeal(0));
-		EffectTracker.registerEffect(new EffectBreak(0));
-		EffectTracker.registerEffect(new EffectBurn(0));
-		EffectTracker.registerEffect(new EffectDisperse(0));
+		EffectTracker.registerEffect(new EffectAccelerate());
+		EffectTracker.registerEffect(new EffectAttract());
+		EffectTracker.registerEffect(new EffectBonemeal());
+		EffectTracker.registerEffect(new EffectBreak());
+		EffectTracker.registerEffect(new EffectBurn());
+		EffectTracker.registerEffect(new EffectDisperse());
 	}
 }

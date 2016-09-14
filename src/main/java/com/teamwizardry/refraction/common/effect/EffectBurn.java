@@ -10,17 +10,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import com.google.common.base.Predicates;
-import com.teamwizardry.refraction.api.IEffect;
+import com.teamwizardry.refraction.api.Effect;
 
-public class EffectBurn implements IEffect
+public class EffectBurn extends Effect
 {
-	private int potency;
-	
-	public EffectBurn(int potency)
-	{
-		this.potency = potency;
-	}
-	
 	@Override
 	public void run(World world, Vec3d pos)
 	{

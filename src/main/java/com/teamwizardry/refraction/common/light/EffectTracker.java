@@ -11,46 +11,57 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import com.google.common.collect.HashMultimap;
-import com.teamwizardry.refraction.api.IEffect;
+import com.teamwizardry.refraction.api.Effect;
 
 /**
  * Created by LordSaad44
  */
 public class EffectTracker
 {
-	public static ArrayList<IEffect> effectRegistry = new ArrayList<>();
+	public static ArrayList<Effect> effectRegistry = new ArrayList<>();
 	
-	private static WeakHashMap<World, EffectTracker> instances = new WeakHashMap<>();
-	private HashMultimap<Vec3d, IEffect> effects = HashMultimap.create();
+	private static WeakHashMap<World, EffectTracker> effectInstances = new WeakHashMap<>();
+	private HashMultimap<Vec3d, Effect> effects = HashMultimap.create();
+	private BlockTracker blockTracker;
 	private int cooldown;
 	private WeakReference<World> world;
 
 	public EffectTracker(World world)
 	{
 		this.world = new WeakReference<>(world);
+		this.blockTracker = new BlockTracker(world);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	public static void addEffect(World world, Vec3d pos, IEffect effect)
+	public static void addEffect(World world, Vec3d pos, Effect effect)
 	{
-		if (!instances.containsKey(world))
+		if (!effectInstances.containsKey(world))
 			addInstance(world);
-		instances.get(world).effects.put(pos, effect);
+		effectInstances.get(world).effects.put(pos, effect);
+	}
+	
+	public static void addEffect(World world, Beam beam)
+	{
+		if (!effectInstances.containsKey(world))
+			addInstance(world);
+		effectInstances.get(world).blockTracker.addBeam(beam);
 	}
 
 	public static boolean addInstance(World world)
 	{
-		return instances.putIfAbsent(world, new EffectTracker(world)) == null;
+		return effectInstances.putIfAbsent(world, new EffectTracker(world)) == null;
 	}
 
-	public static IEffect getEffect(Color color)
+	public static Effect getEffect(Beam beam)
 	{
+		Color color = beam.color;
+		
 		double whiteDist = getColorDistance(color, Color.WHITE);
 		
 		double closestDist = whiteDist;
-		IEffect closestColor = null;
+		Effect closestColor = null;
 		
-		for (IEffect effect : effectRegistry)
+		for (Effect effect : effectRegistry)
 		{
 			double dist = getColorDistance(color, effect.getColor());
 			if (dist < closestDist)
@@ -60,7 +71,7 @@ public class EffectTracker
 			}
 		}
 		
-		return closestColor;
+		return closestColor == null ? null : ((Effect) closestColor.copy()).setBeam(beam).setPotency(beam.color.getAlpha());
 	}
 	
 	private static double getColorDistance(Color one, Color two)
@@ -76,7 +87,7 @@ public class EffectTracker
 		return Math.sqrt(weightR*r*r + weightG*g*g + weightB*b*b);
 	}
 	
-	public static void registerEffect(IEffect effect)
+	public static void registerEffect(Effect effect)
 	{
 		effectRegistry.add(effect);
 	}
@@ -90,9 +101,10 @@ public class EffectTracker
 				cooldown--;
 			else
 			{
+				blockTracker.generateEffects();
 				for (Vec3d pos : effects.keySet())
 				{
-					for (IEffect effect : effects.get(pos))
+					for (Effect effect : effects.get(pos))
 					{
 						World w = world.get();
 						if (effect != null && w != null && pos != null) effect.run(w, pos);

@@ -1,23 +1,16 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.IEffect;
-import com.teamwizardry.refraction.common.entity.EntityAccelerator;
+import java.awt.Color;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.awt.*;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.common.entity.EntityAccelerator;
 
 /**
  * Created by LordSaad44
  */
-public class EffectAccelerate implements IEffect {
-
-	private int potency;
-
-	public EffectAccelerate(int potency) {
-		this.potency = potency;
-	}
+public class EffectAccelerate extends Effect {
 
 	@Override
 	public void run(World world, Vec3d pos) {

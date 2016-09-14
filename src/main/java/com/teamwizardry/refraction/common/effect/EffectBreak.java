@@ -1,21 +1,13 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.IEffect;
+import java.awt.Color;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import com.teamwizardry.refraction.api.Effect;
 
-import java.awt.*;
-
-public class EffectBreak implements IEffect
+public class EffectBreak extends Effect
 {
-	private int potency;
-	
-	public EffectBreak(int potency)
-	{
-		this.potency = potency;
-	}
-	
 	@Override
 	public void run(World world, Vec3d vec)
 	{

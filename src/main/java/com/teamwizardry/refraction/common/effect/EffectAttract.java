@@ -1,70 +1,63 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.IEffect;
-import com.teamwizardry.refraction.client.fx.SparkleFX;
+import java.awt.Color;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.awt.*;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.client.fx.SparkleFX;
 
 /**
  * Created by LordSaad44
  */
-public class EffectAttract implements IEffect {
-
-	private static int cooldown = 0;
-	private int potency;
-
-	public EffectAttract(int potency) {
-		this.potency = potency;
+public class EffectAttract extends Effect
+{
+	@Override
+	public EffectType getType()
+	{
+		return EffectType.BEAM;
 	}
 	
-	private static void setEntityMotionFromVector(Entity entity, Vec3d originalPosVector) {
-		Vec3d entityVector = entity.getPositionVector();
-		Vec3d finalVector = originalPosVector.subtract(entityVector);
+	private void setEntityMotion(Entity entity)
+	{
+		Vec3d pullDir = beam.initLoc.subtract(beam.finalLoc).normalize();
 
-		if (Math.sqrt(finalVector.xCoord * finalVector.xCoord + finalVector.yCoord * finalVector.yCoord + finalVector.zCoord * finalVector.zCoord) > 1)
-			finalVector = finalVector.normalize();
-
-		entity.motionX = finalVector.xCoord * 0.45f;
-		entity.motionY = finalVector.yCoord * 0.45f;
-		entity.motionZ = finalVector.zCoord * 0.45f;
+		entity.motionX = pullDir.xCoord * potency;
+		entity.motionY = pullDir.yCoord * potency;
+		entity.motionZ = pullDir.zCoord * potency;
 	}
 
 	@Override
-	public void run(World world, Vec3d pos) {
-		if (cooldown >= 10) {
-			List<Entity> entities = null;
-			if (potency < 128)
-			{
-				int power = 3 * potency / 32 / 2;
-				entities = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.xCoord - power, pos.yCoord - power, pos.zCoord - power, pos.xCoord + power, pos.yCoord + power, pos.zCoord + power));
-			}
-			else
-			{
-				int power = 3 * potency / 32 / 2;
-				world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(pos.xCoord - power, pos.yCoord - power, pos.zCoord - power, pos.xCoord + power, pos.yCoord + power, pos.zCoord + power));
-			}
+	public void run(World world, Vec3d pos)
+	{
+		int potency = this.potency * 3 / 64;
+		BlockPos block = new BlockPos(pos);
+		AxisAlignedBB axis = new AxisAlignedBB(block, block.add(1, 1, 1));
+		List<Entity> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
+		if (potency > 128)
+			entities.addAll(world.getEntitiesWithinAABB(EntityLiving.class, axis));
 
-			if (entities != null) {
-				int pulled = 0;
-				for (Entity entity : entities) {
-					pulled++;
-					if (pulled > 200) break;
-					setEntityMotionFromVector(entity, pos);
-				}
+		if (entities != null)
+		{
+			int pulled = 0;
+			for (Entity entity : entities)
+			{
+				pulled++;
+				if (pulled > 200)
+					break;
+				setEntityMotion(entity);
 			}
-			cooldown = 0;
-		} else cooldown++;
+		}
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++)
+		{
 			Vec3d position = new Vec3d(pos.xCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5), pos.yCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5), pos.zCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5));
 			Vec3d motion = pos.subtract(position).scale(1 / 2);
 
@@ -75,14 +68,16 @@ public class EffectAttract implements IEffect {
 			fx.setAge(30);
 			fx.fadeIn();
 			fx.fadeOut();
-			if (ThreadLocalRandom.current().nextBoolean()) fx.blur();
+			if (ThreadLocalRandom.current().nextBoolean())
+				fx.blur();
 			fx.setColor(new Color(0x00008B));
 			fx.setMotion(motion);
 		}
 	}
 
 	@Override
-	public Color getColor() {
+	public Color getColor()
+	{
 		return Color.CYAN;
 	}
 }

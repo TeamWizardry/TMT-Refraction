@@ -1,8 +1,7 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.IEffect;
-import com.teamwizardry.refraction.client.fx.SparkleFX;
+import java.awt.Color;
+import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.block.IGrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemDye;
@@ -10,19 +9,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.awt.*;
-import java.util.concurrent.ThreadLocalRandom;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.client.fx.SparkleFX;
 
 /**
  * Created by LordSaad44
  */
-public class EffectBonemeal implements IEffect {
+public class EffectBonemeal extends Effect {
 
-	private int potency;
-
-	public EffectBonemeal(int potency) {
-		this.potency = potency;
+	@Override
+	public EffectType getType()
+	{
+		return EffectType.BEAM;
 	}
 	
 	@Override

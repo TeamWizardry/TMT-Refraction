@@ -1,7 +1,8 @@
 package com.teamwizardry.refraction.common.light;
 
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
-import com.teamwizardry.refraction.api.IEffect;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.api.Effect.EffectType;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.raytrace.EntityTrace;
@@ -11,7 +12,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-
 import java.awt.*;
 
 public class Beam
@@ -37,25 +37,39 @@ public class Beam
 			this.finalLoc = trace.hitVec;
 			if (trace.typeOfHit == RayTraceResult.Type.ENTITY)
 			{
-				IEffect effect = EffectTracker.getEffect(color);
-				if (effect != null) EffectTracker.addEffect(world, trace.hitVec, effect);
+				Effect effect = EffectTracker.getEffect(this);
+				if (effect != null)
+				{
+					if (effect.getType() == EffectType.SINGLE)
+						EffectTracker.addEffect(world, trace.hitVec, effect);
+					else if (effect.getType() == EffectType.BEAM)
+						EffectTracker.addEffect(world, this);
+				}
 			}
 			else if (trace.typeOfHit == RayTraceResult.Type.BLOCK)
 			{
 				try
 				{
+					Effect effect = EffectTracker.getEffect(this);
+					if (effect != null && effect.getType() == EffectType.BEAM)
+						EffectTracker.addEffect(world, this);
 					TileEntity tile = world.getTileEntity(trace.getBlockPos());
 					if (tile instanceof IBeamHandler)
 						ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
 					else
 					{
-						IEffect effect = EffectTracker.getEffect(color);
 						BlockPos pos = trace.getBlockPos();
-						if (effect != null) EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
+						if (effect != null && effect.getType() == EffectType.SINGLE) EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
 					}
 				}
 				catch (NullPointerException ignored) // Don't really care about these NPEs, all they mean is that the BlockPos is outside the world height limit.
 				{}
+			}
+			else if (trace.typeOfHit == RayTraceResult.Type.MISS)
+			{
+				Effect effect = EffectTracker.getEffect(this);
+				if (effect != null && effect.getType() == EffectType.BEAM)
+					EffectTracker.addEffect(world, this);
 			}
 		}
 

@@ -1,8 +1,6 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.refraction.api.RotationHelper;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
+import java.awt.Color;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -11,8 +9,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.awt.*;
+import com.teamwizardry.refraction.api.RotationHelper;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
 
 /**
  * Created by LordSaad44
@@ -53,31 +52,30 @@ public class TileReflectionChamber extends TileEntity implements IBeamHandler {
 
 	@Override
 	public void handle(Beam... beams) {
+		if (beams.length <= 0) return;
+		
 		Vec3d[] angles = new Vec3d[beams.length];
-		float h = -1, s = -1, v = -1;
-
+		
+		int red = 0;
+		int green = 0;
+		int blue = 0;
 		int alpha = 0;
 		for (int i = 0; i < beams.length; i++) {
 			Color color = beams[i].color;
 
-			float[] hsvVals = new float[3];
-			Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsvVals);
-
-			if (h < 0) h = hsvVals[0];
-			else h = (h + hsvVals[0]) / 2;
-
-			if (s < 0) s = hsvVals[1];
-			else s = (s + hsvVals[1]) / 2;
-
-			if (v < 0) v = hsvVals[2];
-			else v = (v + hsvVals[2]) / 2;
-
+			red += color.getRed();
+			green += color.getGreen();
+			blue += color.getBlue();
 			alpha += color.getAlpha();
 
 			angles[i] = beams[i].finalLoc.subtract(beams[i].initLoc);
 		}
-
-		Color color = new Color(Color.HSBtoRGB(h, s, v));
+		red = Math.min(red / beams.length, 255);
+		green = Math.min(green / beams.length, 255);
+		blue = Math.min(blue / beams.length, 255);
+		
+		float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
+		Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
 
 		Vec3d out = RotationHelper.averageDirection(angles);

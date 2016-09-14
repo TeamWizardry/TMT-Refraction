@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.refraction.api.IEffect;
+import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.EffectTracker;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
@@ -70,7 +70,7 @@ public class TileDiscoBall extends TileEntity implements IBeamHandler {
 	public void handle(Beam... inputs) {
 		for (Beam beam : inputs)
 		{
-			IEffect effect = EffectTracker.getEffect(beam.color);
+			Effect effect = EffectTracker.getEffect(beam);
 			for (int x = -2; x <= 2; x++) {
 				for (int z = -2; z <= 2; z++) {
 					for (int y = -3; y < 0; y++) {
