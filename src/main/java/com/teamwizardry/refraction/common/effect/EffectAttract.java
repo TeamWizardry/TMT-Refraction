@@ -19,6 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by LordSaad44
  */
 public class EffectAttract extends Effect {
+
 	@Override
 	public EffectType getType() {
 		return EffectType.BEAM;
@@ -27,9 +28,9 @@ public class EffectAttract extends Effect {
 	private void setEntityMotion(Entity entity) {
 		Vec3d pullDir = beam.initLoc.subtract(beam.finalLoc).normalize();
 
-		entity.motionX = pullDir.xCoord * potency / 10;
-		entity.motionY = pullDir.yCoord * potency / 10;
-		entity.motionZ = pullDir.zCoord * potency / 10;
+		entity.motionX = pullDir.xCoord * potency / 1000;
+		entity.motionY = pullDir.yCoord * potency / 1000;
+		entity.motionZ = pullDir.zCoord * potency / 1000;
 	}
 
 	@Override

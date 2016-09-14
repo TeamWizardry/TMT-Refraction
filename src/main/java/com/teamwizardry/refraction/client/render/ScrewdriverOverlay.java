@@ -107,7 +107,7 @@ public class ScrewdriverOverlay {
 					GlStateManager.color(1, 1, 1);
 					String s = tile.getRotX() + ", " + tile.getRotY();
 					Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(s, event.getResolution().getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(s) / 2, event.getResolution().getScaledHeight() / 2 + 30, 0xFFFFFF);
-					GlStateManager.pushMatrix();
+					GlStateManager.popMatrix();
 				}
 			}
 		}
