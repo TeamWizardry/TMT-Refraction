@@ -20,6 +20,7 @@ public class ModBlocks {
 	public static BlockLightBridge LIGHT_BRIDGE;
 	public static BlockSensor SENSOR;
 	public static BlockSpectrometer SPECTROMETER;
+	public static BlockOpticFiber OPTIC_FIBER;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -35,6 +36,7 @@ public class ModBlocks {
 		LIGHT_BRIDGE = new BlockLightBridge();
 		SENSOR = new BlockSensor();
 		SPECTROMETER = new BlockSpectrometer();
+		OPTIC_FIBER = new BlockOpticFiber();
 	}
 
 	public static void initModels() {
@@ -43,5 +45,6 @@ public class ModBlocks {
 		MIRROR.initModel();
 		REF_CHAMBER.initModel();
 		SPECTROMETER.initModel();
+		OPTIC_FIBER.initModel();
 	}
 }
