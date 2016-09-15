@@ -11,26 +11,56 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
+import java.util.HashMap;
 
 /**
  * Created by Saad on 9/11/2016.
  */
 public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectrometer> {
 
+	private HashMap<BlockPos, Color> colorInterps = new HashMap<>();
+
 	public void renderTileEntityAt(TileSpectrometer te, double x, double y, double z, float partialTicks, int destroyStage) {
+		BlockPos pos = new BlockPos(x, y, z);
+		if (!colorInterps.containsKey(new BlockPos(x, y, z))) {
+			colorInterps.put(pos, new Color(0, 0, 0, 0));
+		}
+
 		VertexBuffer buffer = Tessellator.getInstance().getBuffer();
 		EnumFacing value = te.getWorld().getBlockState(te.getPos()).getValue(BlockDirectional.FACING);
 		double psh = 0.1, psw = 1;
-		float transparency = te.getTransparency();
 
-		double r = 0, g = 0, b = 0, a = 0;
-		if (te.getColor() != null) {
-			r = te.getColor().getRed() / 255.0;
-			g = te.getColor().getGreen() / 255.0;
-			b = te.getColor().getBlue() / 255.0;
-			a = te.getTransparency() / 255.0;
+		Color color = colorInterps.get(pos);
+		if (te.getNbOfBeams() > 0) {
+			int r = (te.getMaxColor().getRed() - color.getRed()) / 10;
+			int g = (te.getMaxColor().getGreen() - color.getGreen()) / 10;
+			int b = (te.getMaxColor().getBlue() - color.getBlue()) / 10;
+			int a = (te.getMaxColor().getAlpha() - color.getAlpha()) / 10;
+
+			color = new Color(color.getRed() + r, color.getGreen() + g, color.getBlue() + b, color.getAlpha() + a);
+		} else {
+			if (color.getRed() > 0)
+				color = new Color(color.getRed() - 1, color.getGreen(), color.getBlue(), color.getAlpha());
+			if (color.getGreen() > 0)
+				color = new Color(color.getRed(), color.getGreen() - 1, color.getBlue(), color.getAlpha());
+			if (color.getBlue() > 0)
+				color = new Color(color.getRed(), color.getGreen(), color.getBlue() - 1, color.getAlpha());
+			if (color.getAlpha() > 0) {
+				color = new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() - 1);
+			}
 		}
+		Minecraft.getMinecraft().thePlayer.sendChatMessage(color + "");
+		colorInterps.put(pos, color);
+
+		double r, g, b, a;
+		r = color.getRed() / 255.0;
+		g = color.getGreen() / 255.0;
+		b = color.getBlue() / 255.0;
+		a = color.getAlpha() / 255.0;
 		if (value == EnumFacing.EAST || value == EnumFacing.WEST) {
 			r *= -1;
 			g *= -1;
@@ -46,9 +76,10 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 			if (b > 0.5) b -= psh;
 			if (a > 0.5) a -= psh;
 		}
+
 		// RED //
 		GlStateManager.pushMatrix();
-		GlStateManager.color(1, 0, 0, transparency);
+		GlStateManager.color(1, 0, 0, 1);
 		GlStateManager.enableBlend();
 		GlStateManager.translate(x, y + 1.5, z + 0.5);
 		switch (value) {
@@ -94,7 +125,7 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		// GREEN //
 		GlStateManager.pushMatrix();
 		GlStateManager.enableBlend();
-		GlStateManager.color(0, 1, 0, transparency);
+		GlStateManager.color(0, 1, 0, 1);
 		GlStateManager.translate(x, y + 1.5, z + 0.5);
 		switch (value) {
 			case NORTH:
@@ -139,7 +170,7 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		// BLUE //
 		GlStateManager.pushMatrix();
 		GlStateManager.enableBlend();
-		GlStateManager.color(0, 0, 1, transparency);
+		GlStateManager.color(0, 0, 1, 1);
 		GlStateManager.translate(x, y + 1.5, z + 0.5);
 		switch (value) {
 			case NORTH:
@@ -184,7 +215,7 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		// ALPHA //
 		GlStateManager.pushMatrix();
 		GlStateManager.enableBlend();
-		GlStateManager.color(1, 1, 1, transparency);
+		GlStateManager.color(1, 1, 1, 1);
 		GlStateManager.translate(x, y + 1.5, z + 0.5);
 		switch (value) {
 			case NORTH:

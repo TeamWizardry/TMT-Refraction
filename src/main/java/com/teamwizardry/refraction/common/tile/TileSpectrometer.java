@@ -18,9 +18,9 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 
 	private IBlockState state;
 
-	private Color color;
-	private float transparency = 0.5f;
+	private Color maxColor;
 	private Beam[] beams;
+	private int nbOfBeams = 0;
 
 	public TileSpectrometer() {
 	}
@@ -28,17 +28,15 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		if (compound.hasKey("color")) color = new Color(compound.getInteger("color"));
-		if (compound.hasKey("transparency")) transparency = compound.getFloat("transparency");
+		if (compound.hasKey("max_color")) maxColor = new Color(compound.getInteger("max_color"));
+		if (compound.hasKey("nb_of_beams")) nbOfBeams = compound.getInteger("nb_of_beams");
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
-
-		if (color != null) compound.setInteger("color", color.getRGB());
-		compound.setFloat("transparency", transparency);
-
+		if (maxColor != null) compound.setInteger("max_color", maxColor.getRGB());
+		compound.setInteger("nb_of_beams", nbOfBeams);
 		return compound;
 	}
 
@@ -68,19 +66,21 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 		this.beams = beams;
 	}
 
-	public Color getColor() {
-		return color;
-	}
-
-	public float getTransparency() {
-		return transparency;
-	}
-
 	@Override
 	public void update() {
 		if (worldObj.isRemote) return;
-		if (color == null) color = new Color(0, 0, 0, 0);
-		if (beams == null) return;
+		if (maxColor == null) maxColor = new Color(0, 0, 0, 0);
+		if (beams == null) {
+			if (nbOfBeams != 0) {
+				nbOfBeams = 0;
+				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+			}
+			return;
+		}
+		if (nbOfBeams != beams.length) {
+			nbOfBeams = beams.length;
+			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+		}
 
 		float h = -1, s = -1, v = -1;
 		int alpha = 0;
@@ -104,26 +104,13 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 		}
 		Color color = new Color(Color.HSBtoRGB(h, s, v));
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
-
-		if (beams.length > 0) {
-			int r = (color.getRed() - this.color.getRed()) / 10;
-			int g = (color.getGreen() - this.color.getGreen()) / 10;
-			int b = (color.getBlue() - this.color.getBlue()) / 10;
-			int a = (color.getAlpha() - this.color.getAlpha()) / 10;
-
-			this.color = new Color(this.color.getRed() + r, this.color.getGreen() + g, this.color.getBlue() + b, this.color.getAlpha() + a);
-		} else {
-			if (this.color.getRed() > 0)
-				this.color = new Color(this.color.getRed() - 1, this.color.getGreen(), this.color.getBlue(), this.color.getAlpha());
-			if (this.color.getGreen() > 0)
-				this.color = new Color(this.color.getRed(), this.color.getGreen() - 1, this.color.getBlue(), this.color.getAlpha());
-			if (this.color.getBlue() > 0)
-				this.color = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue() - 1, this.color.getAlpha());
-			if (this.color.getAlpha() > 0) {
-				this.color = new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), this.color.getAlpha() - 1);
-				transparency = this.color.getTransparency();
-			}
-		}
+		if (color.getRed() == maxColor.getRed()
+				&& color.getBlue() == maxColor.getBlue()
+				&& color.getGreen() == maxColor.getGreen()) return;
+		this.maxColor = color;
 		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 	}
+
+	public int getNbOfBeams() { return nbOfBeams; }
+	public Color getMaxColor() { return maxColor; }
 }
