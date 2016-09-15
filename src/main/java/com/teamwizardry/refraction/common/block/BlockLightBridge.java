@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.ISpamSoundProvider;
 import com.teamwizardry.refraction.common.tile.TileLightBridge;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -27,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockLightBridge extends BlockModContainer {
+public class BlockLightBridge extends BlockModContainer implements ISpamSoundProvider {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 	public static final PropertyBool VERTICAL = PropertyBool.create("vertical");
@@ -146,6 +147,8 @@ public class BlockLightBridge extends BlockModContainer {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileLightBridge bridge = (TileLightBridge) world.getTileEntity(pos);
 		if (bridge != null && bridge.getDirection() != null) {
+			bridge.setShouldEmitSound(false);
+
 			IBlockState front = world.getBlockState(pos.offset(bridge.getDirection()));
 			IBlockState back = world.getBlockState(pos.offset(bridge.getDirection().getOpposite()));
 			if (front.getBlock() == this)
@@ -153,6 +156,8 @@ public class BlockLightBridge extends BlockModContainer {
 			if (back.getBlock() == this)
 				world.setBlockState(pos.offset(bridge.getDirection().getOpposite()), Blocks.AIR.getDefaultState());
 		}
+
+		recalculateAllSurroundingSpammables(world, pos);
 
 		super.breakBlock(world, pos, state);
 	}
