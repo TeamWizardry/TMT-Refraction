@@ -118,7 +118,6 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 		this.maxColor = color;
 		this.maxTransparency = color.getAlpha();
 		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
-
 	}
 
 	public int getNbOfBeams() {
