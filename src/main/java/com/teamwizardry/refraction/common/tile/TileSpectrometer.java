@@ -16,11 +16,11 @@ import java.awt.*;
  */
 public class TileSpectrometer extends TileEntity implements IBeamHandler, ITickable {
 
+	public Color maxColor = new Color(0, 0, 0, 0), currentColor = new Color(0, 0, 0, 0);
+	public int nbOfBeams = 0;
+	public int maxTransparency = 0, currentTransparency;
 	private IBlockState state;
-
-	private Color maxColor;
 	private Beam[] beams;
-	private int nbOfBeams = 0;
 
 	public TileSpectrometer() {
 	}
@@ -29,14 +29,20 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		if (compound.hasKey("max_color")) maxColor = new Color(compound.getInteger("max_color"));
+		if (compound.hasKey("current_color")) currentColor = new Color(compound.getInteger("current_color"));
 		if (compound.hasKey("nb_of_beams")) nbOfBeams = compound.getInteger("nb_of_beams");
+		if (compound.hasKey("max_transparency")) maxTransparency = compound.getInteger("max_transparency");
+		if (compound.hasKey("current_transparency")) currentTransparency = compound.getInteger("current_transparency");
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
-		if (maxColor != null) compound.setInteger("max_color", maxColor.getRGB());
+		compound.setInteger("max_color", maxColor.getRGB());
+		compound.setInteger("current_color", currentColor.getRGB());
 		compound.setInteger("nb_of_beams", nbOfBeams);
+		compound.setInteger("max_transparency", maxTransparency);
+		compound.setInteger("current_transparency", currentTransparency);
 		return compound;
 	}
 
@@ -104,13 +110,22 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 		}
 		Color color = new Color(Color.HSBtoRGB(h, s, v));
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
+
 		if (color.getRed() == maxColor.getRed()
 				&& color.getBlue() == maxColor.getBlue()
-				&& color.getGreen() == maxColor.getGreen()) return;
+				&& color.getGreen() == maxColor.getGreen()
+				&& color.getAlpha() == maxTransparency) return;
 		this.maxColor = color;
+		this.maxTransparency = color.getAlpha();
 		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+
 	}
 
-	public int getNbOfBeams() { return nbOfBeams; }
-	public Color getMaxColor() { return maxColor; }
+	public int getNbOfBeams() {
+		return nbOfBeams;
+	}
+
+	public Color getMaxColor() {
+		return maxColor;
+	}
 }

@@ -11,37 +11,28 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.util.HashMap;
 
 /**
  * Created by Saad on 9/11/2016.
  */
 public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectrometer> {
 
-	private HashMap<BlockPos, Color> colorInterps = new HashMap<>();
-
 	public void renderTileEntityAt(TileSpectrometer te, double x, double y, double z, float partialTicks, int destroyStage) {
-		BlockPos pos = new BlockPos(x, y, z);
-		if (!colorInterps.containsKey(new BlockPos(x, y, z))) {
-			colorInterps.put(pos, new Color(0, 0, 0, 0));
-		}
-
 		VertexBuffer buffer = Tessellator.getInstance().getBuffer();
 		EnumFacing value = te.getWorld().getBlockState(te.getPos()).getValue(BlockDirectional.FACING);
 		double psh = 0.1, psw = 1;
 
-		Color color = colorInterps.get(pos);
+		Color color = te.currentColor;
 		if (te.getNbOfBeams() > 0) {
-			int r = (te.getMaxColor().getRed() - color.getRed()) / 10;
-			int g = (te.getMaxColor().getGreen() - color.getGreen()) / 10;
-			int b = (te.getMaxColor().getBlue() - color.getBlue()) / 10;
-			int a = (te.getMaxColor().getAlpha() - color.getAlpha()) / 10;
+			int r = (int) Math.ceil((te.maxColor.getRed() - color.getRed()) / 50.0);
+			int g = (int) Math.ceil((te.maxColor.getGreen() - color.getGreen()) / 50.0);
+			int b = (int) Math.ceil((te.maxColor.getBlue() - color.getBlue()) / 50.0);
+			int a = (int) Math.ceil((te.maxTransparency - te.currentTransparency) / 50.0);
 
-			color = new Color(color.getRed() + r, color.getGreen() + g, color.getBlue() + b, color.getAlpha() + a);
+			color = new Color(color.getRed() + r, color.getGreen() + g, color.getBlue() + b, te.currentTransparency + a);
 		} else {
 			if (color.getRed() > 0)
 				color = new Color(color.getRed() - 1, color.getGreen(), color.getBlue(), color.getAlpha());
@@ -49,18 +40,18 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 				color = new Color(color.getRed(), color.getGreen() - 1, color.getBlue(), color.getAlpha());
 			if (color.getBlue() > 0)
 				color = new Color(color.getRed(), color.getGreen(), color.getBlue() - 1, color.getAlpha());
-			if (color.getAlpha() > 0) {
-				color = new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() - 1);
+			if (te.currentTransparency > 0) {
+				color = new Color(color.getRed(), color.getGreen(), color.getBlue(), te.currentTransparency - 1);
 			}
 		}
-		Minecraft.getMinecraft().thePlayer.sendChatMessage(color + "");
-		colorInterps.put(pos, color);
+		te.currentColor = color;
+		te.currentTransparency = color.getAlpha();
 
 		double r, g, b, a;
-		r = color.getRed() / 255.0;
-		g = color.getGreen() / 255.0;
-		b = color.getBlue() / 255.0;
-		a = color.getAlpha() / 255.0;
+		r = color.getRed() / 255.0 / 2;
+		g = color.getGreen() / 255.0 / 2;
+		b = color.getBlue() / 255.0 / 2;
+		a = color.getAlpha() / 255.0 / 2;
 		if (value == EnumFacing.EAST || value == EnumFacing.WEST) {
 			r *= -1;
 			g *= -1;
@@ -85,21 +76,21 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		switch (value) {
 			case NORTH:
 				GlStateManager.rotate(270, 1, 0, 0);
-				GlStateManager.translate(0, 0.51, -1 + r);
+				GlStateManager.translate(0, 0.51, -1 + r + 0.5 - psh);
 				break;
 			case SOUTH:
 				GlStateManager.rotate(270, 1, 0, 0);
-				GlStateManager.translate(0, -0.51, -1 + r);
+				GlStateManager.translate(0, -0.51, -1 + r + 0.5 - psh);
 				break;
 			case EAST:
 				GlStateManager.rotate(270, 0, 0, 1);
 				GlStateManager.rotate(90, 0, 1, 0);
-				GlStateManager.translate(-0.5, 1.01, 2 + r);
+				GlStateManager.translate(-0.5, 1.01, 2 + r - 0.5);
 				break;
 			case WEST:
 				GlStateManager.rotate(270, 0, 0, 1);
 				GlStateManager.rotate(90, 0, 1, 0);
-				GlStateManager.translate(-0.5, -0.01, 2 + r);
+				GlStateManager.translate(-0.5, -0.01, 2 + r - 0.5);
 				break;
 		}
 		GlStateManager.translate(0, 0, -0.5);
@@ -110,10 +101,10 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(Refraction.MOD_ID, "textures/bar.png"));
 
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		buffer.pos(psw, 0, psh).tex(0, 0).endVertex();
+		buffer.pos(psw / 2, 0, psh).tex(0, 0).endVertex();
 		buffer.pos(0, 0, psh).tex(0, 1).endVertex();
 		buffer.pos(0, 0, 0).tex(1, 1).endVertex();
-		buffer.pos(psw, 0, 0).tex(1, 0).endVertex();
+		buffer.pos(psw / 2, 0, 0).tex(1, 0).endVertex();
 		Tessellator.getInstance().draw();
 
 		GlStateManager.enableLighting();
@@ -155,10 +146,10 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(Refraction.MOD_ID, "textures/bar.png"));
 
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		buffer.pos(psw, 0, psh).tex(0, 0).endVertex();
+		buffer.pos(psw / 2, 0, psh).tex(0, 0).endVertex();
 		buffer.pos(0, 0, psh).tex(0, 1).endVertex();
 		buffer.pos(0, 0, 0).tex(1, 1).endVertex();
-		buffer.pos(psw, 0, 0).tex(1, 0).endVertex();
+		buffer.pos(psw / 2, 0, 0).tex(1, 0).endVertex();
 		Tessellator.getInstance().draw();
 
 		GlStateManager.enableLighting();
@@ -200,10 +191,10 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(Refraction.MOD_ID, "textures/bar.png"));
 
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		buffer.pos(psw, 0, psh).tex(0, 0).endVertex();
-		buffer.pos(0, 0, psh).tex(0, 1).endVertex();
-		buffer.pos(0, 0, 0).tex(1, 1).endVertex();
-		buffer.pos(psw, 0, 0).tex(1, 0).endVertex();
+		buffer.pos(psw / 2, 0, psh).tex(0, 0).endVertex();
+		buffer.pos(psw, 0, psh).tex(0, 1).endVertex();
+		buffer.pos(psw, 0, 0).tex(1, 1).endVertex();
+		buffer.pos(psw / 2, 0, 0).tex(1, 0).endVertex();
 		Tessellator.getInstance().draw();
 
 		GlStateManager.enableLighting();
@@ -220,21 +211,21 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		switch (value) {
 			case NORTH:
 				GlStateManager.rotate(270, 1, 0, 0);
-				GlStateManager.translate(0, 0.51, -1 + a);
+				GlStateManager.translate(0, 0.51, -1 + a + 0.5 - psh);
 				break;
 			case SOUTH:
 				GlStateManager.rotate(270, 1, 0, 0);
-				GlStateManager.translate(0, -0.51, -1 + a);
+				GlStateManager.translate(0, -0.51, -1 + a + 0.5 - psh);
 				break;
 			case EAST:
 				GlStateManager.rotate(270, 0, 0, 1);
 				GlStateManager.rotate(90, 0, 1, 0);
-				GlStateManager.translate(-0.5, 1.01, 2 + a);
+				GlStateManager.translate(-0.5, 1.01, 2 + a - 0.5);
 				break;
 			case WEST:
 				GlStateManager.rotate(270, 0, 0, 1);
 				GlStateManager.rotate(90, 0, 1, 0);
-				GlStateManager.translate(-0.5, -0.01, 2 + a);
+				GlStateManager.translate(-0.5, -0.01, 2 + a - 0.5);
 				break;
 		}
 		GlStateManager.translate(0, 0, -0.5);
@@ -245,10 +236,10 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(Refraction.MOD_ID, "textures/bar.png"));
 
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		buffer.pos(psw, 0, psh).tex(0, 0).endVertex();
-		buffer.pos(0, 0, psh).tex(0, 1).endVertex();
-		buffer.pos(0, 0, 0).tex(1, 1).endVertex();
-		buffer.pos(psw, 0, 0).tex(1, 0).endVertex();
+		buffer.pos(psw / 2, 0, psh).tex(0, 0).endVertex();
+		buffer.pos(psw, 0, psh).tex(0, 1).endVertex();
+		buffer.pos(psw, 0, 0).tex(1, 1).endVertex();
+		buffer.pos(psw / 2, 0, 0).tex(1, 0).endVertex();
 		Tessellator.getInstance().draw();
 
 		GlStateManager.enableLighting();
