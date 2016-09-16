@@ -23,12 +23,11 @@ public class EffectAttract extends Effect {
 	}
 
 	private void setEntityMotion(Entity entity) {
-		Vec3d pullDir = beam.initLoc.subtract(beam.finalLoc);
-		if (pullDir.lengthVector() > 1) pullDir.normalize();
+		Vec3d pullDir = beam.initLoc.subtract(beam.finalLoc).normalize();
 
-		entity.motionX = pullDir.xCoord * potency / 30000;
-		entity.motionY = pullDir.yCoord * potency / 30000;
-		entity.motionZ = pullDir.zCoord * potency / 30000;
+		entity.motionX = pullDir.xCoord * 255 / potency;
+		entity.motionY = pullDir.yCoord * 255 / potency;
+		entity.motionZ = pullDir.zCoord * 255 / potency;
 	}
 
 	@Override
