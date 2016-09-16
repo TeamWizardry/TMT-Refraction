@@ -12,6 +12,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+
 import java.awt.*;
 
 public class Beam
@@ -29,7 +30,7 @@ public class Beam
 		this.color = color;
 		if(world.isRemote)
 			return;
-		
+
 		RayTraceResult trace = EntityTrace.cast(world, initLoc, slope, 128);
 		// RayTraceResult trace = BeamPulsar.rayTraceBlocks(world, new HashSet<>(ImmutableList.of(new BlockPos(initLoc))), initLoc, finalLoc, true, false, true);
 		if (trace != null)
