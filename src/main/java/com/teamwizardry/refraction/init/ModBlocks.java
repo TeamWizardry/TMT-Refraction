@@ -45,6 +45,5 @@ public class ModBlocks {
 		MIRROR.initModel();
 		REF_CHAMBER.initModel();
 		SPECTROMETER.initModel();
-		OPTIC_FIBER.initModel();
 	}
 }

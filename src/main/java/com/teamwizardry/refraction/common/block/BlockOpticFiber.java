@@ -3,10 +3,13 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.client.render.RenderOpticFiber;
 import com.teamwizardry.refraction.common.tile.TileOpticFiber;
+import com.teamwizardry.refraction.init.ModBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
@@ -15,16 +18,20 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by Saad on 9/15/2016.
  */
 public class BlockOpticFiber extends BlockModContainer {
+
+	public static final PropertyBool UP = PropertyBool.create("up");
+	public static final PropertyBool DOWN = PropertyBool.create("down");
+	public static final PropertyBool EAST = PropertyBool.create("east");
+	public static final PropertyBool WEST = PropertyBool.create("west");
+	public static final PropertyBool SOUTH = PropertyBool.create("south");
+	public static final PropertyBool NORTH = PropertyBool.create("north");
 
 	public BlockOpticFiber() {
 		super("optic_fiber", Material.GLASS);
@@ -37,22 +44,132 @@ public class BlockOpticFiber extends BlockModContainer {
 		return (TileOpticFiber) world.getTileEntity(pos);
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void initModel() {
-		ClientRegistry.bindTileEntitySpecialRenderer(TileOpticFiber.class, new RenderOpticFiber());
-	}
-
 	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		TileOpticFiber fiber = (TileOpticFiber) world.getTileEntity(pos);
-		if (fiber != null) fiber.updateFaces();
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+		for (EnumFacing dir : EnumFacing.values()) {
+			BlockPos dirpos = pos.offset(dir);
+			IBlockState state2 = worldIn.getBlockState(dirpos);
+			if (state2.getBlock() == ModBlocks.OPTIC_FIBER) {
+				boolean[] directions = new boolean[]
+						{state2.getValue(UP),
+								state2.getValue(DOWN),
+								state2.getValue(WEST),
+								state2.getValue(EAST),
+								state2.getValue(NORTH),
+								state2.getValue(SOUTH)};
+				boolean match = false;
+				boolean end = false;
+				for (int i = 0; i < directions.length; i++)
+					for (int j = 0; j < directions.length; j++)
+						if (i != j && directions[i] && directions[j])
+							if (!match) match = true;
+							else {
+								end = true;
+								break;
+							}
+				if (state.getBlock() == ModBlocks.OPTIC_FIBER) {
+					if (!end) {
+						if (dir == EnumFacing.NORTH) state2 = state2.withProperty(SOUTH, true);
+						else if (dir == EnumFacing.SOUTH) state2 = state2.withProperty(NORTH, true);
+						else if (dir == EnumFacing.EAST) state2 = state2.withProperty(WEST, true);
+						else if (dir == EnumFacing.WEST) state2 = state2.withProperty(EAST, true);
+						else if (dir == EnumFacing.UP) state2 = state2.withProperty(DOWN, true);
+						else if (dir == EnumFacing.DOWN) state2 = state2.withProperty(UP, true);
+						worldIn.setBlockState(dirpos, state2);
+					}
+				} else {
+					if (dir == EnumFacing.NORTH) state2 = state2.withProperty(SOUTH, false);
+					else if (dir == EnumFacing.SOUTH) state2 = state2.withProperty(NORTH, false);
+					else if (dir == EnumFacing.EAST) state2 = state2.withProperty(WEST, false);
+					else if (dir == EnumFacing.WEST) state2 = state2.withProperty(EAST, false);
+					else if (dir == EnumFacing.UP) state2 = state2.withProperty(DOWN, false);
+					else if (dir == EnumFacing.DOWN) state2 = state2.withProperty(UP, false);
+					worldIn.setBlockState(dirpos, state2);
+				}
+			}
+		}
 	}
 
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		TileOpticFiber fiber = (TileOpticFiber) worldIn.getTileEntity(pos);
-		if (fiber != null) fiber.updateFaces();
-		return this.getStateFromMeta(meta);
+		IBlockState state = getStateFromMeta(meta);
+		for (EnumFacing dir : EnumFacing.values()) {
+			BlockPos dirpos = pos.offset(dir);
+			if (worldIn.getBlockState(dirpos).getBlock() == ModBlocks.OPTIC_FIBER) {
+				if (state.getBlock() == ModBlocks.OPTIC_FIBER) {
+					IBlockState fiberState = worldIn.getBlockState(dirpos);
+					boolean[] directions = new boolean[]
+							{fiberState.getValue(UP),
+									fiberState.getValue(DOWN),
+									fiberState.getValue(WEST),
+									fiberState.getValue(EAST),
+									fiberState.getValue(NORTH),
+									fiberState.getValue(SOUTH)};
+					boolean match = false;
+					boolean end = false;
+					for (int i = 0; i < directions.length; i++)
+						for (int j = 0; j < directions.length; j++)
+							if (i != j && directions[i] && directions[j])
+								if (!match) match = true;
+								else {
+									end = true;
+									break;
+								}
+					if (!end) {
+						if (dir == EnumFacing.NORTH) state = state.withProperty(NORTH, true);
+						else if (dir == EnumFacing.SOUTH) state = state.withProperty(SOUTH, true);
+						else if (dir == EnumFacing.EAST) state = state.withProperty(EAST, true);
+						else if (dir == EnumFacing.WEST) state = state.withProperty(WEST, true);
+						else if (dir == EnumFacing.UP) state = state.withProperty(UP, true);
+						else if (dir == EnumFacing.DOWN) state = state.withProperty(DOWN, true);
+					}
+				}
+			}
+		}
+		return state;
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		int up = 1;
+		int down = 1 << 1;
+		int north = 1 << 2;
+		int south = 1 << 3;
+		int east = 1 << 4;
+		int west = 1 << 5;
+		return getDefaultState()
+				.withProperty(UP, (meta & up) != 0)
+				.withProperty(DOWN, (meta & down) != 0)
+				.withProperty(NORTH, (meta & north) != 0)
+				.withProperty(SOUTH, (meta & south) != 0)
+				.withProperty(EAST, (meta & east) != 0)
+				.withProperty(WEST, (meta & west) != 0);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return 0;
+	}
+
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		for (EnumFacing dir : EnumFacing.values()) {
+			BlockPos dirpos = pos.offset(dir);
+			if (worldIn.getBlockState(dirpos).getBlock() == ModBlocks.OPTIC_FIBER) {
+				if (dir == EnumFacing.NORTH) state = state.withProperty(NORTH, true);
+				else if (dir == EnumFacing.SOUTH) state = state.withProperty(SOUTH, true);
+				else if (dir == EnumFacing.EAST) state = state.withProperty(EAST, true);
+				else if (dir == EnumFacing.WEST) state = state.withProperty(WEST, true);
+				else if (dir == EnumFacing.UP) state = state.withProperty(UP, true);
+				else if (dir == EnumFacing.DOWN) state = state.withProperty(DOWN, true);
+			}
+		}
+		return state;
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, UP, DOWN, EAST, WEST, NORTH, SOUTH);
 	}
 
 	@Override
