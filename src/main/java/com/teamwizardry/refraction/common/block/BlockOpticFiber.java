@@ -46,46 +46,75 @@ public class BlockOpticFiber extends BlockModContainer {
 
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+		if (state.getBlock() != ModBlocks.OPTIC_FIBER) return;
+		boolean[] directions = new boolean[]{state.getValue(UP),
+				state.getValue(DOWN),
+				state.getValue(WEST),
+				state.getValue(EAST),
+				state.getValue(NORTH),
+				state.getValue(SOUTH)};
 		for (EnumFacing dir : EnumFacing.values()) {
 			BlockPos dirpos = pos.offset(dir);
 			IBlockState state2 = worldIn.getBlockState(dirpos);
+
 			if (state2.getBlock() == ModBlocks.OPTIC_FIBER) {
-				boolean[] directions = new boolean[]
-						{state2.getValue(UP),
-								state2.getValue(DOWN),
-								state2.getValue(WEST),
-								state2.getValue(EAST),
-								state2.getValue(NORTH),
-								state2.getValue(SOUTH)};
-				boolean match = false;
-				boolean end = false;
-				for (int i = 0; i < directions.length; i++)
-					for (int j = 0; j < directions.length; j++)
-						if (i != j && directions[i] && directions[j])
-							if (!match) match = true;
-							else {
-								end = true;
-								break;
-							}
-				if (state.getBlock() == ModBlocks.OPTIC_FIBER) {
-					if (!end) {
-						if (dir == EnumFacing.NORTH) state2 = state2.withProperty(SOUTH, true);
-						else if (dir == EnumFacing.SOUTH) state2 = state2.withProperty(NORTH, true);
-						else if (dir == EnumFacing.EAST) state2 = state2.withProperty(WEST, true);
-						else if (dir == EnumFacing.WEST) state2 = state2.withProperty(EAST, true);
-						else if (dir == EnumFacing.UP) state2 = state2.withProperty(DOWN, true);
-						else if (dir == EnumFacing.DOWN) state2 = state2.withProperty(UP, true);
-						worldIn.setBlockState(dirpos, state2);
+				boolean[] directions2 = new boolean[]{state2.getValue(UP),
+						state2.getValue(DOWN),
+						state2.getValue(WEST),
+						state2.getValue(EAST),
+						state2.getValue(NORTH),
+						state2.getValue(SOUTH)};
+
+				int x = 0;
+				for (boolean direction : directions) if (direction) x++;
+				int y = 0;
+				for (boolean direction : directions2) if (direction) y++;
+
+				if (x < 2 && y < 2) {
+					switch (dir) {
+						case NORTH:
+							state = state.withProperty(NORTH, true);
+							break;
+						case SOUTH:
+							state = state.withProperty(SOUTH, true);
+							break;
+						case WEST:
+							state = state.withProperty(WEST, true);
+							break;
+						case EAST:
+							state = state.withProperty(EAST, true);
+							break;
+						case UP:
+							state = state.withProperty(UP, true);
+							break;
+						case DOWN:
+							state = state.withProperty(DOWN, true);
+							break;
 					}
-				} else {
-					if (dir == EnumFacing.NORTH) state2 = state2.withProperty(SOUTH, false);
-					else if (dir == EnumFacing.SOUTH) state2 = state2.withProperty(NORTH, false);
-					else if (dir == EnumFacing.EAST) state2 = state2.withProperty(WEST, false);
-					else if (dir == EnumFacing.WEST) state2 = state2.withProperty(EAST, false);
-					else if (dir == EnumFacing.UP) state2 = state2.withProperty(DOWN, false);
-					else if (dir == EnumFacing.DOWN) state2 = state2.withProperty(UP, false);
-					worldIn.setBlockState(dirpos, state2);
+					worldIn.setBlockState(pos, state);
 				}
+			} else {
+				switch (dir) {
+					case NORTH:
+						state = state.withProperty(NORTH, false);
+						break;
+					case SOUTH:
+						state = state.withProperty(SOUTH, false);
+						break;
+					case WEST:
+						state = state.withProperty(WEST, false);
+						break;
+					case EAST:
+						state = state.withProperty(EAST, false);
+						break;
+					case UP:
+						state = state.withProperty(UP, false);
+						break;
+					case DOWN:
+						state = state.withProperty(DOWN, false);
+						break;
+				}
+				worldIn.setBlockState(pos, state);
 			}
 		}
 	}
@@ -93,37 +122,48 @@ public class BlockOpticFiber extends BlockModContainer {
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		IBlockState state = getStateFromMeta(meta);
+		if (state.getBlock() != ModBlocks.OPTIC_FIBER) return state;
 		for (EnumFacing dir : EnumFacing.values()) {
+			boolean[] directions = new boolean[]{state.getValue(UP),
+					state.getValue(DOWN),
+					state.getValue(WEST),
+					state.getValue(EAST),
+					state.getValue(NORTH),
+					state.getValue(SOUTH)};
+			int x = 0;
+			for (boolean direction : directions) if (direction) x++;
+			if (x >= 2) break;
 			BlockPos dirpos = pos.offset(dir);
-			if (worldIn.getBlockState(dirpos).getBlock() == ModBlocks.OPTIC_FIBER) {
-				if (state.getBlock() == ModBlocks.OPTIC_FIBER) {
-					IBlockState fiberState = worldIn.getBlockState(dirpos);
-					boolean[] directions = new boolean[]
-							{fiberState.getValue(UP),
-									fiberState.getValue(DOWN),
-									fiberState.getValue(WEST),
-									fiberState.getValue(EAST),
-									fiberState.getValue(NORTH),
-									fiberState.getValue(SOUTH)};
-					boolean match = false;
-					boolean end = false;
-					for (int i = 0; i < directions.length; i++)
-						for (int j = 0; j < directions.length; j++)
-							if (i != j && directions[i] && directions[j])
-								if (!match) match = true;
-								else {
-									end = true;
-									break;
-								}
-					if (!end) {
-						if (dir == EnumFacing.NORTH) state = state.withProperty(NORTH, true);
-						else if (dir == EnumFacing.SOUTH) state = state.withProperty(SOUTH, true);
-						else if (dir == EnumFacing.EAST) state = state.withProperty(EAST, true);
-						else if (dir == EnumFacing.WEST) state = state.withProperty(WEST, true);
-						else if (dir == EnumFacing.UP) state = state.withProperty(UP, true);
-						else if (dir == EnumFacing.DOWN) state = state.withProperty(DOWN, true);
-					}
-				}
+			IBlockState state2 = worldIn.getBlockState(dirpos);
+			if (state2.getBlock() != ModBlocks.OPTIC_FIBER) continue;
+			boolean[] directions2 = new boolean[]{state2.getValue(UP),
+					state2.getValue(DOWN),
+					state2.getValue(WEST),
+					state2.getValue(EAST),
+					state2.getValue(NORTH),
+					state2.getValue(SOUTH)};
+			int y = 0;
+			for (boolean direction : directions2) if (direction) y++;
+			if (y >= 2) continue;
+			switch (dir) {
+				case NORTH:
+					state = state.withProperty(NORTH, true);
+					break;
+				case SOUTH:
+					state = state.withProperty(SOUTH, true);
+					break;
+				case WEST:
+					state = state.withProperty(WEST, true);
+					break;
+				case EAST:
+					state = state.withProperty(EAST, true);
+					break;
+				case UP:
+					state = state.withProperty(UP, true);
+					break;
+				case DOWN:
+					state = state.withProperty(DOWN, true);
+					break;
 			}
 		}
 		return state;
