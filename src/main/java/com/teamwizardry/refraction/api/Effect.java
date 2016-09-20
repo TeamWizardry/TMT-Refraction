@@ -1,10 +1,10 @@
 package com.teamwizardry.refraction.api;
 
-import com.teamwizardry.refraction.common.light.Beam;
-import net.minecraft.util.math.Vec3d;
+import java.awt.Color;
+import java.util.Set;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.awt.*;
+import com.teamwizardry.refraction.common.light.Beam;
 
 /**
  * Created by LordSaad44
@@ -26,7 +26,7 @@ public class Effect implements Cloneable {
 		return this;
 	}
 	
-	public void run(World world, Vec3d pos)
+	public void run(World world, Set<BlockPos> locations)
 	{}
 	
 	public Color getColor()

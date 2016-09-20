@@ -1,8 +1,9 @@
 package com.teamwizardry.refraction.common.effect;
 
 import java.awt.Color;
+import java.util.Set;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.common.entity.EntityAccelerator;
@@ -13,9 +14,15 @@ import com.teamwizardry.refraction.common.entity.EntityAccelerator;
 public class EffectAccelerate extends Effect {
 
 	@Override
-	public void run(World world, Vec3d pos) {
-		EntityAccelerator a = new EntityAccelerator(world, new BlockPos(pos.xCoord, pos.yCoord, pos.zCoord), potency, 5);
-		world.spawnEntityInWorld(a);
+	public void run(World world, Set<BlockPos> locations) {
+		for (BlockPos pos : locations)
+		{
+			if (world.getEntitiesWithinAABB(EntityAccelerator.class, new AxisAlignedBB(pos)).size() > 0)
+			{
+				EntityAccelerator a = new EntityAccelerator(world, pos, potency, 5);
+				world.spawnEntityInWorld(a);
+			}
+		}
 
 //		for (int i = 0; i < 5; i++) {
 //			SparkleFX fx = Refraction.proxy.spawnParticleSparkle(world, pos.xCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5), pos.yCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5), pos.zCoord + ThreadLocalRandom.current().nextDouble(-0.5, 0.5));

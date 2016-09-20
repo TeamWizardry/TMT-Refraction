@@ -35,15 +35,21 @@ public class Refraction {
 	public static Refraction instance;
 
 	public static ModCreativeTab tab = new ModCreativeTab(MOD_NAME) {
-		@NotNull
-		@Override
-		public ItemStack getIconItemStack() {
-			return new ItemStack(ModItems.SCREW_DRIVER);
-		}
+//		@NotNull
+//		@Override
+//		public ItemStack getIconItemStack() {
+//			return new ItemStack(ModItems.SCREW_DRIVER);
+//		}
 		@Override
 		public Item getTabIconItem()
 		{
 			return ModItems.SCREW_DRIVER;
+		}
+		@NotNull
+		@Override
+		public ItemStack func_151244_d()
+		{
+			return new ItemStack(ModItems.SCREW_DRIVER);
 		}
 	};
 

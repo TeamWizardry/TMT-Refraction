@@ -1,24 +1,27 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.Effect;
+import java.awt.Color;
+import java.util.Set;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import com.teamwizardry.refraction.api.Effect;
 
-import java.awt.*;
-
-public class EffectBreak extends Effect {
-
+public class EffectBreak extends Effect
+{
 	@Override
-	public void run(World world, Vec3d vec) {
-		BlockPos pos = new BlockPos(vec);
-		float hardness = world.getBlockState(pos).getBlockHardness(world, pos);
-		if (hardness * 32 * 2 / 3 < potency)
-			world.destroyBlock(pos, true);
+	public void run(World world, Set<BlockPos> locations)
+	{
+		for (BlockPos pos : locations)
+		{
+			float hardness = world.getBlockState(pos).getBlockHardness(world, pos);
+			if (hardness * 32 * 2 / 3 < potency)
+				world.destroyBlock(pos, true);
+		}
 	}
 
 	@Override
-	public Color getColor() {
+	public Color getColor()
+	{
 		return Color.YELLOW;
 	}
 }

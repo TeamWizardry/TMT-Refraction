@@ -21,6 +21,7 @@ public class Beam
 	public Vec3d finalLoc;
 	public Color color;
 	public World world;
+	public Effect effect;
 
 	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color)
 	{
@@ -28,6 +29,7 @@ public class Beam
 		this.initLoc = initLoc;
 		this.finalLoc = slope.normalize().scale(128).add(initLoc);
 		this.color = color;
+		this.effect = EffectTracker.getEffect(this);
 		if(world.isRemote)
 			return;
 
@@ -38,7 +40,6 @@ public class Beam
 			this.finalLoc = trace.hitVec;
 			if (trace.typeOfHit == RayTraceResult.Type.ENTITY)
 			{
-				Effect effect = EffectTracker.getEffect(this);
 				if (effect != null)
 				{
 					if (effect.getType() == EffectType.SINGLE)
@@ -51,7 +52,6 @@ public class Beam
 			{
 				try
 				{
-					Effect effect = EffectTracker.getEffect(this);
 					if (effect != null && effect.getType() == EffectType.BEAM)
 						EffectTracker.addEffect(world, this);
 					TileEntity tile = world.getTileEntity(trace.getBlockPos());
@@ -68,7 +68,6 @@ public class Beam
 			}
 			else if (trace.typeOfHit == RayTraceResult.Type.MISS)
 			{
-				Effect effect = EffectTracker.getEffect(this);
 				if (effect != null && effect.getType() == EffectType.BEAM)
 					EffectTracker.addEffect(world, this);
 			}

@@ -1,18 +1,18 @@
 package com.teamwizardry.refraction.common.light;
 
-import com.google.common.collect.HashMultimap;
-import com.teamwizardry.refraction.api.Effect;
+import java.awt.Color;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.WeakHashMap;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-import java.awt.*;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.WeakHashMap;
+import com.google.common.collect.HashMultimap;
+import com.teamwizardry.refraction.api.Effect;
 
 /**
  * Created by LordSaad44
@@ -21,7 +21,8 @@ public class EffectTracker {
 	public static ArrayList<Effect> effectRegistry = new ArrayList<>();
 
 	private static WeakHashMap<World, EffectTracker> effectInstances = new WeakHashMap<>();
-	private HashMultimap<Vec3d, Effect> effects = HashMultimap.create();
+	private HashMultimap<Effect, BlockPos> effects = HashMultimap.create();
+//	private HashMultimap<Vec3d, Effect> effects = HashMultimap.create();
 	private BlockTracker blockTracker;
 	private int cooldown;
 	private WeakReference<World> world;
@@ -35,7 +36,7 @@ public class EffectTracker {
 	public static void addEffect(World world, Vec3d pos, Effect effect) {
 		if (!effectInstances.containsKey(world))
 			addInstance(world);
-		effectInstances.get(world).effects.put(pos, effect);
+		effectInstances.get(world).effects.put(effect, new BlockPos(pos));
 	}
 
 	public static void addEffect(World world, Beam beam) {
@@ -88,11 +89,10 @@ public class EffectTracker {
 		if (event.phase == TickEvent.Phase.START && event.side == Side.SERVER) {
 
 			blockTracker.generateEffects();
-			for (Vec3d pos : effects.keySet()) {
-				for (Effect effect : effects.get(pos)) {
-					World w = world.get();
-					if (effect != null && w != null && pos != null) effect.run(w, pos);
-				}
+			for (Effect effect : effects.keySet())
+			{
+				World w = world.get();
+				if (effect != null && w != null && effects.get(effect) != null) effect.run(w, effects.get(effect));
 			}
 
 			if (cooldown > 0) cooldown--;
