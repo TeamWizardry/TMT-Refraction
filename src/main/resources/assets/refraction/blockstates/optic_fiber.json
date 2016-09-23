@@ -9,14 +9,11 @@
     "uvlock": true
   },
   "variants": {
-    "up": {
-      "true": {
+    "sideone": {
+      "up": {
         "submodel": "refraction:optic_fiber_dongle"
       },
-      "false": {}
-    },
-    "down": {
-      "true": {
+      "down": {
         "submodel": {
           "test": {
             "model": "refraction:optic_fiber_dongle",
@@ -24,10 +21,7 @@
           }
         }
       },
-      "false": {}
-    },
-    "south": {
-      "true": {
+      "south": {
         "submodel": {
           "test1": {
             "model": "refraction:optic_fiber_dongle",
@@ -35,10 +29,7 @@
           }
         }
       },
-      "false": {}
-    },
-    "north": {
-      "true": {
+      "north": {
         "submodel": {
           "test2": {
             "model": "refraction:optic_fiber_dongle",
@@ -46,10 +37,7 @@
           }
         }
       },
-      "false": {}
-    },
-    "east": {
-      "true": {
+      "east": {
         "submodel": {
           "test3": {
             "model": "refraction:optic_fiber_dongle",
@@ -58,10 +46,7 @@
           }
         }
       },
-      "false": {}
-    },
-    "west": {
-      "true": {
+      "west": {
         "submodel": {
           "test4": {
             "model": "refraction:optic_fiber_dongle",
@@ -69,8 +54,54 @@
             "y": -90
           }
         }
+      }
+    },
+    "sidetwo": {
+      "up": {
+        "submodel": "refraction:optic_fiber_dongle"
       },
-      "false": {}
+      "down": {
+        "submodel": {
+          "test": {
+            "model": "refraction:optic_fiber_dongle",
+            "x": 180
+          }
+        }
+      },
+      "south": {
+        "submodel": {
+          "test1": {
+            "model": "refraction:optic_fiber_dongle",
+            "x": -90
+          }
+        }
+      },
+      "north": {
+        "submodel": {
+          "test2": {
+            "model": "refraction:optic_fiber_dongle",
+            "x": 90
+          }
+        }
+      },
+      "east": {
+        "submodel": {
+          "test3": {
+            "model": "refraction:optic_fiber_dongle",
+            "x": 90,
+            "y": 90
+          }
+        }
+      },
+      "west": {
+        "submodel": {
+          "test4": {
+            "model": "refraction:optic_fiber_dongle",
+            "x": 90,
+            "y": -90
+          }
+        }
+      }
     }
   }
 }
