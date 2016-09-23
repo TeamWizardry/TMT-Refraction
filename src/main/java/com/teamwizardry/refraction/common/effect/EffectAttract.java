@@ -27,9 +27,9 @@ public class EffectAttract extends Effect {
 	private void setEntityMotion(Entity entity) {
 		Vec3d pullDir = beam.initLoc.subtract(beam.finalLoc).normalize();
 
-		entity.motionX = pullDir.xCoord * potency / 255;
-		entity.motionY = Math.max(-0.25, pullDir.yCoord * potency / 255);
-		entity.motionZ = pullDir.zCoord * potency / 255;
+		entity.motionX = pullDir.xCoord * potency / 255.0;
+		entity.motionY = Math.max(-0.25, pullDir.yCoord * potency / 255.0);
+		entity.motionZ = pullDir.zCoord * potency / 255.0;
 		entity.fallDistance = 0;
 	}
 

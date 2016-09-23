@@ -27,9 +27,9 @@ public class EffectDisperse extends Effect {
 	private void setEntityMotion(Entity entity) {
 		Vec3d pullDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 
-		entity.motionX = pullDir.xCoord * potency / 255;
-		entity.motionY = Math.max(0.3, pullDir.yCoord * potency / 255);
-		entity.motionZ = pullDir.zCoord * potency / 255;
+		entity.motionX = pullDir.xCoord * potency / 255.0;
+		entity.motionY = Math.max(0.3, pullDir.yCoord * potency / 255.0);
+		entity.motionZ = pullDir.zCoord * potency / 255.0;
 		entity.fallDistance = 0;
 	}
 
