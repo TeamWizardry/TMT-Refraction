@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.common.light.BeamConstants;
 
 /**
  * Created by LordSaad44
@@ -36,10 +37,10 @@ public class EffectDisperse extends Effect
 	@Override
 	public void run(World world, Set<BlockPos> locations)
 	{
-		int potency = this.potency * 3 / 64;
 		Set<Entity> toPush = new HashSet<>();
 		for (BlockPos pos : locations)
 		{
+			int potency = (this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS) * 3 / 64;
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
 			List<Entity> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
 			if (potency > 128)

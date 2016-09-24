@@ -7,6 +7,7 @@ package com.teamwizardry.refraction.common.light;
 public class BeamConstants {
 	
 	public static final int BEAM_RANGE = 128;
+	public static final int DISTANCE_LOSS = 1;
 	public static final int BUFFER_DELAY = 1;
 	public static final int COMBINER_DELAY = 20;
 	public static final int SOURCE_TIMER = 20;

@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.common.entity.EntityAccelerator;
+import com.teamwizardry.refraction.common.light.BeamConstants;
 
 /**
  * Created by LordSaad44
@@ -17,6 +18,7 @@ public class EffectAccelerate extends Effect {
 	public void run(World world, Set<BlockPos> locations) {
 		for (BlockPos pos : locations)
 		{
+			int potency = this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS;
 			if (world.getEntitiesWithinAABB(EntityAccelerator.class, new AxisAlignedBB(pos)).size() > 0)
 			{
 				EntityAccelerator a = new EntityAccelerator(world, pos, potency, 5);

@@ -19,6 +19,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import com.google.common.base.Predicates;
 import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.common.light.BeamConstants;
 
 public class EffectBurn extends Effect
 {
@@ -27,9 +28,9 @@ public class EffectBurn extends Effect
 	@Override
 	public void run(World world, Set<BlockPos> locations)
 	{
-		int power = 3 * potency / 32;
 		for (BlockPos pos : locations)
 		{
+			int potency = (this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS) * 3 / 32;
 			IBlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 			Vec3d dir = beam.initLoc.subtract(beam.finalLoc).normalize();
@@ -63,7 +64,7 @@ public class EffectBurn extends Effect
 				List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, axis, Predicates.and(apply -> apply != null && (apply.canBeCollidedWith() || apply instanceof EntityItem), EntitySelectors.NOT_SPECTATING));
 				for (Entity entity : entities)
 				{
-					entity.setFire(power);
+					entity.setFire(potency);
 				}
 			}
 		}

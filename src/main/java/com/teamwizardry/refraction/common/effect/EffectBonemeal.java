@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.client.fx.SparkleFX;
+import com.teamwizardry.refraction.common.light.BeamConstants;
 
 /**
  * Created by LordSaad44
@@ -31,6 +32,7 @@ public class EffectBonemeal extends Effect
 	{
 		for (BlockPos pos : locations)
 		{
+			int potency = this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS;
 			if (world.getBlockState(pos).getBlock() instanceof IGrowable)
 			{
 				for (int i = 0; i < (3 * potency / 32); i++)

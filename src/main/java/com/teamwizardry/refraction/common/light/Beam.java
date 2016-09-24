@@ -18,6 +18,7 @@ import java.awt.*;
 public class Beam
 {
 	public Vec3d initLoc;
+	public Vec3d slope;
 	public Vec3d finalLoc;
 	public Color color;
 	public World world;
@@ -27,6 +28,7 @@ public class Beam
 	{
 		this.world = world;
 		this.initLoc = initLoc;
+		this.slope = slope;
 		this.finalLoc = slope.normalize().scale(128).add(initLoc);
 		this.color = color;
 		this.effect = EffectTracker.getEffect(this);

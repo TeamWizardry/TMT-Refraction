@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.common.light.BeamConstants;
 
 /**
  * Created by Saad on 9/15/2016.
@@ -27,9 +28,9 @@ public class EffectPlace extends Effect
 	@Override
 	public void run(World world, Set<BlockPos> locations)
 	{
-		int potency = this.potency * 3 / 64;
 		for (BlockPos pos : locations)
 		{
+			int potency = (this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS) * 3 / 64;
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
 			List<EntityItem> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
 			Vec3d dir = beam.initLoc.subtract(beam.finalLoc).normalize();
