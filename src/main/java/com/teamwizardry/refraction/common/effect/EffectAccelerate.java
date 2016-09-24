@@ -1,12 +1,13 @@
 package com.teamwizardry.refraction.common.effect;
 
-import java.awt.Color;
-import java.util.Set;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.common.entity.EntityAccelerator;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.common.entity.EntityAccelerator;
+
+import java.awt.*;
+import java.util.Set;
 
 /**
  * Created by LordSaad44
@@ -15,6 +16,7 @@ public class EffectAccelerate extends Effect {
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
+		if (!isExpired()) return;
 		for (BlockPos pos : locations)
 		{
 			if (world.getEntitiesWithinAABB(EntityAccelerator.class, new AxisAlignedBB(pos)).size() > 0)

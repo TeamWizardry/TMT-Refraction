@@ -23,10 +23,14 @@ import java.util.Set;
 
 public class EffectBurn extends Effect {
 
-	private static int cooldown = 0;
+	@Override
+	public double getCooldownFactor() {
+		return 1;
+	}
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
+		if (!isExpired()) return;
 		for (BlockPos pos : locations) {
 			IBlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
@@ -35,21 +39,17 @@ public class EffectBurn extends Effect {
 
 			TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile instanceof IInventory) {
-				if (cooldown > 0) cooldown--;
-				else {
-					cooldown = (260 - potency) / 3;
-					IInventory inv = (IInventory) tile;
-					int i = 0;
-					while (inv.getStackInSlot(i) == null && i < inv.getSizeInventory() - 1) i++;
-					ItemStack stack = inv.decrStackSize(i, potency / 16);
-					if (stack != null) {
+				IInventory inv = (IInventory) tile;
+				int i = 0;
+				while (inv.getStackInSlot(i) == null && i < inv.getSizeInventory() - 1) i++;
+				ItemStack stack = inv.decrStackSize(i, potency / 16);
+				if (stack != null) {
 
-						EntityItem item = new EntityItem(world, newPos.getX() + 0.5, newPos.getY(), newPos.getZ() + 0.5, stack);
-						item.motionX = 0;
-						item.motionY = 0;
-						item.motionZ = 0;
-						world.spawnEntityInWorld(item);
-					}
+					EntityItem item = new EntityItem(world, newPos.getX() + 0.5, newPos.getY(), newPos.getZ() + 0.5, stack);
+					item.motionX = 0;
+					item.motionY = 0;
+					item.motionZ = 0;
+					world.spawnEntityInWorld(item);
 				}
 			} else if (block.getMaterial(state).getCanBurn()) {
 				world.setBlockState(newPos, Blocks.FIRE.getDefaultState());
