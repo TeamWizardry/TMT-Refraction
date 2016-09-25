@@ -10,26 +10,34 @@ import com.teamwizardry.refraction.common.light.Beam;
 /**
  * Created by LordSaad44
  */
-public class Effect implements Cloneable {
-	
+public class Effect implements Cloneable
+{
+
 	public Beam beam;
 	protected int potency;
+	private double cooldown = 0, cooldownFactor = 0;
+	private boolean expired = false;
+
+	public int getPotency()
+	{
+		return potency;
+	}
 
 	public Effect setPotency(int potency)
 	{
 		this.potency = potency;
 		return this;
 	}
-	
+
 	public Effect setBeam(Beam beam)
 	{
 		this.beam = beam;
 		return this;
 	}
-	
+
 	public void run(World world, Set<BlockPos> locations)
 	{}
-	
+
 	protected int getDistance(BlockPos pos)
 	{
 		Vec3d slope = beam.slope;
@@ -58,17 +66,47 @@ public class Effect implements Cloneable {
 		int dist = (int) (z * slope.zCoord);
 		return dist < 0 ? -dist : dist;
 	}
-	
+
+	public double getCooldown()
+	{
+		return cooldown;
+	}
+
+	public void setCooldown(double cooldown)
+	{
+		this.cooldown = cooldown;
+	}
+
+	public double getCooldownFactor()
+	{
+		return cooldownFactor;
+	}
+
+	public boolean usePotencyForCooldown()
+	{
+		return true;
+	}
+
+	public Effect tick()
+	{
+		cooldown += cooldownFactor;
+		if (cooldown >= 200)
+			cooldown = 0;
+		if (cooldown == 0)
+			expired = true;
+		return this;
+	}
+
 	public Color getColor()
 	{
 		return Color.WHITE;
 	}
-	
+
 	public EffectType getType()
 	{
 		return EffectType.SINGLE;
 	}
-	
+
 	public Effect copy()
 	{
 		Effect clone = null;
@@ -80,7 +118,12 @@ public class Effect implements Cloneable {
 		{}
 		return clone;
 	}
-	
+
+	public boolean isExpired()
+	{
+		return expired;
+	}
+
 	public enum EffectType
 	{
 		SINGLE, BEAM

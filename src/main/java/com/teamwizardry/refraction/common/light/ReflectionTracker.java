@@ -1,11 +1,8 @@
 package com.teamwizardry.refraction.common.light;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -13,9 +10,8 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
+
+import java.util.*;
 
 public class ReflectionTracker
 {
@@ -28,21 +24,6 @@ public class ReflectionTracker
 	private Multimap<IBeamHandler, Beam> sinkBlocks;
 	private Map<Beam, Integer> beams;
 
-	private static class TickTracker {
-		public static int ticks = 0;
-		
-		private TickTracker() {
-			MinecraftForge.EVENT_BUS.register(this);
-		}
-		
-		@SubscribeEvent
-		public void tick(TickEvent.WorldTickEvent event) {
-			if(event.phase == TickEvent.Phase.START && event.side == Side.SERVER)
-				ticks++;
-		}
-	}
-
-	
 	public ReflectionTracker()
 	{
 		beams = new WeakHashMap<>();
@@ -52,7 +33,19 @@ public class ReflectionTracker
 		sinkBlocks = HashMultimap.create();
 		MinecraftForge.EVENT_BUS.register(this);
 	}
+
+	public static ReflectionTracker getInstance(World world)
+	{
+		if (!instances.containsKey(world))
+			addInstance(world);
+		return instances.get(world);
+	}
 	
+	public static boolean addInstance(World world)
+	{
+		return instances.putIfAbsent(world, new ReflectionTracker()) == null;
+	}
+
 	@SubscribeEvent
 	public void unload(WorldEvent.Unload event) {
 		instances.remove(event.getWorld());
@@ -75,7 +68,7 @@ public class ReflectionTracker
 				{
 					source.generateBeam();
 				}
-				catch (IllegalArgumentException e)
+				catch (IllegalArgumentException ignored)
 				{}
 			}
 			sources.removeIf((e) -> e instanceof TileEntity && ((TileEntity)e).isInvalid());
@@ -89,7 +82,7 @@ public class ReflectionTracker
 			return;
 		Map<IBeamHandler, Integer> temp = delayBuffers;
 		delayBuffers = delayBufferProcessingSwap;
-		
+
 		HashSet<IBeamHandler> remove = new HashSet<>();
 		for (IBeamHandler handler : temp.keySet())
 		{
@@ -102,12 +95,12 @@ public class ReflectionTracker
 				handler.handle(beams.toArray(new Beam[beams.size()]));
 			}
 		}
-		remove.stream().forEach(temp::remove);
-		
+		remove.forEach(temp::remove);
+
 		delayBuffers = temp;
-		delayBufferProcessingSwap.entrySet().stream().forEach((e) -> delayBuffers.put(e.getKey(), e.getValue()));
+		delayBufferProcessingSwap.entrySet().forEach((e) -> delayBuffers.put(e.getKey(), e.getValue()));
 		delayBufferProcessingSwap.clear();
-		
+
 		for (Beam beam : beams.keySet())
 		{
 			int delay = beams.get(beam);
@@ -118,22 +111,10 @@ public class ReflectionTracker
 
 	public void recieveBeam(IBeamHandler handler, Beam beam)
 	{
-		delayBuffers.put(handler, handler instanceof TileReflectionChamber ? BeamConstants.COMBINER_DELAY : BeamConstants.BUFFER_DELAY);	
+		delayBuffers.put(handler, handler instanceof TileReflectionChamber ? BeamConstants.COMBINER_DELAY : BeamConstants.BUFFER_DELAY);
 		sinkBlocks.put(handler, beam);
 	}
 
-	public static ReflectionTracker getInstance(World world)
-	{
-		if (!instances.containsKey(world))
-			addInstance(world);
-		return instances.get(world);
-	}
-
-	public static boolean addInstance(World world)
-	{
-		return instances.putIfAbsent(world, new ReflectionTracker()) == null;
-	}
-	
 	public void addBeam(Beam beam)
 	{
 		beams.put(beam, BeamConstants.SOURCE_TIMER);
@@ -152,5 +133,19 @@ public class ReflectionTracker
 	public void removeSource(ILightSource source)
 	{
 		sources.remove(source);
+	}
+	
+	private static class TickTracker {
+		public static int ticks = 0;
+
+		private TickTracker() {
+			MinecraftForge.EVENT_BUS.register(this);
+		}
+
+		@SubscribeEvent
+		public void tick(TickEvent.WorldTickEvent event) {
+			if(event.phase == TickEvent.Phase.START && event.side == Side.SERVER)
+				ticks++;
+		}
 	}
 }

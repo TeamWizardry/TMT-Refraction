@@ -23,14 +23,19 @@ import com.teamwizardry.refraction.common.light.BeamConstants;
 
 public class EffectBurn extends Effect
 {
+	public double getCooldownFactor()
+	{
+		return 1;
+	}
 
-	@SuppressWarnings("deprecation")
 	@Override
+	@SuppressWarnings("deprecation")
 	public void run(World world, Set<BlockPos> locations)
 	{
 		for (BlockPos pos : locations)
 		{
-			int potency = (this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS) * 3 / 32;
+			int potency = (this.potency - this.getDistance(pos) * BeamConstants.DISTANCE_LOSS) * 3 / 32;
+
 			IBlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 			Vec3d dir = beam.initLoc.subtract(beam.finalLoc).normalize();
@@ -43,7 +48,7 @@ public class EffectBurn extends Effect
 				int i = 0;
 				while (inv.getStackInSlot(i) == null && i < inv.getSizeInventory() - 1)
 					i++;
-				ItemStack stack = inv.removeStackFromSlot(i);
+				ItemStack stack = inv.decrStackSize(i, potency / 16);
 				if (stack != null)
 				{
 
@@ -64,7 +69,7 @@ public class EffectBurn extends Effect
 				List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, axis, Predicates.and(apply -> apply != null && (apply.canBeCollidedWith() || apply instanceof EntityItem), EntitySelectors.NOT_SPECTATING));
 				for (Entity entity : entities)
 				{
-					entity.setFire(potency);
+					entity.setFire(potency / 250);
 				}
 			}
 		}

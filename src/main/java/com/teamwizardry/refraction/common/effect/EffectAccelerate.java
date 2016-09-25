@@ -16,6 +16,7 @@ public class EffectAccelerate extends Effect {
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
+		if (!isExpired()) return;
 		for (BlockPos pos : locations)
 		{
 			int potency = this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS;

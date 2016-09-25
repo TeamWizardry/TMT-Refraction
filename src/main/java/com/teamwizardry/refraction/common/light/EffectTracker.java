@@ -1,9 +1,7 @@
 package com.teamwizardry.refraction.common.light;
 
-import java.awt.Color;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.WeakHashMap;
+import com.google.common.collect.HashMultimap;
+import com.teamwizardry.refraction.api.Effect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -11,18 +9,21 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import com.google.common.collect.HashMultimap;
-import com.teamwizardry.refraction.api.Effect;
+
+import java.awt.*;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.WeakHashMap;
 
 /**
  * Created by LordSaad44
  */
 public class EffectTracker {
 	public static ArrayList<Effect> effectRegistry = new ArrayList<>();
-
+	public static ArrayList<Effect> expiredEffects = new ArrayList<>();
 	private static WeakHashMap<World, EffectTracker> effectInstances = new WeakHashMap<>();
 	private HashMultimap<Effect, BlockPos> effects = HashMultimap.create();
-//	private HashMultimap<Vec3d, Effect> effects = HashMultimap.create();
+	//	private HashMultimap<Vec3d, Effect> effects = HashMultimap.create();
 	private BlockTracker blockTracker;
 	private int cooldown;
 	private WeakReference<World> world;
@@ -52,9 +53,7 @@ public class EffectTracker {
 	public static Effect getEffect(Beam beam) {
 		Color color = beam.color;
 
-		double whiteDist = getColorDistance(color, Color.WHITE);
-
-		double closestDist = whiteDist;
+		double closestDist = getColorDistance(color, Color.WHITE);
 		Effect closestColor = null;
 
 		for (Effect effect : effectRegistry) {
@@ -89,17 +88,19 @@ public class EffectTracker {
 		if (event.phase == TickEvent.Phase.START && event.side == Side.SERVER) {
 
 			blockTracker.generateEffects();
-			for (Effect effect : effects.keySet())
-			{
+			for (Effect effect : effects.keySet()) {
 				World w = world.get();
-				if (effect != null && w != null && effects.get(effect) != null) effect.run(w, effects.get(effect));
+				if (effect != null && w != null && effects.get(effect) != null) {
+					effect.tick().run(w, effects.get(effect));
+					if (effect.isExpired()) expiredEffects.add(effect);
+				}
 			}
 
 			if (cooldown > 0) cooldown--;
-			else {
-				effects.clear();
-				cooldown = BeamConstants.SOURCE_TIMER;
-			}
+			else cooldown = BeamConstants.SOURCE_TIMER;
+
+			effects.removeAll(expiredEffects);
+			expiredEffects.clear();
 		}
 	}
 }

@@ -34,8 +34,9 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			bakedModel = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
-					location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
+			if(model != null)
+				bakedModel = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
+						location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 		}
 		return bakedModel;
 	}

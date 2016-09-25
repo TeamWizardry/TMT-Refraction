@@ -28,9 +28,11 @@ public class EffectPlace extends Effect
 	@Override
 	public void run(World world, Set<BlockPos> locations)
 	{
+		if (!isExpired())
+			return;
 		for (BlockPos pos : locations)
 		{
-			int potency = (this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS) * 3 / 64;
+			int potency = (this.potency - this.getDistance(pos) * BeamConstants.DISTANCE_LOSS) * 3 / 64;
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
 			List<EntityItem> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
 			Vec3d dir = beam.initLoc.subtract(beam.finalLoc).normalize();
