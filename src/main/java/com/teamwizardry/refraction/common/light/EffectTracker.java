@@ -14,6 +14,7 @@ import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.WeakHashMap;
+import java.util.stream.Collectors;
 
 /**
  * Created by LordSaad44
@@ -23,7 +24,6 @@ public class EffectTracker {
 	public static ArrayList<Effect> expiredEffects = new ArrayList<>();
 	private static WeakHashMap<World, EffectTracker> effectInstances = new WeakHashMap<>();
 	private HashMultimap<Effect, BlockPos> effects = HashMultimap.create();
-	//	private HashMultimap<Vec3d, Effect> effects = HashMultimap.create();
 	private BlockTracker blockTracker;
 	private int cooldown;
 	private WeakReference<World> world;
@@ -91,15 +91,18 @@ public class EffectTracker {
 			for (Effect effect : effects.keySet()) {
 				World w = world.get();
 				if (effect != null && w != null && effects.get(effect) != null) {
-					effect.tick().run(w, effects.get(effect));
-					if (effect.isExpired()) expiredEffects.add(effect);
+					if (effect.hasCooldown()) effect.tickCooldown(w, effects.get(effect));
+					else effect.run(w, effects.get(effect));
 				}
 			}
 
 			if (cooldown > 0) cooldown--;
-			else cooldown = BeamConstants.SOURCE_TIMER;
+			else {
+				expiredEffects.addAll(effects.keySet().stream().filter(effect -> !effect.hasCooldown()).collect(Collectors.toList()));
+				cooldown = BeamConstants.SOURCE_TIMER;
+			}
 
-			effects.removeAll(expiredEffects);
+			for (Effect effect : expiredEffects) effects.asMap().remove(effect);
 			expiredEffects.clear();
 		}
 	}

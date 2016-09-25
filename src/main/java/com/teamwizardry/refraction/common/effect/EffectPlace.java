@@ -1,8 +1,7 @@
 package com.teamwizardry.refraction.common.effect;
 
-import java.awt.Color;
-import java.util.List;
-import java.util.Set;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.common.light.BeamConstants;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
@@ -10,8 +9,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.common.light.BeamConstants;
+
+import java.awt.*;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Saad on 9/15/2016.
@@ -26,10 +27,13 @@ public class EffectPlace extends Effect
 	}
 
 	@Override
+	public boolean hasCooldown() {
+		return true;
+	}
+
+	@Override
 	public void run(World world, Set<BlockPos> locations)
 	{
-		if (!isExpired())
-			return;
 		for (BlockPos pos : locations)
 		{
 			int potency = (this.potency - this.getDistance(pos) * BeamConstants.DISTANCE_LOSS) * 3 / 64;

@@ -1,53 +1,52 @@
 package com.teamwizardry.refraction.api;
 
-import java.awt.Color;
-import java.util.Set;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.BeamConstants;
+import com.teamwizardry.refraction.common.light.EffectTracker;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import com.teamwizardry.refraction.common.light.Beam;
+
+import java.awt.*;
+import java.util.Set;
 
 /**
  * Created by LordSaad44
  */
-public class Effect implements Cloneable
-{
+public class Effect implements Cloneable {
 
 	public Beam beam;
 	protected int potency;
-	private double cooldown = 0, cooldownFactor = 0;
-	private boolean expired = false;
+	private double cooldown = 0, maxCooldown = BeamConstants.SOURCE_TIMER;
 
-	public int getPotency()
-	{
+	public int getPotency() {
 		return potency;
 	}
 
-	public Effect setPotency(int potency)
-	{
+	public Effect setPotency(int potency) {
 		this.potency = potency;
 		return this;
 	}
 
-	public Effect setBeam(Beam beam)
-	{
+	public boolean hasCooldown() {
+		return false;
+	}
+
+	public Effect setBeam(Beam beam) {
 		this.beam = beam;
 		return this;
 	}
 
-	public void run(World world, Set<BlockPos> locations)
-	{}
+	public void run(World world, Set<BlockPos> locations) {
+	}
 
-	protected int getDistance(BlockPos pos)
-	{
+	protected int getDistance(BlockPos pos) {
 		Vec3d slope = beam.slope;
 		double slopeX = slope.xCoord < 0 ? -slope.xCoord : slope.xCoord;
 		double slopeY = slope.yCoord < 0 ? -slope.yCoord : slope.yCoord;
 		double slopeZ = slope.zCoord < 0 ? -slope.zCoord : slope.zCoord;
-		if (slopeX > slopeY)
-		{
-			if (slopeX > slopeZ)
-			{
+		if (slopeX > slopeY) {
+			if (slopeX > slopeZ) {
 				double x = pos.getX() - beam.initLoc.xCoord;
 				int dist = (int) (x * slope.xCoord);
 				return dist < 0 ? -dist : dist;
@@ -56,8 +55,7 @@ public class Effect implements Cloneable
 			int dist = (int) (z * slope.zCoord);
 			return dist < 0 ? -dist : dist;
 		}
-		if (slopeY > slopeZ)
-		{
+		if (slopeY > slopeZ) {
 			double y = pos.getY() - beam.initLoc.yCoord;
 			int dist = (int) (y * slope.yCoord);
 			return dist < 0 ? -dist : dist;
@@ -67,65 +65,51 @@ public class Effect implements Cloneable
 		return dist < 0 ? -dist : dist;
 	}
 
-	public double getCooldown()
-	{
+	public double getCooldown() {
 		return cooldown;
 	}
 
-	public void setCooldown(double cooldown)
-	{
+	public void setCooldown(double cooldown) {
 		this.cooldown = cooldown;
 	}
 
-	public double getCooldownFactor()
-	{
-		return cooldownFactor;
+	public double getMaxCooldown() {
+		return maxCooldown;
 	}
 
-	public boolean usePotencyForCooldown()
-	{
-		return true;
+	public void setMaxCooldown(double maxCooldown) {
+		this.maxCooldown = maxCooldown;
 	}
 
-	public Effect tick()
-	{
-		cooldown += cooldownFactor;
-		if (cooldown >= 200)
+	public Effect tickCooldown(World world, Set<BlockPos> locations) {
+		cooldown += 1;
+		if (cooldown >= getMaxCooldown())
 			cooldown = 0;
-		if (cooldown == 0)
-			expired = true;
+		if (cooldown == 0) {
+			run(world, locations);
+			EffectTracker.expiredEffects.add(this);
+		}
 		return this;
 	}
 
-	public Color getColor()
-	{
+	public Color getColor() {
 		return Color.WHITE;
 	}
 
-	public EffectType getType()
-	{
+	public EffectType getType() {
 		return EffectType.SINGLE;
 	}
 
-	public Effect copy()
-	{
+	public Effect copy() {
 		Effect clone = null;
-		try
-		{
+		try {
 			clone = (Effect) clone();
+		} catch (CloneNotSupportedException ignored) {
 		}
-		catch (CloneNotSupportedException ignored)
-		{}
 		return clone;
 	}
 
-	public boolean isExpired()
-	{
-		return expired;
-	}
-
-	public enum EffectType
-	{
+	public enum EffectType {
 		SINGLE, BEAM
 	}
 }

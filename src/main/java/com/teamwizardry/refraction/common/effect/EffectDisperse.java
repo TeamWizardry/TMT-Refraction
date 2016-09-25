@@ -1,9 +1,7 @@
 package com.teamwizardry.refraction.common.effect;
 
-import java.awt.Color;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.common.light.BeamConstants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,23 +9,23 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.common.light.BeamConstants;
+
+import java.awt.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by LordSaad44
  */
-public class EffectDisperse extends Effect
-{
+public class EffectDisperse extends Effect {
 
 	@Override
-	public EffectType getType()
-	{
+	public EffectType getType() {
 		return EffectType.BEAM;
 	}
 
-	private void setEntityMotion(Entity entity)
-	{
+	private void setEntityMotion(Entity entity) {
 		Vec3d pullDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 
 		entity.motionX = pullDir.xCoord * potency / 255.0;
@@ -37,19 +35,16 @@ public class EffectDisperse extends Effect
 	}
 
 	@Override
-	public void run(World world, Set<BlockPos> locations)
-	{
+	public void run(World world, Set<BlockPos> locations) {
 		Set<Entity> toPush = new HashSet<>();
-		for (BlockPos pos : locations)
-		{
+		for (BlockPos pos : locations) {
 			int potency = (this.potency - this.getDistance(pos) * BeamConstants.DISTANCE_LOSS) * 3 / 64;
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
 			List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, axis);
 			if (potency > 128)
 				entities.addAll(world.getEntitiesWithinAABB(EntityLiving.class, axis));
 			EntityPlayer player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 1, false);
-			if (player != null)
-			{
+			if (player != null) {
 				setEntityMotion(player);
 				player.velocityChanged = true;
 			}
@@ -57,8 +52,7 @@ public class EffectDisperse extends Effect
 		}
 
 		int pulled = 0;
-		for (Entity entity : toPush)
-		{
+		for (Entity entity : toPush) {
 			pulled++;
 			if (pulled > 200)
 				break;
@@ -69,8 +63,7 @@ public class EffectDisperse extends Effect
 	}
 
 	@Override
-	public Color getColor()
-	{
+	public Color getColor() {
 		return Color.MAGENTA;
 	}
 }

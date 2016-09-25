@@ -1,21 +1,27 @@
 package com.teamwizardry.refraction.common.effect;
 
-import java.awt.Color;
-import java.util.Set;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.common.light.BeamConstants;
 import net.minecraft.block.IGrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.common.light.BeamConstants;
+
+import java.awt.*;
+import java.util.Set;
 
 /**
  * Created by LordSaad44
  */
 public class EffectBonemeal extends Effect
 {
+
+	@Override
+	public boolean hasCooldown() {
+		return true;
+	}
 
 	@Override
 	public EffectType getType()
@@ -26,7 +32,6 @@ public class EffectBonemeal extends Effect
 	@Override
 	public void run(World world, Set<BlockPos> locations)
 	{
-		if (!isExpired()) return;
 		for (BlockPos pos : locations)
 		{
 			int potency = this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS;
