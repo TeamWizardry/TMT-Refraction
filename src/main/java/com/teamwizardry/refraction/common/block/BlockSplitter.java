@@ -9,6 +9,7 @@ import com.teamwizardry.refraction.common.light.ILaserTrace;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
 import com.teamwizardry.refraction.init.ModItems;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -25,6 +26,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
+
 /**
  * Created by LordSaad44
  */
@@ -37,8 +40,8 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 		GameRegistry.registerTileEntity(TileSplitter.class, "splitter");
 	}
 
-	private TileMirror getTE(World world, BlockPos pos) {
-		return (TileMirror) world.getTileEntity(pos);
+	private TileSplitter getTE(World world, BlockPos pos) {
+		return (TileSplitter) world.getTileEntity(pos);
 	}
 
 	public void adjust(World worldIn, BlockPos pos, ItemStack stack, EntityPlayer playerIn, EnumFacing side) {
@@ -51,6 +54,32 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 			} else {
 				te.setRotX((te.getRotX() + jump) % 360);
 			}
+		}
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+		if (worldIn.isRemote) return;
+
+		TileSplitter splitter = getTE(worldIn, pos);
+		if (splitter == null) return;
+
+		if (splitter.isPowered()) {
+			if (!worldIn.isBlockPowered(pos) || worldIn.isBlockIndirectlyGettingPowered(pos) == 0) {
+				splitter.setPowered(false);
+			}
+		} else {
+			if (worldIn.isBlockPowered(pos) || worldIn.isBlockIndirectlyGettingPowered(pos) > 0)
+				splitter.setPowered(true);
+		}
+	}
+
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		TileSplitter splitter = getTE(worldIn, pos);
+		if (splitter == null) return;
+		if (splitter.isPowered() && !worldIn.isBlockPowered(pos)) {
+			splitter.setPowered(false);
 		}
 	}
 
