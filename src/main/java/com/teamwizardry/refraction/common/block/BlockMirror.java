@@ -9,6 +9,7 @@ import com.teamwizardry.refraction.client.render.RenderMirror;
 import com.teamwizardry.refraction.common.light.ILaserTrace;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import com.teamwizardry.refraction.init.ModItems;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -27,6 +28,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Random;
 
 /**
  * Created by LordSaad44
@@ -58,6 +61,34 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 				te.setRotY((te.getRotY() + jump) % 360);
 			} else {
 				te.setRotX((te.getRotX() + jump) % 360);
+			}
+		}
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+		if (worldIn.isRemote) return;
+
+		TileMirror mirror = getTE(worldIn, pos);
+		if (mirror == null) return;
+
+		if (mirror.isPowered()) {
+			if (!worldIn.isBlockPowered(pos) || worldIn.isBlockIndirectlyGettingPowered(pos) == 0) {
+				mirror.setPowered(false);
+			}
+		} else {
+			if (worldIn.isBlockPowered(pos) || worldIn.isBlockIndirectlyGettingPowered(pos) > 0)
+				mirror.setPowered(true);
+		}
+	}
+
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		if (!worldIn.isRemote) {
+			TileMirror mirror = getTE(worldIn, pos);
+			if (mirror == null) return;
+			if (mirror.isPowered() && !worldIn.isBlockPowered(pos)) {
+				mirror.setPowered(false);
 			}
 		}
 	}
