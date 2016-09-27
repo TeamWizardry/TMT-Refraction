@@ -172,7 +172,6 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 			markDirty();
 		}
 
-
 		if (!transitionY) {
 			if (powered) {
 				if (!Float.isNaN(rotYPowered) && rotY != rotYPowered) setRotY(rotYPowered);
@@ -195,7 +194,6 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 			markDirty();
 		}
-		//Minecraft.getMinecraft().thePlayer.sendChatMessage(rotX + " - " + rotXPowered + " - " + rotXUnpowered + " - " + (powered ? "!POWERED" : "!UNPOWERED"));
 	}
 
 	public boolean isPowered() {

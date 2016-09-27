@@ -36,7 +36,8 @@ public class EffectPlace extends Effect
 	{
 		for (BlockPos pos : locations)
 		{
-			int potency = (this.potency - this.getDistance(pos) * BeamConstants.DISTANCE_LOSS) * 3 / 64;
+			int potency = (this.potency - this.getDistance(pos) * BeamConstants.DISTANCE_LOSS);
+			setMaxCooldown(500 - potency);
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
 			List<EntityItem> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
 			Vec3d dir = beam.initLoc.subtract(beam.finalLoc).normalize();

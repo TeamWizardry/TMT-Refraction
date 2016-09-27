@@ -3,13 +3,13 @@ package com.teamwizardry.refraction.common.effect;
 import com.google.common.base.Predicates;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.common.light.BeamConstants;
+import com.teamwizardry.refraction.common.light.EffectTracker;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
@@ -41,27 +41,22 @@ public class EffectBurn extends Effect {
 
 			TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile instanceof IInventory) {
-				IInventory inv = (IInventory) tile;
-				int i = 0;
-				while (inv.getStackInSlot(i) == null && i < inv.getSizeInventory() - 1)
-					i++;
-				ItemStack stack = inv.decrStackSize(i, potency / 16);
-				if (stack != null) {
 
-					EntityItem item = new EntityItem(world, newPos.getX() + 0.5, newPos.getY(), newPos.getZ() + 0.5, stack);
-					item.motionX = 0;
-					item.motionY = 0;
-					item.motionZ = 0;
-					world.spawnEntityInWorld(item);
-				}
+				if (!EffectTracker.burnedTileTracker.contains(pos)) EffectTracker.burnedTileTracker.add(pos);
+
 			} else if (block.getMaterial(state).getCanBurn()) {
 				world.setBlockState(newPos, Blocks.FIRE.getDefaultState());
+
+				if (EffectTracker.burnedTileTracker.contains(pos)) EffectTracker.burnedTileTracker.remove(pos);
+
 			} else {
 				AxisAlignedBB axis = new AxisAlignedBB(new BlockPos(pos)).expand(1, 1, 1);
 				List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, axis, Predicates.and(apply -> apply != null && (apply.canBeCollidedWith() || apply instanceof EntityItem), EntitySelectors.NOT_SPECTATING));
 				for (Entity entity : entities) {
 					entity.setFire(potency / 250);
 				}
+
+				if (EffectTracker.burnedTileTracker.contains(pos)) EffectTracker.burnedTileTracker.remove(pos);
 			}
 		}
 	}

@@ -21,6 +21,7 @@ public class EffectBreak extends Effect {
 		for (BlockPos pos : locations)
 		{
 			int potency = this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS;
+			setMaxCooldown(500 - potency);
 			float hardness = world.getBlockState(pos).getBlockHardness(world, pos);
 			if (hardness * 32 * 2 / 3 < potency)
 				world.destroyBlock(pos, true);

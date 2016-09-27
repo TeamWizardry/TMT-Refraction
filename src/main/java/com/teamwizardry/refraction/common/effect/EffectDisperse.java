@@ -2,9 +2,14 @@ package com.teamwizardry.refraction.common.effect;
 
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.common.light.BeamConstants;
+import com.teamwizardry.refraction.common.light.EffectTracker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -47,6 +52,22 @@ public class EffectDisperse extends Effect {
 			if (player != null) {
 				setEntityMotion(player);
 				player.velocityChanged = true;
+			}
+
+			TileEntity tile = world.getTileEntity(pos);
+			if (tile != null && tile instanceof IInventory && EffectTracker.burnedTileTracker.contains(pos)) {
+				for (Entity entity : entities) {
+					if (entity instanceof EntityItem) {
+						EntityItem item = (EntityItem) entity;
+						ItemStack stack = item.getEntityItem();
+						IInventory inv = (IInventory) tile;
+						for (int i = 0; i < inv.getSizeInventory() - 1; i++)
+							if (inv.isItemValidForSlot(i, stack)) {
+								inv.setInventorySlotContents(i, stack);
+								item.lifespan = 0;
+						}
+					}
+				}
 			}
 			toPush.addAll(entities);
 		}

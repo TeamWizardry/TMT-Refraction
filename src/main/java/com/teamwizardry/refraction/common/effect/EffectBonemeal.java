@@ -35,6 +35,7 @@ public class EffectBonemeal extends Effect
 		for (BlockPos pos : locations)
 		{
 			int potency = this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS;
+			setMaxCooldown(500 - potency);
 			if (world.getBlockState(pos).getBlock() instanceof IGrowable)
 			{
 				for (int i = 0; i < (3 * potency / 32); i++)

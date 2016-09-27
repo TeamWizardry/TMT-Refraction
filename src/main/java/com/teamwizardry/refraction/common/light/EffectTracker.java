@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class EffectTracker {
 	public static ArrayList<Effect> effectRegistry = new ArrayList<>();
 	public static ArrayList<Effect> expiredEffects = new ArrayList<>();
+	public static ArrayList<BlockPos> burnedTileTracker = new ArrayList<>();
 	private static WeakHashMap<World, EffectTracker> effectInstances = new WeakHashMap<>();
 	private HashMultimap<Effect, BlockPos> effects = HashMultimap.create();
 	private BlockTracker blockTracker;
