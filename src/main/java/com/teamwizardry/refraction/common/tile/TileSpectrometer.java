@@ -18,7 +18,7 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 
 	public Color maxColor = new Color(0, 0, 0, 0), currentColor = new Color(0, 0, 0, 0);
 	public int nbOfBeams = 0;
-	public int maxTransparency = 0, currentTransparency;
+	public int maxTransparency = 0, currentTransparency = 0;
 	private IBlockState state;
 	private Beam[] beams;
 
@@ -74,8 +74,6 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 
 	@Override
 	public void update() {
-		if (worldObj.isRemote) return;
-		if (maxColor == null) maxColor = new Color(0, 0, 0, 0);
 		if (beams == null) {
 			if (nbOfBeams != 0) {
 				nbOfBeams = 0;
