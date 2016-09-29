@@ -37,10 +37,6 @@ public class BlockSpectrometer extends BlockModContainer {
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 
-	private TileSpectrometer getTE(World world, BlockPos pos) {
-		return (TileSpectrometer) world.getTileEntity(pos);
-	}
-
 	@SideOnly(Side.CLIENT)
 	public void initModel() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSpectrometer.class, new RenderSpectrometer());
