@@ -55,7 +55,7 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 
 		compound.setFloat("rotX", rotX);
 		compound.setFloat("rotY", rotY);
-		compound.setFloat("rotXUnpowered", rotYUnpowered);
+		compound.setFloat("rotXUnpowered", rotXUnpowered);
 		compound.setFloat("rotYUnpowered", rotYUnpowered);
 		if (!Float.isNaN(rotXPowered))
 			compound.setFloat("rotXPowered", rotXPowered);
