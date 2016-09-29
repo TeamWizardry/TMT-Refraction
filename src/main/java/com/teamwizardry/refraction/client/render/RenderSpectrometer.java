@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.refraction.common.block.BlockSpectrometer;
 import com.teamwizardry.refraction.common.tile.TileSpectrometer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -31,6 +32,7 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		double g = (te.currentColor.getGreen() / 510.0);
 		double b = (te.currentColor.getBlue() / 510.0);
 		double a = (te.currentTransparency / 510.0);
+		Minecraft.getMinecraft().thePlayer.sendChatMessage(te.currentTransparency + "");
 
 		if (r > 0.25) r -= psh;
 		if (g > 0.25) g -= psh;

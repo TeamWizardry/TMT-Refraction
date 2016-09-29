@@ -36,8 +36,6 @@ public class EffectBurn extends Effect {
 
 			IBlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
-			Vec3d dir = beam.initLoc.subtract(beam.finalLoc).normalize();
-			BlockPos newPos = pos.offset(EnumFacing.getFacingFromVector((float) dir.xCoord, (float) dir.yCoord, (float) dir.zCoord));
 
 			TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile instanceof IInventory) {
@@ -45,6 +43,8 @@ public class EffectBurn extends Effect {
 				if (!EffectTracker.burnedTileTracker.contains(pos)) EffectTracker.burnedTileTracker.add(pos);
 
 			} else if (block.getMaterial(state).getCanBurn()) {
+				Vec3d dir = beam.initLoc.subtract(beam.finalLoc).normalize();
+				BlockPos newPos = pos.offset(EnumFacing.getFacingFromVector((float) dir.xCoord, (float) dir.yCoord, (float) dir.zCoord));
 				world.setBlockState(newPos, Blocks.FIRE.getDefaultState());
 
 				if (EffectTracker.burnedTileTracker.contains(pos)) EffectTracker.burnedTileTracker.remove(pos);

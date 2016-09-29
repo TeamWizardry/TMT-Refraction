@@ -8,13 +8,13 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+
 import java.awt.*;
 
 /**
  * Created by Saad on 9/11/2016.
  */
-public class TileSpectrometer extends TileEntity implements IBeamHandler, ITickable
-{
+public class TileSpectrometer extends TileEntity implements IBeamHandler, ITickable {
 
 	public Color maxColor = new Color(0, 0, 0, 0),
 			currentColor = new Color(0, 0, 0, 0);
@@ -23,12 +23,11 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 	private IBlockState state;
 	private Beam[] beams;
 
-	public TileSpectrometer()
-	{}
+	public TileSpectrometer() {
+	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound)
-	{
+	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		if (compound.hasKey("max_color"))
 			maxColor = new Color(compound.getInteger("max_color"));
@@ -43,8 +42,7 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
 		compound.setInteger("max_color", maxColor.getRGB());
 		compound.setInteger("current_color", currentColor.getRGB());
@@ -55,22 +53,19 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag()
-	{
+	public NBTTagCompound getUpdateTag() {
 		return writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket()
-	{
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
 		writeToNBT(tag);
 		return new SPacketUpdateTileEntity(pos, 0, tag);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
-	{
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
 		super.onDataPacket(net, packet);
 		readFromNBT(packet.getNbtCompound());
 
@@ -79,36 +74,31 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 	}
 
 	@Override
-	public void handle(Beam... beams)
-	{
+	public void handle(Beam... beams) {
 		this.beams = beams;
 	}
 
 	@Override
-	public void update()
-	{
-		if (beams == null)
-		{
-			if (nbOfBeams != 0)
-			{
+	public void update() {
+		if (beams == null) {
+			if (nbOfBeams != 0) {
 				nbOfBeams = 0;
 				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 			}
 			return;
 		}
-		if (nbOfBeams != beams.length)
-		{
+		if (nbOfBeams != beams.length) {
 			nbOfBeams = beams.length;
 			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		}
+		if (beams.length == 0) return;
 
 		int red = 0;
 		int green = 0;
 		int blue = 0;
 		int alpha = 0;
 
-		for (Beam beam : beams)
-		{
+		for (Beam beam : beams) {
 			Color color = beam.color;
 			red += color.getRed();
 			green += color.getGreen();
@@ -118,11 +108,11 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 		red = Math.min(red / beams.length, 255);
 		green = Math.min(green / beams.length, 255);
 		blue = Math.min(blue / beams.length, 255);
-		
+
 		float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
 		Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
-		
+
 		if (color.getRed() == maxColor.getRed() && color.getBlue() == maxColor.getBlue() && color.getGreen() == maxColor.getGreen() && color.getAlpha() == maxTransparency)
 			return;
 		this.maxColor = color;
@@ -130,13 +120,11 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 	}
 
-	public int getNbOfBeams()
-	{
+	public int getNbOfBeams() {
 		return nbOfBeams;
 	}
 
-	public Color getMaxColor()
-	{
+	public Color getMaxColor() {
 		return maxColor;
 	}
 }

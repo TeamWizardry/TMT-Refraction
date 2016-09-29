@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.effect;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.EffectTracker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
@@ -42,9 +43,9 @@ public class EffectAttract extends Effect {
 	public void run(World world, Set<BlockPos> locations) {
 		Set<Entity> toPull = new HashSet<>();
 		for (BlockPos pos : locations) {
-			int potency = (this.potency - this.getDistance(pos) * BeamConstants.DISTANCE_LOSS) * 3 / 64;
+			int potency = (this.potency - this.getDistance(pos) * BeamConstants.DISTANCE_LOSS) / 10;
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
-			List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, axis);
+			List<Entity> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
 			if (potency > 128)
 				entities.addAll(world.getEntitiesWithinAABB(EntityLiving.class, axis));
 			EntityPlayer player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 1, false);
@@ -54,20 +55,24 @@ public class EffectAttract extends Effect {
 			}
 			toPull.addAll(entities);
 
-
 			TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile instanceof IInventory && EffectTracker.burnedTileTracker.contains(pos)) {
 				IInventory inv = (IInventory) tile;
-				int i = 0;
-				while (inv.getStackInSlot(i) == null && i < inv.getSizeInventory() - 1) i++;
-				ItemStack stack = inv.decrStackSize(i, potency / 16);
-				if (stack != null) {
+				Minecraft.getMinecraft().thePlayer.sendChatMessage(potency + " - " + this.potency);
+				for (int i = 0; i < inv.getSizeInventory() - 1; i++) {
+					ItemStack slotStack = inv.getStackInSlot(i);
+					if (slotStack != null) {
+						ItemStack stack = inv.decrStackSize(i, slotStack.stackSize < potency / 10 ? slotStack.stackSize : potency / 10);
+						if (stack != null) {
 
-					EntityItem item = new EntityItem(world, beam.finalLoc.xCoord, beam.finalLoc.yCoord, beam.finalLoc.zCoord, stack);
-					item.motionX = 0;
-					item.motionY = 0;
-					item.motionZ = 0;
-					world.spawnEntityInWorld(item);
+							EntityItem item = new EntityItem(world, beam.finalLoc.xCoord, beam.finalLoc.yCoord, beam.finalLoc.zCoord, stack);
+							item.motionX = 0;
+							item.motionY = 0;
+							item.motionZ = 0;
+							world.spawnEntityInWorld(item);
+							break;
+						}
+					}
 				}
 
 				int pulled = 0;

@@ -55,10 +55,10 @@ public class RenderLaserUtil {
 		if(!drawingLasers)
 			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 		
-		pos(vb, start.add(d)     ).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), 255).endVertex();
-		pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), 255).endVertex();
-		pos(vb, end.subtract(d)  ).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), 255).endVertex();
-		pos(vb, end.add(d)       ).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), 255).endVertex();
+		pos(vb, start.add(d)     ).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(vb, end.subtract(d)  ).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(vb, end.add(d)       ).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
 		
 		if(!drawingLasers)
 			tessellator.draw();

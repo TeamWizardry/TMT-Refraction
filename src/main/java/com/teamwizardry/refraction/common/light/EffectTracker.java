@@ -101,6 +101,7 @@ public class EffectTracker {
 			else {
 				expiredEffects.addAll(effects.keySet().stream().filter(effect -> !effect.hasCooldown()).collect(Collectors.toList()));
 				cooldown = BeamConstants.SOURCE_TIMER;
+				burnedTileTracker.clear();
 			}
 
 			for (Effect effect : expiredEffects) effects.asMap().remove(effect);
