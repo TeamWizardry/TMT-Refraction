@@ -37,8 +37,8 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 		if (compound.hasKey("rotYPowered")) rotYPowered = compound.getFloat("rotYPowered");
 		if (compound.hasKey("rotXUnpowered")) rotXUnpowered = compound.getFloat("rotXUnpowered");
 		if (compound.hasKey("rotYUnpowered")) rotYUnpowered = compound.getFloat("rotYUnpowered");
-		if (compound.hasKey("rotDesX")) rotDestX = compound.getFloat("rotDestX");
-		if (compound.hasKey("rotDesY")) rotDestY = compound.getFloat("rotDestY");
+		if (compound.hasKey("rotDestX")) rotDestX = compound.getFloat("rotDestX");
+		if (compound.hasKey("rotDestY")) rotDestY = compound.getFloat("rotDestY");
 		if (compound.hasKey("rotPrevX")) rotPrevX = compound.getFloat("rotPrevX");
 		if (compound.hasKey("rotPrevY")) rotPrevY = compound.getFloat("rotPrevY");
 		if (compound.hasKey("transitionX")) transitionX = compound.getBoolean("transitionX");
@@ -102,6 +102,7 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 	@Override
 	public void setRotX(float rotX) {
 		if (transitionX) return;
+		if (rotX == rotDestX && rotX == this.rotX) return;
 		rotDestX = rotX;
 		rotPrevX = this.rotX;
 		transitionX = true;
@@ -117,6 +118,7 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 	@Override
 	public void setRotY(float rotY) {
 		if (transitionY) return;
+		if (rotY == rotDestY && rotY == this.rotY) return;
 		rotDestY = rotY;
 		rotPrevY = this.rotY;
 		transitionY = true;
@@ -149,7 +151,7 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 		if (worldObj.isRemote) return;
 		double transitionTimeMaxX = 5, transitionTimeMaxY = 5;
 
-		if (!transitionX) {
+		if (!transitionX && !transitionY) {
 			if (powered) {
 				if (!Float.isNaN(rotXPowered) && rotX != rotXPowered) setRotX(rotXPowered);
 			} else if (!Float.isNaN(rotXUnpowered) && rotX != rotXUnpowered) setRotX(rotXUnpowered);

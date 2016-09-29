@@ -6,7 +6,6 @@ import com.teamwizardry.refraction.common.tile.TileMirror;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -77,7 +76,6 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer vb = tessellator.getBuffer();
 
-		RenderHelper.disableStandardItemLighting();
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		if (Minecraft.isAmbientOcclusionEnabled())
 			GlStateManager.shadeModel(GL11.GL_SMOOTH);
@@ -100,7 +98,6 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelBrightnessColor(
 			te instanceof TileSplitter ? modelMirrorSplitter : modelMirror, 1.0F, 1, 1, 1);
 
-		RenderHelper.enableStandardItemLighting();
 		GlStateManager.disableBlend();
 		GlStateManager.popMatrix();
 	}
