@@ -53,25 +53,21 @@ public class EffectDisperse extends Effect {
 				entities.addAll(world.getEntitiesWithinAABB(EntityLiving.class, axis));
 			toPush.addAll(entities);
 
-			TileEntity tile = world.getTileEntity(pos);
-			if (tile != null && tile instanceof IInventory && EffectTracker.burnedTileTracker.contains(pos)) {
-				for (Entity entity : entities) {
-					if (entity instanceof EntityItem) {
-						EntityItem item = (EntityItem) entity;
-						ItemStack stack = item.getEntityItem();
-						IInventory inv = (IInventory) tile;
-						for (int i = 0; i < inv.getSizeInventory() - 1; i++)
-							if (inv.isItemValidForSlot(i, stack)) {
-								inv.setInventorySlotContents(i, stack);
-								item.lifespan = 0;
-							}
-					}
+			if (!world.isRemote) {
+				TileEntity tile = world.getTileEntity(pos);
+				if (tile != null && tile instanceof IInventory && EffectTracker.burnedTileTracker.contains(pos)) {
+					IInventory inv = (IInventory) tile;
+
+					for (Entity item : toPush)
+						if (item instanceof EntityItem)
+							EffectTracker.itemInput.putIfAbsent((EntityItem) item, inv);
 				}
 			}
 		}
 
 		int pushed = 0;
 		for (Entity entity : toPush) {
+			if (!entity.isEntityAlive()) continue;
 			pushed++;
 			if (pushed > 200) break;
 			setEntityMotion(entity);
@@ -84,5 +80,48 @@ public class EffectDisperse extends Effect {
 	@Override
 	public Color getColor() {
 		return Color.MAGENTA;
+	}
+
+	private void insertStack(IInventory inventoryIn, EntityItem item) {
+		if (item == null) return;
+		ItemStack stack = item.getEntityItem();
+		if (stack.stackSize == 0) return;
+
+		for (int i = 0; i < inventoryIn.getSizeInventory() - 1; i++) {
+			ItemStack currentStack = inventoryIn.getStackInSlot(i);
+			if (currentStack == null) {
+				if (stack.stackSize > inventoryIn.getInventoryStackLimit()) {
+					ItemStack excess = stack.splitStack(inventoryIn.getInventoryStackLimit());
+					inventoryIn.setInventorySlotContents(i, excess);
+					item.setEntityItemStack(stack);
+					item.setDead();
+					insertStack(inventoryIn, item);
+					break;
+				} else {
+					inventoryIn.setInventorySlotContents(i, stack);
+					item.setDead();
+					break;
+				}
+			} else {
+				if (!canCombine(stack, currentStack)) continue;
+				if (stack.stackSize + currentStack.stackSize > inventoryIn.getInventoryStackLimit()) {
+					ItemStack excess = stack.splitStack(Math.abs(inventoryIn.getInventoryStackLimit() - currentStack.stackSize)); // Math.abs incase something funky happens
+					inventoryIn.setInventorySlotContents(i, excess);
+					item.setEntityItemStack(stack);
+					item.setDead();
+					insertStack(inventoryIn, item);
+					break;
+				} else {
+					stack.stackSize += currentStack.stackSize;
+					inventoryIn.setInventorySlotContents(i, stack);
+					item.setDead();
+					break;
+				}
+			}
+		}
+	}
+
+	private boolean canCombine(ItemStack stack1, ItemStack stack2) {
+		return stack1.getItem() == stack2.getItem() && (stack1.getMetadata() == stack2.getMetadata() && ItemStack.areItemStackTagsEqual(stack1, stack2));
 	}
 }

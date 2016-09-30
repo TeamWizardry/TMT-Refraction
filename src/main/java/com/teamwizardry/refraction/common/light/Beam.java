@@ -34,7 +34,7 @@ public class Beam {
 
 		RayTraceResult trace;
 		if (effect != null) {
-			if (effect.getType() == EffectType.BEAM && !effect.hasCooldown())
+			if (effect.getType() == EffectType.BEAM)
 				trace = EntityTrace.cast(world, initLoc, slope, 128, true);
 			else trace = EntityTrace.cast(world, initLoc, slope, 128, false);
 		} else trace = EntityTrace.cast(world, initLoc, slope, 128, false);

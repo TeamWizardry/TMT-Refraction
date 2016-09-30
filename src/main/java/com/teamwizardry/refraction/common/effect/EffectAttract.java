@@ -3,13 +3,10 @@ package com.teamwizardry.refraction.common.effect;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.EffectTracker;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -55,22 +52,8 @@ public class EffectAttract extends Effect {
 			TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile instanceof IInventory && EffectTracker.burnedTileTracker.contains(pos)) {
 				IInventory inv = (IInventory) tile;
-				Minecraft.getMinecraft().thePlayer.sendChatMessage(potency + " - " + this.potency);
-				for (int i = 0; i < inv.getSizeInventory() - 1; i++) {
-					ItemStack slotStack = inv.getStackInSlot(i);
-					if (slotStack != null) {
-						ItemStack stack = inv.decrStackSize(i, slotStack.stackSize < potency / 10 ? slotStack.stackSize : potency / 10);
-						if (stack != null) {
 
-							EntityItem item = new EntityItem(world, beam.finalLoc.xCoord, beam.finalLoc.yCoord, beam.finalLoc.zCoord, stack);
-							item.motionX = 0;
-							item.motionY = 0;
-							item.motionZ = 0;
-							world.spawnEntityInWorld(item);
-							break;
-						}
-					}
-				}
+				EffectTracker.itemOutput.put(inv, this);
 			}
 		}
 
