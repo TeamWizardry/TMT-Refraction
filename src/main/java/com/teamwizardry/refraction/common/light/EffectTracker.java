@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.light;
 
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.refraction.api.Effect;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.WeakHashMap;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,8 @@ public class EffectTracker {
 	public static ArrayList<Effect> effectRegistry = new ArrayList<>();
 	public static ArrayList<Effect> expiredEffects = new ArrayList<>();
 	public static ArrayList<BlockPos> burnedTileTracker = new ArrayList<>();
+	public static HashMap<Entity, Integer> gravityReset = new HashMap<>();
+	public static boolean tick = false;
 	private static WeakHashMap<World, EffectTracker> effectInstances = new WeakHashMap<>();
 	private HashMultimap<Effect, BlockPos> effects = HashMultimap.create();
 	private BlockTracker blockTracker;
@@ -96,12 +100,25 @@ public class EffectTracker {
 					else effect.run(w, effects.get(effect));
 				}
 			}
+			ArrayList<Entity> remove = new ArrayList<>();
+			for (Entity entity : gravityReset.keySet()) {
+				if (gravityReset.get(entity) > 0)
+					gravityReset.put(entity, gravityReset.get(entity) - 1);
+				else {
+					entity.setNoGravity(false);
+					remove.add(entity);
+				}
+			}
+			for (Entity entity : remove) gravityReset.remove(entity);
 
-			if (cooldown > 0) cooldown--;
-			else {
+			if (cooldown > 0) {
+				cooldown--;
+				tick = false;
+			} else {
 				expiredEffects.addAll(effects.keySet().stream().filter(effect -> !effect.hasCooldown()).collect(Collectors.toList()));
 				cooldown = BeamConstants.SOURCE_TIMER;
 				burnedTileTracker.clear();
+				tick = true;
 			}
 
 			for (Effect effect : expiredEffects) effects.asMap().remove(effect);

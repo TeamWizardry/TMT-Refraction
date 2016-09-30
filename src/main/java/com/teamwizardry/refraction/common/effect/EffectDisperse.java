@@ -20,6 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.teamwizardry.refraction.common.light.EffectTracker.gravityReset;
+
 /**
  * Created by LordSaad44
  */
@@ -33,8 +35,9 @@ public class EffectDisperse extends Effect {
 	private void setEntityMotion(Entity entity) {
 		Vec3d pullDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 
+		entity.setNoGravity(true);
 		entity.motionX = pullDir.xCoord * potency / 255.0;
-		entity.motionY = Math.max(0.3, pullDir.yCoord * potency / 255.0);
+		entity.motionY = pullDir.yCoord * potency / 255.0;
 		entity.motionZ = pullDir.zCoord * potency / 255.0;
 		entity.fallDistance = 0;
 	}
@@ -48,11 +51,7 @@ public class EffectDisperse extends Effect {
 			List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, axis);
 			if (potency > 128)
 				entities.addAll(world.getEntitiesWithinAABB(EntityLiving.class, axis));
-			EntityPlayer player = world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 1, false);
-			if (player != null) {
-				setEntityMotion(player);
-				player.velocityChanged = true;
-			}
+			toPush.addAll(entities);
 
 			TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile instanceof IInventory && EffectTracker.burnedTileTracker.contains(pos)) {
@@ -65,19 +64,18 @@ public class EffectDisperse extends Effect {
 							if (inv.isItemValidForSlot(i, stack)) {
 								inv.setInventorySlotContents(i, stack);
 								item.lifespan = 0;
-						}
+							}
 					}
 				}
 			}
-			toPush.addAll(entities);
 		}
 
-		int pulled = 0;
+		int pushed = 0;
 		for (Entity entity : toPush) {
-			pulled++;
-			if (pulled > 200)
-				break;
+			pushed++;
+			if (pushed > 200) break;
 			setEntityMotion(entity);
+			gravityReset.put(entity, 30);
 			if (entity instanceof EntityPlayer)
 				((EntityPlayer) entity).velocityChanged = true;
 		}
