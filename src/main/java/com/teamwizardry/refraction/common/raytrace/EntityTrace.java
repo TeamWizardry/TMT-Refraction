@@ -1,8 +1,9 @@
 package com.teamwizardry.refraction.common.raytrace;
 
-import java.util.HashSet;
-import java.util.List;
-import javax.annotation.Nullable;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableList;
+import com.teamwizardry.refraction.common.light.BeamPulsar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -12,10 +13,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
-import com.teamwizardry.refraction.common.light.BeamPulsar;
+
+import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.List;
 
 public class EntityTrace
 {
@@ -28,7 +29,7 @@ public class EntityTrace
 	 *            The restingDistance to check
 	 * @return The first block or entity along the given ray
 	 */
-	public static RayTraceResult cast(World world, Vec3d pos, Vec3d dir, double distance)
+	public static RayTraceResult cast(World world, Vec3d pos, Vec3d dir, double distance, boolean ignoreEntities)
 	{
 		RayTraceResult focusedBlock = blockTrace(world, pos, dir, distance);
 		double blockDistance = distance;
@@ -43,7 +44,7 @@ public class EntityTrace
 		{
 			public boolean apply(@Nullable Entity apply)
 			{
-				return apply != null && (apply.canBeCollidedWith() || apply instanceof EntityItem);
+				return apply != null && !ignoreEntities && (apply.canBeCollidedWith() || (apply instanceof EntityItem));
 			}
 		}, EntitySelectors.NOT_SPECTATING));
 		double blockDistCopy = blockDistance;
