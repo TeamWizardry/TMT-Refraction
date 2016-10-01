@@ -101,7 +101,7 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 
 	@Override
 	public void setRotX(float rotX) {
-		if (transitionX) return;
+		if (transitionX || transitionY) return;
 		if (rotX == rotDestX && rotX == this.rotX) return;
 		rotDestX = rotX;
 		rotPrevX = this.rotX;
@@ -117,7 +117,7 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 
 	@Override
 	public void setRotY(float rotY) {
-		if (transitionY) return;
+		if (transitionY || transitionX) return;
 		if (rotY == rotDestY && rotY == this.rotY) return;
 		rotDestY = rotY;
 		rotPrevY = this.rotY;
