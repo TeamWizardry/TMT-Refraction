@@ -101,8 +101,9 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 
 	@Override
 	public void setRotX(float rotX) {
-		if (transitionX || transitionY) return;
-		if (rotX == rotDestX && rotX == this.rotX) return;
+		if (transitionX) return;
+		if (transitionTimeX != 0) return;
+		if (rotX == this.rotX) return;
 		rotDestX = rotX;
 		rotPrevX = this.rotX;
 		transitionX = true;
@@ -117,8 +118,9 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 
 	@Override
 	public void setRotY(float rotY) {
-		if (transitionY || transitionX) return;
-		if (rotY == rotDestY && rotY == this.rotY) return;
+		if (transitionY) return;
+		if (transitionTimeY != 0) return;
+		if (rotY == this.rotY) return;
 		rotDestY = rotY;
 		rotPrevY = this.rotY;
 		transitionY = true;
@@ -149,53 +151,43 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 	@Override
 	public void update() {
 		if (worldObj.isRemote) return;
-		double transitionTimeMaxX = 5, transitionTimeMaxY = 5;
+		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((rotPrevX - rotDestX) / 2.0), 20)),
+				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((rotPrevY - rotDestY) / 2.0), 20));
 
-		if (!transitionX && !transitionY) {
-			if (powered) {
-				if (!Float.isNaN(rotXPowered) && rotX != rotXPowered) setRotX(rotXPowered);
-				if (!Float.isNaN(rotYPowered) && rotY != rotYPowered) setRotY(rotYPowered);
+		if (transitionX) {
+			if (transitionTimeX < transitionTimeMaxX) {
+				transitionTimeX++;
+				if (Math.round(rotDestX) > Math.round(rotPrevX))
+					rotX = -((rotDestX - rotPrevX) / 2) * MathHelper.cos((float) (transitionTimeX * Math.PI / transitionTimeMaxX)) + (rotDestX + rotPrevX) / 2;
+				else
+					rotX = ((rotPrevX - rotDestX) / 2) * MathHelper.cos((float) (transitionTimeX * Math.PI / transitionTimeMaxX)) + (rotDestX + rotPrevX) / 2;
 			} else {
-				if (!Float.isNaN(rotXUnpowered) && rotX != rotXUnpowered) setRotX(rotXUnpowered);
-				if (!Float.isNaN(rotYUnpowered) && rotY != rotYUnpowered) setRotY(rotYUnpowered);
+				transitionTimeX = 0;
+				rotX = rotDestX;
+				if (powered) rotXPowered = rotX;
+				else rotXUnpowered = rotX;
+				transitionX = false;
 			}
+			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+			markDirty();
+		}
 
-		} else {
-			if (transitionX) {
-				if (transitionTimeX < transitionTimeMaxX) {
-					transitionTimeX++;
-					if (Math.round(rotDestX) > Math.round(rotPrevX))
-						rotX = -((rotDestX - rotPrevX) / 2) * MathHelper.cos((float) (transitionTimeX * Math.PI / transitionTimeMaxX)) + (rotDestX + rotPrevX) / 2;
-					else
-						rotX = ((rotPrevX - rotDestX) / 2) * MathHelper.cos((float) (transitionTimeX * Math.PI / transitionTimeMaxX)) + (rotDestX + rotPrevX) / 2;
-				} else {
-					transitionTimeX = 0;
-					transitionX = false;
-					rotX = rotDestX;
-					if (powered) rotXPowered = rotX;
-					else rotXUnpowered = rotX;
-				}
-				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
-				markDirty();
+		if (transitionY) {
+			if (transitionTimeY < transitionTimeMaxY) {
+				transitionTimeY++;
+				if (Math.round(rotDestY) > Math.round(rotPrevY))
+					rotY = -((rotDestY - rotPrevY) / 2) * MathHelper.cos((float) (transitionTimeY * Math.PI / transitionTimeMaxY)) + (rotDestY + rotPrevY) / 2;
+				else
+					rotY = ((rotPrevY - rotDestY) / 2) * MathHelper.cos((float) (transitionTimeY * Math.PI / transitionTimeMaxY)) + (rotDestY + rotPrevY) / 2;
+			} else {
+				transitionTimeY = 0;
+				rotY = rotDestY;
+				if (powered) rotYPowered = rotY;
+				else rotYUnpowered = rotY;
+				transitionY = false;
 			}
-
-			if (transitionY) {
-				if (transitionTimeY < transitionTimeMaxY) {
-					transitionTimeY++;
-					if (Math.round(rotDestY) > Math.round(rotPrevY))
-						rotY = -((rotDestY - rotPrevY) / 2) * MathHelper.cos((float) (transitionTimeY * Math.PI / transitionTimeMaxY)) + (rotDestY + rotPrevY) / 2;
-					else
-						rotY = ((rotPrevY - rotDestY) / 2) * MathHelper.cos((float) (transitionTimeY * Math.PI / transitionTimeMaxY)) + (rotDestY + rotPrevY) / 2;
-				} else {
-					transitionTimeY = 0;
-					transitionY = false;
-					rotY = rotDestY;
-					if (powered) rotYPowered = rotY;
-					else rotYUnpowered = rotY;
-				}
-				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
-				markDirty();
-			}
+			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+			markDirty();
 		}
 	}
 
@@ -204,8 +196,15 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 	}
 
 	public void setPowered(boolean powered) {
-		this.powered = powered;
-		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
-		markDirty();
+		if (!transitionX && !transitionY) {
+			this.powered = powered;
+			if (powered) {
+				if (!Float.isNaN(rotXPowered) && rotX != rotXPowered) setRotX(rotXPowered);
+				if (!Float.isNaN(rotYPowered) && rotY != rotYPowered) setRotY(rotYPowered);
+			} else {
+				if (!Float.isNaN(rotXUnpowered) && rotX != rotXUnpowered) setRotX(rotXUnpowered);
+				if (!Float.isNaN(rotYUnpowered) && rotY != rotYUnpowered) setRotY(rotYUnpowered);
+			}
+		}
 	}
 }
