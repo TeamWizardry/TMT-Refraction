@@ -12,6 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by LordSaad44
@@ -92,6 +94,12 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 
 		state = worldObj.getBlockState(pos);
 		worldObj.notifyBlockUpdate(pos, state, state, 3);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
+		return INFINITE_EXTENT_AABB;
 	}
 
 	@Override
