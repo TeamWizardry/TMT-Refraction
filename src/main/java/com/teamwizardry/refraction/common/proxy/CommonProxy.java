@@ -1,5 +1,10 @@
 package com.teamwizardry.refraction.common.proxy;
 
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.refraction.client.fx.SparkleFX;
+import com.teamwizardry.refraction.common.core.CatChaseHandler;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
+import com.teamwizardry.refraction.init.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -7,17 +12,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
-import com.teamwizardry.refraction.client.fx.SparkleFX;
-import com.teamwizardry.refraction.common.CatChaseHandler;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
-import com.teamwizardry.refraction.init.AssemblyRecipes;
-import com.teamwizardry.refraction.init.CraftingRecipes;
-import com.teamwizardry.refraction.init.ModBlocks;
-import com.teamwizardry.refraction.init.ModEffects;
-import com.teamwizardry.refraction.init.ModEntities;
-import com.teamwizardry.refraction.init.ModItems;
-import com.teamwizardry.refraction.init.ModSounds;
 
 /**
  * Created by LordSaad44

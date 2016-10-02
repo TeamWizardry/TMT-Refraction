@@ -22,14 +22,16 @@ public class Beam {
 	public Color color;
 	public World world;
 	public Effect effect;
+	public boolean enableEffect;
 
-	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color) {
+	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color, boolean enableEffect) {
 		this.world = world;
 		this.initLoc = initLoc;
 		this.slope = slope;
 		this.finalLoc = slope.normalize().scale(128).add(initLoc);
 		this.color = color;
 		this.effect = EffectTracker.getEffect(this);
+		this.enableEffect = enableEffect;
 		if (world.isRemote) return;
 
 		RayTraceResult trace;
@@ -41,29 +43,24 @@ public class Beam {
 		if (trace == null) return;
 
 		this.finalLoc = trace.hitVec;
-		if (trace.typeOfHit == RayTraceResult.Type.ENTITY) {
+		if (enableEffect && trace.typeOfHit == RayTraceResult.Type.ENTITY) {
 			if (effect != null) {
-				if (effect.getType() == EffectType.SINGLE)
-					EffectTracker.addEffect(world, trace.hitVec, effect);
-				else if (effect.getType() == EffectType.BEAM)
-					EffectTracker.addEffect(world, this);
+				if (effect.getType() == EffectType.SINGLE) EffectTracker.addEffect(world, trace.hitVec, effect);
+				else if (effect.getType() == EffectType.BEAM) EffectTracker.addEffect(world, this);
 			}
 		} else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
 			try {
-				if (effect != null && effect.getType() == EffectType.BEAM)
-					EffectTracker.addEffect(world, this);
+				if (enableEffect && effect != null && effect.getType() == EffectType.BEAM) EffectTracker.addEffect(world, this);
 				TileEntity tile = world.getTileEntity(trace.getBlockPos());
-				if (tile instanceof IBeamHandler)
-					ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
-				else {
+				if (tile instanceof IBeamHandler) ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
+				else if (enableEffect) {
 					BlockPos pos = trace.getBlockPos();
 					if (effect != null && effect.getType() == EffectType.SINGLE)
 						EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
 				}
 			} catch (NullPointerException ignored) // Don't really care about these NPEs, all they mean is that the BlockPos is outside the world height limit.
-			{
-			}
-		} else if (trace.typeOfHit == RayTraceResult.Type.MISS) {
+			{}
+		} else if (enableEffect && trace.typeOfHit == RayTraceResult.Type.MISS) {
 			if (effect != null && effect.getType() == EffectType.BEAM)
 				EffectTracker.addEffect(world, this);
 		}
@@ -71,16 +68,16 @@ public class Beam {
 		PacketHandler.INSTANCE.getNetwork().sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
 	}
 
-	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color) {
-		this(world, new Vec3d(initX, initY, initZ), new Vec3d(slopeX, slopeY, slopeZ), color);
+	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color, boolean enableEffect) {
+		this(world, new Vec3d(initX, initY, initZ), new Vec3d(slopeX, slopeY, slopeZ), color, enableEffect);
 	}
 
-	public Beam(World world, Vec3d initLoc, Vec3d dir, float red, float green, float blue, float alpha) {
-		this(world, initLoc, dir, new Color(red, green, blue, alpha));
+	public Beam(World world, Vec3d initLoc, Vec3d dir, float red, float green, float blue, float alpha, boolean enableEffect) {
+		this(world, initLoc, dir, new Color(red, green, blue, alpha), enableEffect);
 	}
 
-	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, float red, float green, float blue, float alpha) {
-		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha));
+	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, float red, float green, float blue, float alpha, boolean enableEffect) {
+		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha), enableEffect);
 	}
 
 	@Override

@@ -25,6 +25,7 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 	private float rotDestX, rotPrevX, rotDestY, rotPrevY;
 	private int transitionTimeX = 0, transitionTimeY = 0;
 	private boolean transitionX = false, transitionY = false, powered = false;
+	private Beam[] beams;
 
 	public TileMirror() {
 	}
@@ -138,6 +139,9 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 
 	@Override
 	public void handle(Beam... beams) {
+		this.beams = beams;
+		if (beams.length == 0) return;
+
 		Matrix4 matrix = new Matrix4();
 		matrix.rotate(Math.toRadians(getRotY()), new Vec3d(0, 1, 0));
 		matrix.rotate(Math.toRadians(getRotX()), new Vec3d(1, 0, 0));
@@ -152,7 +156,7 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 
 			Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
-			new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color);
+			new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color, beam.enableEffect);
 		}
 	}
 
@@ -161,6 +165,26 @@ public class TileMirror extends TileEntity implements IBeamHandler, ITickable, I
 		if (worldObj.isRemote) return;
 		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((rotPrevX - rotDestX) / 2.0), 20)),
 				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((rotPrevY - rotDestY) / 2.0), 20));
+
+		if ((transitionX || transitionY) && beams != null) {
+			if (beams.length != 0) {
+				Matrix4 matrix = new Matrix4();
+				matrix.rotate(Math.toRadians(getRotY()), new Vec3d(0, 1, 0));
+				matrix.rotate(Math.toRadians(getRotX()), new Vec3d(1, 0, 0));
+
+				Vec3d normal = matrix.apply(new Vec3d(0, 1, 0));
+
+				for (Beam beam : beams) {
+					Vec3d incomingDir = beam.finalLoc.subtract(beam.initLoc).normalize();
+
+					if (incomingDir.dotProduct(normal) > 0) continue;
+
+					Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
+
+					new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color, beam.enableEffect);
+				}
+			}
+		} else beams = null;
 
 		if (transitionX) {
 			if (transitionTimeX < transitionTimeMaxX) {

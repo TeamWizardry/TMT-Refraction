@@ -66,6 +66,7 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 		BlockPrism b = (BlockPrism) state.getBlock();
 
 		for (Beam beam : beams) {
+			if (!beam.enableEffect) continue;
 			int sum = beam.color.getRed() + beam.color.getBlue() + beam.color.getGreen();
 			double red = beam.color.getAlpha() * beam.color.getRed() / sum;
 			double green = beam.color.getAlpha() * beam.color.getGreen() / sum;
@@ -80,9 +81,26 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 			if (beam.color.getBlue() != 0)
 				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), true);
 		}
+
+		for (Beam beam : beams) {
+			if (beam.enableEffect) continue;
+			int sum = beam.color.getRed() + beam.color.getBlue() + beam.color.getGreen();
+			double red = beam.color.getAlpha() * beam.color.getRed() / sum;
+			double green = beam.color.getAlpha() * beam.color.getGreen() / sum;
+			double blue = beam.color.getAlpha() * beam.color.getBlue() / sum;
+
+			Vec3d hitPos = beam.finalLoc;
+
+			if (beam.color.getRed() != 0)
+				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), false);
+			if (beam.color.getGreen() != 0)
+				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), false);
+			if (beam.color.getBlue() != 0)
+				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), false);
+		}
 	}
 
-	private void fireColor(BlockPrism block, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean hasEffect) {
+	private void fireColor(BlockPrism block, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect) {
 		BlockPrism.RayTraceResultData<Vec3d> r = block.collisionRayTraceLaser(state, worldObj, pos, hitPos.subtract(ref), hitPos.add(ref));
 		if (r == null) return;
 		Vec3d normal = r.data;
@@ -108,7 +126,7 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 			}
 		}
 
-		new Beam(worldObj, hitPos, ref, color);
+		new Beam(worldObj, hitPos, ref, color, disableEffect);
 	}
 
 	private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {

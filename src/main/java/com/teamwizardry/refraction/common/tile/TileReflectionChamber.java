@@ -1,6 +1,8 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.awt.Color;
+import com.teamwizardry.refraction.api.RotationHelper;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -9,9 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.refraction.api.RotationHelper;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
+
+import java.awt.*;
 
 /**
  * Created by LordSaad44
@@ -53,33 +54,56 @@ public class TileReflectionChamber extends TileEntity implements IBeamHandler {
 	@Override
 	public void handle(Beam... beams) {
 		if (beams.length <= 0) return;
-		
-		Vec3d[] angles = new Vec3d[beams.length];
-		
-		int red = 0;
-		int green = 0;
-		int blue = 0;
-		int alpha = 0;
+
+		Vec3d[] angles1 = new Vec3d[beams.length];
+		Vec3d[] angles2 = new Vec3d[beams.length];
+
+		int red1 = 0, red2 = 0;
+		int green1 = 0, green2 = 0;
+		int blue1 = 0, blue2 = 0;
+		int alpha1 = 0, alpha2 = 0;
 		for (int i = 0; i < beams.length; i++) {
+			if (!beams[i].enableEffect) continue;
 			Color color = beams[i].color;
 
-			red += color.getRed();
-			green += color.getGreen();
-			blue += color.getBlue();
-			alpha += color.getAlpha();
+			red1 += color.getRed();
+			green1 += color.getGreen();
+			blue1 += color.getBlue();
+			alpha1 += color.getAlpha();
 
-			angles[i] = beams[i].finalLoc.subtract(beams[i].initLoc);
+			angles1[i] = beams[i].finalLoc.subtract(beams[i].initLoc);
 		}
-		red = Math.min(red / beams.length, 255);
-		green = Math.min(green / beams.length, 255);
-		blue = Math.min(blue / beams.length, 255);
-		
-		float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
-		Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
-		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
+		for (int i = 0; i < beams.length; i++) {
+			if (beams[i].enableEffect) continue;
+			Color color = beams[i].color;
 
-		Vec3d out = RotationHelper.averageDirection(angles);
-		new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out, color);
+			red2 += color.getRed();
+			green2 += color.getGreen();
+			blue2 += color.getBlue();
+			alpha2 += color.getAlpha();
+
+			angles2[i] = beams[i].finalLoc.subtract(beams[i].initLoc);
+		}
+		red1 = Math.min(red1 / beams.length, 255);
+		green1 = Math.min(green1 / beams.length, 255);
+		blue1 = Math.min(blue1 / beams.length, 255);
+
+		red2 = Math.min(red2 / beams.length, 255);
+		green2 = Math.min(green2 / beams.length, 255);
+		blue2 = Math.min(blue2 / beams.length, 255);
+
+		float[] hsbvals1 = Color.RGBtoHSB(red1, green1, blue1, null);
+		Color color1 = new Color(Color.HSBtoRGB(hsbvals1[0], hsbvals1[1], 1));
+		color1 = new Color(color1.getRed(), color1.getGreen(), color1.getBlue(), Math.min(alpha1, 255));
+
+		float[] hsbvals2 = Color.RGBtoHSB(red2, green2, blue2, null);
+		Color color2 = new Color(Color.HSBtoRGB(hsbvals2[0], hsbvals2[1], 1));
+		color2 = new Color(color2.getRed(), color2.getGreen(), color2.getBlue(), Math.min(alpha2, 255));
+
+		Vec3d out1 = RotationHelper.averageDirection(angles1);
+		Vec3d out2 = RotationHelper.averageDirection(angles2);
+		new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out1, color1, false);
+		new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out2, color2, true);
 
 	}
 }

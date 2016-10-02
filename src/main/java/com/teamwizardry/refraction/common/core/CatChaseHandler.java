@@ -1,11 +1,11 @@
-package com.teamwizardry.refraction.common;
+package com.teamwizardry.refraction.common.core;
 
+import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 
 /**
  * Created by TheCodeWarrior

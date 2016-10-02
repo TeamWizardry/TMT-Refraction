@@ -41,12 +41,15 @@ public class RotationHelper
 	 */
 	public static Vec3d averageDirection(Vec3d... vectors)
 	{
+		if (vectors == null) return Vec3d.ZERO;
+		if (vectors.length == 0) return Vec3d.ZERO;
 		double x = 0;
 		double y = 0;
 		double z = 0;
 
 		for (int i = 0; i < vectors.length; i++)
 		{
+			if (vectors[i] == null) continue;
 			vectors[i] = vectors[i].normalize();
 			x += vectors[i].xCoord;
 			y += vectors[i].yCoord;
