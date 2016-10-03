@@ -2,7 +2,7 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -59,6 +59,6 @@ public class BlockLens extends BlockMod {
 	@Nullable
 	@Override
 	public ModCreativeTab getCreativeTab() {
-		return Refraction.tab;
+		return CommonProxy.tab;
 	}
 }

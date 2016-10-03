@@ -1,18 +1,13 @@
 package com.teamwizardry.refraction;
 
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
-import com.teamwizardry.refraction.init.ModItems;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import org.jetbrains.annotations.NotNull;
 
 @Mod(
 		modid = Refraction.MOD_ID,
@@ -33,20 +28,6 @@ public class Refraction {
 	public static CommonProxy proxy;
 	@Mod.Instance
 	public static Refraction instance;
-
-	public static ModCreativeTab tab = new ModCreativeTab(MOD_NAME) {
-		@Override
-		public Item getTabIconItem()
-		{
-			return ModItems.SCREW_DRIVER;
-		}
-		@NotNull
-		@Override
-		public ItemStack getIconItemStack()
-		{
-			return new ItemStack(ModItems.SCREW_DRIVER);
-		}
-	};
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

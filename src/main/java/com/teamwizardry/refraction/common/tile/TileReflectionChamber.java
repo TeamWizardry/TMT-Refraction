@@ -63,27 +63,26 @@ public class TileReflectionChamber extends TileEntity implements IBeamHandler {
 		int blue1 = 0, blue2 = 0;
 		int alpha1 = 0, alpha2 = 0;
 		for (int i = 0; i < beams.length; i++) {
-			if (!beams[i].enableEffect) continue;
 			Color color = beams[i].color;
+			if (!beams[i].enableEffect) {
 
-			red1 += color.getRed();
-			green1 += color.getGreen();
-			blue1 += color.getBlue();
-			alpha1 += color.getAlpha();
+				red1 += color.getRed();
+				green1 += color.getGreen();
+				blue1 += color.getBlue();
+				alpha1 += color.getAlpha();
 
-			angles1[i] = beams[i].finalLoc.subtract(beams[i].initLoc);
+				angles1[i] = beams[i].finalLoc.subtract(beams[i].initLoc);
+			} else {
+
+				red2 += color.getRed();
+				green2 += color.getGreen();
+				blue2 += color.getBlue();
+				alpha2 += color.getAlpha();
+
+				angles2[i] = beams[i].finalLoc.subtract(beams[i].initLoc);
+			}
 		}
-		for (int i = 0; i < beams.length; i++) {
-			if (beams[i].enableEffect) continue;
-			Color color = beams[i].color;
 
-			red2 += color.getRed();
-			green2 += color.getGreen();
-			blue2 += color.getBlue();
-			alpha2 += color.getAlpha();
-
-			angles2[i] = beams[i].finalLoc.subtract(beams[i].initLoc);
-		}
 		red1 = Math.min(red1 / beams.length, 255);
 		green1 = Math.min(green1 / beams.length, 255);
 		blue1 = Math.min(blue1 / beams.length, 255);

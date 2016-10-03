@@ -2,8 +2,8 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.render.RenderSpectrometer;
+import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.common.tile.TileSpectrometer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -86,6 +86,6 @@ public class BlockSpectrometer extends BlockModContainer {
 	@Nullable
 	@Override
 	public ModCreativeTab getCreativeTab() {
-		return Refraction.tab;
+		return CommonProxy.tab;
 	}
 }

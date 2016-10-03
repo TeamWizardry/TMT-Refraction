@@ -2,11 +2,11 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.ISpamSoundProvider;
 import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -37,7 +37,7 @@ public class BlockElectronExciter extends BlockModContainer implements ISpamSoun
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
 		GameRegistry.registerTileEntity(TileElectronExciter.class, "electron_exciter");
-		setCreativeTab(Refraction.tab);
+		setCreativeTab(CommonProxy.tab);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
@@ -133,6 +133,6 @@ public class BlockElectronExciter extends BlockModContainer implements ISpamSoun
 	@Nullable
 	@Override
 	public ModCreativeTab getCreativeTab() {
-		return Refraction.tab;
+		return CommonProxy.tab;
 	}
 }
