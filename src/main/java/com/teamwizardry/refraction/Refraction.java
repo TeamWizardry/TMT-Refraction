@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(
 		modid = Refraction.MOD_ID,
@@ -44,7 +45,7 @@ public class Refraction {
 		proxy.postInit(event);
 	}
 
-	@Mod.EventHandler
+	@SubscribeEvent
 	public void onWorldLoad(Load event) {
 		ReflectionTracker.addInstance(event.getWorld());
 	}

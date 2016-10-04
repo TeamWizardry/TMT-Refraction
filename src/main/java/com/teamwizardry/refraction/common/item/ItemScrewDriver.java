@@ -4,7 +4,7 @@ import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.refraction.common.block.BlockMirror;
 import com.teamwizardry.refraction.common.block.BlockSplitter;
-import com.teamwizardry.refraction.common.proxy.CommonProxy;
+import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -80,6 +80,6 @@ public class ItemScrewDriver extends ItemMod {
 	@Nullable
 	@Override
 	public ModCreativeTab getCreativeTab() {
-		return CommonProxy.tab;
+		return ModTab.INSTANCE;
 	}
 }

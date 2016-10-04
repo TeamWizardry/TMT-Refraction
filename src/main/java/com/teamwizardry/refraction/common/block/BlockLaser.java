@@ -7,8 +7,8 @@ import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.common.tile.TileLaser;
+import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -124,6 +124,6 @@ public class BlockLaser extends BlockModContainer implements ISpamSoundProvider 
 	@Nullable
 	@Override
 	public ModCreativeTab getCreativeTab() {
-		return CommonProxy.tab;
+		return ModTab.INSTANCE;
 	}
 }

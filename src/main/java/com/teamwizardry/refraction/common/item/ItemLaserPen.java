@@ -3,7 +3,7 @@ package com.teamwizardry.refraction.common.item;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
-import com.teamwizardry.refraction.common.proxy.CommonProxy;
+import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -45,10 +45,9 @@ public class ItemLaserPen extends ItemMod {
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 	}
-
 	@Nullable
 	@Override
 	public ModCreativeTab getCreativeTab() {
-		return CommonProxy.tab;
+		return ModTab.INSTANCE;
 	}
 }

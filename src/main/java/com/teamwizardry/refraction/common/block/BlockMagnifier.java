@@ -4,8 +4,8 @@ import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.common.tile.TileMagnifier;
+import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -61,6 +61,6 @@ public class BlockMagnifier extends BlockModContainer {
 	@Nullable
 	@Override
 	public ModCreativeTab getCreativeTab() {
-		return CommonProxy.tab;
+		return ModTab.INSTANCE;
 	}
 }
