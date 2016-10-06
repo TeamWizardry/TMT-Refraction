@@ -39,7 +39,7 @@ public class EffectBurn extends Effect {
 			if (tile != null && tile instanceof IInventory && !EffectTracker.burnedTileTracker.contains(pos))
 				EffectTracker.burnedTileTracker.add(pos);
 			else {
-				if (potency >= 128) {
+				if (potency >= 50) {
 					BlockPos newPos = new BlockPos(beam.finalLoc);
 					IBlockState state = world.getBlockState(newPos);
 					if (state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.FIRE)
