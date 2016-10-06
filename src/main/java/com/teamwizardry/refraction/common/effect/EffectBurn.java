@@ -35,26 +35,27 @@ public class EffectBurn extends Effect {
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
 		for (BlockPos pos : locations) {
-
-			//Minecraft.getMinecraft().thePlayer.sendChatMessage(this.potency + " - " + potency + " - " + getMaxCooldown());
-
 			TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile instanceof IInventory && !EffectTracker.burnedTileTracker.contains(pos))
 				EffectTracker.burnedTileTracker.add(pos);
 			else {
-				BlockPos newPos = new BlockPos(beam.finalLoc);
-				IBlockState state = world.getBlockState(newPos);
-				if (state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.FIRE)
-					world.setBlockState(newPos, Blocks.FIRE.getDefaultState());
-				else {
-					BlockPos newPos2 = newPos.up();
-					IBlockState state2 = world.getBlockState(newPos2);
-					if (state2.getBlock() == Blocks.AIR || state2.getBlock() == Blocks.FIRE) world.setBlockState(newPos2, Blocks.FIRE.getDefaultState());
+				if (potency >= 128) {
+					BlockPos newPos = new BlockPos(beam.finalLoc);
+					IBlockState state = world.getBlockState(newPos);
+					if (state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.FIRE)
+						world.setBlockState(newPos, Blocks.FIRE.getDefaultState());
 					else {
-						Vec3d vec = beam.finalLoc.subtract(beam.finalLoc);
-						BlockPos newPos3 = newPos.offset(EnumFacing.getFacingFromVector((float) vec.xCoord, (float) vec.yCoord, (float) vec.zCoord).getOpposite());
-						IBlockState state3 = world.getBlockState(newPos2);
-						if (state3.getBlock() == Blocks.AIR) world.setBlockState(newPos3, Blocks.FIRE.getDefaultState());
+						BlockPos newPos2 = newPos.up();
+						IBlockState state2 = world.getBlockState(newPos2);
+						if (state2.getBlock() == Blocks.AIR || state2.getBlock() == Blocks.FIRE)
+							world.setBlockState(newPos2, Blocks.FIRE.getDefaultState());
+						else {
+							Vec3d vec = beam.finalLoc.subtract(beam.finalLoc);
+							BlockPos newPos3 = newPos.offset(EnumFacing.getFacingFromVector((float) vec.xCoord, (float) vec.yCoord, (float) vec.zCoord).getOpposite());
+							IBlockState state3 = world.getBlockState(newPos2);
+							if (state3.getBlock() == Blocks.AIR)
+								world.setBlockState(newPos3, Blocks.FIRE.getDefaultState());
+						}
 					}
 				}
 

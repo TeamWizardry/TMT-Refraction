@@ -1,5 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -8,10 +10,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.EffectTracker;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
+
+import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44
@@ -68,16 +69,16 @@ public class TileDiscoBall extends TileEntity implements IBeamHandler {
 
 	@Override
 	public void handle(Beam... inputs) {
-		for (Beam beam : inputs)
-		{
-			Effect effect = EffectTracker.getEffect(beam);
-			for (int x = -2; x <= 2; x++) {
-				for (int z = -2; z <= 2; z++) {
-					for (int y = -3; y < 0; y++) {
-						Vec3d vec = new Vec3d(pos.getX() + x + 0.5, pos.getY() + y + 0.5, pos.getZ() + z + 0.5);
-						EffectTracker.addEffect(worldObj, vec, effect);
-					}
-				}
+		for (Beam beam : inputs) {
+			for (int i = 0; i < 10; i++) {
+				double radius = 5;
+				double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
+				double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
+				double r = (u > 1) ? 2 - u : u;
+				double x = r * Math.cos(t), z = r * Math.sin(t);
+				Vec3d dest = new Vec3d(x, getPos().getY() - 1, z).scale(-1);
+				beam.color = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / 10);
+				new Beam(worldObj, new Vec3d(getPos()).addVector(0.5, 0.5, 0.5).addVector(ThreadLocalRandom.current().nextDouble(-0.5, 0.5), ThreadLocalRandom.current().nextDouble(-0.5, 0.5), ThreadLocalRandom.current().nextDouble(-0.5, 0.5)), dest, beam.color, beam.enableEffect);
 			}
 		}
 	}

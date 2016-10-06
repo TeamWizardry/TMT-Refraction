@@ -66,7 +66,6 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 		BlockPrism b = (BlockPrism) state.getBlock();
 
 		for (Beam beam : beams) {
-			if (!beam.enableEffect) continue;
 			int sum = beam.color.getRed() + beam.color.getBlue() + beam.color.getGreen();
 			double red = beam.color.getAlpha() * beam.color.getRed() / sum;
 			double green = beam.color.getAlpha() * beam.color.getGreen() / sum;
@@ -74,29 +73,21 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 
 			Vec3d hitPos = beam.finalLoc;
 
-			if (beam.color.getRed() != 0)
-				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), true);
-			if (beam.color.getGreen() != 0)
-				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), true);
-			if (beam.color.getBlue() != 0)
-				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), true);
-		}
-
-		for (Beam beam : beams) {
-			if (beam.enableEffect) continue;
-			int sum = beam.color.getRed() + beam.color.getBlue() + beam.color.getGreen();
-			double red = beam.color.getAlpha() * beam.color.getRed() / sum;
-			double green = beam.color.getAlpha() * beam.color.getGreen() / sum;
-			double blue = beam.color.getAlpha() * beam.color.getBlue() / sum;
-
-			Vec3d hitPos = beam.finalLoc;
-
-			if (beam.color.getRed() != 0)
-				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), false);
-			if (beam.color.getGreen() != 0)
-				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), false);
-			if (beam.color.getBlue() != 0)
-				fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), false);
+			if (!beam.enableEffect) {
+				if (beam.color.getRed() != 0)
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), true);
+				if (beam.color.getGreen() != 0)
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), true);
+				if (beam.color.getBlue() != 0)
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), true);
+			} else {
+				if (beam.color.getRed() != 0)
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), false);
+				if (beam.color.getGreen() != 0)
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), false);
+				if (beam.color.getBlue() != 0)
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), false);
+			}
 		}
 	}
 

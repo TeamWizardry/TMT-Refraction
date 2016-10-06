@@ -21,6 +21,7 @@ public class ModBlocks {
 	public static BlockSensor SENSOR;
 	public static BlockSpectrometer SPECTROMETER;
 	public static BlockOpticFiber OPTIC_FIBER;
+	public static BlockCreativeLaser CREATIVE_LASER;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -37,11 +38,12 @@ public class ModBlocks {
 		SENSOR = new BlockSensor();
 		SPECTROMETER = new BlockSpectrometer();
 		OPTIC_FIBER = new BlockOpticFiber();
+		CREATIVE_LASER = new BlockCreativeLaser();
 	}
 
 	public static void initModels() {
 		ASSEMBLY_TABLE.initModel();
-		DISCO_BALL.initModel();
+		//DISCO_BALL.initModel();
 		MIRROR.initModel();
 		REF_CHAMBER.initModel();
 		SPECTROMETER.initModel();

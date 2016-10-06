@@ -98,6 +98,7 @@ public class EffectTracker {
 	public void tick(TickEvent.WorldTickEvent event) {
 		if (event.phase == TickEvent.Phase.START && event.side == Side.SERVER) {
 
+			//Minecraft.getMinecraft().thePlayer.sendChatMessage(effects.size() + "");
 			blockTracker.generateEffects();
 			for (Effect effect : effects.keySet()) {
 				World w = world.get();
