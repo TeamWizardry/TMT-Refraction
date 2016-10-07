@@ -33,7 +33,6 @@ public class GuiBook extends GuiBase {
 
 		int sidebarWidth = 128;
 		ComponentRect leftSidebar = new ComponentRect(0, 0, sidebarWidth, getGuiHeight());
-		leftSidebar.getColor().setValue(new Color(0x4A4A4A));
 		leftSidebar.BUS.hook(ButtonMixin.ButtonStateChangeEvent.class, (event) -> {
 			switch (event.getNewState()) {
 				case NORMAL:
@@ -48,6 +47,14 @@ public class GuiBook extends GuiBase {
 			}
 		});
 		getComponents().add(leftSidebar);
+
+		for (int i = 1; i < BACKGROUND_SPRITE.getWidth() / 16; i++)
+			for (int j = 1; j < BACKGROUND_SPRITE.getHeight() / 16; j++) {
+				int x = (getGuiWidth() / 2) - (BACKGROUND_SPRITE.getWidth() / 2) + 16 * i;
+				int y = (getGuiHeight() / 2) - (BACKGROUND_SPRITE.getHeight() / 2) + 16 * j;
+				ComponentVoid cmp = new ComponentVoid(x, y, 16, 16);
+				getComponents().add(cmp);
+			}
 	}
 
 	@Override

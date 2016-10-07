@@ -2,7 +2,6 @@ package com.teamwizardry.refraction.common.proxy;
 
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.client.fx.SparkleFX;
 import com.teamwizardry.refraction.client.gui.GuiHandler;
 import com.teamwizardry.refraction.common.core.CatChaseHandler;
 import com.teamwizardry.refraction.common.core.DispenserScrewDriverBehavior;
@@ -10,7 +9,6 @@ import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.init.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -47,10 +45,6 @@ public class CommonProxy {
 
 	public boolean isClient() {
 		return false;
-	}
-
-	public SparkleFX spawnParticleSparkle(World worldIn, double posXIn, double posYIn, double posZIn) {
-		return null;
 	}
 
 	public MinecraftServer getServer() {
