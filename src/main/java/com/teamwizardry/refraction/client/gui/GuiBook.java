@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.client.gui;
 
 import com.teamwizardry.librarianlib.client.gui.GuiBase;
+import com.teamwizardry.librarianlib.client.gui.GuiComponent;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentRect;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
@@ -18,41 +19,45 @@ import java.awt.*;
 public class GuiBook extends GuiBase {
 	public static final Texture BACKGROUND_TEXTURE = new Texture(new ResourceLocation(Refraction.MOD_ID, "textures/gui/book.png"));
 	static final int iconSize = 12;
-	public Sprite BACKGROUND_SPRITE;
-	private ComponentVoid background;
+	public static GuiComponent selected;
+	public Sprite BOOK_BORDER = BACKGROUND_TEXTURE.getSprite("background_border", 146, 180),
+			BOOK_PAPER = BACKGROUND_TEXTURE.getSprite("background_page", 146, 180);
+	private ComponentVoid[][] grid;
 
 	public GuiBook() {
 		super(512, 512);
 
-		BACKGROUND_SPRITE = BACKGROUND_TEXTURE.getSprite("bg", 512, 512).getSubSprite(0, 0, 145, 179);
-
-		ComponentSprite background = new ComponentSprite(BACKGROUND_SPRITE,
-				(getGuiWidth() / 2) - (BACKGROUND_SPRITE.getWidth() / 2),
-				(getGuiHeight() / 2) - (BACKGROUND_SPRITE.getHeight() / 2));
-		getComponents().add(background);
+		ComponentSprite paper = new ComponentSprite(BOOK_PAPER,
+				(getGuiWidth() / 2) - (BOOK_PAPER.getWidth() / 2),
+				(getGuiHeight() / 2) - (BOOK_PAPER.getHeight() / 2));
+		getComponents().add(paper);
+		ComponentSprite border = new ComponentSprite(BOOK_BORDER,
+				(getGuiWidth() / 2) - (BOOK_BORDER.getWidth() / 2),
+				(getGuiHeight() / 2) - (BOOK_BORDER.getHeight() / 2));
+		getComponents().add(border);
 
 		int sidebarWidth = 128;
-		ComponentRect leftSidebar = new ComponentRect(0, 0, sidebarWidth, getGuiHeight());
-		leftSidebar.BUS.hook(ButtonMixin.ButtonStateChangeEvent.class, (event) -> {
-			switch (event.getNewState()) {
-				case NORMAL:
-					leftSidebar.getColor().setValue(new Color(0x4A4A4A));
-					break;
-				case HOVER:
-					leftSidebar.getColor().setValue(new Color(0x9A9A9A));
-					break;
-				case DISABLED:
-					leftSidebar.getColor().setValue(new Color(0x220200));
-					break;
-			}
-		});
-		getComponents().add(leftSidebar);
 
-		for (int i = 1; i < BACKGROUND_SPRITE.getWidth() / 16; i++)
-			for (int j = 1; j < BACKGROUND_SPRITE.getHeight() / 16; j++) {
-				int x = (getGuiWidth() / 2) - (BACKGROUND_SPRITE.getWidth() / 2) + 16 * i;
-				int y = (getGuiHeight() / 2) - (BACKGROUND_SPRITE.getHeight() / 2) + 16 * j;
+		ComponentRect leftSidebarBackground = new ComponentRect(0, 0, sidebarWidth, getGuiHeight());
+		leftSidebarBackground.getColor().setValue(new Color(0xFFFFFF));
+		getComponents().add(leftSidebarBackground);
+
+		leftSidebarBackground.add(new SidebarItem().get(sidebarWidth, 0, "Add Text", 0));
+		leftSidebarBackground.add(new SidebarItem().get(sidebarWidth, 1, "Add Image", 1));
+
+		for (int i = 1; i < BOOK_BORDER.getWidth() / 16; i++)
+			for (int j = 1; j < BOOK_BORDER.getHeight() / 16; j++) {
+				int x = (getGuiWidth() / 2) - (BOOK_BORDER.getWidth() / 2) - 8 + 16 * i;
+				int y = (getGuiHeight() / 2) - (BOOK_BORDER.getHeight() / 2) - 8 + 16 * j;
 				ComponentVoid cmp = new ComponentVoid(x, y, 16, 16);
+				new ButtonMixin<>(cmp, () -> {
+				});
+				cmp.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event) -> {
+					if (selected != null && selected.getTags().contains(0)) {
+
+					}
+				});
+				grid[i][j] = cmp;
 				getComponents().add(cmp);
 			}
 	}
