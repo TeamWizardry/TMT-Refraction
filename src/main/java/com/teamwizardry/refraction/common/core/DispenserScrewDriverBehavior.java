@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.core;
 
+import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.IPrecision;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
@@ -25,7 +26,8 @@ public class DispenserScrewDriverBehavior extends BehaviorDefaultDispenseItem {
 		BlockPos pos = source.getBlockPos().offset(facing);
 		Block block = world.getBlockState(pos).getBlock();
 		if (block instanceof IPrecision) {
-			((IPrecision) block).adjust(world, pos, par2ItemStack, true, facing.getOpposite());
+			boolean invert = ItemNBTHelper.getBoolean(par2ItemStack, "invert", true);
+			((IPrecision) block).adjust(world, pos, par2ItemStack, invert, facing.getOpposite());
 			return par2ItemStack;
 		}
 		return super.dispenseStack(source, par2ItemStack);

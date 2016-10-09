@@ -1,12 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "custom": {
-      "flip-v": true
-    },
-    "model": "refraction:laser.obj",
-    "transform": "forge:default-block",
-    "uvlock": true
+    "model": "refraction:electron_exciter.obj"
   },
   "variants": {
     "facing": {

@@ -9,6 +9,8 @@ public class CraftingRecipes
 {
 	public static void init()
 	{
+		GameRegistry.addRecipe(new RecipeScrewDriver());
+
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.LENS, 3), "AAA", 'A', "blockGlass"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.ASSEMBLY_TABLE), "ABA", "CCC", 'A', "ingotIron", 'B', ModBlocks.LENS, 'C', Blocks.STONE_SLAB));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.MAGNIFIER), "ABA", "A A", "ABA", 'A', "ingotIron", 'B', ModBlocks.LENS));
