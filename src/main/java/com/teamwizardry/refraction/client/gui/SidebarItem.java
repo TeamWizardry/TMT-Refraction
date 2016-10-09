@@ -24,7 +24,7 @@ public class SidebarItem {
 	}
 
 	public ComponentRect get(int sidebarWidth, int column, String text, int id) {
-		ComponentRect background = new ComponentRect(0, 80 + (16 * column), sidebarWidth, 16);
+		ComponentRect background = new ComponentRect(0, 16 * column, sidebarWidth, 16);
 
 		ComponentSprite icon = new ComponentSprite(normal, 0, 0);
 		background.add(icon);
@@ -39,7 +39,7 @@ public class SidebarItem {
 		background.BUS.hook(ButtonMixin.ButtonStateChangeEvent.class, (event) -> {
 			switch (event.getNewState()) {
 				case NORMAL:
-					if (GuiBook.selected != event.getComponent()) {
+					if (GuiBook.selectedGrid != event.getComponent()) {
 						icon.setSprite(normal);
 						background.getColor().setValue(new Color(0x0080B4));
 					} else {
@@ -60,8 +60,8 @@ public class SidebarItem {
 
 		background.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
 			if (event.getButton() == EnumMouseButton.LEFT) {
-				if (GuiBook.selected == event.getComponent()) GuiBook.selected = null;
-				else GuiBook.selected = event.getComponent();
+				if (GuiBook.selectedGrid == event.getComponent()) GuiBook.selectedGrid = null;
+				else GuiBook.selectedGrid = (ComponentRect) event.getComponent();
 			}
 		}));
 
