@@ -110,7 +110,7 @@ public class TileMagnifier extends TileEntity implements ILightSource {
 			Vec3d dir = new Vec3d(0, -1, 0);
 			Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.SOLAR_ALPHA);
 
-			new Beam(worldObj, center, dir, color, true);
+			new Beam(worldObj, center, dir, color, true, false);
 		} else {
 			BlockPos glassPos = pos.offset(EnumFacing.UP);
 			IBlockState glass = worldObj.getBlockState(glassPos);
@@ -120,7 +120,7 @@ public class TileMagnifier extends TileEntity implements ILightSource {
 				Vec3d dir = new Vec3d(0, -1, 0);
 				Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.SOLAR_ALPHA);
 
-				new Beam(worldObj, center, dir, color, false);
+				new Beam(worldObj, center, dir, color, false, false);
 
 			} else if (glass.getBlock() == Blocks.STAINED_GLASS) {
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
@@ -128,82 +128,82 @@ public class TileMagnifier extends TileEntity implements ILightSource {
 				switch (glass.getValue(BlockStainedGlass.COLOR)) {
 					case WHITE: {
 						Color color = Color.WHITE;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case ORANGE: {
 						Color color = Color.ORANGE;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case MAGENTA: {
 						Color color = Color.MAGENTA;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case LIGHT_BLUE: {
 						Color color = new Color(0xadd8e6);
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case YELLOW: {
 						Color color = Color.YELLOW;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case LIME: {
 						Color color = new Color(0x32cd32);
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case PINK: {
 						Color color = Color.PINK;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case GRAY: {
 						Color color = Color.GRAY;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case SILVER: {
 						Color color = new Color(0xd3d3d3);
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case CYAN: {
 						Color color = Color.CYAN;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case PURPLE: {
 						Color color = new Color(0xa020f0);
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case BLUE: {
 						Color color = Color.BLUE;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case BROWN: {
 						Color color = new Color(0x8b4513);
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case GREEN: {
 						Color color = Color.GREEN;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case RED: {
 						Color color = Color.RED;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 					case BLACK: {
 						Color color = Color.BLACK;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
+						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false, false);
 						break;
 					}
 				}

@@ -101,8 +101,8 @@ public class TileReflectionChamber extends TileEntity implements IBeamHandler {
 
 		Vec3d out1 = RotationHelper.averageDirection(angles1);
 		Vec3d out2 = RotationHelper.averageDirection(angles2);
-		new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out1, color1, false);
-		new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out2, color2, true);
+		new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out1, color1, false, false);
+		new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out2, color2, true, false);
 
 	}
 }

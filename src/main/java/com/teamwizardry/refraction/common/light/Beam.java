@@ -22,9 +22,9 @@ public class Beam {
 	public Color color;
 	public World world;
 	public Effect effect;
-	public boolean enableEffect;
+	public boolean enableEffect, ignoreEntities;
 
-	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color, boolean enableEffect) {
+	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color, boolean enableEffect, boolean ignoreEntities) {
 		this.world = world;
 		this.initLoc = initLoc;
 		this.slope = slope;
@@ -32,14 +32,17 @@ public class Beam {
 		this.color = color;
 		this.effect = EffectTracker.getEffect(this);
 		this.enableEffect = enableEffect;
+		this.ignoreEntities = ignoreEntities;
 		if (world.isRemote) return;
 
 		RayTraceResult trace;
-		if (effect != null) {
-			if (effect.getType() == EffectType.BEAM)
-				trace = EntityTrace.cast(world, initLoc, slope, 128, true);
-			else trace = EntityTrace.cast(world, initLoc, slope, 128, false);
-		} else trace = EntityTrace.cast(world, initLoc, slope, 128, false);
+		if (!ignoreEntities) {
+			if (effect != null) {
+				if (effect.getType() == EffectType.BEAM)
+					trace = EntityTrace.cast(world, initLoc, slope, 128, true);
+				else trace = EntityTrace.cast(world, initLoc, slope, 128, false);
+			} else trace = EntityTrace.cast(world, initLoc, slope, 128, false);
+		} else trace = EntityTrace.cast(world, initLoc, slope, 128, true);
 		if (trace == null) return;
 
 		this.finalLoc = trace.hitVec;
@@ -68,16 +71,16 @@ public class Beam {
 		PacketHandler.INSTANCE.getNetwork().sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
 	}
 
-	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color, boolean enableEffect) {
-		this(world, new Vec3d(initX, initY, initZ), new Vec3d(slopeX, slopeY, slopeZ), color, enableEffect);
+	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color, boolean enableEffect, boolean ignoreEntities) {
+		this(world, new Vec3d(initX, initY, initZ), new Vec3d(slopeX, slopeY, slopeZ), color, enableEffect, ignoreEntities);
 	}
 
-	public Beam(World world, Vec3d initLoc, Vec3d dir, float red, float green, float blue, float alpha, boolean enableEffect) {
-		this(world, initLoc, dir, new Color(red, green, blue, alpha), enableEffect);
+	public Beam(World world, Vec3d initLoc, Vec3d dir, float red, float green, float blue, float alpha, boolean enableEffect, boolean ignoreEntities) {
+		this(world, initLoc, dir, new Color(red, green, blue, alpha), enableEffect, ignoreEntities);
 	}
 
-	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, float red, float green, float blue, float alpha, boolean enableEffect) {
-		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha), enableEffect);
+	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, float red, float green, float blue, float alpha, boolean enableEffect, boolean ignoreEntities) {
+		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha), enableEffect, ignoreEntities);
 	}
 
 	@Override
