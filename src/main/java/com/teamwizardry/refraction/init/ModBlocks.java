@@ -43,7 +43,7 @@ public class ModBlocks {
 
 	public static void initModels() {
 		ASSEMBLY_TABLE.initModel();
-		//DISCO_BALL.initModel();
+		DISCO_BALL.initModel();
 		MIRROR.initModel();
 		REF_CHAMBER.initModel();
 		SPECTROMETER.initModel();

@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "refraction:assembly_table.obj"
+    "model": "refraction:assembly_table"
   },
   "variants": {
     "inventory": [

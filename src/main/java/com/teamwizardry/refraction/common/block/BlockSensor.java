@@ -5,12 +5,17 @@ import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.tile.TileSensor;
 import com.teamwizardry.refraction.init.ModTab;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -24,6 +29,14 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BlockSensor extends BlockModContainer {
 
+	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
+	private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0, 11.0 / 16.0, 11.0 / 16.0, 10.0 / 16.0, 5.0 / 16.0, 5.0 / 16.0);
+	private static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(6.0 / 16.0, 5.0 / 16.0, 5.0 / 16.0, 1, 11.0 / 16.0, 11.0 / 16.0);
+	private static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(5.0 / 16.0, 5.0 / 16.0, 6.0 / 16.0, 11.0 / 16.0, 11.0 / 16.0, 1);
+	private static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(5.0 / 16.0, 5.0 / 16.0, 0, 11.0 / 16.0, 11.0 / 16.0, 11.0 / 16.0);
+	private static final AxisAlignedBB AABB_UP = new AxisAlignedBB(5.0 / 16.0, 0, 5.0 / 16.0, 11.0 / 16.0, 10.0 / 16.0, 11.0 / 16.0);
+	private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(5.0 / 16.0, 6.0 / 16.0, 5.0 / 16.0, 11.0 / 16.0, 1, 11.0 / 16.0);
+
 	public BlockSensor() {
 		super("sensor", Material.GLASS);
 		setHardness(1F);
@@ -34,6 +47,58 @@ public class BlockSensor extends BlockModContainer {
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		EnumFacing enumfacing = state.getValue(FACING);
+
+		switch (enumfacing) {
+			case UP:
+				return AABB_UP;
+			case DOWN:
+				return AABB_DOWN;
+			case NORTH:
+				return AABB_NORTH;
+			case SOUTH:
+				return AABB_SOUTH;
+			case EAST:
+				return AABB_EAST;
+			case WEST:
+				return AABB_WEST;
+			default:
+				return AABB_UP;
+		}
+	}
+
+	@Override
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos.west()).isSideSolid(worldIn, pos.west(), EnumFacing.EAST) ||
+				worldIn.getBlockState(pos.east()).isSideSolid(worldIn, pos.east(), EnumFacing.WEST) ||
+				worldIn.getBlockState(pos.north()).isSideSolid(worldIn, pos.north(), EnumFacing.SOUTH) ||
+				worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.UP) ||
+				worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.DOWN) ||
+				worldIn.getBlockState(pos.south()).isSideSolid(worldIn, pos.south(), EnumFacing.NORTH);
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+		EnumFacing enumfacing = state.getValue(FACING);
+
+		if (!this.canBlockStay(worldIn, pos, enumfacing)) {
+			this.dropBlockAsItem(worldIn, pos, state, 0);
+			worldIn.setBlockToAir(pos);
+		}
+		super.neighborChanged(state, worldIn, pos, blockIn);
+	}
+
+	private boolean canBlockStay(World worldIn, BlockPos pos, EnumFacing facing) {
+		return worldIn.getBlockState(pos.offset(facing.getOpposite())).isSideSolid(worldIn, pos.offset(facing.getOpposite()), facing);
+	}
+
+	@Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getStateFromMeta(meta).withProperty(FACING, facing);
 	}
 
 	@Override
@@ -80,18 +145,15 @@ public class BlockSensor extends BlockModContainer {
 	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
-	
+
 	@Override
-	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-	{
+	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		boolean red = false;
 		boolean green = false;
 		boolean blue = false;
 		TileEntity entity = world.getTileEntity(pos);
-		if (entity instanceof TileSensor)
-		{
-			for (Beam beam : ((TileSensor) entity).getBeams())
-			{
+		if (entity instanceof TileSensor) {
+			for (Beam beam : ((TileSensor) entity).getBeams()) {
 				if (beam.color.getRed() > 0) red = true;
 				if (beam.color.getGreen() > 0) green = true;
 				if (beam.color.getBlue() > 0) blue = true;
@@ -99,38 +161,47 @@ public class BlockSensor extends BlockModContainer {
 		}
 		return (red ? 8 : 0) + (green ? 4 : 0) + (blue ? 2 : 0);
 	}
-	
+
 	@Override
-	public int getComparatorInputOverride(IBlockState blockState, World world, BlockPos pos)
-    {
+	public int getComparatorInputOverride(IBlockState blockState, World world, BlockPos pos) {
 		float strength = 0;
 		TileEntity entity = world.getTileEntity(pos);
-		if (entity instanceof TileSensor)
-		{
-			for (Beam beam : ((TileSensor) entity).getBeams())
-			{
+		if (entity instanceof TileSensor) {
+			for (Beam beam : ((TileSensor) entity).getBeams()) {
 				strength += beam.color.getAlpha();
 			}
 		}
 		strength *= 256;
-        return ((int) strength) / 32;
-    }
-	
+		return ((int) strength) / 32;
+	}
+
 	@Override
-	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-	{
+	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return true;
 	}
-	
+
 	@Override
-	public boolean getWeakChanges(IBlockAccess world, BlockPos pos)
-    {
-        return true;
-    }
-	
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
+	}
+
 	@Override
-	public boolean hasComparatorInputOverride(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(FACING).getIndex();
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, FACING);
+	}
+
+	@Override
+	public boolean getWeakChanges(IBlockAccess world, BlockPos pos) {
+		return true;
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(IBlockState state) {
 		return true;
 	}
 

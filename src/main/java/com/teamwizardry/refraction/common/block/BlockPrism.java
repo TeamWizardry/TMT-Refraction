@@ -50,66 +50,18 @@ public class BlockPrism extends BlockModContainer implements ILaserTrace {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing enumfacing;
-		switch (meta & 7) {
-			case 0:
-				enumfacing = EnumFacing.DOWN;
-				break;
-			case 1:
-				enumfacing = EnumFacing.EAST;
-				break;
-			case 2:
-				enumfacing = EnumFacing.WEST;
-				break;
-			case 3:
-				enumfacing = EnumFacing.SOUTH;
-				break;
-			case 4:
-				enumfacing = EnumFacing.NORTH;
-				break;
-			case 5:
-			default:
-				enumfacing = EnumFacing.UP;
-		}
-
-		return this.getDefaultState().withProperty(FACING, enumfacing);
+		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		int i;
-		switch (state.getValue(FACING).ordinal()) {
-			case 0:
-				i = 0;
-				break;
-			case 1:
-				i = 1;
-				break;
-			case 2:
-				i = 2;
-				break;
-			case 3:
-				i = 3;
-				break;
-			case 4:
-				i = 4;
-				break;
-			case 5:
-				i = 5;
-				break;
-			default:
-				i = 0;
-				break;
-		}
-		return i;
+		return state.getValue(FACING).getIndex();
 	}
-
 
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING);
 	}
-
 
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {

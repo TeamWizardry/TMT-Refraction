@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.tile;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.common.light.Beam;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.EnumSkyBlock;
 
 import java.awt.*;
 
@@ -15,6 +16,7 @@ public class TileSplitter extends TileMirror {
 	@Override
 	public void handle(Beam... beams)
 	{
+		worldObj.setLightFor(EnumSkyBlock.BLOCK, getPos(), 15);
 		Matrix4 matrix = new Matrix4();
 		matrix.rotate(Math.toRadians(getRotY()), new Vec3d(0, 1, 0));
 		matrix.rotate(Math.toRadians(getRotX()), new Vec3d(1, 0, 0));
