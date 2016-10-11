@@ -2,9 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "model": "refraction:spectrometer.obj",
-    "textures": {
-      "front": "refraction:blocks/spectrometer"
-    }
+    "transform": "forge:default-block"
   },
   "variants": {
     "normal": [{}],

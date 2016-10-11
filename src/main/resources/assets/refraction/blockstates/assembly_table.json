@@ -1,7 +1,8 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "refraction:assembly_table"
+    "model": "refraction:assembly_table",
+    "transform": "forge:default-block"
   },
   "variants": {
     "inventory": [
