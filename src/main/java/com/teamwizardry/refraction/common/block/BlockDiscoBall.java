@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.client.render.RenderDiscoBall;
@@ -12,6 +13,8 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -22,6 +25,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Created by LordSaad44
@@ -40,6 +45,11 @@ public class BlockDiscoBall extends BlockModContainer {
 	@SideOnly(Side.CLIENT)
 	public void initModel() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileDiscoBall.class, new RenderDiscoBall());
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
 	}
 
 	@Override

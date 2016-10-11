@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.ISpamSoundProvider;
@@ -27,6 +28,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * Created by LordSaad44
  */
@@ -45,6 +48,11 @@ public class BlockLaser extends BlockModContainer implements ISpamSoundProvider 
 
 	private TileLaser getTE(World world, BlockPos pos) {
 		return (TileLaser) world.getTileEntity(pos);
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
 	}
 
 	@Override

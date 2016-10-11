@@ -23,6 +23,20 @@ item.refraction:screw_driver.6.name=Screw Driver (1/2°)
 item.refraction:screw_driver.7.name=Screw Driver (1°)
 item.refraction:reflective_alloy.name=Reflective Alloy
 
+simple_name.refraction:mirror=&7Mirror
+simple_name.refraction:splitter=&7Splitter
+simple_name.refraction:lens=&7Lens
+simple_name.refraction:magnifier=&7Magnifier
+simple_name.refraction:assembly_table=&7Assembly Table
+simple_name.refraction:laser=&7Laser
+simple_name.refraction:prism=&7Prism
+simple_name.refraction:disco_ball=&7Disco Ball
+simple_name.refraction:reflection_chamber=&7Reflection Chamber
+simple_name.refraction:electron_exciter=&7Electron Exciter
+simple_name.refraction:sensor=&7Sensor
+simple_name.refraction:spectrometer=&7Spectrometer
+simple_name.refraction:creative_laser=&7Creative Laser
+
 gui.screw_driver.angle.0=5°
 gui.screw_driver.angle.1=22.5°
 gui.screw_driver.angle.2=45°

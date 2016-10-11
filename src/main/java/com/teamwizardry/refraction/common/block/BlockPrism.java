@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
@@ -14,6 +15,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -28,6 +31,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Created by LordSaad44
@@ -46,6 +51,11 @@ public class BlockPrism extends BlockModContainer implements ILaserTrace {
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(FACING, facing);
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
 	}
 
 	@Override
@@ -122,17 +132,17 @@ public class BlockPrism extends BlockModContainer implements ILaserTrace {
 	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
-	
+
 	@Override
 	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
-		
+
 		EnumFacing facing = blockState.getValue(FACING);
-		
+
 		Matrix4 matrixA = new Matrix4();
 		Matrix4 matrixB = new Matrix4();
 //		matrixA.translate(new Vec3d(-0.5, -0.5, -0.5));
 //		matrixB.translate(new Vec3d(0.5, 0.5, 0.5));
-		switch(facing) {
+		switch (facing) {
 			case UP:
 			case DOWN:
 			case EAST:
@@ -152,51 +162,51 @@ public class BlockPrism extends BlockModContainer implements ILaserTrace {
 		}
 //		matrixA.translate(new Vec3d(0.5, 0.5, 0.5));
 //		matrixB.translate(new Vec3d(-0.5, -0.5, -0.5));
-		
+
 		Vec3d
-			a = new Vec3d(0, 0, 0),
-			b = new Vec3d(1, 0, 0.5),
-			c = new Vec3d(0, 0, 1),
-			A = a.addVector(0, 1, 0),
-			B = b.addVector(0, 1, 0),
-			C = c.addVector(0, 1, 0);
-		
-		Tri[] tris = new Tri[] {
-			new Tri(a, b, c),
-			new Tri(A, C, B),
-			
-			new Tri(a, c, C),
-			new Tri(a, C, A),
-			
-			new Tri(a, A, B),
-			new Tri(a, B, b),
-			
-			new Tri(b, B, C),
-			new Tri(b, C, c),
+				a = new Vec3d(0, 0, 0),
+				b = new Vec3d(1, 0, 0.5),
+				c = new Vec3d(0, 0, 1),
+				A = a.addVector(0, 1, 0),
+				B = b.addVector(0, 1, 0),
+				C = c.addVector(0, 1, 0);
+
+		Tri[] tris = new Tri[]{
+				new Tri(a, b, c),
+				new Tri(A, C, B),
+
+				new Tri(a, c, C),
+				new Tri(a, C, A),
+
+				new Tri(a, A, B),
+				new Tri(a, B, b),
+
+				new Tri(b, B, C),
+				new Tri(b, C, c),
 		};
-		
+
 		Vec3d start = matrixA.apply(startRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
 		Vec3d end = matrixA.apply(endRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
-		
+
 		Tri hitTri = null;
 		Vec3d hit = null;
 		double shortestSq = Double.POSITIVE_INFINITY;
-		
-		for(Tri tri : tris) {
+
+		for (Tri tri : tris) {
 			Vec3d v = tri.trace(start, end);
-			if(v != null) {
+			if (v != null) {
 				double distSq = start.subtract(v).lengthSquared();
-				if(distSq < shortestSq) {
+				if (distSq < shortestSq) {
 					hit = v;
 					shortestSq = distSq;
 					hitTri = tri;
 				}
 			}
 		}
-		
-		if(hit == null)
+
+		if (hit == null)
 			return null;
-		
+
 		return new RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
 	}
 
@@ -213,38 +223,33 @@ public class BlockPrism extends BlockModContainer implements ILaserTrace {
 	}
 
 	public static class RayTraceResultData<T> extends RayTraceResult {
-		
+
 		public T data;
-		
-		public RayTraceResultData(Vec3d hitVecIn, EnumFacing sideHitIn, BlockPos blockPosIn)
-		{
+
+		public RayTraceResultData(Vec3d hitVecIn, EnumFacing sideHitIn, BlockPos blockPosIn) {
 			this(RayTraceResult.Type.BLOCK, hitVecIn, sideHitIn, blockPosIn);
 		}
-		
-		public RayTraceResultData(Vec3d hitVecIn, EnumFacing sideHitIn)
-		{
+
+		public RayTraceResultData(Vec3d hitVecIn, EnumFacing sideHitIn) {
 			this(RayTraceResult.Type.BLOCK, hitVecIn, sideHitIn, BlockPos.ORIGIN);
 		}
-		
-		public RayTraceResultData(Entity entityIn)
-		{
+
+		public RayTraceResultData(Entity entityIn) {
 			this(entityIn, new Vec3d(entityIn.posX, entityIn.posY, entityIn.posZ));
 		}
-		
-		public RayTraceResultData(RayTraceResult.Type typeIn, Vec3d hitVecIn, EnumFacing sideHitIn, BlockPos blockPosIn)
-		{
+
+		public RayTraceResultData(RayTraceResult.Type typeIn, Vec3d hitVecIn, EnumFacing sideHitIn, BlockPos blockPosIn) {
 			super(typeIn, hitVecIn, sideHitIn, blockPosIn);
 		}
-		
-		public RayTraceResultData(Entity entityHitIn, Vec3d hitVecIn)
-		{
+
+		public RayTraceResultData(Entity entityHitIn, Vec3d hitVecIn) {
 			super(entityHitIn, hitVecIn);
 		}
-		
+
 		public RayTraceResultData<T> data(T data) {
 			this.data = data;
 			return this;
 		}
-		
+
 	}
 }
