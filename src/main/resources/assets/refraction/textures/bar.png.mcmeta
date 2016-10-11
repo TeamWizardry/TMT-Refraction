@@ -1,0 +1,9 @@
+{
+	"spritesheet":{
+		"textureWidth":6,
+		"textureHeight":6,
+		"sprites":{
+			"bar":[0, 0, 6, 6]
+		}
+	}
+}

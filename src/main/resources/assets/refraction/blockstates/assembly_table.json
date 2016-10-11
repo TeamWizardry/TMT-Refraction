@@ -1,13 +1,13 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "refraction:assembly_table.obj",
-    "textures": {
-      "front": "refraction:blocks/assembly_table"
-    }
+    "model": "refraction:assembly_table.obj"
   },
   "variants": {
     "inventory": [
+      {}
+    ],
+    "normal": [
       {}
     ]
   }
