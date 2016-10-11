@@ -8,7 +8,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -70,7 +69,6 @@ public class TileDiscoBall extends TileEntity implements IBeamHandler {
 
 	@Override
 	public void handle(Beam... inputs) {
-		worldObj.setLightFor(EnumSkyBlock.BLOCK, getPos(), 15);
 		for (Beam beam : inputs) {
 			for (int i = 0; i < 10; i++) {
 				double radius = 5;
