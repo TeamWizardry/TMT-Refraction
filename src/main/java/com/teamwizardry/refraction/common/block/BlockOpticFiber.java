@@ -36,18 +36,14 @@ public class BlockOpticFiber extends BlockModContainer {
 		GameRegistry.registerTileEntity(TileOpticFiber.class, "optic_fiber");
 	}
 
-	private TileOpticFiber getTE(World world, BlockPos pos) {
-		return (TileOpticFiber) world.getTileEntity(pos);
-	}
-
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
-		worldIn.setBlockState(pos, TileOpticFiber.updateBlockState(worldIn, pos));
+		worldIn.setBlockState(pos, TileOpticFiber.updateBlockState(worldIn, pos), 3);
 	}
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		worldIn.setBlockState(pos, TileOpticFiber.updateBlockState(worldIn, pos));
+		worldIn.setBlockState(pos, TileOpticFiber.updateBlockState(worldIn, pos), 3);
 	}
 
 	@Override
