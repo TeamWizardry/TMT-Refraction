@@ -7,14 +7,11 @@ import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.common.light.ILaserTrace;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
-import com.teamwizardry.refraction.init.ModItems;
 import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -42,19 +39,6 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 
 	private TileSplitter getTE(World world, BlockPos pos) {
 		return (TileSplitter) world.getTileEntity(pos);
-	}
-
-	public void adjust(World worldIn, BlockPos pos, ItemStack stack, EntityPlayer playerIn, EnumFacing side) {
-		TileMirror te = getTE(worldIn, pos);
-		if (!worldIn.isRemote) {
-			float jump = ModItems.SCREW_DRIVER.getRotationMultiplier(stack) * (playerIn.isSneaking() ? -1 : 1);
-
-			if (side.getAxis() == EnumFacing.Axis.Y) {
-				te.setRotY((te.getRotY() + jump) % 360);
-			} else {
-				te.setRotX((te.getRotX() + jump) % 360);
-			}
-		}
 	}
 
 	@Override

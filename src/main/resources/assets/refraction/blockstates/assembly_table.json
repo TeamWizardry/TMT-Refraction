@@ -1,12 +1,14 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "custom": {
-      "flip-v": true
-    },
     "model": "refraction:assembly_table.obj",
-    "transform": "forge:default-block",
-    "uvlock": true
+    "textures": {
+      "front": "refraction:blocks/assembly_table"
+    }
   },
-  "variants": {}
+  "variants": {
+    "inventory": [
+      {}
+    ]
+  }
 }

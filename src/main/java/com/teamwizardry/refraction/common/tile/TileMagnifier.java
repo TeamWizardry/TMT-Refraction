@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
@@ -12,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
@@ -80,133 +80,80 @@ public class TileMagnifier extends TileEntity implements ILightSource {
 	public void generateBeam() {
 		boolean hasLens = false;
 		int worldTime = (int) (worldObj.getWorldTime() % 24000L);
-		if (worldTime >= BeamConstants.NIGHT_START && worldTime < BeamConstants.NIGHT_END) return;
-		for (int y = 1; y < 10; y++) {
-			BlockPos lens = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
-			if (worldObj.getBlockState(lens).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens))
-				continue;
-			if (worldObj.getBlockState(lens.south()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.south()))
-				continue;
-			if (worldObj.getBlockState(lens.north()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.north()))
-				continue;
-			if (worldObj.getBlockState(lens.east()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.east()))
-				continue;
-			if (worldObj.getBlockState(lens.west()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.west()))
-				continue;
-			if (worldObj.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.south().west()))
-				continue;
-			if (worldObj.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.south().east()))
-				continue;
-			if (worldObj.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.north().west()))
-				continue;
-			if (worldObj.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.north().east()))
-				continue;
-			hasLens = true;
-			break;
-		}
+		if (!(worldTime >= BeamConstants.NIGHT_START && worldTime < BeamConstants.NIGHT_END)) {
+			for (int y = 1; y < 10; y++) {
+				BlockPos lens = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
+				if (worldObj.getBlockState(lens).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens))
+					continue;
+				if (worldObj.getBlockState(lens.south()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.south()))
+					continue;
+				if (worldObj.getBlockState(lens.north()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.north()))
+					continue;
+				if (worldObj.getBlockState(lens.east()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.east()))
+					continue;
+				if (worldObj.getBlockState(lens.west()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.west()))
+					continue;
+				if (worldObj.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.south().west()))
+					continue;
+				if (worldObj.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.south().east()))
+					continue;
+				if (worldObj.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.north().west()))
+					continue;
+				if (worldObj.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens.north().east()))
+					continue;
+				hasLens = true;
+				break;
+			}
 
-		if (hasLens) {
-			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-			Vec3d dir = new Vec3d(0, -1, 0);
-			Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.SOLAR_ALPHA);
-
-			new Beam(worldObj, center, dir, color, true);
-		} else {
-			BlockPos glassPos = pos.offset(EnumFacing.UP);
-			IBlockState glass = worldObj.getBlockState(glassPos);
-
-			if (glass.getBlock() == Blocks.GLASS && worldObj.canBlockSeeSky(glassPos)) {
+			if (hasLens) {
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);
 				Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.SOLAR_ALPHA);
 
-				new Beam(worldObj, center, dir, color, false);
+				new Beam(worldObj, center, dir, color, true, false);
 
-			} else if (glass.getBlock() == Blocks.STAINED_GLASS) {
+				return;
+			}
+		}
+
+		Color[] colors = new Color[5];
+		for (int y = 1; y < 5; y++) {
+			BlockPos glassPos = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
+			IBlockState glass = worldObj.getBlockState(glassPos);
+
+			if (glass.getBlock() == Blocks.GLASS) colors[y] = new Color(255, 255, 255, 63);
+			else if (glass.getBlock() == Blocks.STAINED_GLASS) {
+				Color color = Utils.getColorFromDyeEnum(glass.getValue(BlockStainedGlass.COLOR));
+				colors[y] = new Color(color.getRed(), color.getGreen(), color.getBlue(), 63);
+			}
+		}
+
+		if (colors.length >= 1) {
+			int red = 0;
+			int green = 0;
+			int blue = 0;
+			int alpha = 0;
+			for (Color color : colors) {
+				if (color == null) continue;
+				red += color.getRed();
+				green += color.getGreen();
+				blue += color.getBlue();
+				alpha += color.getAlpha();
+			}
+			if (alpha > 0) {
+
+				red = Math.min(red / colors.length, 255);
+				green = Math.min(green / colors.length, 255);
+				blue = Math.min(blue / colors.length, 255);
+
+				float[] hsvVals = Color.RGBtoHSB(red, green, blue, null);
+				Color color = new Color(Color.HSBtoRGB(hsvVals[0], hsvVals[1], 1));
+				color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
+
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);
-				switch (glass.getValue(BlockStainedGlass.COLOR)) {
-					case WHITE: {
-						Color color = Color.WHITE;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case ORANGE: {
-						Color color = Color.ORANGE;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case MAGENTA: {
-						Color color = Color.MAGENTA;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case LIGHT_BLUE: {
-						Color color = new Color(0xadd8e6);
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case YELLOW: {
-						Color color = Color.YELLOW;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case LIME: {
-						Color color = new Color(0x32cd32);
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case PINK: {
-						Color color = Color.PINK;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case GRAY: {
-						Color color = Color.GRAY;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case SILVER: {
-						Color color = new Color(0xd3d3d3);
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case CYAN: {
-						Color color = Color.CYAN;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case PURPLE: {
-						Color color = new Color(0xa020f0);
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case BLUE: {
-						Color color = Color.BLUE;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case BROWN: {
-						Color color = new Color(0x8b4513);
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case GREEN: {
-						Color color = Color.GREEN;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case RED: {
-						Color color = Color.RED;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-					case BLACK: {
-						Color color = Color.BLACK;
-						new Beam(worldObj, center, dir, new Color(color.getRed(), color.getGreen(), color.getBlue(), BeamConstants.SOLAR_ALPHA), false);
-						break;
-					}
-				}
+
+				new Beam(worldObj, center, dir, color, false, false);
 			}
 		}
 	}

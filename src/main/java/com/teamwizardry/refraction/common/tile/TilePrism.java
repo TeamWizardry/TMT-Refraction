@@ -117,7 +117,7 @@ public class TilePrism extends TileEntity implements IBeamHandler {
 			}
 		}
 
-		new Beam(worldObj, hitPos, ref, color, disableEffect);
+		new Beam(worldObj, hitPos, ref, color, disableEffect, false);
 	}
 
 	private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {

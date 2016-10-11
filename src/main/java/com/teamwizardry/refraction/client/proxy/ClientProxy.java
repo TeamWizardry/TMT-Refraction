@@ -3,7 +3,6 @@ package com.teamwizardry.refraction.client.proxy;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.EventHandlerClient;
 import com.teamwizardry.refraction.client.LaserRenderer;
-import com.teamwizardry.refraction.client.fx.SparkleFX;
 import com.teamwizardry.refraction.client.render.ScrewdriverOverlay;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -13,7 +12,6 @@ import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -48,13 +46,6 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		super.postInit(event);
 		if (Minecraft.getMinecraft().getResourceManager() instanceof IReloadableResourceManager)
 			((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
-	}
-
-	@Override
-	public SparkleFX spawnParticleSparkle(World worldIn, double posXIn, double posYIn, double posZIn) {
-		SparkleFX particle = new SparkleFX(worldIn, posXIn, posYIn, posZIn);
-		Minecraft.getMinecraft().effectRenderer.addEffect(particle);
-		return particle;
 	}
 
 	@Override

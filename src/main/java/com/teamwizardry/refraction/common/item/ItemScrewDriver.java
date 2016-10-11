@@ -2,8 +2,7 @@ package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
-import com.teamwizardry.refraction.common.block.BlockMirror;
-import com.teamwizardry.refraction.common.block.BlockSplitter;
+import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,19 +35,13 @@ public class ItemScrewDriver extends ItemMod {
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		Block block = worldIn.getBlockState(pos).getBlock();
 
-		if (block instanceof BlockMirror) {
-			((BlockMirror) block).adjust(worldIn, pos, stack, playerIn, facing);
-			return EnumActionResult.SUCCESS;
-		} else if (block instanceof BlockSplitter) {
-			((BlockSplitter) block).adjust(worldIn, pos, stack, playerIn, facing);
-			return EnumActionResult.SUCCESS;
+		if (block instanceof IPrecision) {
+			((IPrecision) block).adjust(worldIn, pos, stack, playerIn.isSneaking(), facing);
 		} else {
-			if (stack.getTagCompound() == null)
-				stack.setTagCompound(new NBTTagCompound());
+			if (stack.getTagCompound() == null) stack.setTagCompound(new NBTTagCompound());
 			int i = stack.getTagCompound().getInteger(MODE_TAG);
 			i = (i + (playerIn.isSneaking() ? -1 : 1));
-			while (i < 0)
-				i += multipliers.length;
+			while (i < 0) i += multipliers.length;
 			i = i % multipliers.length;
 			stack.getTagCompound().setInteger(MODE_TAG, i);
 		}

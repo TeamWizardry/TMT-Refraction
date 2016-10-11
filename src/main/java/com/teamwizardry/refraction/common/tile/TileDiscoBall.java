@@ -78,7 +78,7 @@ public class TileDiscoBall extends TileEntity implements IBeamHandler {
 				double x = r * Math.cos(t), z = r * Math.sin(t);
 				Vec3d dest = new Vec3d(x, getPos().getY() - 1, z).scale(-1);
 				beam.color = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / 10);
-				new Beam(worldObj, new Vec3d(getPos()).addVector(0.5, 0.5, 0.5).addVector(ThreadLocalRandom.current().nextDouble(-0.5, 0.5), ThreadLocalRandom.current().nextDouble(-0.5, 0.5), ThreadLocalRandom.current().nextDouble(-0.5, 0.5)), dest, beam.color, beam.enableEffect);
+				new Beam(worldObj, new Vec3d(getPos()).addVector(0.5, 0.5, 0.5).addVector(ThreadLocalRandom.current().nextDouble(-0.5, 0.5), ThreadLocalRandom.current().nextDouble(-0.5, 0.5), ThreadLocalRandom.current().nextDouble(-0.5, 0.5)), dest, beam.color, beam.enableEffect, false);
 			}
 		}
 	}
