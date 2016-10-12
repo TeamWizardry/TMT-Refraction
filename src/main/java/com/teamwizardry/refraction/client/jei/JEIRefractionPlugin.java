@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.client.jei;
 
-import com.teamwizardry.refraction.init.AssemblyRecipies;
 import com.teamwizardry.refraction.init.ModBlocks;
+import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
 import mezz.jei.api.*;
 import net.minecraft.item.ItemStack;
 

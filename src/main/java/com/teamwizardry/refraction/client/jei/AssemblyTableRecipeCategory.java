@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nonnull;
 
@@ -23,6 +24,9 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 	private final IDrawable background;
 	private final String localizedName;
 	private final IDrawable overlay;
+	private float hover = (float) (Math.random() * Math.PI * 2.0D);
+	private float transitionTimeX = 0, transitionTimeMaxX = 100;
+	private boolean forwards = true;
 
 	public AssemblyTableRecipeCategory(IGuiHelper guiHelper) {
 		background = guiHelper.createBlankDrawable(180, 180);
@@ -50,8 +54,20 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
+		int prevX = -5, destX = 5;
+		if (transitionTimeX < transitionTimeMaxX) {
+			transitionTimeX++;
+			if (forwards)
+				hover = ((prevX - destX) / 2) * MathHelper.cos((float) (transitionTimeX * Math.PI / transitionTimeMaxX)) + (destX + prevX) / 2;
+			else
+				hover = ((destX - prevX) / 2) * MathHelper.cos((float) (transitionTimeX * Math.PI / transitionTimeMaxX)) + (destX + prevX) / 2;
+		} else {
+			transitionTimeX = 0;
+			forwards = !forwards;
+		}
 		GlStateManager.enableAlpha();
 		GlStateManager.enableBlend();
+		GlStateManager.translate(0, hover, 0);
 		overlay.draw(minecraft, 86, 90);
 		GlStateManager.disableBlend();
 		GlStateManager.disableAlpha();

@@ -4,10 +4,12 @@ import com.google.common.collect.ImmutableList;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipe;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +22,13 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 	private ArrayList<ItemStack> outputs = new ArrayList<>();
 	private List<FluidStack> fluidInputs = ImmutableList.of();
 	private List<FluidStack> fluidOutputs = ImmutableList.of();
+	private float minStrength = 0, maxStrength = 100;
 
 	public AssemblyTableRecipeWrapper(AssemblyRecipe recipe) {
 		inputs.addAll(recipe.getItems());
 		outputs.add(recipe.getResult());
+		minStrength = recipe.getMinStrength();
+		maxStrength = recipe.getMaxStrength();
 	}
 
 	@Override
@@ -48,6 +53,15 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 
 	@Override
 	public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+		GlStateManager.pushMatrix();
+
+		GlStateManager.color(1f, 1f, 1f);
+		String one = "Min Strength: " + (int) minStrength;
+		String two = "Max Strength: " + (int) maxStrength;
+		Minecraft.getMinecraft().fontRendererObj.drawString(one, 90 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(one) / 2, 170, Color.BLACK.getRGB());
+		Minecraft.getMinecraft().fontRendererObj.drawString(two, 90 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(one) / 2, 180, Color.BLACK.getRGB());
+
+		GlStateManager.popMatrix();
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import com.teamwizardry.refraction.common.core.CatChaseHandler;
 import com.teamwizardry.refraction.common.core.DispenserScrewDriverBehavior;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.init.*;
+import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
 import com.teamwizardry.refraction.init.recipies.CraftingRecipes;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.server.MinecraftServer;
