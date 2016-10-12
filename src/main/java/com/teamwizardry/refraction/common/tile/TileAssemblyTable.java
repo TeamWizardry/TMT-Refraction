@@ -120,6 +120,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 	@Override
 	public void handle(Beam... inputs) {
 		if (worldObj.isRemote) return;
+		if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) != 0) return;
 
 		temperature = 0;
 		for (Beam beam : inputs) {
