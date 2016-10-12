@@ -25,12 +25,6 @@ public class AssemblyTableRecipeHandler implements IRecipeHandler<AssemblyRecipe
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid(@Nonnull AssemblyRecipe recipe) {
-		return getRecipeCategoryUid();
-	}
-
-	@Nonnull
-	@Override
 	public IRecipeWrapper getRecipeWrapper(@Nonnull AssemblyRecipe recipe) {
 		return new AssemblyTableRecipeWrapper(recipe);
 	}

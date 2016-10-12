@@ -183,20 +183,8 @@ public class BlockOpticFiber extends BlockModContainer {
         if (state.getBlock() instanceof BlockOpticFiber) {
             if (state.getValue(FACING).contains(facing.getOpposite()))
                 return facing.getOpposite();
-            EnumFacing[] facings = new EnumFacing[] {};
-            switch (facing.getAxis()) {
-                case X:
-                    facings = new EnumFacing[] {DOWN, UP, NORTH, SOUTH};
-                    break;
-                case Y:
-                    facings = new EnumFacing[] {NORTH, SOUTH, WEST, EAST};
-                    break;
-                case Z:
-                    facings = new EnumFacing[] {DOWN, UP, WEST, EAST};
-                    break;
-            }
 
-            for (EnumFacing cross : facings) if (state.getValue(FACING).contains(cross)) {
+            for (EnumFacing cross : EnumFacing.VALUES) if (cross != facing.getOpposite() && state.getValue(FACING).contains(cross)) {
                 IBlockState offsetState = world.getBlockState(pos.offset(facing).offset(cross));
                 if (!(offsetState.getBlock() instanceof BlockOpticFiber && offsetState.getValue(FACING).contains(cross.getOpposite())))
                     return cross;
