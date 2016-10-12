@@ -20,9 +20,9 @@ import java.awt.*;
  */
 public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectrometer> {
 
-	private ResourceLocation loc = new ResourceLocation(Refraction.MOD_ID, "textures/bar.png");
-	private Texture texture = new Texture(loc);
-	private Sprite BAR_SPRITE = texture.getSprite("bar", 1, 1);
+	private static ResourceLocation loc = new ResourceLocation(Refraction.MOD_ID, "textures/bar.png");
+	private static Texture texture = new Texture(loc);
+	private static Sprite BAR_SPRITE = texture.getSprite("bar", 1, 1);
 
 	public void renderTileEntityAt(TileSpectrometer te, double x, double y, double z, float partialTicks, int destroyStage) {
 		VertexBuffer buffer = Tessellator.getInstance().getBuffer();
@@ -67,23 +67,23 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		// a
 		GlStateManager.color(1, 1, 1);
 		GlStateManager.translate(0, 1.35, 0);
-		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, 1);
+		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, (int) (12.0 / a));
 		GlStateManager.translate(0, -1.35, 0);
 
 		// r
 		GlStateManager.color(1, 0, 0);
 		GlStateManager.translate(1, 1.35, 0);
-		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, 1);
+		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, (int) (12.0 / a));
 		GlStateManager.translate(-1, -1.35, 0);
 
 		// g
 		GlStateManager.color(0, 1, 0);
-		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, 1);
+		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, (int) (12.0 / a));
 
 		// b
 		GlStateManager.color(0, 0, 1);
 		GlStateManager.translate(1, 0, 0);
-		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, 1);
+		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, (int) (12.0 / a));
 		GlStateManager.translate(-1, 0, 0);
 
 		GlStateManager.enableLighting();

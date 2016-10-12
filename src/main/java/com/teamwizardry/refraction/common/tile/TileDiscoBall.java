@@ -69,6 +69,7 @@ public class TileDiscoBall extends TileEntity implements IBeamHandler {
 
 	@Override
 	public void handle(Beam... inputs) {
+		if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) != 0) return;
 		for (Beam beam : inputs) {
 			for (int i = 0; i < 10; i++) {
 				double radius = 5;
