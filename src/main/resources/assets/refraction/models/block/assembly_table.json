@@ -1,8 +1,8 @@
 {
   "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
   "textures": {
-    "0": "blocks/assemble_table",
-    "1": "blocks/null"
+    "0": "refraction:blocks/assemble_table",
+    "1": "refraction:blocks/null"
   },
   "elements": [
     {
