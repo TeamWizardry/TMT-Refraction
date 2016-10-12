@@ -15,6 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -50,6 +51,14 @@ public class BlockLightBridge extends BlockModContainer implements ISpamSoundPro
 		setTickRandomly(true);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(VERTICAL, false));
+	}
+
+	
+
+	@Nullable
+	@Override
+	public ItemBlock createItemForm() {
+		return null;
 	}
 
 	@Override

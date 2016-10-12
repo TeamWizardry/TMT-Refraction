@@ -11,7 +11,8 @@ import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -33,8 +35,11 @@ import java.util.List;
  */
 public class BlockElectronExciter extends BlockModContainer implements ISpamSoundProvider {
 
-	//public static final PropertyEnum<EnumFacing> LINKED_BLOCK = PropertyEnum.create("linked_block", EnumFacing.class);
-	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
+	public static final PropertyDirection FACING = PropertyDirection.create("facing");
+	private static final PropertyBool UP = PropertyBool.create("up");
+    private static final PropertyBool DOWN = PropertyBool.create("down");
+    private static final PropertyBool LEFT = PropertyBool.create("left"); // Left when looking at front
+    private static final PropertyBool RIGHT = PropertyBool.create("right"); // Right when looking at front
 
 	public BlockElectronExciter() {
 		super("electron_exciter", Material.IRON);
@@ -67,7 +72,65 @@ public class BlockElectronExciter extends BlockModContainer implements ISpamSoun
 		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing().getOpposite());
 	}
 
-	@Override
+    @NotNull
+    @Override
+    public IBlockState getActualState(@NotNull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        EnumFacing facing = state.getValue(FACING);
+        boolean up, down, left, right;
+		switch (facing) {
+			case DOWN:
+				up = checkState(worldIn, pos.offset(EnumFacing.SOUTH), facing);
+				down = checkState(worldIn, pos.offset(EnumFacing.NORTH), facing);
+				left = checkState(worldIn, pos.offset(EnumFacing.EAST), facing);
+				right = checkState(worldIn, pos.offset(EnumFacing.WEST), facing);
+				break;
+			case UP:
+				up = checkState(worldIn, pos.offset(EnumFacing.NORTH), facing);
+				down = checkState(worldIn, pos.offset(EnumFacing.SOUTH), facing);
+				left = checkState(worldIn, pos.offset(EnumFacing.WEST), facing);
+				right = checkState(worldIn, pos.offset(EnumFacing.EAST), facing);
+				break;
+			case NORTH:
+				up = checkState(worldIn, pos.offset(EnumFacing.UP), facing);
+				down = checkState(worldIn, pos.offset(EnumFacing.DOWN), facing);
+				left = checkState(worldIn, pos.offset(EnumFacing.WEST), facing);
+				right = checkState(worldIn, pos.offset(EnumFacing.EAST), facing);
+				break;
+			case SOUTH:
+				up = checkState(worldIn, pos.offset(EnumFacing.UP), facing);
+				down = checkState(worldIn, pos.offset(EnumFacing.DOWN), facing);
+				left = checkState(worldIn, pos.offset(EnumFacing.EAST), facing);
+				right = checkState(worldIn, pos.offset(EnumFacing.WEST), facing);
+				break;
+			case WEST:
+				up = checkState(worldIn, pos.offset(EnumFacing.UP), facing);
+				down = checkState(worldIn, pos.offset(EnumFacing.DOWN), facing);
+				left = checkState(worldIn, pos.offset(EnumFacing.SOUTH), facing);
+				right = checkState(worldIn, pos.offset(EnumFacing.NORTH), facing);
+				break;
+			case EAST:
+				up = checkState(worldIn, pos.offset(EnumFacing.UP), facing);
+				down = checkState(worldIn, pos.offset(EnumFacing.DOWN), facing);
+				left = checkState(worldIn, pos.offset(EnumFacing.NORTH), facing);
+				right = checkState(worldIn, pos.offset(EnumFacing.SOUTH), facing);
+				break;
+			default:
+				up = false;
+				down = false;
+				left = false;
+				right = false;
+				break;
+		}
+
+        return state.withProperty(UP, up).withProperty(DOWN, down).withProperty(LEFT, left).withProperty(RIGHT, right);
+    }
+
+    private boolean checkState(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+    	IBlockState state = world.getBlockState(pos);
+		return state.getBlock() == this && state.getValue(FACING) == facing;
+	}
+
+    @Override
 	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
 	/*	TileElectronExciter te = (TileElectronExciter) world.getTileEntity(pos);
 		if (te == null) return;
@@ -102,7 +165,7 @@ public class BlockElectronExciter extends BlockModContainer implements ISpamSoun
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, UP, LEFT, RIGHT, DOWN);
 	}
 
 	@Override

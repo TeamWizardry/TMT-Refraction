@@ -21,6 +21,10 @@ import java.awt.*;
  */
 public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectrometer> {
 
+	private static ResourceLocation BAR_LOC = new ResourceLocation(Refraction.MOD_ID, "textures/bar.png");
+	private static Texture BAR_TEX = new Texture(BAR_LOC);
+	private static Sprite BAR_SPRITE = BAR_TEX.getSprite("bar", 1, 1);
+
 	public void renderTileEntityAt(TileSpectrometer te, double x, double y, double z, float partialTicks, int destroyStage) {
 		VertexBuffer buffer = Tessellator.getInstance().getBuffer();
 		EnumFacing value = te.getWorld().getBlockState(te.getPos()).getValue(BlockSpectrometer.FACING);
@@ -60,11 +64,8 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 				GlStateManager.translate(-0.5, 0, -0.01);
 				break;
 		}
-		ResourceLocation loc = new ResourceLocation(Refraction.MOD_ID, "textures/bar.png");
-		Minecraft.getMinecraft().renderEngine.bindTexture(loc);
-		Texture texture = new Texture(loc);
-		Sprite sprite = texture.getSprite("bar", 1, 1);
-		sprite.draw(ClientTickHandler.getTicks(), 0, 0);
+		Minecraft.getMinecraft().renderEngine.bindTexture(BAR_LOC);
+		BAR_SPRITE.draw(ClientTickHandler.getTicks(), 0, 0);
 
 		GlStateManager.enableTexture2D();
 		GlStateManager.enableLighting();
