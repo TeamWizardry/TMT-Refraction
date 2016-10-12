@@ -79,40 +79,40 @@ public class BlockElectronExciter extends BlockModContainer implements ISpamSoun
         boolean up, down, left, right;
 		switch (facing) {
 			case DOWN:
-				up = checkState(worldIn, pos.offset(EnumFacing.SOUTH), facing);
-				down = checkState(worldIn, pos.offset(EnumFacing.NORTH), facing);
-				left = checkState(worldIn, pos.offset(EnumFacing.EAST), facing);
-				right = checkState(worldIn, pos.offset(EnumFacing.WEST), facing);
-				break;
-			case UP:
 				up = checkState(worldIn, pos.offset(EnumFacing.NORTH), facing);
 				down = checkState(worldIn, pos.offset(EnumFacing.SOUTH), facing);
 				left = checkState(worldIn, pos.offset(EnumFacing.WEST), facing);
 				right = checkState(worldIn, pos.offset(EnumFacing.EAST), facing);
 				break;
-			case NORTH:
-				up = checkState(worldIn, pos.offset(EnumFacing.UP), facing);
-				down = checkState(worldIn, pos.offset(EnumFacing.DOWN), facing);
-				left = checkState(worldIn, pos.offset(EnumFacing.WEST), facing);
-				right = checkState(worldIn, pos.offset(EnumFacing.EAST), facing);
+			case UP:
+				up = checkState(worldIn, pos.offset(EnumFacing.SOUTH), facing);
+				down = checkState(worldIn, pos.offset(EnumFacing.NORTH), facing);
+				left = checkState(worldIn, pos.offset(EnumFacing.EAST), facing);
+				right = checkState(worldIn, pos.offset(EnumFacing.WEST), facing);
 				break;
-			case SOUTH:
+			case NORTH:
 				up = checkState(worldIn, pos.offset(EnumFacing.UP), facing);
 				down = checkState(worldIn, pos.offset(EnumFacing.DOWN), facing);
 				left = checkState(worldIn, pos.offset(EnumFacing.EAST), facing);
 				right = checkState(worldIn, pos.offset(EnumFacing.WEST), facing);
 				break;
-			case WEST:
+			case SOUTH:
 				up = checkState(worldIn, pos.offset(EnumFacing.UP), facing);
 				down = checkState(worldIn, pos.offset(EnumFacing.DOWN), facing);
-				left = checkState(worldIn, pos.offset(EnumFacing.SOUTH), facing);
-				right = checkState(worldIn, pos.offset(EnumFacing.NORTH), facing);
+				left = checkState(worldIn, pos.offset(EnumFacing.WEST), facing);
+				right = checkState(worldIn, pos.offset(EnumFacing.EAST), facing);
 				break;
-			case EAST:
+			case WEST:
 				up = checkState(worldIn, pos.offset(EnumFacing.UP), facing);
 				down = checkState(worldIn, pos.offset(EnumFacing.DOWN), facing);
 				left = checkState(worldIn, pos.offset(EnumFacing.NORTH), facing);
 				right = checkState(worldIn, pos.offset(EnumFacing.SOUTH), facing);
+				break;
+			case EAST:
+				up = checkState(worldIn, pos.offset(EnumFacing.UP), facing);
+				down = checkState(worldIn, pos.offset(EnumFacing.DOWN), facing);
+				left = checkState(worldIn, pos.offset(EnumFacing.SOUTH), facing);
+				right = checkState(worldIn, pos.offset(EnumFacing.NORTH), facing);
 				break;
 			default:
 				up = false;
