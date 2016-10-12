@@ -7,21 +7,21 @@
   "variants": {
     "facing": {
       "up": {
-        "x": 90
-      },
-      "down": {
         "x": 270
       },
+      "down": {
+        "x": 90
+      },
       "north": {
-      	"y": 180
       },
       "south": {
+        "y": 180
       },
       "west": {
-        "y": 90
+        "y": -90
       },
       "east": {
-        "y": 270
+        "y": -270
       }
     },
     "inventory": [{}]
