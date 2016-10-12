@@ -1,16 +1,17 @@
 package com.teamwizardry.refraction.init;
 
-import java.util.ArrayList;
+import com.teamwizardry.refraction.init.recipies.AssemblyRecipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import com.teamwizardry.refraction.common.recipe.AssemblyRecipe;
+
+import java.util.ArrayList;
 
 /**
  * Created by LordSaad44
  */
-public class AssemblyRecipes {
+public class AssemblyRecipies {
 
 	public static ArrayList<AssemblyRecipe> recipes;
 

@@ -1,6 +1,7 @@
-package com.teamwizardry.refraction.init;
+package com.teamwizardry.refraction.init.recipies;
 
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
+import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
