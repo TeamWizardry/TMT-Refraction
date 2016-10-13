@@ -47,4 +47,20 @@ public class Utils {
 				return Color.WHITE;
 		}
 	}
+
+	public static float[] RGBToHSV(Color color) {
+		return Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+	}
+
+	public static Color HSVToRGB(float[] hsbvals) {
+		return new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
+	}
+
+	public static Color mixColors(Color color1, Color color2, double percent) {
+		double inverse_percent = 1.0 - percent;
+		double redPart = color1.getRed() * percent + color2.getRed() * inverse_percent;
+		double greenPart = color1.getGreen() * percent + color2.getGreen() * inverse_percent;
+		double bluePart = color1.getBlue() * percent + color2.getBlue() * inverse_percent;
+		return new Color((int) redPart, (int) greenPart, (int) bluePart);
+	}
 }

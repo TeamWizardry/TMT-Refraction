@@ -10,10 +10,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-
-import java.awt.*;
+import org.lwjgl.opengl.GL11;
 
 /**
  * Created by Saad on 9/11/2016.
@@ -25,18 +25,25 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 	private static Sprite BAR_SPRITE = texture.getSprite("bar", 1, 1);
 
 	public void renderTileEntityAt(TileSpectrometer te, double x, double y, double z, float partialTicks, int destroyStage) {
-		VertexBuffer buffer = Tessellator.getInstance().getBuffer();
 		EnumFacing value = te.getWorld().getBlockState(te.getPos()).getValue(BlockSpectrometer.FACING);
 
-		te.currentColor = new Color(te.currentColor.getRed() + (int) (Math.ceil((te.maxColor.getRed() - te.currentColor.getRed()) / 100.0)),
-				te.currentColor.getGreen() + (int) (Math.ceil((te.maxColor.getGreen() - te.currentColor.getGreen()) / 100.0)),
-				te.currentColor.getBlue() + (int) (Math.ceil((te.maxColor.getBlue() - te.currentColor.getBlue()) / 100.0)));
-		te.currentTransparency = te.currentTransparency + (int) ((te.maxTransparency - te.currentTransparency) / 100.0);
+		/*Color xx, y; //set by you
+		float blending;//set by you
 
-		double r = (te.currentColor.getRed() / 255.0) * 6;
-		double g = (te.currentColor.getGreen() / 255.0) * 6;
-		double b = (te.currentColor.getBlue() / 255.0) * 6;
-		double a = (te.currentTransparency / 255.0) * 6;
+		float inverse_blending = 1 - blending;
+
+		float red = x.getRed() * blending + y.getRed() * inverse_blending;
+		float green = x.getGreen() * blending + y.getGreen() * inverse_blending;
+		float blue = x.getBlue() * blending + y.getBlue() * inverse_blending;
+
+//note that if i pass float values they have to be in the range of 0.0-1.0
+//and not in 0-255 like the ones i get returned by the getters.
+		Color blended = new Color(red / 255, green / 255, blue / 255);*/
+
+		double r = (te.currentColor.getRed() / 255.0);
+		double g = (te.currentColor.getGreen() / 255.0);
+		double b = (te.currentColor.getBlue() / 255.0);
+		double a = (te.currentTransparency / 255.0);
 
 		// RED //
 		GlStateManager.pushMatrix();
@@ -67,23 +74,23 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		// a
 		GlStateManager.color(1, 1, 1);
 		GlStateManager.translate(0, 1.35, 0);
-		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, (int) (12.0 / a));
+		drawClipped(BAR_SPRITE, ClientTickHandler.getTicks(), 0, 0, 1, a);
 		GlStateManager.translate(0, -1.35, 0);
 
 		// r
 		GlStateManager.color(1, 0, 0);
 		GlStateManager.translate(1, 1.35, 0);
-		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, (int) (12.0 / a));
+		drawClipped(BAR_SPRITE, ClientTickHandler.getTicks(), 0, 0, 1, r);
 		GlStateManager.translate(-1, -1.35, 0);
 
 		// g
 		GlStateManager.color(0, 1, 0);
-		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, (int) (12.0 / a));
+		drawClipped(BAR_SPRITE, ClientTickHandler.getTicks(), 0, 0, 1, g);
 
 		// b
 		GlStateManager.color(0, 0, 1);
 		GlStateManager.translate(1, 0, 0);
-		BAR_SPRITE.drawClipped(ClientTickHandler.getTicks(), 0, 0, 1, (int) (12.0 / a));
+		drawClipped(BAR_SPRITE, ClientTickHandler.getTicks(), 0, 0, 1, b);
 		GlStateManager.translate(-1, 0, 0);
 
 		GlStateManager.enableLighting();
@@ -91,5 +98,54 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		GlStateManager.disableBlend();
 
 		GlStateManager.popMatrix();
+	}
+
+	private void drawClipped(Sprite sprite, int animTicks, float x, float y, double width, double height) {
+		Tessellator tessellator = Tessellator.getInstance();
+		VertexBuffer vb = tessellator.getBuffer();
+
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+
+		int wholeSpritesX = (int) Math.ceil(width / sprite.getWidth()) - 1;
+		int wholeSpritesY = (int) Math.ceil(height / sprite.getHeight()) - 1;
+
+		double leftoverWidth = width % sprite.getWidth();
+		double leftoverHeight = height % sprite.getHeight();
+
+		if (leftoverWidth <= 0)
+			leftoverWidth = sprite.getWidth();
+		if (leftoverHeight <= 0)
+			leftoverHeight = sprite.getHeight();
+
+		for (int xIndex = 0; xIndex <= wholeSpritesX; xIndex++) {
+			for (int yIndex = 0; yIndex <= wholeSpritesY; yIndex++) {
+				boolean smallX = xIndex == wholeSpritesX;
+				boolean smallY = yIndex == wholeSpritesY;
+
+				double spriteWidth = smallX ? wholeSpritesX == 0 ? width : leftoverWidth : sprite.getWidth();
+				double spriteHeight = smallY ? wholeSpritesY == 0 ? height : leftoverHeight : sprite.getHeight();
+				double offsetX = sprite.getWidth() * xIndex;
+				double offsetY = sprite.getHeight() * yIndex;
+
+				double minX = x + offsetX;
+				double minY = y + offsetY;
+				double maxX = minX + spriteWidth;
+				double maxY = minY + spriteHeight;
+				double uSpan = sprite.maxU(animTicks) - sprite.minU(animTicks);
+				double vSpan = sprite.maxV(animTicks) - sprite.minV(animTicks);
+
+				double minU = sprite.minU(animTicks);
+				double minV = sprite.minV(animTicks);
+				double maxU = minU + uSpan * (spriteWidth / sprite.getWidth());
+				double maxV = minV + vSpan * (spriteHeight / sprite.getHeight());
+
+				vb.pos(minX, maxY, 0.0).tex(minU, maxV).endVertex();
+				vb.pos(maxX, maxY, 0.0).tex(maxU, maxV).endVertex();
+				vb.pos(maxX, minY, 0.0).tex(maxU, minV).endVertex();
+				vb.pos(minX, minY, 0.0).tex(minU, minV).endVertex();
+
+			}
+		}
+		tessellator.draw();
 	}
 }
