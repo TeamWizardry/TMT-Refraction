@@ -2,8 +2,8 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "parent": "block/block",
     "textures": {
-        "texture": "refraction:blocks/optic_fiber",
-        "particle": "refraction:blocks/optic_fiber"
+        "texture": "refraction:blocks/optic_fiber_dot",
+        "particle": "refraction:blocks/optic_fiber_dot"
     },
     "elements": [
         {

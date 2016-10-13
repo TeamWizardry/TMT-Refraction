@@ -1,8 +1,9 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "texture": "refraction:blocks/optic_fiber",
-        "particle": "refraction:blocks/optic_fiber"
+        "particle": "blocks/refraction:blocks/optic_fiber_strip",
+        "0": "refraction:blocks/optic_fiber_strip",
+        "1": "refraction:blocks/optic_fiber_dot"
     },
     "elements": [
         {
@@ -10,12 +11,60 @@
             "from": [ 6.0, 10.0, 6.0 ], 
             "to": [ 10.0, 16.0, 10.0 ], 
             "faces": {
-                "north": { "texture": "#texture", "uv": [ 0.0, 0.0, 4.0, 6.0 ] },
-                "east": { "texture": "#texture", "uv": [ 0.0, 0.0, 4.0, 6.0 ] },
-                "south": { "texture": "#texture", "uv": [ 0.0, 0.0, 4.0, 6.0 ] },
-                "west": { "texture": "#texture", "uv": [ 0.0, 0.0, 4.0, 6.0 ] },
-                "up": { "texture": "#texture", "uv": [ 0.0, 0.0, 4.0, 4.0 ] },
-                "down": { "texture": "#texture", "uv": [ 0.0, 0.0, 4.0, 4.0 ] }
+                "north": {
+                    "texture": "#0",
+                    "uv": [
+                        0.0,
+                        0.0,
+                        4.0,
+                        6.0
+                    ]
+                },
+                "east": {
+                    "texture": "#0",
+                    "uv": [
+                        0.0,
+                        0.0,
+                        4.0,
+                        6.0
+                    ]
+                },
+                "south": {
+                    "texture": "#0",
+                    "uv": [
+                        0.0,
+                        0.0,
+                        4.0,
+                        6.0
+                    ]
+                },
+                "west": {
+                    "texture": "#0",
+                    "uv": [
+                        0.0,
+                        0.0,
+                        4.0,
+                        6.0
+                    ]
+                },
+                "up": {
+                    "texture": "#1",
+                    "uv": [
+                        0.0,
+                        0.0,
+                        4.0,
+                        4.0
+                    ]
+                },
+                "down": {
+                    "texture": "#1",
+                    "uv": [
+                        0.0,
+                        0.0,
+                        4.0,
+                        4.0
+                    ]
+                }
             }
         }
     ]
