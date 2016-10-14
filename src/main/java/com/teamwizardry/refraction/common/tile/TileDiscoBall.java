@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.refraction.common.block.BlockDiscoBall;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.block.state.IBlockState;
@@ -8,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
@@ -76,7 +78,10 @@ public class TileDiscoBall extends TileEntity implements IBeamHandler, ITickable
 
 	@Override
 	public void handle(Beam... inputs) {
-		if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
+		if (!worldObj.isBlockPowered(pos) && worldObj.isBlockIndirectlyGettingPowered(pos) == 0) return;
+
+		EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockDiscoBall.FACING);
+
 		for (Beam beam : inputs) {
 			beam.color = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8));
 			for (int i = 0; i < 4; i++) {
@@ -85,15 +90,28 @@ public class TileDiscoBall extends TileEntity implements IBeamHandler, ITickable
 				double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
 				double r = (u > 1) ? 2 - u : u;
 				double x = r * Math.cos(t), z = r * Math.sin(t);
-				Vec3d dest = new Vec3d(x, getPos().getY() - 1, z).scale(-1);
-				handlers.add(new BeamHandler(dest, new Vec3d(getPos()).addVector(0.5, 0.3, 0.5).addVector(ThreadLocalRandom.current().nextDouble(-0.3, 0.3), ThreadLocalRandom.current().nextDouble(-0.3, 0.3), ThreadLocalRandom.current().nextDouble(-0.3, 0.3)), beam.color, beam.enableEffect));
+
+				Vec3d dest = new Vec3d(x, pos.getY(), z).scale(-1);
+
+				Matrix4 matrix = new Matrix4();
+				if (facing == EnumFacing.UP) matrix.rotate(Math.toRadians(180), new Vec3d(1, 0, 0));
+				else if (facing == EnumFacing.NORTH) {
+					matrix.rotate(Math.toRadians(90), new Vec3d(1, 0, 0));
+				} else if (facing == EnumFacing.SOUTH) {
+					matrix.rotate(Math.toRadians(90), new Vec3d(1, 0, 0));
+					matrix.rotate(Math.toRadians(-180), new Vec3d(0, 0, 1));
+				} else if (facing == EnumFacing.WEST) {
+					matrix.rotate(Math.toRadians(90), new Vec3d(1, 0, 0));
+					matrix.rotate(Math.toRadians(-90), new Vec3d(0, 0, 1));
+				}
+				handlers.add(new BeamHandler(matrix.apply(dest), new Vec3d(pos).addVector(0.5, 0.3, 0.5), beam.color, beam.enableEffect));
 			}
 		}
 	}
 
 	@Override
 	public void update() {
-		if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
+		if (!worldObj.isBlockPowered(pos) && worldObj.isBlockIndirectlyGettingPowered(pos) == 0) return;
 		if (handlers.size() == 0) return;
 		if (rotX < 360) rotX += 5;
 		else rotX = 0;
