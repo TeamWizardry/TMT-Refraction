@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import java.awt.*;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class EffectBurn extends Effect {
 
@@ -39,7 +40,7 @@ public class EffectBurn extends Effect {
 			if (tile != null && tile instanceof IInventory && !EffectTracker.burnedTileTracker.contains(pos))
 				EffectTracker.burnedTileTracker.add(pos);
 			else {
-				if (potency >= 50) {
+				if (potency >= 50 && ThreadLocalRandom.current().nextInt(0, 10) == 0) {
 					BlockPos newPos = new BlockPos(beam.finalLoc);
 					IBlockState state = world.getBlockState(newPos);
 					if (state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.FIRE)
