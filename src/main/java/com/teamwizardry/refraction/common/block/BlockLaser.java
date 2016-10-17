@@ -5,7 +5,6 @@ import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.ISpamSoundProvider;
 import com.teamwizardry.refraction.api.ITileSpamSound;
-import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.tile.TileLaser;
@@ -17,9 +16,9 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -58,13 +57,13 @@ public class BlockLaser extends BlockModContainer implements ISpamSoundProvider 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (heldItem != null) {
-			if (heldItem.getItem() == Items.GLOWSTONE_DUST) {
-				TileLaser laser = getTE(worldIn, pos);
-				if (laser.getPower() < BeamConstants.NIGHT_DURATION) {
-					laser.setPower(laser.getPower() + (BeamConstants.NIGHT_DURATION / 32.0));
-					--heldItem.stackSize;
-				}
-			}
+
+			TileLaser laser = getTE(worldIn, pos);
+			if (laser == null) return false;
+			ItemStack stack = heldItem.copy();
+			stack.stackSize = 1;
+			heldItem.stackSize--;
+			TileEntityHopper.putStackInInventoryAllSlots(laser, stack, null);
 		}
 		return true;
 	}

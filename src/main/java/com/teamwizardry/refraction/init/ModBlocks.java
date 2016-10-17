@@ -22,6 +22,7 @@ public class ModBlocks {
 	public static BlockSpectrometer SPECTROMETER;
 	public static BlockOpticFiber OPTIC_FIBER;
 	public static BlockCreativeLaser CREATIVE_LASER;
+	public static BlockReflectiveAlloyBlock REFLECTIVE_ALLOY_BLOCK;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -39,6 +40,7 @@ public class ModBlocks {
 		SPECTROMETER = new BlockSpectrometer();
 		OPTIC_FIBER = new BlockOpticFiber();
 		CREATIVE_LASER = new BlockCreativeLaser();
+		REFLECTIVE_ALLOY_BLOCK = new BlockReflectiveAlloyBlock();
 	}
 
 	public static void initModels() {

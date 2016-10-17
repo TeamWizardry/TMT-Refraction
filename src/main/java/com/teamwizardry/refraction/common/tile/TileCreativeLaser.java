@@ -5,14 +5,9 @@ import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
 
@@ -30,46 +25,6 @@ public class TileCreativeLaser extends TileEntity implements ILightSource {
 	public void onLoad() {
 		super.onLoad();
 		ReflectionTracker.getInstance(worldObj).addSource(this);
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
-
-		return compound;
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
-	}
-
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound tag = new NBTTagCompound();
-		writeToNBT(tag);
-		return new SPacketUpdateTileEntity(pos, 0, tag);
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		super.onDataPacket(net, packet);
-		readFromNBT(packet.getNbtCompound());
-
-		state = worldObj.getBlockState(pos);
-		worldObj.notifyBlockUpdate(pos, state, state, 3);
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
-		return INFINITE_EXTENT_AABB;
 	}
 
 	@Override

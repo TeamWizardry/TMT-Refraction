@@ -18,4 +18,21 @@ public class PosUtils {
 		else if (sub.yCoord < 0 && sub.xCoord == 0 && sub.zCoord == 0) return EnumFacing.DOWN;
 		return null;
 	}
+
+	public static Vec3d getVecFromFacing(EnumFacing facing) {
+		switch (facing) {
+			case NORTH:
+				return new Vec3d(0, 0, -1);
+			case SOUTH:
+				return new Vec3d(0, 0, 1);
+			case EAST:
+				return new Vec3d(1, 0, 0);
+			case WEST:
+				return new Vec3d(-1, 0, 0);
+			case UP:
+				return new Vec3d(0, 1, 0);
+			default:
+				return new Vec3d(0, -1, 0);
+		}
+	}
 }
