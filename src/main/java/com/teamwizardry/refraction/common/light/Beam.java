@@ -23,6 +23,7 @@ public class Beam {
 	public World world;
 	public Effect effect;
 	public boolean enableEffect, ignoreEntities;
+	public RayTraceResult trace;
 
 	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color, boolean enableEffect, boolean ignoreEntities) {
 		this.world = world;
@@ -35,7 +36,6 @@ public class Beam {
 		this.ignoreEntities = ignoreEntities;
 		if (world.isRemote) return;
 
-		RayTraceResult trace;
 		if (!ignoreEntities) {
 			if (effect != null) {
 				if (effect.getType() == EffectType.BEAM)

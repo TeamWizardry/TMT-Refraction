@@ -1,8 +1,12 @@
 package com.teamwizardry.refraction.api;
 
 import net.minecraft.item.EnumDyeColor;
-
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import java.awt.*;
+import com.teamwizardry.refraction.common.light.Beam;
 
 /**
  * Created by Saad on 10/9/2016.
@@ -62,5 +66,23 @@ public class Utils {
 		double greenPart = color1.getGreen() * percent + color2.getGreen() * inverse_percent;
 		double bluePart = color1.getBlue() * percent + color2.getBlue() * inverse_percent;
 		return new Color((int) redPart, (int) greenPart, (int) bluePart);
+	}
+	
+	/**
+	 * Returns whatever side of a block that the given {@code Beam} is hitting.
+	 * @param beam The {@link Beam} being checked
+	 * @return The {@link EnumFacing} of the {@code Beam} - {@link BlockPos} collision
+	 */
+	public static EnumFacing getCollisionSide(Beam beam)
+	{
+		if (beam.trace != null && beam.trace.typeOfHit == RayTraceResult.Type.BLOCK)
+		{
+			BlockPos pos = beam.trace.getBlockPos();
+			Vec3d hitPos = beam.trace.hitVec;
+			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+			Vec3d dir = hitPos.subtract(center);
+			return EnumFacing.getFacingFromVector((float) dir.xCoord, (float) dir.yCoord, (float) dir.zCoord);
+		}
+		return null;
 	}
 }
