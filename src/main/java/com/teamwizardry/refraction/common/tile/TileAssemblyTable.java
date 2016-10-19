@@ -38,7 +38,10 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 	private IBlockState state;
 	private ArrayList<ItemStack> inventory = new ArrayList<>();
 	private int craftingTime = 0;
-	private int temperature;
+	private int red;
+	private int green;
+	private int blue;
+	private int alpha;
 
 	public TileAssemblyTable() {
 	}
@@ -56,7 +59,6 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 		if (compound.hasKey("output")) output = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("output"));
 		if (compound.hasKey("is_crafting")) isCrafting = compound.getBoolean("is_crafting");
 		if (compound.hasKey("crafting_time")) craftingTime = compound.getInteger("crafting_time");
-		if (compound.hasKey("temperature")) temperature = compound.getInteger("temperature");
 	}
 
 	@Override
@@ -74,7 +76,6 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 		else compound.removeTag("output");
 		compound.setBoolean("is_crafting", isCrafting);
 		compound.setInteger("crafting_time", craftingTime);
-		compound.setInteger("temperature", temperature);
 
 		return compound;
 	}
@@ -106,11 +107,9 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 		return INFINITE_EXTENT_AABB;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void update() {
 		if (worldObj.isRemote) return;
-		if (temperature > 0) temperature--;
 	}
 
 	public ArrayList<ItemStack> getInventory() {
@@ -122,11 +121,20 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 		if (worldObj.isRemote) return;
 		if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) != 0) return;
 
-		temperature = 0;
-		for (Beam beam : inputs) {
+		for (Beam beam : inputs)
+		{
 			if (beam.enableEffect)
-				temperature += beam.color.getAlpha();
+			{
+				red += beam.color.getRed();
+				green += beam.color.getGreen();
+				blue += beam.color.getBlue();
+				alpha += beam.color.getAlpha();
+			}
 		}
+		
+		red = Math.min(red / inputs.length, 255);
+		green = Math.min(green / inputs.length, 255);
+		blue = Math.min(blue / inputs.length, 255);
 
 		if (isCrafting) {
 			if (craftingTime < 50) {
@@ -173,8 +181,14 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 		for (AssemblyRecipe recipe : AssemblyRecipies.recipes) {
 
 			if (recipe.getItems().size() != inventory.size()) continue;
-			if (temperature > recipe.getMaxStrength()) continue;
-			if (temperature < recipe.getMinStrength()) continue;
+			if (red > recipe.getMaxRed()) continue;
+			if (red < recipe.getMinRed()) continue;
+			if (green > recipe.getMaxGreen()) continue;
+			if (green < recipe.getMinGreen()) continue;
+			if (blue > recipe.getMaxBlue()) continue;
+			if (blue < recipe.getMinBlue()) continue;
+			if (alpha > recipe.getMaxStrength()) continue;
+			if (alpha < recipe.getMinStrength()) continue;
 
 			boolean match = true;
 

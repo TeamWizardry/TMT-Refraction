@@ -1,10 +1,10 @@
 package com.teamwizardry.refraction.init.recipies;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import java.util.ArrayList;
 
 /**
  * Created by LordSaad44
@@ -12,15 +12,58 @@ import java.util.ArrayList;
 public class AssemblyRecipe {
 
 	private final ArrayList<ItemStack> items;
-	private final float maxStrength;
-	private final float minStrength;
+	private final int minRed, minGreen, minBlue, minStrength;
+	private final int maxRed, maxGreen, maxBlue, maxStrength;
 	private final ItemStack result;
 
-	public AssemblyRecipe(ItemStack result, float minStrength, float maxStrength, Object... items) {
+	public AssemblyRecipe(ItemStack result, int minRed, int minGreen, int minBlue, int minStrength, int maxRed, int maxGreen, int maxBlue, int maxStrength, Object... items) {
 		this.result = result;
+		this.minRed = minRed;
+		this.maxRed = maxRed;
+		this.minGreen = minGreen;
+		this.maxGreen = maxGreen;
+		this.minBlue = minBlue;
+		this.maxBlue = maxBlue;
 		this.minStrength = minStrength;
 		this.maxStrength = maxStrength;
 
+		this.items = new ArrayList<>();
+		for (Object obj : items) {
+			if (obj instanceof ItemStack) {
+				ItemStack stack = (ItemStack) obj;
+				int stackSize = stack.stackSize;
+				stack.stackSize = 1;
+				for (int i = 0; i < stackSize; i++) {
+					this.items.add(stack);
+				}
+			} else if (obj instanceof Item) {
+				this.items.add(new ItemStack((Item) obj));
+			} else if (obj instanceof Block) {
+				this.items.add(new ItemStack(Item.getItemFromBlock((Block) obj)));
+			}
+		}
+	}
+	
+	public AssemblyRecipe(ItemStack result, Color one, Color two, Object... items)
+	{
+		int redOne = one.getRed();
+		int greenOne = one.getGreen();
+		int blueOne = one.getBlue();
+		int alphaOne = one.getAlpha();
+		int redTwo = two.getRed();
+		int greenTwo = two.getGreen();
+		int blueTwo = two.getBlue();
+		int alphaTwo = two.getAlpha();
+		this.result = result;
+		this.minRed = redOne < redTwo ? redOne : redTwo;
+		this.minGreen = greenOne < greenTwo ? greenOne : greenTwo;
+		this.minBlue = blueOne < blueTwo ? blueOne : blueTwo;
+		this.minStrength = alphaOne < alphaTwo ? alphaOne : alphaTwo;
+		this.maxRed = redOne > redTwo ? redOne : redTwo;
+		this.maxGreen = greenOne > greenTwo ? greenOne : greenTwo;
+		this.maxBlue = blueOne > blueTwo ? blueOne : blueTwo;
+		this.maxStrength = alphaOne > alphaTwo ? alphaOne : alphaTwo;
+		
 		this.items = new ArrayList<>();
 		for (Object obj : items) {
 			if (obj instanceof ItemStack) {
@@ -41,12 +84,42 @@ public class AssemblyRecipe {
 	public ArrayList<ItemStack> getItems() {
 		return items;
 	}
+	
+	public int getMaxRed()
+	{
+		return maxRed;
+	}
+	
+	public int getMinRed()
+	{
+		return minRed;
+	}
+	
+	public int getMaxGreen()
+	{
+		return maxGreen;
+	}
+	
+	public int getMinGreen()
+	{
+		return minGreen;
+	}
+	
+	public int getMaxBlue()
+	{
+		return maxBlue;
+	}
+	
+	public int getMinBlue()
+	{
+		return minBlue;
+	}
 
-	public float getMaxStrength() {
+	public int getMaxStrength() {
 		return maxStrength;
 	}
 
-	public float getMinStrength() {
+	public int getMinStrength() {
 		return minStrength;
 	}
 
