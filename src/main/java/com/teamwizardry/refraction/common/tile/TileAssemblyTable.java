@@ -11,6 +11,7 @@ import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipe;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -38,10 +39,6 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 	private IBlockState state;
 	private ArrayList<ItemStack> inventory = new ArrayList<>();
 	private int craftingTime = 0;
-	private int red;
-	private int green;
-	private int blue;
-	private int alpha;
 
 	public TileAssemblyTable() {
 	}
@@ -121,18 +118,18 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 		if (worldObj.isRemote) return;
 		if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) != 0) return;
 		if (inputs.length <= 0) return;
+		int red = 0, green = 0, blue = 0, alpha = 0;
 
-		for (Beam beam : inputs)
-		{
-			if (beam.enableEffect)
-			{
+		for (Beam beam : inputs) {
+			if (beam.enableEffect) {
 				red += beam.color.getRed();
 				green += beam.color.getGreen();
 				blue += beam.color.getBlue();
 				alpha += beam.color.getAlpha();
 			}
 		}
-		
+
+		Minecraft.getMinecraft().thePlayer.sendChatMessage(alpha + " - " + Math.min(alpha / inputs.length, 255));
 		red = Math.min(red / inputs.length, 255);
 		green = Math.min(green / inputs.length, 255);
 		blue = Math.min(blue / inputs.length, 255);
