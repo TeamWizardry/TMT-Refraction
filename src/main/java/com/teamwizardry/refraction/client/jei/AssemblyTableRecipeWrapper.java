@@ -105,8 +105,6 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 		BAR.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 + 33, 0);
 		GlStateManager.color(1f, 1f, 1f);
 
-		//OUTLINE.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - OUTLINE.getWidth() / 2 + 33, 0);
-
 		GlStateManager.rotate(180, 0, 0, 1);
 		GlStateManager.translate(-(recipeWidth - (BAR.getWidth() / 2) + 8), -8, 0);
 		BAR.drawClipped(ClientTickHandler.getTicks(), 0, 0, (int) (currentColor.getAlpha() / 255.0 * 32), 8);

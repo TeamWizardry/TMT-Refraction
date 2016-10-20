@@ -120,6 +120,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 	public void handle(Beam... inputs) {
 		if (worldObj.isRemote) return;
 		if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) != 0) return;
+		if (inputs.length <= 0) return;
 
 		for (Beam beam : inputs)
 		{
@@ -135,6 +136,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 		red = Math.min(red / inputs.length, 255);
 		green = Math.min(green / inputs.length, 255);
 		blue = Math.min(blue / inputs.length, 255);
+		alpha = Math.min(alpha / inputs.length, 255);
 
 		if (isCrafting) {
 			if (craftingTime < 50) {
