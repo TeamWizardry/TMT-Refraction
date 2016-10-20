@@ -142,9 +142,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 				ParticleBuilder builder = new ParticleBuilder(5);
 				builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
 				builder.setColorFunction(new InterpColorFade(Color.RED, 1, 255, 1));
-				if (ThreadLocalRandom.current().nextBoolean())
-					builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle_blurred"));
-				else builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle"));
+				builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
 				ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(20, 40), 0, (aFloat, particleBuilder) -> {
 					builder.setPositionOffset(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.5, 0.5), 0, ThreadLocalRandom.current().nextDouble(-0.5, 0.5)));
 					builder.setScale(ThreadLocalRandom.current().nextFloat());
@@ -162,9 +160,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 			ParticleBuilder builder = new ParticleBuilder(5);
 			builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
 			builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
-			if (ThreadLocalRandom.current().nextInt(5) == 0)
-				builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle"));
-			else builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle_blurred"));
+			builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
 			ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1.25, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(50, 80), 0, (aFloat, particleBuilder) -> {
 				double radius = 5;
 				double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);

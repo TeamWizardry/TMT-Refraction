@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.common.tile.TileOpticFiber;
@@ -10,6 +11,8 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -22,6 +25,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Locale;
 
 import static net.minecraft.util.EnumFacing.*;
@@ -32,7 +36,8 @@ import static net.minecraft.util.EnumFacing.*;
 @SuppressWarnings("deprecation")
 public class BlockOpticFiber extends BlockModContainer {
 
-    private AxisAlignedBB[] AABBS = new AxisAlignedBB[] {
+	public static final PropertyEnum<EnumBiFacing> FACING = PropertyEnum.create("facings", EnumBiFacing.class);
+	private AxisAlignedBB[] AABBS = new AxisAlignedBB[] {
             new AxisAlignedBB(6  / 16.0, 6  / 16.0, 0, 10 / 16.0, 1, 10 / 16.0), // UP_NORTH
             new AxisAlignedBB(6  / 16.0, 6  / 16.0, 6  / 16.0, 10 / 16.0, 1, 1), // UP_SOUTH
             new AxisAlignedBB(0, 6  / 16.0, 6  / 16.0, 10 / 16.0, 1, 10 / 16.0), // UP_WEST
@@ -50,59 +55,16 @@ public class BlockOpticFiber extends BlockModContainer {
             new AxisAlignedBB(6  / 16.0, 6  / 16.0, 0, 10 / 16.0, 10 / 16.0, 1)  // NORTH_SOUTH
     };
 
-    public enum EnumBiFacing implements IStringSerializable {
-        UP_NORTH(UP, NORTH),
-        UP_SOUTH(UP, SOUTH),
-        UP_WEST(UP, WEST),
-        UP_EAST(UP, EAST),
-        UP_DOWN(UP, DOWN),
-        DOWN_NORTH(DOWN, NORTH),
-        DOWN_SOUTH(DOWN, SOUTH),
-        DOWN_WEST(DOWN, WEST),
-        DOWN_EAST(DOWN, EAST),
-        WEST_NORTH(WEST, NORTH),
-        WEST_SOUTH(WEST, SOUTH),
-        WEST_EAST(WEST, EAST),
-        EAST_NORTH(EAST, NORTH),
-        EAST_SOUTH(EAST, SOUTH),
-        NORTH_SOUTH(NORTH, SOUTH);
-
-        public final EnumFacing primary, secondary;
-
-        EnumBiFacing(EnumFacing a, EnumFacing b) {
-            primary = a;
-            secondary = b;
-        }
-
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.ROOT);
-        }
-
-        public boolean contains(EnumFacing f) {
-            return primary == f || secondary == f;
-        }
-
-        public EnumFacing getOther(EnumFacing f) {
-            if (primary == f) return secondary;
-            return primary;
-        }
-
-        public static EnumBiFacing getBiForFacings(EnumFacing a, EnumFacing b) {
-            for (EnumBiFacing facing : values())
-                if ((facing.primary == a && facing.secondary == b) || (facing.secondary == a && facing.primary == b))
-                    return facing;
-            throw new IllegalArgumentException("Someone tried to make a bifacing out of " + a.name() + " and " + b.name());
-        }
-    }
-
-    public static final PropertyEnum<EnumBiFacing> FACING = PropertyEnum.create("facings", EnumBiFacing.class);
-
 	public BlockOpticFiber() {
 		super("optic_fiber", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
 		GameRegistry.registerTileEntity(TileOpticFiber.class, "optic_fiber");
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
 	}
 
     @NotNull
@@ -235,5 +197,51 @@ public class BlockOpticFiber extends BlockModContainer {
 	@Override
 	public ModCreativeTab getCreativeTab() {
 		return ModTab.INSTANCE;
+	}
+
+	public enum EnumBiFacing implements IStringSerializable {
+		UP_NORTH(UP, NORTH),
+		UP_SOUTH(UP, SOUTH),
+		UP_WEST(UP, WEST),
+		UP_EAST(UP, EAST),
+		UP_DOWN(UP, DOWN),
+		DOWN_NORTH(DOWN, NORTH),
+		DOWN_SOUTH(DOWN, SOUTH),
+		DOWN_WEST(DOWN, WEST),
+		DOWN_EAST(DOWN, EAST),
+		WEST_NORTH(WEST, NORTH),
+		WEST_SOUTH(WEST, SOUTH),
+		WEST_EAST(WEST, EAST),
+		EAST_NORTH(EAST, NORTH),
+		EAST_SOUTH(EAST, SOUTH),
+		NORTH_SOUTH(NORTH, SOUTH);
+
+		public final EnumFacing primary, secondary;
+
+		EnumBiFacing(EnumFacing a, EnumFacing b) {
+			primary = a;
+			secondary = b;
+		}
+
+		public static EnumBiFacing getBiForFacings(EnumFacing a, EnumFacing b) {
+			for (EnumBiFacing facing : values())
+				if ((facing.primary == a && facing.secondary == b) || (facing.secondary == a && facing.primary == b))
+					return facing;
+			throw new IllegalArgumentException("Someone tried to make a bifacing out of " + a.name() + " and " + b.name());
+		}
+
+		@Override
+		public String getName() {
+			return name().toLowerCase(Locale.ROOT);
+		}
+
+		public boolean contains(EnumFacing f) {
+			return primary == f || secondary == f;
+		}
+
+		public EnumFacing getOther(EnumFacing f) {
+			if (primary == f) return secondary;
+			return primary;
+		}
 	}
 }

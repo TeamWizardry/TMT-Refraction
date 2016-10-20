@@ -1,11 +1,17 @@
 package com.teamwizardry.refraction.client.jei;
 
 import com.google.common.collect.ImmutableList;
+import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
+import com.teamwizardry.librarianlib.client.sprite.Sprite;
+import com.teamwizardry.librarianlib.client.sprite.Texture;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipe;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -18,17 +24,29 @@ import java.util.List;
  */
 public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 
+	private static ResourceLocation loc = new ResourceLocation(Refraction.MOD_ID, "textures/gui/assembly_recipe_alpha_bar.png");
+	private static Texture texture = new Texture(loc);
+	private static Sprite
+			BAR = texture.getSprite("bar", 64, 8),
+			OUTLINE = texture.getSprite("outline", 34 * 2, 12),
+			SLOT = texture.getSprite("slot", 16, 16);
 	private ArrayList<ItemStack> inputs = new ArrayList<>();
 	private ArrayList<ItemStack> outputs = new ArrayList<>();
 	private List<FluidStack> fluidInputs = ImmutableList.of();
 	private List<FluidStack> fluidOutputs = ImmutableList.of();
-	private float minStrength = 0, maxStrength = 100;
+	private Color maxColor, currentColor;
+	private AssemblyRecipe recipe;
+	private int cycleTimer = 0, transitionTicks = 0;
+	private boolean cycleSwitch, transition = false;
 
 	public AssemblyTableRecipeWrapper(AssemblyRecipe recipe) {
+		this.recipe = recipe;
 		inputs.addAll(recipe.getItems());
 		outputs.add(recipe.getResult());
-		minStrength = recipe.getMinStrength();
-		maxStrength = recipe.getMaxStrength();
+		maxColor = recipe.getMinColor();
+		currentColor = recipe.getMinColor();
+		cycleSwitch = true;
+		transition = true;
 	}
 
 	@Override
@@ -53,13 +71,67 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 
 	@Override
 	public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+		if (!transition) {
+			if (cycleTimer < 50) cycleTimer++;
+			else {
+				cycleTimer = 0;
+				transition = true;
+			}
+		} else {
+			currentColor = Utils.mixColors(currentColor, maxColor, 0.9);
+			if (transitionTicks < 50) transitionTicks++;
+			else {
+				if (cycleSwitch) {
+					currentColor = recipe.getMaxColor();
+					maxColor = recipe.getMinColor();
+				} else {
+					currentColor = recipe.getMinColor();
+					maxColor = recipe.getMaxColor();
+				}
+				transitionTicks = 0;
+				transition = false;
+				cycleSwitch = !cycleSwitch;
+			}
+		}
+
 		GlStateManager.pushMatrix();
 
+		texture.bind();
+
 		GlStateManager.color(1f, 1f, 1f);
-		String one = "Min Strength: " + (int) minStrength;
-		String two = "Max Strength: " + (int) maxStrength;
-		Minecraft.getMinecraft().fontRendererObj.drawString(one, 90 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(one) / 2, 170, Color.BLACK.getRGB());
-		Minecraft.getMinecraft().fontRendererObj.drawString(two, 90 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(one) / 2, 180, Color.BLACK.getRGB());
+		SLOT.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - SLOT.getWidth() / 2, 101);
+
+		GlStateManager.color(0.5f, 0.5f, 0.5f);
+		BAR.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 + 33, 0);
+		GlStateManager.color(1f, 1f, 1f);
+
+		//OUTLINE.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - OUTLINE.getWidth() / 2 + 33, 0);
+
+		GlStateManager.rotate(180, 0, 0, 1);
+		GlStateManager.translate(-(recipeWidth - (BAR.getWidth() / 2) + 8), -8, 0);
+		BAR.drawClipped(ClientTickHandler.getTicks(), 0, 0, (int) (currentColor.getAlpha() / 255.0 * 32), 8);
+		GlStateManager.translate((recipeWidth - (BAR.getWidth() / 2) + 8), 8, 0);
+		GlStateManager.rotate(180, 0, 0, -1);
+
+		GlStateManager.color(0.5f, 0, 0);
+		BAR.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 + 33, 10);
+
+		GlStateManager.color(1f, 0, 0);
+		GlStateManager.rotate(180, 0, 0, 1);
+		GlStateManager.translate(-(recipeWidth - (BAR.getWidth() / 2) + 8), -18, 0);
+		BAR.drawClipped(ClientTickHandler.getTicks(), 0, 0, (int) (currentColor.getRed() / 255.0 * 32), 8);
+		GlStateManager.translate((recipeWidth - (BAR.getWidth() / 2) + 8), 18, 0);
+		GlStateManager.rotate(180, 0, 0, -1);
+
+		GlStateManager.color(0, 0.5f, 0);
+		BAR.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 - 33, 0);
+		GlStateManager.color(0, 1f, 0);
+		BAR.drawClipped(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 - 33, 0, (int) (currentColor.getGreen() / 255.0 * 32), 8);
+
+		GlStateManager.color(0, 0, 0.5f);
+		BAR.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 - 33, 10);
+		GlStateManager.color(0, 0, 1f);
+		BAR.drawClipped(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 - 33, 10, (int) (currentColor.getBlue() / 255.0 * 32), 8);
 
 		GlStateManager.popMatrix();
 	}

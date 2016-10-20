@@ -1,10 +1,11 @@
 package com.teamwizardry.refraction.init.recipies;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by LordSaad44
@@ -14,6 +15,7 @@ public class AssemblyRecipe {
 	private final ArrayList<ItemStack> items;
 	private final int minRed, minGreen, minBlue, minStrength;
 	private final int maxRed, maxGreen, maxBlue, maxStrength;
+	private final Color minColor, maxColor;
 	private final ItemStack result;
 
 	public AssemblyRecipe(ItemStack result, int minRed, int minGreen, int minBlue, int minStrength, int maxRed, int maxGreen, int maxBlue, int maxStrength, Object... items) {
@@ -26,6 +28,8 @@ public class AssemblyRecipe {
 		this.maxBlue = maxBlue;
 		this.minStrength = minStrength;
 		this.maxStrength = maxStrength;
+		this.minColor = new Color(minRed, minGreen, minBlue, minStrength);
+		this.maxColor = new Color(maxRed, maxGreen, maxBlue, maxStrength);
 
 		this.items = new ArrayList<>();
 		for (Object obj : items) {
@@ -63,7 +67,9 @@ public class AssemblyRecipe {
 		this.maxGreen = greenOne > greenTwo ? greenOne : greenTwo;
 		this.maxBlue = blueOne > blueTwo ? blueOne : blueTwo;
 		this.maxStrength = alphaOne > alphaTwo ? alphaOne : alphaTwo;
-		
+		this.minColor = new Color(minRed, minGreen, minBlue, minStrength);
+		this.maxColor = new Color(maxRed, maxGreen, maxBlue, maxStrength);
+
 		this.items = new ArrayList<>();
 		for (Object obj : items) {
 			if (obj instanceof ItemStack) {
@@ -125,5 +131,13 @@ public class AssemblyRecipe {
 
 	public ItemStack getResult() {
 		return result;
+	}
+
+	public Color getMinColor() {
+		return minColor;
+	}
+
+	public Color getMaxColor() {
+		return maxColor;
 	}
 }

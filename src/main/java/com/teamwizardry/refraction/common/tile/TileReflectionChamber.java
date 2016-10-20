@@ -88,9 +88,9 @@ public class TileReflectionChamber extends TileEntity implements IBeamHandler {
 			}
 		}
 
-		red1 = Math.min(red1 / (beams.length - effectBeams), 255);
-		green1 = Math.min(green1 / (beams.length - effectBeams), 255);
-		blue1 = Math.min(blue1 / (beams.length - effectBeams), 255);
+		red1 = 1; // Math.min(red1 / (beams.length - effectBeams), 255);
+		green1 = 1; //Math.min(green1 / (beams.length - effectBeams), 255);
+		blue1 = 1; //Math.min(blue1 / (beams.length - effectBeams), 255);
 
 		red2 = Math.min(red2 / effectBeams, 255);
 		green2 = Math.min(green2 / effectBeams, 255);

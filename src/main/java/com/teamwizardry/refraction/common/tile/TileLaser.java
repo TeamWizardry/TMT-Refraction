@@ -171,13 +171,16 @@ public class TileLaser extends TileEntity implements ILightSource, ITickable, IT
 	public void update() {
 		if (emittingSound && inventory != null && inventory[0] != null && inventory[0].stackSize > 0) {
 			ParticleBuilder glitter = new ParticleBuilder(ThreadLocalRandom.current().nextInt(20, 30));
-			glitter.setScale(ThreadLocalRandom.current().nextFloat());
-			glitter.setAlpha(ThreadLocalRandom.current().nextFloat());
-			glitter.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle_blurred"));
-			glitter.setAlphaFunction(new InterpFadeInOut(0.5f, 0.5f));
+			glitter.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 1));
+			glitter.setAlpha((float) ThreadLocalRandom.current().nextDouble(0.3, 0.7));
+			glitter.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+			glitter.setAlphaFunction(new InterpFadeInOut(0.1f, 1.0f));
 			state = worldObj.getBlockState(pos);
 			EnumFacing face = state.getValue(BlockDirectional.FACING);
-			ParticleSpawner.spawn(glitter, worldObj, new StaticInterp<>(new Vec3d(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5).add(PosUtils.getVecFromFacing(face).scale(1 / 2))), 1);
+			Vec3d facingVec = PosUtils.getVecFromFacing(face).scale(1.0 / 3.0);
+			Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(facingVec);
+			glitter.setMotion(facingVec.scale(1.0 / 50.0));
+			ParticleSpawner.spawn(glitter, worldObj, new StaticInterp<>(center), 2);
 
 			if (soundTicker > 20 * 2) {
 				soundTicker = 0;

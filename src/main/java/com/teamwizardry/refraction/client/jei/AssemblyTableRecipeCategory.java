@@ -1,17 +1,13 @@
 package com.teamwizardry.refraction.client.jei;
 
-import com.teamwizardry.refraction.init.ModBlocks;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nonnull;
 
@@ -23,15 +19,14 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 	public static final String UID = "refraction.assembly_table";
 	private final IDrawable background;
 	private final String localizedName;
-	private final IDrawable overlay;
 	private float hover = (float) (Math.random() * Math.PI * 2.0D);
 	private float transitionTimeX = 0, transitionTimeMaxX = 100;
+	private int tick = 0;
 	private boolean forwards = true;
 
 	public AssemblyTableRecipeCategory(IGuiHelper guiHelper) {
 		background = guiHelper.createBlankDrawable(180, 180);
 		localizedName = I18n.format("refraction.jei.assembly_table");
-		overlay = guiHelper.createDrawable(new ResourceLocation("refraction", "textures/gui/assembly_recipe_output_overlay.png"), 0, 0, 64, 46);
 	}
 
 	@Nonnull
@@ -54,23 +49,6 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
-		int prevX = -5, destX = 5;
-		if (transitionTimeX < transitionTimeMaxX) {
-			transitionTimeX++;
-			if (forwards)
-				hover = ((prevX - destX) / 2) * MathHelper.cos((float) (transitionTimeX * Math.PI / transitionTimeMaxX)) + (destX + prevX) / 2;
-			else
-				hover = ((destX - prevX) / 2) * MathHelper.cos((float) (transitionTimeX * Math.PI / transitionTimeMaxX)) + (destX + prevX) / 2;
-		} else {
-			transitionTimeX = 0;
-			forwards = !forwards;
-		}
-		GlStateManager.enableAlpha();
-		GlStateManager.enableBlend();
-		GlStateManager.translate(0, hover, 0);
-		overlay.draw(minecraft, 86, 90);
-		GlStateManager.disableBlend();
-		GlStateManager.disableAlpha();
 	}
 
 	@Override
@@ -88,19 +66,14 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 		double slice = 2 * Math.PI / wrapper.getInputs().size();
 		for (int i = 0; i < wrapper.getInputs().size(); i++) {
 			double angle = slice * i;
-			int newX = (int) (82 + 40 * Math.cos(angle));
-			int newY = (int) (20 + 40 * Math.sin(angle));
+			int newX = (int) (82 + 60 * Math.cos(angle));
+			int newY = (int) (100 + 60 * Math.sin(angle));
 			recipeLayout.getItemStacks().init(index, true, newX, newY);
 			recipeLayout.getItemStacks().set(index, (ItemStack) wrapper.getInputs().get(i));
 			index++;
 		}
 
-		recipeLayout.getItemStacks().init(index, true, 82, 20);
-		recipeLayout.getItemStacks().set(index, new ItemStack(ModBlocks.ASSEMBLY_TABLE));
-
-		index++;
-
-		recipeLayout.getItemStacks().init(index, false, 82, 120);
+		recipeLayout.getItemStacks().init(index, true, 82, 100);
 		recipeLayout.getItemStacks().set(index, (ItemStack) wrapper.getOutputs().get(0));
 	}
 }
