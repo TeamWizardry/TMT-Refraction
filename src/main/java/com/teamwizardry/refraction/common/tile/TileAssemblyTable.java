@@ -11,6 +11,7 @@ import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipe;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -38,10 +39,6 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 	private IBlockState state;
 	private ArrayList<ItemStack> inventory = new ArrayList<>();
 	private int craftingTime = 0;
-	private int red;
-	private int green;
-	private int blue;
-	private int alpha;
 
 	public TileAssemblyTable() {
 	}
@@ -120,21 +117,23 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 	public void handle(Beam... inputs) {
 		if (worldObj.isRemote) return;
 		if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) != 0) return;
+		if (inputs.length <= 0) return;
+		int red = 0, green = 0, blue = 0, alpha = 0;
 
-		for (Beam beam : inputs)
-		{
-			if (beam.enableEffect)
-			{
+		for (Beam beam : inputs) {
+			if (beam.enableEffect) {
 				red += beam.color.getRed();
 				green += beam.color.getGreen();
 				blue += beam.color.getBlue();
 				alpha += beam.color.getAlpha();
 			}
 		}
-		
+
+		Minecraft.getMinecraft().thePlayer.sendChatMessage(alpha + " - " + Math.min(alpha / inputs.length, 255));
 		red = Math.min(red / inputs.length, 255);
 		green = Math.min(green / inputs.length, 255);
 		blue = Math.min(blue / inputs.length, 255);
+		alpha = Math.min(alpha / inputs.length, 255);
 
 		if (isCrafting) {
 			if (craftingTime < 50) {
@@ -142,9 +141,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 				ParticleBuilder builder = new ParticleBuilder(5);
 				builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
 				builder.setColorFunction(new InterpColorFade(Color.RED, 1, 255, 1));
-				if (ThreadLocalRandom.current().nextBoolean())
-					builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle_blurred"));
-				else builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle"));
+				builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
 				ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(20, 40), 0, (aFloat, particleBuilder) -> {
 					builder.setPositionOffset(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.5, 0.5), 0, ThreadLocalRandom.current().nextDouble(-0.5, 0.5)));
 					builder.setScale(ThreadLocalRandom.current().nextFloat());
@@ -162,9 +159,7 @@ public class TileAssemblyTable extends TileEntity implements ITickable, IBeamHan
 			ParticleBuilder builder = new ParticleBuilder(5);
 			builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
 			builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
-			if (ThreadLocalRandom.current().nextInt(5) == 0)
-				builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle"));
-			else builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle_blurred"));
+			builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
 			ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1.25, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(50, 80), 0, (aFloat, particleBuilder) -> {
 				double radius = 5;
 				double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);

@@ -1,12 +1,13 @@
 package com.teamwizardry.refraction.api;
 
+import com.teamwizardry.refraction.common.light.Beam;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+
 import java.awt.*;
-import com.teamwizardry.refraction.common.light.Beam;
 
 /**
  * Created by Saad on 10/9/2016.
@@ -65,7 +66,8 @@ public class Utils {
 		double redPart = color1.getRed() * percent + color2.getRed() * inverse_percent;
 		double greenPart = color1.getGreen() * percent + color2.getGreen() * inverse_percent;
 		double bluePart = color1.getBlue() * percent + color2.getBlue() * inverse_percent;
-		return new Color((int) redPart, (int) greenPart, (int) bluePart);
+		double alphaPart = color1.getAlpha() * percent + color2.getAlpha() * inverse_percent;
+		return new Color((int) redPart, (int) greenPart, (int) bluePart, (int) alphaPart);
 	}
 	
 	/**
