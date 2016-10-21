@@ -50,6 +50,7 @@ public class BlockAssemblyTable extends BlockModContainer {
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
 	}
+
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
@@ -59,7 +60,9 @@ public class BlockAssemblyTable extends BlockModContainer {
 				ItemStack stack = heldItem.copy();
 				stack.stackSize = 1;
 				--heldItem.stackSize;
-				table.getInventory().add(stack);
+				for (int i = 0; i < table.inventory.getSlots(); i++)
+					if (table.inventory.getStackInSlot(i) == null)
+						table.inventory.insertItem(i, stack, true);
 				playerIn.openContainer.detectAndSendChanges();
 
 			} else if (table.output != null) {
@@ -68,11 +71,9 @@ public class BlockAssemblyTable extends BlockModContainer {
 				playerIn.openContainer.detectAndSendChanges();
 				table.output = null;
 
-			} else if (!table.getInventory().isEmpty()) {
-				ItemStack stack = table.getInventory().get(table.getInventory().size() - 1);
-				playerIn.setHeldItem(hand, stack);
+			} else if (table.inventory.getStackInSlot(0) != null) {
+				playerIn.setHeldItem(hand, table.inventory.extractItem(table.inventory.getSlots() - 1, 1, true));
 				playerIn.openContainer.detectAndSendChanges();
-				table.getInventory().remove(stack);
 			}
 		}
 		worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
