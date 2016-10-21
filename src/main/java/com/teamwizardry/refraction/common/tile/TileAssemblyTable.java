@@ -8,11 +8,13 @@ import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.Save;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipe;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,6 +23,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -31,9 +35,25 @@ public class TileAssemblyTable extends TileMod implements IBeamHandler {
 	@Save
 	public boolean isCrafting = false;
 	@Save
-	public ItemStack output;
+	public ItemStackHandler inventory = new ItemStackHandler(54) {
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			return null;
+		}
+	};
 	@Save
-	public ItemStackHandler inventory = new ItemStackHandler(54);
+	public ItemStackHandler output = new ItemStackHandler(1) {
+		@Override
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			return null;
+		}
+
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			if (isCrafting) return null;
+			else return super.extractItem(slot, amount, simulate);
+		}
+	};
 	@Save
 	private int craftingTime = 0;
 
@@ -47,7 +67,7 @@ public class TileAssemblyTable extends TileMod implements IBeamHandler {
 
 	@Override
 	public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, net.minecraft.util.EnumFacing facing) {
-		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) inventory : super.getCapability(capability, facing);
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (facing == EnumFacing.DOWN ? (T) output : (T) inventory) : super.getCapability(capability, facing);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -97,7 +117,7 @@ public class TileAssemblyTable extends TileMod implements IBeamHandler {
 			return;
 		}
 
-		if (output != null) {
+		if (output.getStackInSlot(0) != null && !isCrafting) {
 			ParticleBuilder builder = new ParticleBuilder(5);
 			builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
 			builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
@@ -114,10 +134,10 @@ public class TileAssemblyTable extends TileMod implements IBeamHandler {
 			});
 		}
 
-		if (inventory.getStackInSlot(0) == null) return;
+		if (getOccupiedSlotCount() <= 0) return;
 		for (AssemblyRecipe recipe : AssemblyRecipies.recipes) {
 
-			if (recipe.getItems().size() != inventory.getSlots()) continue;
+			if (recipe.getItems().size() != getOccupiedSlotCount()) continue;
 			if (red > recipe.getMaxRed()) continue;
 			if (red < recipe.getMinRed()) continue;
 			if (green > recipe.getMaxGreen()) continue;
@@ -127,21 +147,32 @@ public class TileAssemblyTable extends TileMod implements IBeamHandler {
 			if (alpha > recipe.getMaxStrength()) continue;
 			if (alpha < recipe.getMinStrength()) continue;
 
-			boolean match = true;
-
-			for (ItemStack recipeItem : recipe.getItems())
-				if (!ItemStack.areItemsEqual(recipeItem, inventory.getStackInSlot(recipe.getItems().indexOf(recipeItem)))) {
-					match = false;
-					break;
-				}
-
-			if (match) {
-				output = recipe.getResult();
+			if (Utils.matchItemStackLists(recipe.getItems(), Utils.getListOfObjects(getListOfItems()))) {
+				//Minecraft.getMinecraft().thePlayer.sendChatMessage(recipe.getResult() + "");
+				output.setStackInSlot(0, recipe.getResult());
 				isCrafting = true;
 				craftingTime = 0;
-				for (int i = 0; i < inventory.getSlots(); i++) inventory.setStackInSlot(0, null);
+				for (int i = 0; i < inventory.getSlots(); i++) inventory.setStackInSlot(i, null);
 				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 			}
 		}
+	}
+
+	public int getOccupiedSlotCount() {
+		int x = 0;
+		for (int i = 0; i < inventory.getSlots(); i++) if (inventory.getStackInSlot(i) != null) x++;
+		return x;
+	}
+
+	public int getLastOccupiedSlot() {
+		for (int i = inventory.getSlots() - 1; i > 0; i--) if (inventory.getStackInSlot(i) != null) return i;
+		return 0;
+	}
+
+	public List<ItemStack> getListOfItems() {
+		List<ItemStack> stacks = new ArrayList<>();
+		for (int i = 0; i < inventory.getSlots(); i++)
+			if (inventory.getStackInSlot(i) != null) stacks.add(inventory.getStackInSlot(i));
+		return stacks;
 	}
 }

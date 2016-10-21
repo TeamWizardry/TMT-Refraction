@@ -61,18 +61,18 @@ public class BlockAssemblyTable extends BlockModContainer {
 				stack.stackSize = 1;
 				--heldItem.stackSize;
 				for (int i = 0; i < table.inventory.getSlots(); i++)
-					if (table.inventory.getStackInSlot(i) == null)
-						table.inventory.insertItem(i, stack, true);
+					if (table.inventory.getStackInSlot(i) == null) {
+						table.inventory.insertItem(i, stack, false);
+						break;
+					}
 				playerIn.openContainer.detectAndSendChanges();
 
-			} else if (table.output != null) {
-				ItemStack stack = table.output;
-				playerIn.setHeldItem(hand, stack);
+			} else if (table.output.getStackInSlot(0) != null) {
+				playerIn.setHeldItem(hand, table.output.extractItem(0, table.output.getStackInSlot(0).stackSize, false));
 				playerIn.openContainer.detectAndSendChanges();
-				table.output = null;
 
-			} else if (table.inventory.getStackInSlot(0) != null) {
-				playerIn.setHeldItem(hand, table.inventory.extractItem(table.inventory.getSlots() - 1, 1, true));
+			} else if (table.getOccupiedSlotCount() > 0) {
+				playerIn.setHeldItem(hand, table.inventory.extractItem(table.getLastOccupiedSlot(), 1, false));
 				playerIn.openContainer.detectAndSendChanges();
 			}
 		}
