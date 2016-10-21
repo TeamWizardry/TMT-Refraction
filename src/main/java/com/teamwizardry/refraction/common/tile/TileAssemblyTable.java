@@ -148,8 +148,7 @@ public class TileAssemblyTable extends TileMod implements IBeamHandler {
 			if (alpha < recipe.getMinStrength()) continue;
 
 			if (Utils.matchItemStackLists(recipe.getItems(), Utils.getListOfObjects(getListOfItems()))) {
-				//Minecraft.getMinecraft().thePlayer.sendChatMessage(recipe.getResult() + "");
-				output.setStackInSlot(0, recipe.getResult());
+				output.setStackInSlot(0, recipe.getResult().copy());
 				isCrafting = true;
 				craftingTime = 0;
 				for (int i = 0; i < inventory.getSlots(); i++) inventory.setStackInSlot(i, null);
