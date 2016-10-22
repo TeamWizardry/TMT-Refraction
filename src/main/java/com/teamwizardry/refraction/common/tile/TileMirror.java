@@ -2,10 +2,10 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.librarianlib.common.util.tilesaving.Save;
 import com.teamwizardry.refraction.api.IPrecisionTile;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -17,50 +17,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPrecisionTile {
 
+	@Save
 	public float rotXUnpowered, rotYUnpowered, rotXPowered = Float.NaN, rotYPowered = Float.NaN;
+	@Save
 	public float rotDestX, rotPrevX, rotDestY, rotPrevY;
+	@Save
 	public boolean transitionX = false, transitionY = false, powered = false;
+	@Save
 	public long worldTime = 0;
 	public Beam[] beams;
 
 	public TileMirror() {
-	}
-
-	@Override
-	public void readCustomNBT(NBTTagCompound compound) {
-		super.readCustomNBT(compound);
-		if (compound.hasKey("rotXPowered")) rotXPowered = compound.getFloat("rotXPowered");
-		if (compound.hasKey("rotYPowered")) rotYPowered = compound.getFloat("rotYPowered");
-		if (compound.hasKey("rotXUnpowered")) rotXUnpowered = compound.getFloat("rotXUnpowered");
-		if (compound.hasKey("rotYUnpowered")) rotYUnpowered = compound.getFloat("rotYUnpowered");
-		if (compound.hasKey("rotDestX")) rotDestX = compound.getFloat("rotDestX");
-		if (compound.hasKey("rotDestY")) rotDestY = compound.getFloat("rotDestY");
-		if (compound.hasKey("rotPrevX")) rotPrevX = compound.getFloat("rotPrevX");
-		if (compound.hasKey("rotPrevY")) rotPrevY = compound.getFloat("rotPrevY");
-		if (compound.hasKey("transitionX")) transitionX = compound.getBoolean("transitionX");
-		if (compound.hasKey("transitionY")) transitionY = compound.getBoolean("transitionY");
-		if (compound.hasKey("powered")) powered = compound.getBoolean("powered");
-		if (compound.hasKey("world_time")) worldTime = compound.getLong("world_time");
-
-	}
-
-	@Override
-	public void writeCustomNBT(NBTTagCompound compound) {
-		super.writeCustomNBT(compound);
-		compound.setFloat("rotXUnpowered", rotXUnpowered);
-		compound.setFloat("rotYUnpowered", rotYUnpowered);
-		if (!Float.isNaN(rotXPowered))
-			compound.setFloat("rotXPowered", rotXPowered);
-		if (!Float.isNaN(rotYPowered))
-			compound.setFloat("rotYPowered", rotYPowered);
-		compound.setFloat("rotDestX", rotDestX);
-		compound.setFloat("rotDestY", rotDestY);
-		compound.setFloat("rotPrevX", rotPrevX);
-		compound.setFloat("rotPrevY", rotPrevY);
-		compound.setBoolean("transitionX", transitionX);
-		compound.setBoolean("transitionY", transitionY);
-		compound.setBoolean("powered", powered);
-		compound.setLong("world_time", worldTime);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -82,7 +49,6 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 		rotDestX = rotX;
 		transitionX = true;
 		worldTime = worldObj.getTotalWorldTime();
-		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		markDirty();
 	}
 
@@ -99,7 +65,6 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 		rotDestY = rotY;
 		transitionY = true;
 		worldTime = worldObj.getTotalWorldTime();
-		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		markDirty();
 	}
 
@@ -146,7 +111,6 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 				if (powered) rotXPowered = rotX;
 				else rotXUnpowered = rotX;
 				transitionX = false;
-				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 				markDirty();
 			}
 		}
@@ -161,7 +125,6 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 				if (powered) rotYPowered = rotY;
 				else rotYUnpowered = rotY;
 				transitionY = false;
-				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 				markDirty();
 			}
 		}

@@ -17,9 +17,11 @@ public class TileSpectrometer extends TileMod implements IBeamHandler, ITickable
 
 	@Save
 	public Color maxColor = Color.BLACK;
+	@Save
 	public Color currentColor = Color.BLACK;
 	@Save
 	public int maxTransparency = 0;
+	@Save
 	public int currentTransparency = 0;
 	private Beam[] beams = new Beam[]{};
 	private int tick = 0;
@@ -54,7 +56,7 @@ public class TileSpectrometer extends TileMod implements IBeamHandler, ITickable
 			beams = null;
 			maxColor = new Color(0, 0, 0);
 			maxTransparency = 0;
-			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+			markDirty();
 		}
 
 		if (currentColor.getRGB() != maxColor.getRGB() || currentTransparency != maxTransparency) {
@@ -88,9 +90,8 @@ public class TileSpectrometer extends TileMod implements IBeamHandler, ITickable
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
 
 		if (color.getRGB() == maxColor.getRGB()) return;
-		markDirty();
 		this.maxColor = color;
 		this.maxTransparency = color.getAlpha();
-		worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+		markDirty();
 	}
 }
