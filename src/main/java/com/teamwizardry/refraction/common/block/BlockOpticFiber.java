@@ -33,7 +33,6 @@ import static net.minecraft.util.EnumFacing.*;
 /**
  * Created by Saad on 9/15/2016.
  */
-@SuppressWarnings("deprecation")
 public class BlockOpticFiber extends BlockModContainer {
 
 	public static final PropertyEnum<EnumBiFacing> FACING = PropertyEnum.create("facings", EnumBiFacing.class);

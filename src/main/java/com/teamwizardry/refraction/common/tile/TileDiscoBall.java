@@ -75,20 +75,27 @@ public class TileDiscoBall extends TileEntity implements IBeamHandler, ITickable
 	public void handle(Beam... inputs) {
 		if (!worldObj.isBlockPowered(pos) && worldObj.isBlockIndirectlyGettingPowered(pos) == 0) return;
 
+		Beam biggest = null;
 		for (Beam beam : inputs) {
-			beam.color = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8));
-			for (int i = 0; i < 4; i++) {
-				double radius = 5;
-				double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
-				double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
-				double r = (u > 1) ? 2 - u : u;
-				double x = r * Math.cos(t), z = r * Math.sin(t);
-
-				Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
-
-				handlers.add(new BeamHandler(dest, new Vec3d(pos).addVector(0.5, 0.3, 0.5), beam.color, beam.enableEffect));
-			}
+			if (biggest == null)
+				biggest = beam;
+			else if (beam.color.getAlpha() > biggest.color.getAlpha())
+				biggest = beam;
 		}
+		if (biggest == null) return;
+		biggest.color = new Color(biggest.color.getRed(), biggest.color.getGreen(), biggest.color.getBlue(), biggest.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8));
+		for (int i = 0; i < 4; i++) {
+			double radius = 5;
+			double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
+			double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
+			double r = (u > 1) ? 2 - u : u;
+			double x = r * Math.cos(t), z = r * Math.sin(t);
+
+			Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
+
+			handlers.add(new BeamHandler(dest, new Vec3d(pos).addVector(0.5, 0.3, 0.5), biggest.color, biggest.enableEffect));
+		}
+
 	}
 
 	@Override
