@@ -28,16 +28,22 @@ public class TileReflectiveAlloyBlock extends TileMod implements IBeamHandler {
 			Vec3d outgoingDir;
 			switch (facing) {
 				case UP:
+					outgoingDir = new Vec3d(incomingDir.xCoord, Math.abs(incomingDir.yCoord), incomingDir.zCoord);
+					break;
 				case DOWN:
-					outgoingDir = incomingDir.subtract(0, incomingDir.yCoord * 2, 0);
+					outgoingDir = new Vec3d(incomingDir.xCoord, -Math.abs(incomingDir.yCoord), incomingDir.zCoord);
 					break;
 				case NORTH:
+					outgoingDir = new Vec3d(incomingDir.xCoord, incomingDir.yCoord, -Math.abs(incomingDir.zCoord));
+					break;
 				case SOUTH:
-					outgoingDir = incomingDir.subtract(0, 0, incomingDir.zCoord * 2);
+					outgoingDir = new Vec3d(incomingDir.xCoord, incomingDir.yCoord, Math.abs(incomingDir.zCoord));
 					break;
 				case EAST:
+					outgoingDir = new Vec3d(Math.abs(incomingDir.xCoord), incomingDir.yCoord, incomingDir.zCoord);
+					break;
 				case WEST:
-					outgoingDir = incomingDir.subtract(incomingDir.xCoord * 2, 0, 0);
+					outgoingDir = new Vec3d(-Math.abs(incomingDir.xCoord), incomingDir.yCoord, incomingDir.zCoord);
 					break;
 				default:
 					outgoingDir = incomingDir;
