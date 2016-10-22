@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -55,18 +56,23 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 				e.printStackTrace();
 			}
 			modelMirror = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
-				location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
+					location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 			modelMirrorSplitter = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
-				location -> {
-					if(location.toString().equals(Refraction.MOD_ID + ":blocks/mirror_normal"))
-						location = new ResourceLocation(Refraction.MOD_ID, "blocks/mirror_splitter");
-					return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-				});
+					location -> {
+						if (location.toString().equals(Refraction.MOD_ID + ":blocks/mirror_normal"))
+							location = new ResourceLocation(Refraction.MOD_ID, "blocks/mirror_splitter");
+						return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+					});
 		}
 	}
 
 	@Override
 	public void renderTileEntityAt(TileMirror te, double x, double y, double z, float partialTicks, int destroyStage) {
+		double subtractedMillis = (te.getWorld().getTotalWorldTime() - te.worldTime);
+		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((te.rotPrevX - te.rotDestX) / 2.0), 20)),
+				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((te.rotPrevY - te.rotDestY) / 2.0), 20));
+		float rotX = te.getRotX(), rotY = te.getRotY();
+
 		GlStateManager.pushMatrix();
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -87,16 +93,35 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		GlStateManager.disableRescaleNormal();
 
 		GlStateManager.translate(0.5, 0, 0.5);
-		GlStateManager.rotate(te.getRotY(), 0, 1, 0);
+
+		if (te.transitionY) {
+			if (subtractedMillis < transitionTimeMaxY) {
+				if (Math.round(te.rotDestY) > Math.round(te.rotPrevY))
+					rotY = -((te.rotDestY - te.rotPrevY) / 2) * MathHelper.cos((float) (subtractedMillis * Math.PI / transitionTimeMaxY)) + (te.rotDestY + te.rotPrevY) / 2;
+				else
+					rotY = ((te.rotPrevY - te.rotDestY) / 2) * MathHelper.cos((float) (subtractedMillis * Math.PI / transitionTimeMaxY)) + (te.rotDestY + te.rotPrevY) / 2;
+			} else rotY = te.rotDestY;
+		}
+		GlStateManager.rotate(rotY, 0, 1, 0);
 
 		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelBrightnessColor(
-			modelArms, 1.0F, 1, 1, 1);
+				modelArms, 1.0F, 1, 1, 1);
 
 		GlStateManager.translate(0, 0.5, 0);
-		GlStateManager.rotate(te.getRotX(), 1, 0, 0);
+
+		if (te.transitionX) {
+			if (subtractedMillis < transitionTimeMaxX) {
+				if (Math.round(te.rotDestX) > Math.round(te.rotPrevX))
+					rotX = -((te.rotDestX - te.rotPrevX) / 2) * MathHelper.cos((float) (subtractedMillis * Math.PI / transitionTimeMaxX)) + (te.rotDestX + te.rotPrevX) / 2;
+				else
+					rotX = ((te.rotPrevX - te.rotDestX) / 2) * MathHelper.cos((float) (subtractedMillis * Math.PI / transitionTimeMaxX)) + (te.rotDestX + te.rotPrevX) / 2;
+			} else rotX = te.rotDestX;
+
+		}
+		GlStateManager.rotate(rotX, 1, 0, 0);
 
 		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelBrightnessColor(
-			te instanceof TileSplitter ? modelMirrorSplitter : modelMirror, 1.0F, 1, 1, 1);
+				te instanceof TileSplitter ? modelMirrorSplitter : modelMirror, 1.0F, 1, 1, 1);
 
 		GlStateManager.disableBlend();
 		GlStateManager.popMatrix();

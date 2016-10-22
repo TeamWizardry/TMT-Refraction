@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.BeamConstants;
@@ -9,10 +10,6 @@ import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,51 +20,15 @@ import java.awt.*;
 /**
  * Created by LordSaad44
  */
-public class TileMagnifier extends TileEntity implements ILightSource {
-
-	private IBlockState state;
+public class TileMagnifier extends TileMod implements ILightSource {
 
 	public TileMagnifier() {
-
 	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
-		return compound;
-	}
-
 
 	@Override
 	public void onLoad() {
 		super.onLoad();
 		ReflectionTracker.getInstance(worldObj).addSource(this);
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
-	}
-
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound tag = new NBTTagCompound();
-		writeToNBT(tag);
-		return new SPacketUpdateTileEntity(pos, 0, tag);
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		super.onDataPacket(net, packet);
-		readFromNBT(packet.getNbtCompound());
-
-		state = worldObj.getBlockState(pos);
-		worldObj.notifyBlockUpdate(pos, state, state, 3);
 	}
 
 	@SideOnly(Side.CLIENT)
