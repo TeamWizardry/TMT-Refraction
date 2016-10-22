@@ -12,6 +12,7 @@ tile.refraction:sensor.name=Light Beam Identification Pole
 tile.refraction:spectrometer.name=Light Beam Color Balance Testing Device
 tile.refraction:creative_laser.name=Quantum Cascading Laser Of Infinite Creativity
 tile.refraction:optic_fiber.name=Optical Fibril Coaxial
+tile.refraction:reflective_alloy_block.name=Reflective Alloy Block
 
 item.refraction:laser_pen.name=Laser Pen
 item.refraction:screw_driver.0.name=Screw Driver (5°)
@@ -38,6 +39,7 @@ simple_name.refraction:sensor=&7Sensor
 simple_name.refraction:spectrometer=&7Spectrometer
 simple_name.refraction:creative_laser=&7Creative Laser
 simple_name.refraction:optic_fiber=&7Optic Fiber
+simple_name.refraction:reflective_alloy_block=&7Reflective Alloy Block
 
 gui.screw_driver.angle.0=5°
 gui.screw_driver.angle.1=22.5°

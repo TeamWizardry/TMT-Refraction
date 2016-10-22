@@ -1,5 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.Save;
 import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.common.block.BlockLightBridge;
@@ -9,10 +11,6 @@ import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,64 +19,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by Saad on 8/16/2016.
  */
-public class TileElectronExciter extends TileEntity implements IBeamHandler, ITileSpamSound {
+public class TileElectronExciter extends TileMod implements IBeamHandler, ITileSpamSound {
 
-	private IBlockState state;
+	@Save
 	private boolean emittingSound = false;
+	@Save
 	private boolean hasCardinalBeam = false;
-	private BlockPos beamSource;
 
 	public TileElectronExciter() {
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		if (compound.hasKey("emitting_sound")) emittingSound = compound.getBoolean("emitting_sound");
-
-		if (compound.hasKey("has_cardinal_beam")) hasCardinalBeam = compound.getBoolean("has_cardinal_beam");
-
-		int x = 0, y = 0, z = 0;
-		if (compound.hasKey("beam_source_x")) x = compound.getInteger("beam_source_x");
-		if (compound.hasKey("beam_source_y")) y = compound.getInteger("beam_source_y");
-		if (compound.hasKey("beam_source_z")) z = compound.getInteger("beam_source_z");
-		beamSource = new BlockPos(x, y, z);
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
-		compound.setBoolean("emitting_sound", emittingSound);
-
-		compound.setBoolean("has_cardinal_beam", hasCardinalBeam);
-
-		if (beamSource != null) {
-			compound.setInteger("beam_source_x", beamSource.getX());
-			compound.setInteger("beam_source_y", beamSource.getY());
-			compound.setInteger("beam_source_z", beamSource.getZ());
-		}
-		return compound;
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
-	}
-
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound tag = new NBTTagCompound();
-		writeToNBT(tag);
-		return new SPacketUpdateTileEntity(pos, 0, tag);
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		super.onDataPacket(net, packet);
-		readFromNBT(packet.getNbtCompound());
-
-		state = worldObj.getBlockState(pos);
-		worldObj.notifyBlockUpdate(pos, state, state, 3);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -134,7 +82,6 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 
 			if (facing != null) {
 				if (facing.getOpposite() == worldObj.getBlockState(pos).getValue(BlockDirectional.FACING)) {
-					beamSource = new BlockPos(beam.initLoc.xCoord, beam.initLoc.yCoord, beam.initLoc.zCoord);
 					match = true;
 					break;
 				}
@@ -143,7 +90,6 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 		hasCardinalBeam = match;
 		if (match) invokeUpdate();
 		else {
-			beamSource = null;
 			invokeUpdate();
 		}
 	}
@@ -156,9 +102,5 @@ public class TileElectronExciter extends TileEntity implements IBeamHandler, ITi
 	@Override
 	public void setShouldEmitSound(boolean shouldEmitSound) {
 		emittingSound = shouldEmitSound;
-	}
-
-	public boolean hasCardinalBeam() {
-		return hasCardinalBeam;
 	}
 }

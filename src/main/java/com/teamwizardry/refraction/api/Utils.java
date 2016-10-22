@@ -1,13 +1,18 @@
 package com.teamwizardry.refraction.api;
 
+import com.google.common.collect.Lists;
 import com.teamwizardry.refraction.common.light.Beam;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Saad on 10/9/2016.
@@ -86,5 +91,45 @@ public class Utils {
 			return EnumFacing.getFacingFromVector((float) dir.xCoord, (float) dir.yCoord, (float) dir.zCoord);
 		}
 		return null;
+	}
+
+	public static boolean matchItemStackLists(List<ItemStack> items, List<Object> required) {
+		java.util.List<Object> inputsMissing = new ArrayList<>(required);
+		for (ItemStack i : items) {
+			for (int j = 0; j < inputsMissing.size(); j++) {
+				Object inp = inputsMissing.get(j);
+				if (inp instanceof ItemStack && ((ItemStack) inp).getItemDamage() == 32767)
+					((ItemStack) inp).setItemDamage(i.getItemDamage());
+				if (itemEquals(i, inp)) {
+					inputsMissing.remove(j);
+					break;
+				}
+			}
+		}
+		return inputsMissing.isEmpty();
+	}
+
+	public static boolean itemEquals(ItemStack stack, Object stack2) {
+		if (stack2 instanceof String) {
+
+			for (ItemStack orestack : OreDictionary.getOres((String) stack2)) {
+				ItemStack cstack = orestack.copy();
+
+				if (cstack.getItemDamage() == 32767) cstack.setItemDamage(stack.getItemDamage());
+				if (stack.isItemEqual(cstack)) return true;
+			}
+
+		} else return stack2 instanceof ItemStack && simpleAreStacksEqual(stack, (ItemStack) stack2);
+		return false;
+	}
+
+	public static boolean simpleAreStacksEqual(ItemStack stack, ItemStack stack2) {
+		return stack.getItem() == stack2.getItem() && stack.getItemDamage() == stack2.getItemDamage();
+	}
+
+	public static List<Object> getListOfObjects(List<ItemStack> stacks) {
+		List<Object> list = Lists.newArrayList();
+		list.addAll(stacks);
+		return list;
 	}
 }

@@ -1,13 +1,11 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.Save;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 
 import java.awt.*;
@@ -15,11 +13,14 @@ import java.awt.*;
 /**
  * Created by Saad on 9/11/2016.
  */
-public class TileSpectrometer extends TileEntity implements IBeamHandler, ITickable {
+public class TileSpectrometer extends TileMod implements IBeamHandler, ITickable {
 
-	public Color maxColor = Color.BLACK, currentColor = Color.BLACK;
-	public int maxTransparency = 0, currentTransparency = 0;
-	private IBlockState state;
+	@Save
+	public Color maxColor = Color.BLACK;
+	public Color currentColor = Color.BLACK;
+	@Save
+	public int maxTransparency = 0;
+	public int currentTransparency = 0;
 	private Beam[] beams = new Beam[]{};
 	private int tick = 0;
 
@@ -27,47 +28,15 @@ public class TileSpectrometer extends TileEntity implements IBeamHandler, ITicka
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		if (compound.hasKey("max_color"))
-			maxColor = new Color(compound.getInteger("max_color"));
-		if (compound.hasKey("current_color"))
-			currentColor = new Color(compound.getInteger("current_color"));
-		if (compound.hasKey("max_transparency"))
-			maxTransparency = compound.getInteger("max_transparency");
-		if (compound.hasKey("current_transparency"))
-			currentTransparency = compound.getInteger("current_transparency");
+	public void readCustomNBT(NBTTagCompound compound) {
+		this.currentColor = new Color(compound.getInteger("current_color"));
+		this.currentTransparency = compound.getInteger("current_alpha");
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
-		compound.setInteger("max_color", maxColor.getRGB());
-		compound.setInteger("current_color", currentColor.getRGB());
-		compound.setInteger("max_transparency", maxTransparency);
-		compound.setInteger("current_transparency", currentTransparency);
-		return compound;
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
-	}
-
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound tag = new NBTTagCompound();
-		writeToNBT(tag);
-		return new SPacketUpdateTileEntity(pos, 0, tag);
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		super.onDataPacket(net, packet);
-		readFromNBT(packet.getNbtCompound());
-
-		state = worldObj.getBlockState(pos);
-		worldObj.notifyBlockUpdate(pos, state, state, 3);
+	public void writeCustomNBT(NBTTagCompound compound) {
+		compound.setInteger("current_integer", currentColor.getRGB());
+		compound.setInteger("current_alpha", currentTransparency);
 	}
 
 	@Override

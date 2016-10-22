@@ -4,7 +4,6 @@ import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
@@ -21,7 +20,7 @@ public class AssemblyRecipies {
 		recipes = new ArrayList<>();
 
 		recipes.add(new AssemblyRecipe(new ItemStack(ModItems.REFLECTIVE_ALLOY, 3), new Color(0x59FFFFFF, true), new Color(0xB3FFFFFF, true), Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT, Items.GOLD_INGOT, Items.GOLD_INGOT, Items.GOLD_INGOT));
-		recipes.add(new AssemblyRecipe(new ItemStack(Item.getItemFromBlock(ModBlocks.DISCO_BALL)), new Color(0xA6FF00BE, true), new Color(0xCCDC00FF, true), Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY));
+		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.DISCO_BALL), new Color(0xA6FF00BE, true), new Color(0xCCDC00FF, true), Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY));
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.MIRROR), new Color(0x4D0000FF, true), new Color(0x880000FF, true), Blocks.GLASS_PANE, Blocks.GLASS_PANE, Blocks.GLASS_PANE, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY));
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.PRISM), new Color(0x339B9B9B, true), new Color(0xCCC3C3C3, true), ModBlocks.LENS, ModBlocks.LENS, ModBlocks.LENS, ModBlocks.LENS, ModBlocks.LENS, ModBlocks.LENS));
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.SPLITTER), new Color(0x4D00FF00, true), new Color(0x8800FF00, true), ModBlocks.LENS, ModBlocks.LENS, ModBlocks.LENS, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY));

@@ -1,13 +1,12 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.Save;
 import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.init.ModSounds;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
@@ -16,11 +15,13 @@ import net.minecraft.util.math.BlockPos;
 /**
  * Created by Saad on 8/18/2016.
  */
-public class TileLightBridge extends TileEntity implements ITileSpamSound, ITickable {
+public class TileLightBridge extends TileMod implements ITileSpamSound, ITickable {
 
-	private IBlockState state;
+	@Save
 	private BlockPos source;
+	@Save
 	private EnumFacing direction;
+	@Save
 	private boolean emittingSound = false;
 	private int soundTicker = 0;
 	private int soundTrack = 0;
@@ -43,8 +44,7 @@ public class TileLightBridge extends TileEntity implements ITileSpamSound, ITick
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
+	public void readCustomNBT(NBTTagCompound compound) {
 		int x = 0, y = 0, z = 0;
 		if (compound.hasKey("source_x")) x = compound.getInteger("source_x");
 		if (compound.hasKey("source_y")) y = compound.getInteger("source_y");
@@ -54,36 +54,13 @@ public class TileLightBridge extends TileEntity implements ITileSpamSound, ITick
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
+	public void writeCustomNBT(NBTTagCompound compound) {
 		if (source != null) {
 			compound.setInteger("source_x", source.getX());
 			compound.setInteger("source_y", source.getY());
 			compound.setInteger("source_z", source.getZ());
 		}
 		if (direction != null) compound.setString("direction", direction.getName());
-		return compound;
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
-	}
-
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound tag = new NBTTagCompound();
-		writeToNBT(tag);
-		return new SPacketUpdateTileEntity(pos, 0, tag);
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		super.onDataPacket(net, packet);
-		readFromNBT(packet.getNbtCompound());
-
-		state = worldObj.getBlockState(pos);
-		worldObj.notifyBlockUpdate(pos, state, state, 3);
 	}
 
 	public void setSource(BlockPos source) {

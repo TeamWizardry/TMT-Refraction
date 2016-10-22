@@ -18,7 +18,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -62,8 +61,8 @@ public class BlockLaser extends BlockModContainer implements ISpamSoundProvider 
 			if (laser == null) return false;
 			ItemStack stack = heldItem.copy();
 			stack.stackSize = 1;
+			laser.inventory.insertItem(0, stack, false);
 			heldItem.stackSize--;
-			TileEntityHopper.putStackInInventoryAllSlots(laser, stack, null);
 		}
 		return true;
 	}

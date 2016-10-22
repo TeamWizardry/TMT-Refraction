@@ -43,7 +43,7 @@ public class AssemblyRecipe {
 			} else if (obj instanceof Item) {
 				this.items.add(new ItemStack((Item) obj));
 			} else if (obj instanceof Block) {
-				this.items.add(new ItemStack(Item.getItemFromBlock((Block) obj)));
+				this.items.add(new ItemStack((Block) obj));
 			}
 		}
 	}
@@ -82,7 +82,7 @@ public class AssemblyRecipe {
 			} else if (obj instanceof Item) {
 				this.items.add(new ItemStack((Item) obj));
 			} else if (obj instanceof Block) {
-				this.items.add(new ItemStack(Item.getItemFromBlock((Block) obj)));
+				this.items.add(new ItemStack((Block) obj));
 			}
 		}
 	}

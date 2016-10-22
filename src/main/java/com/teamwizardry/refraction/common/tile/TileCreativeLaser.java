@@ -1,11 +1,11 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 
@@ -14,7 +14,7 @@ import java.awt.*;
 /**
  * Created by Saad on 10/6/2016.
  */
-public class TileCreativeLaser extends TileEntity implements ILightSource {
+public class TileCreativeLaser extends TileMod implements ILightSource {
 
 	private IBlockState state;
 

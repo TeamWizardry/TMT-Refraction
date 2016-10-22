@@ -1,16 +1,16 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 
 /**
  * Created by Saad on 10/16/2016.
  */
-public class TileReflectiveAlloyBlock extends TileEntity implements IBeamHandler {
+public class TileReflectiveAlloyBlock extends TileMod implements IBeamHandler {
 	public TileReflectiveAlloyBlock() {
 	}
 
@@ -30,6 +30,7 @@ public class TileReflectiveAlloyBlock extends TileEntity implements IBeamHandler
 				case UP:
 				case DOWN:
 					outgoingDir = incomingDir.subtract(0, incomingDir.yCoord * 2, 0);
+					break;
 				case NORTH:
 				case SOUTH:
 					outgoingDir = incomingDir.subtract(0, 0, incomingDir.zCoord * 2);
