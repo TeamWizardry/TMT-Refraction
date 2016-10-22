@@ -1,12 +1,6 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.BeamConstants;
-import com.teamwizardry.refraction.common.light.ILightSource;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.init.ModBlocks;
+import java.awt.Color;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -14,13 +8,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.awt.*;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.BeamConstants;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
+import com.teamwizardry.refraction.common.light.ILightSource;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.init.ModBlocks;
 
 /**
  * Created by LordSaad44
  */
-public class TileMagnifier extends TileMod implements ILightSource {
+public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler {
 
 	public TileMagnifier() {
 	}
@@ -116,6 +116,15 @@ public class TileMagnifier extends TileMod implements ILightSource {
 
 				new Beam(worldObj, center, dir, color, false, false);
 			}
+		}
+	}
+
+	@Override
+	public void handle(Beam... beams)
+	{
+		for (Beam beam : beams)
+		{
+			new Beam(beam.world, beam.finalLoc, beam.slope, beam.color, beam.enableEffect, beam.ignoreEntities);
 		}
 	}
 }
