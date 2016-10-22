@@ -101,7 +101,7 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 		GlStateManager.color(1f, 1f, 1f);
 		SLOT.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - SLOT.getWidth() / 2, 101);
 
-		GlStateManager.color(0.5f, 0.5f, 0.5f);
+		GlStateManager.color(0.3f, 0.3f, 0.3f);
 		BAR.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 + 33, 0);
 		GlStateManager.color(1f, 1f, 1f);
 
@@ -111,7 +111,7 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 		GlStateManager.translate((recipeWidth - (BAR.getWidth() / 2) + 8), 8, 0);
 		GlStateManager.rotate(180, 0, 0, -1);
 
-		GlStateManager.color(0.5f, 0, 0);
+		GlStateManager.color(0.3f, 0, 0);
 		BAR.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 + 33, 10);
 
 		GlStateManager.color(1f, 0, 0);
@@ -121,12 +121,12 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 		GlStateManager.translate((recipeWidth - (BAR.getWidth() / 2) + 8), 18, 0);
 		GlStateManager.rotate(180, 0, 0, -1);
 
-		GlStateManager.color(0, 0.5f, 0);
+		GlStateManager.color(0, 0.3f, 0);
 		BAR.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 - 33, 0);
 		GlStateManager.color(0, 1f, 0);
 		BAR.drawClipped(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 - 33, 0, (int) (currentColor.getGreen() / 255.0 * 64), 8);
 
-		GlStateManager.color(0, 0, 0.5f);
+		GlStateManager.color(0, 0, 0.3f);
 		BAR.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 - 33, 10);
 		GlStateManager.color(0, 0, 1f);
 		BAR.drawClipped(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 - 33, 10, (int) (currentColor.getBlue() / 255.0 * 64), 8);

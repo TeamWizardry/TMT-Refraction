@@ -35,23 +35,25 @@ public class TileAssemblyTable extends TileMod implements IBeamHandler {
 	@Save
 	public boolean isCrafting = false;
 	@Save
-	public ItemStackHandler inventory = new ItemStackHandler(54) {
-		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			return null;
-		}
-	};
-	@Save
 	public ItemStackHandler output = new ItemStackHandler(1) {
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			return null;
+			return stack;
 		}
 
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
 			if (isCrafting) return null;
 			else return super.extractItem(slot, amount, simulate);
+		}
+	};
+	@Save
+	public ItemStackHandler inventory = new ItemStackHandler(54) {
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			if (output.getStackInSlot(0) != null && output.getStackInSlot(0).stackSize > 0) return null;
+			if (isCrafting) return null;
+			return super.extractItem(slot, amount, simulate);
 		}
 	};
 	@Save
