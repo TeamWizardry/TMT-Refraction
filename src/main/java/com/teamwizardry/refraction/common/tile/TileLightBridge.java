@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.librarianlib.common.util.Save;
+import com.teamwizardry.librarianlib.common.util.tilesaving.Save;
 import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.init.ModSounds;
 import net.minecraft.block.state.IBlockState;
