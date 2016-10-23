@@ -28,7 +28,6 @@ import java.util.WeakHashMap;
 public class EffectTracker {
 
 	public static ArrayList<Effect> effectRegistry = new ArrayList<>();
-	public static ArrayList<Effect> expiredEffects = new ArrayList<>();
 	public static ArrayList<BlockPos> burnedTileTracker = new ArrayList<>();
 	public static HashMap<Entity, Integer> gravityReset = new HashMap<>();
 	public static HashMap<EntityItem, IInventory> itemInput = new HashMap<>();
@@ -99,13 +98,16 @@ public class EffectTracker {
 		if (event.phase == TickEvent.Phase.START && event.side == Side.SERVER) {
 
 			blockTracker.generateEffects();
-			for (Effect effect : effects.keySet()) {
+
+			for (Iterator<Effect> iterator = effects.keySet().iterator(); iterator.hasNext(); ) {
+				Effect effect = iterator.next();
 				World w = world.get();
 				if (effect != null && w != null && effects.get(effect) != null) {
-					if (effect.hasCooldown()) effect.tickCooldown(w, effects.get(effect));
-					else effect.run(w, effects.get(effect));
+					effect.run(w, effects.get(effect));
+					iterator.remove();
 				}
 			}
+
 			for (Iterator<Entity> iterator = gravityReset.keySet().iterator(); iterator.hasNext(); ) {
 				Entity entity = iterator.next();
 				if (gravityReset.get(entity) > 0)
@@ -119,7 +121,6 @@ public class EffectTracker {
 			if (cooldown > 0) {
 				cooldown--;
 			} else {
-				effects.keySet().removeIf(effect -> !effect.hasCooldown());
 				itemInput.keySet().removeIf(item -> TileEntityHopper.putDropInInventoryAllSlots(itemInput.get(item), item));
 
 				itemOutput.keySet().removeIf(inv -> {
@@ -147,9 +148,6 @@ public class EffectTracker {
 				cooldown = BeamConstants.SOURCE_TIMER;
 				burnedTileTracker.clear();
 			}
-
-			for (Effect effect : expiredEffects) effects.asMap().remove(effect);
-			expiredEffects.clear();
 		}
 	}
 }

@@ -34,7 +34,7 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 		if (primary != null && secondary != null && primary.contains(facing.primary.getOpposite()) && secondary.contains(facing.secondary.getOpposite()))
 		{
 			for (Beam beam : beams)
-				new Beam(worldObj, beam.finalLoc, beam.slope, beam.color, beam.enableEffect, beam.ignoreEntities);
+				new Beam(worldObj, beam.finalLoc, beam.slope, beam.color, beam.enableEffect, beam.ignoreEntities, 0);
 			return;
 		}
 
@@ -90,7 +90,7 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 					{
 						EnumFacing opposite = beamDir.getOpposite();
 						EnumFacing other = facing.getOther(opposite);
-						new Beam(beam.world, getSideCenter(pos, other), getFacingVector(other), beam.color, beam.enableEffect, beam.ignoreEntities);
+						new Beam(beam.world, getSideCenter(pos, other), getFacingVector(other), beam.color, beam.enableEffect, beam.ignoreEntities, 0);
 					}
 				}
 				continue;
@@ -101,7 +101,7 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 				{
 					if (beamDir.getOpposite() == Utils.getCollisionSide(beam))
 					{
-						new Beam(beam.world, getSideCenter(curPos, curFacing), getFacingVector(curFacing), beam.color, beam.enableEffect, beam.ignoreEntities);
+						new Beam(beam.world, getSideCenter(curPos, curFacing), getFacingVector(curFacing), beam.color, beam.enableEffect, beam.ignoreEntities, 0);
 						continue;
 					}
 				}
@@ -112,12 +112,12 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 				{
 					if (beamDir.getOpposite() == Utils.getCollisionSide(beam))
 					{
-						new Beam(beam.world, getSideCenter(curPos, curFacing), getFacingVector(curFacing), beam.color, beam.enableEffect, beam.ignoreEntities);
+						new Beam(beam.world, getSideCenter(curPos, curFacing), getFacingVector(curFacing), beam.color, beam.enableEffect, beam.ignoreEntities, 0);
 						continue;
 					}
 				}
 			}
-			new Beam(beam.world, beam.finalLoc, beam.slope, beam.color, beam.enableEffect, beam.ignoreEntities);
+			new Beam(beam.world, beam.finalLoc, beam.slope, beam.color, beam.enableEffect, beam.ignoreEntities, 0);
 		}
 	}
 

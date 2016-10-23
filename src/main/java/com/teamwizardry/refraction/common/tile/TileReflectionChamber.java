@@ -75,7 +75,7 @@ public class TileReflectionChamber extends TileMod implements IBeamHandler {
 			color1 = new Color(color1.getRed(), color1.getGreen(), color1.getBlue(), Math.min(aAlpha, 255));
 
 			Vec3d out1 = RotationHelper.averageDirection(angles1);
-			new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out1, color1, false, false);
+			new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out1, color1, false, false, 0);
 		}
 
 		if (effectCount > 0)
@@ -90,7 +90,7 @@ public class TileReflectionChamber extends TileMod implements IBeamHandler {
 
 			Vec3d out2 = RotationHelper.averageDirection(angles2);
 
-			new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out2, color2, true, false);
+			new Beam(worldObj, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out2, color2, true, false, 0);
 		}
 
 	}

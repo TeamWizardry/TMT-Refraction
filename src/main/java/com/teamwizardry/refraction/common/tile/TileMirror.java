@@ -88,7 +88,7 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 
 			Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
-			new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color, beam.enableEffect, beam.ignoreEntities);
+			new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color, beam.enableEffect, beam.ignoreEntities, 0);
 		}
 	}
 
@@ -144,7 +144,7 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 
 					Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
-					new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color, beam.enableEffect, beam.ignoreEntities);
+					new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color, beam.enableEffect, beam.ignoreEntities, 0);
 				}
 			}
 		} else beams = null;

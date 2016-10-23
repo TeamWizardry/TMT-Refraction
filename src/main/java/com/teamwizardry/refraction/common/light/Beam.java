@@ -14,6 +14,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Beam {
 	public Vec3d initLoc;
@@ -24,16 +29,23 @@ public class Beam {
 	public Effect effect;
 	public boolean enableEffect, ignoreEntities;
 	public RayTraceResult trace;
+	public double footprint = 0;
 
-	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color, boolean enableEffect, boolean ignoreEntities) {
+	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color, boolean enableEffect, boolean ignoreEntities, double footprint) {
 		this.world = world;
 		this.initLoc = initLoc;
 		this.slope = slope;
 		this.finalLoc = slope.normalize().scale(128).add(initLoc);
 		this.color = color;
-		this.effect = EffectTracker.getEffect(this);
 		this.enableEffect = enableEffect;
 		this.ignoreEntities = ignoreEntities;
+
+		Effect effect = EffectTracker.getEffect(this);
+		if (effect != null) {
+			if (effect.getCooldown() == 0) this.effect = effect;
+			else if (ThreadLocalRandom.current().nextInt(0, effect.getCooldown()) == 0) this.effect = effect;
+		} else this.effect = EffectTracker.getEffect(this);
+
 		if (world.isRemote) return;
 
 		if (!ignoreEntities) {
@@ -46,6 +58,12 @@ public class Beam {
 		if (trace == null) return;
 
 		this.finalLoc = trace.hitVec;
+
+		/*if (Collections.frequency(bounceTracker, new BlockPos(finalLoc)) < 2) bounceTracker.add(new BlockPos(finalLoc));
+		else return;
+		if (bounceTracker.contains(new BlockPos(finalLoc))) return;
+		bounceTracker.add(new BlockPos(finalLoc));*/
+
 		if (enableEffect && trace.typeOfHit == RayTraceResult.Type.ENTITY) {
 			if (effect != null) {
 				if (effect.getType() == EffectType.SINGLE) EffectTracker.addEffect(world, trace.hitVec, effect);
@@ -53,16 +71,19 @@ public class Beam {
 			}
 		} else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
 			try {
-				if (enableEffect && effect != null && effect.getType() == EffectType.BEAM) EffectTracker.addEffect(world, this);
+				if (enableEffect && effect != null && effect.getType() == EffectType.BEAM)
+					EffectTracker.addEffect(world, this);
 				TileEntity tile = world.getTileEntity(trace.getBlockPos());
-				if (tile instanceof IBeamHandler) ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
+				if (tile instanceof IBeamHandler)
+					ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
 				else if (enableEffect) {
 					BlockPos pos = trace.getBlockPos();
 					if (effect != null && effect.getType() == EffectType.SINGLE)
 						EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
 				}
 			} catch (NullPointerException ignored) // Don't really care about these NPEs, all they mean is that the BlockPos is outside the world height limit.
-			{}
+			{
+			}
 		} else if (enableEffect && trace.typeOfHit == RayTraceResult.Type.MISS) {
 			if (effect != null && effect.getType() == EffectType.BEAM)
 				EffectTracker.addEffect(world, this);
@@ -71,16 +92,16 @@ public class Beam {
 		PacketHandler.INSTANCE.getNetwork().sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
 	}
 
-	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color, boolean enableEffect, boolean ignoreEntities) {
-		this(world, new Vec3d(initX, initY, initZ), new Vec3d(slopeX, slopeY, slopeZ), color, enableEffect, ignoreEntities);
+	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color, boolean enableEffect, boolean ignoreEntities, double footprint) {
+		this(world, new Vec3d(initX, initY, initZ), new Vec3d(slopeX, slopeY, slopeZ), color, enableEffect, ignoreEntities, footprint);
 	}
 
-	public Beam(World world, Vec3d initLoc, Vec3d dir, float red, float green, float blue, float alpha, boolean enableEffect, boolean ignoreEntities) {
-		this(world, initLoc, dir, new Color(red, green, blue, alpha), enableEffect, ignoreEntities);
+	public Beam(World world, Vec3d initLoc, Vec3d dir, float red, float green, float blue, float alpha, boolean enableEffect, boolean ignoreEntities, double footprint) {
+		this(world, initLoc, dir, new Color(red, green, blue, alpha), enableEffect, ignoreEntities, footprint);
 	}
 
-	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, float red, float green, float blue, float alpha, boolean enableEffect, boolean ignoreEntities) {
-		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha), enableEffect, ignoreEntities);
+	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, float red, float green, float blue, float alpha, boolean enableEffect, boolean ignoreEntities, double footprint) {
+		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha), enableEffect, ignoreEntities, footprint);
 	}
 
 	@Override

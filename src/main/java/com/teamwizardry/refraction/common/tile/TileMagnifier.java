@@ -71,7 +71,7 @@ public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler
 				Vec3d dir = new Vec3d(0, -1, 0);
 				Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.SOLAR_ALPHA);
 
-				new Beam(worldObj, center, dir, color, true, false);
+				new Beam(worldObj, center, dir, color, true, false, 0);
 
 				return;
 			}
@@ -114,7 +114,7 @@ public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);
 
-				new Beam(worldObj, center, dir, color, false, false);
+				new Beam(worldObj, center, dir, color, false, false, 0);
 			}
 		}
 	}
@@ -124,7 +124,7 @@ public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler
 	{
 		for (Beam beam : beams)
 		{
-			new Beam(beam.world, beam.finalLoc, beam.slope, beam.color, beam.enableEffect, beam.ignoreEntities);
+			new Beam(beam.world, beam.finalLoc, beam.slope, beam.color, beam.enableEffect, beam.ignoreEntities, beam.footprint);
 		}
 	}
 }

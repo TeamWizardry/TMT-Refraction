@@ -24,12 +24,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class EffectBurn extends Effect {
 
 	@Override
-	public boolean hasCooldown() {
-		return true;
-	}
-
-	@Override
-	public double getMaxCooldown() {
+	public int getCooldown() {
 		return potency == 0 ? 0 : 25500 / potency;
 	}
 

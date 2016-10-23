@@ -17,7 +17,6 @@ public class Effect implements Cloneable {
 
 	public Beam beam;
 	protected int potency;
-	private double cooldown = 0, maxCooldown = BeamConstants.SOURCE_TIMER;
 
 	public int getPotency() {
 		return potency;
@@ -26,10 +25,6 @@ public class Effect implements Cloneable {
 	public Effect setPotency(int potency) {
 		this.potency = potency;
 		return this;
-	}
-
-	public boolean hasCooldown() {
-		return false;
 	}
 
 	public Effect setBeam(Beam beam) {
@@ -65,31 +60,8 @@ public class Effect implements Cloneable {
 		return dist < 0 ? -dist : dist;
 	}
 
-	public double getCooldown() {
-		return cooldown;
-	}
-
-	public void setCooldown(double cooldown) {
-		this.cooldown = cooldown;
-	}
-
-	public double getMaxCooldown() {
-		return maxCooldown;
-	}
-
-	public void setMaxCooldown(double maxCooldown) {
-		this.maxCooldown = maxCooldown;
-	}
-
-	public Effect tickCooldown(World world, Set<BlockPos> locations) {
-		cooldown += 1;
-		if (cooldown >= getMaxCooldown())
-			cooldown = 0;
-		if (cooldown == 0) {
-			run(world, locations);
-			EffectTracker.expiredEffects.add(this);
-		}
-		return this;
+	public int getCooldown() {
+		return 0;
 	}
 
 	public Color getColor() {
