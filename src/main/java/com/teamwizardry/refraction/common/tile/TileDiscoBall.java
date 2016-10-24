@@ -45,7 +45,7 @@ public class TileDiscoBall extends TileMod implements IBeamHandler, ITickable {
 				biggest = beam;
 		}
 		if (biggest == null) return;
-		biggest.color = new Color(biggest.color.getRed(), biggest.color.getGreen(), biggest.color.getBlue(), biggest.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8));
+		biggest.setColor(new Color(biggest.color.getRed(), biggest.color.getGreen(), biggest.color.getBlue(), biggest.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8)));
 		for (int i = 0; i < 4; i++) {
 
 			double radius = 5;
@@ -54,7 +54,7 @@ public class TileDiscoBall extends TileMod implements IBeamHandler, ITickable {
 
 			Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
 
-			handlers.add(new BeamHandler(dest, new Vec3d(pos).addVector(0.5, 0.3, 0.5), biggest.color, biggest.enableEffect, biggest.footprint));
+			handlers.add(new BeamHandler(biggest.createSimilarBeam(new Vec3d(pos).addVector(0.5, 0.3, 0.5), dest)));
 		}
 
 	}
@@ -75,29 +75,22 @@ public class TileDiscoBall extends TileMod implements IBeamHandler, ITickable {
 			handler.life--;
 			Matrix4 matrix = new Matrix4();
 			matrix.rotate(Math.toRadians(rot), new Vec3d(0, handler.invert ? -1 : 1, 0));
-			Color c = new Color(handler.color.getRed(), handler.color.getGreen(), handler.color.getBlue(), handler.color.getAlpha() * handler.life / handler.maxLife);
-			new Beam(worldObj, handler.origin, matrix.apply(handler.dest), c, handler.enableEffect, false, handler.footprint);
-
+			Color c = new Color(handler.beam.color.getRed(), handler.beam.color.getGreen(), handler.beam.color.getBlue(), handler.beam.color.getAlpha() * handler.life / handler.maxLife);
+			handler.beam = handler.beam.setColor(c).createSimilarBeam(matrix.apply(handler.beam.finalLoc));
+			handler.beam.spawn();
 			if (handler.life <= 0) iterator.remove();
 		}
 	}
 
 	private class BeamHandler {
-		public Vec3d dest, origin;
-		public Color color;
-		public boolean enableEffect;
+		public Beam beam;
 		public boolean invert = false;
 		public int life = 20, maxLife = 20;
-		public double footprint = 0;
 
-		public BeamHandler(Vec3d dest, Vec3d origin, Color color, boolean enableEffect, double footprint) {
-			this.dest = dest;
-			this.origin = origin;
-			this.color = color;
-			this.enableEffect = enableEffect;
+		public BeamHandler(Beam beam) {
+			this.beam = beam;
 			this.invert = ThreadLocalRandom.current().nextBoolean();
 			this.life = this.maxLife = ThreadLocalRandom.current().nextInt(5, 10);
-			this.footprint = footprint;
 		}
 	}
 }

@@ -3,10 +3,14 @@ package com.teamwizardry.refraction.common.light;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.Effect.EffectType;
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.raytrace.EntityTrace;
+import com.teamwizardry.refraction.init.ModBlocks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -16,37 +20,93 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Beam {
+
 	public Vec3d initLoc;
 	public Vec3d slope;
 	public Vec3d finalLoc;
 	public Color color;
 	public World world;
 	public Effect effect;
-	public boolean enableEffect, ignoreEntities;
+	public boolean enableEffect = true, ignoreEntities = false;
 	public RayTraceResult trace;
-	public double footprint = 0;
+	private ArrayList<BlockPos> lastTouchedBlocks = new ArrayList<>();
 
-	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color, boolean enableEffect, boolean ignoreEntities, double footprint) {
+	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color) {
 		this.world = world;
 		this.initLoc = initLoc;
 		this.slope = slope;
 		this.finalLoc = slope.normalize().scale(128).add(initLoc);
 		this.color = color;
-		this.enableEffect = enableEffect;
-		this.ignoreEntities = ignoreEntities;
+	}
 
+	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color) {
+		this(world, new Vec3d(initX, initY, initZ), new Vec3d(slopeX, slopeY, slopeZ), color);
+	}
+
+	public Beam(World world, Vec3d initLoc, Vec3d dir, float red, float green, float blue, float alpha) {
+		this(world, initLoc, dir, new Color(red, green, blue, alpha));
+	}
+
+	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, float red, float green, float blue, float alpha) {
+		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha));
+	}
+
+	public Beam createSimilarBeam(Vec3d slope) {
+		return createSimilarBeam(finalLoc, slope);
+	}
+
+	public Beam createSimilarBeam(Vec3d init, Vec3d dir) {
+		return new Beam(world, init, dir, color).setIgnoreEntities(ignoreEntities).setEnableEffect(enableEffect).setLastTouchedBlocks(lastTouchedBlocks);
+	}
+
+	public Beam setSlope(Vec3d slope) {
+		this.slope = slope;
+		this.finalLoc = slope.normalize().scale(128).add(initLoc);
+		return this;
+	}
+
+	public Beam setColor(Color color) {
+		this.color = color;
+		return this;
+	}
+
+	public Beam setIgnoreEntities(boolean ignoreEntities) {
+		this.ignoreEntities = ignoreEntities;
+		return this;
+	}
+
+	public Beam setEnableEffect(boolean enableEffect) {
+		this.enableEffect = enableEffect;
+		return this;
+	}
+
+	public Beam setInitLoc(Vec3d initLoc) {
+		this.initLoc = initLoc;
+		this.finalLoc = slope.normalize().scale(128).add(initLoc);
+		return this;
+	}
+
+	public Beam setEffect(Effect effect) {
+		this.effect = effect;
+		return this;
+	}
+
+	public Beam setLastTouchedBlocks(ArrayList<BlockPos> lastTouchedBlocks) {
+		this.lastTouchedBlocks = lastTouchedBlocks;
+		return this;
+	}
+
+	public void spawn() {
+		if (world == null) return;
+		if (world.isRemote) return;
 		Effect effect = EffectTracker.getEffect(this);
 		if (effect != null) {
 			if (effect.getCooldown() == 0) this.effect = effect;
 			else if (ThreadLocalRandom.current().nextInt(0, effect.getCooldown()) == 0) this.effect = effect;
 		} else this.effect = EffectTracker.getEffect(this);
-
-		if (world.isRemote) return;
 
 		if (!ignoreEntities) {
 			if (effect != null) {
@@ -56,13 +116,23 @@ public class Beam {
 			} else trace = EntityTrace.cast(world, initLoc, slope, 128, false);
 		} else trace = EntityTrace.cast(world, initLoc, slope, 128, true);
 		if (trace == null) return;
-
+		if (trace.hitVec == null) return;
 		this.finalLoc = trace.hitVec;
 
-		/*if (Collections.frequency(bounceTracker, new BlockPos(finalLoc)) < 2) bounceTracker.add(new BlockPos(finalLoc));
-		else return;
-		if (bounceTracker.contains(new BlockPos(finalLoc))) return;
-		bounceTracker.add(new BlockPos(finalLoc));*/
+		if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+			EnumFacing facing = Utils.getCollisionSide(this);
+			if (facing != null) {
+				BlockPos pos = new BlockPos(finalLoc).offset(facing);
+				if (world.getBlockState(pos).getBlock() == ModBlocks.DISCO_BALL)
+					Minecraft.getMinecraft().thePlayer.sendChatMessage(lastTouchedBlocks + " - ");
+				if (lastTouchedBlocks.size() < 3) lastTouchedBlocks.add(pos);
+				else {
+					int i = Collections.frequency(lastTouchedBlocks, pos);
+					if (i >= 3) return;
+					else lastTouchedBlocks.remove(0).add(pos);
+				}
+			}
+		}
 
 		if (enableEffect && trace.typeOfHit == RayTraceResult.Type.ENTITY) {
 			if (effect != null) {
@@ -90,18 +160,6 @@ public class Beam {
 		}
 
 		PacketHandler.INSTANCE.getNetwork().sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
-	}
-
-	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color, boolean enableEffect, boolean ignoreEntities, double footprint) {
-		this(world, new Vec3d(initX, initY, initZ), new Vec3d(slopeX, slopeY, slopeZ), color, enableEffect, ignoreEntities, footprint);
-	}
-
-	public Beam(World world, Vec3d initLoc, Vec3d dir, float red, float green, float blue, float alpha, boolean enableEffect, boolean ignoreEntities, double footprint) {
-		this(world, initLoc, dir, new Color(red, green, blue, alpha), enableEffect, ignoreEntities, footprint);
-	}
-
-	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, float red, float green, float blue, float alpha, boolean enableEffect, boolean ignoreEntities, double footprint) {
-		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha), enableEffect, ignoreEntities, footprint);
 	}
 
 	@Override

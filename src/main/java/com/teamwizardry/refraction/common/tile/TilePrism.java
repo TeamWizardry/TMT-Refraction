@@ -50,23 +50,23 @@ public class TilePrism extends TileMod implements IBeamHandler {
 
 			if (!beam.enableEffect) {
 				if (beam.color.getRed() != 0)
-					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), true);
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam.enableEffect, beam.ignoreEntities);
 				if (beam.color.getGreen() != 0)
-					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), true);
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam.enableEffect, beam.ignoreEntities);
 				if (beam.color.getBlue() != 0)
-					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), true);
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam.enableEffect, beam.ignoreEntities);
 			} else {
 				if (beam.color.getRed() != 0)
-					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), false);
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam.enableEffect, beam.ignoreEntities);
 				if (beam.color.getGreen() != 0)
-					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), false);
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam.enableEffect, beam.ignoreEntities);
 				if (beam.color.getBlue() != 0)
-					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), false);
+					fireColor(b, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam.enableEffect, beam.ignoreEntities);
 			}
 		}
 	}
 
-	private void fireColor(BlockPrism block, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect) {
+	private void fireColor(BlockPrism block, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities) {
 		BlockPrism.RayTraceResultData<Vec3d> r = block.collisionRayTraceLaser(state, worldObj, pos, hitPos.subtract(ref), hitPos.add(ref));
 		if (r == null) return;
 		Vec3d normal = r.data;
@@ -92,7 +92,7 @@ public class TilePrism extends TileMod implements IBeamHandler {
 			}
 		}
 
-		new Beam(worldObj, hitPos, ref, color, disableEffect, false, 0);
+		new Beam(worldObj, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).spawn();
 	}
 
 	private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {

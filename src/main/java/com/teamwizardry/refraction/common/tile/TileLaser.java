@@ -79,26 +79,31 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ITile
 		if (inventory.getStackInSlot(0) != null && inventory.getStackInSlot(0).stackSize > 0) {
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			EnumFacing face = worldObj.getBlockState(pos).getValue(BlockDirectional.FACING);
+			Vec3d vec;
 			switch (face) {
 				case NORTH:
-					new Beam(worldObj, center, new Vec3d(0, 0, -1), new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.GLOWSTONE_ALPHA), false, false, 0);
+					vec = new Vec3d(0, 0, -1);
 					break;
 				case SOUTH:
-					new Beam(worldObj, center, new Vec3d(0, 0, 1), new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.GLOWSTONE_ALPHA), false, false, 0);
+					vec = new Vec3d(0, 0, 1);
 					break;
 				case EAST:
-					new Beam(worldObj, center, new Vec3d(1, 0, 0), new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.GLOWSTONE_ALPHA), false, false, 0);
+					vec = new Vec3d(1, 0, 0);
 					break;
 				case WEST:
-					new Beam(worldObj, center, new Vec3d(-1, 0, 0), new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.GLOWSTONE_ALPHA), false, false, 0);
+					vec = new Vec3d(-1, 0, 0);
 					break;
 				case UP:
-					new Beam(worldObj, center, new Vec3d(0, 1, 0), new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.GLOWSTONE_ALPHA), false, false, 0);
+					vec = new Vec3d(0, 1, 0);
 					break;
 				case DOWN:
-					new Beam(worldObj, center, new Vec3d(0, -1, 0), new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.GLOWSTONE_ALPHA), false, false, 0);
+					vec = new Vec3d(0, -1, 0);
+					break;
+				default:
+					vec = new Vec3d(0, 1, 0);
 					break;
 			}
+			new Beam(worldObj, center, vec, Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.GLOWSTONE_ALPHA).spawn();
 			if (tick < 50) tick++;
 			else {
 				tick = 0;

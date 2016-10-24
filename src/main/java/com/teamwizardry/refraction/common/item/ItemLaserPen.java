@@ -56,7 +56,7 @@ public class ItemLaserPen extends ItemMod {
 		if (!player.getEntityWorld().isRemote) {
 			Vec3d cross = player.getLook(1).crossProduct(new Vec3d(0, player.getEyeHeight(), 0)).normalize().scale(player.width / 2);
 			Vec3d playerVec = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord, player.posZ + cross.zCoord);
-			new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0x26FF0000, true), false, true, 0);
+			new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0x26FF0000, true)).setEnableEffect(false).spawn();
 		}
 	}
 

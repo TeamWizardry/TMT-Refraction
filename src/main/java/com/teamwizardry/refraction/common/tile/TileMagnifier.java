@@ -1,6 +1,9 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.awt.Color;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.common.light.*;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -8,14 +11,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.BeamConstants;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
-import com.teamwizardry.refraction.common.light.ILightSource;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.init.ModBlocks;
+
+import java.awt.*;
 
 /**
  * Created by LordSaad44
@@ -71,7 +68,7 @@ public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler
 				Vec3d dir = new Vec3d(0, -1, 0);
 				Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.SOLAR_ALPHA);
 
-				new Beam(worldObj, center, dir, color, true, false, 0);
+				new Beam(worldObj, center, dir, color).spawn();
 
 				return;
 			}
@@ -114,7 +111,7 @@ public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);
 
-				new Beam(worldObj, center, dir, color, false, false, 0);
+				new Beam(worldObj, center, dir, color).setEnableEffect(false).spawn();
 			}
 		}
 	}
@@ -124,7 +121,7 @@ public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler
 	{
 		for (Beam beam : beams)
 		{
-			new Beam(beam.world, beam.finalLoc, beam.slope, beam.color, beam.enableEffect, beam.ignoreEntities, beam.footprint);
+			beam.createSimilarBeam(beam.finalLoc, beam.slope).spawn();
 		}
 	}
 }

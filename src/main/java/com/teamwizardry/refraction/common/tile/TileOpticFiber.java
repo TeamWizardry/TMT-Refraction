@@ -1,17 +1,17 @@
 package com.teamwizardry.refraction.common.tile;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.block.BlockOpticFiber;
 import com.teamwizardry.refraction.common.block.BlockOpticFiber.EnumBiFacing;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.init.ModBlocks;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 /**
  * Created by Saad on 9/15/2016.
@@ -34,7 +34,8 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 		if (primary != null && secondary != null && primary.contains(facing.primary.getOpposite()) && secondary.contains(facing.secondary.getOpposite()))
 		{
 			for (Beam beam : beams)
-				new Beam(worldObj, beam.finalLoc, beam.slope, beam.color, beam.enableEffect, beam.ignoreEntities, 0);
+				beam.createSimilarBeam(beam.slope).spawn();
+
 			return;
 		}
 
@@ -90,7 +91,7 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 					{
 						EnumFacing opposite = beamDir.getOpposite();
 						EnumFacing other = facing.getOther(opposite);
-						new Beam(beam.world, getSideCenter(pos, other), getFacingVector(other), beam.color, beam.enableEffect, beam.ignoreEntities, 0);
+						beam.createSimilarBeam(getSideCenter(pos, other), getFacingVector(other)).spawn();
 					}
 				}
 				continue;
@@ -101,7 +102,7 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 				{
 					if (beamDir.getOpposite() == Utils.getCollisionSide(beam))
 					{
-						new Beam(beam.world, getSideCenter(curPos, curFacing), getFacingVector(curFacing), beam.color, beam.enableEffect, beam.ignoreEntities, 0);
+						beam.createSimilarBeam(getSideCenter(curPos, curFacing), getFacingVector(curFacing)).spawn();
 						continue;
 					}
 				}
@@ -112,12 +113,12 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 				{
 					if (beamDir.getOpposite() == Utils.getCollisionSide(beam))
 					{
-						new Beam(beam.world, getSideCenter(curPos, curFacing), getFacingVector(curFacing), beam.color, beam.enableEffect, beam.ignoreEntities, 0);
+						beam.createSimilarBeam(getSideCenter(curPos, curFacing), getFacingVector(curFacing)).spawn();
 						continue;
 					}
 				}
 			}
-			new Beam(beam.world, beam.finalLoc, beam.slope, beam.color, beam.enableEffect, beam.ignoreEntities, 0);
+			beam.createSimilarBeam(beam.slope).spawn();
 		}
 	}
 

@@ -48,7 +48,7 @@ public class TileReflectiveAlloyBlock extends TileMod implements IBeamHandler {
 				default:
 					outgoingDir = incomingDir;
 			}
-			new Beam(this.worldObj, beam.finalLoc, outgoingDir, beam.color, beam.enableEffect, beam.ignoreEntities, beam.footprint);
+			beam.createSimilarBeam(beam.finalLoc, outgoingDir);
 		}
 	}
 }

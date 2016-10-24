@@ -20,13 +20,16 @@ public class TileSensor extends TileMod implements IBeamHandler {
 	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
 		return INFINITE_EXTENT_AABB;
 	}
-	
+
 	@Override
 	public void handle(Beam... beams)
 	{
 		this.beams = beams;
+		for (Beam beam : beams) {
+			beam.createSimilarBeam(beam.finalLoc, beam.slope).spawn();
+		}
 	}
-	
+
 	public Beam[] getBeams()
 	{
 		return beams;
