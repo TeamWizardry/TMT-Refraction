@@ -48,7 +48,7 @@ public class RecipeScrewDriver implements IRecipe {
 		if (baseItem == null) return null;
 
 		ItemStack baseItemCopy = baseItem.copy();
-		ItemNBTHelper.setBoolean(baseItemCopy, "invert", !ItemNBTHelper.getBoolean(baseItemCopy, "invert", true));
+		ItemNBTHelper.setBoolean(baseItemCopy, "invertX", !ItemNBTHelper.getBoolean(baseItemCopy, "invertX", true));
 
 		return baseItemCopy;
 	}

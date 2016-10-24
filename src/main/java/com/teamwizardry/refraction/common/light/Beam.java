@@ -3,14 +3,10 @@ package com.teamwizardry.refraction.common.light;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.Effect.EffectType;
-import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.raytrace.EntityTrace;
-import com.teamwizardry.refraction.init.ModBlocks;
-import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -19,7 +15,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Beam {
@@ -33,6 +28,7 @@ public class Beam {
 	public boolean enableEffect = true, ignoreEntities = false;
 	public RayTraceResult trace;
 	private ArrayList<BlockPos> lastTouchedBlocks = new ArrayList<>();
+	private BlockPos lastTouchedBlock = null;
 
 	public Beam(World world, Vec3d initLoc, Vec3d slope, Color color) {
 		this.world = world;
@@ -54,17 +50,26 @@ public class Beam {
 		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha));
 	}
 
+	public Beam createSimilarBeam() {
+		return createSimilarBeam(initLoc, finalLoc);
+	}
+
 	public Beam createSimilarBeam(Vec3d slope) {
 		return createSimilarBeam(finalLoc, slope);
 	}
 
 	public Beam createSimilarBeam(Vec3d init, Vec3d dir) {
-		return new Beam(world, init, dir, color).setIgnoreEntities(ignoreEntities).setEnableEffect(enableEffect).setLastTouchedBlocks(lastTouchedBlocks);
+		return new Beam(world, init, dir, color).setIgnoreEntities(ignoreEntities).setEnableEffect(enableEffect).setLastTouchedBlocks(lastTouchedBlocks).setLastTouchedBlock(lastTouchedBlock);
 	}
 
 	public Beam setSlope(Vec3d slope) {
 		this.slope = slope;
 		this.finalLoc = slope.normalize().scale(128).add(initLoc);
+		return this;
+	}
+
+	public Beam setLastTouchedBlock(BlockPos lastTouchedBlock) {
+		this.lastTouchedBlock = lastTouchedBlock;
 		return this;
 	}
 
@@ -108,6 +113,7 @@ public class Beam {
 			else if (ThreadLocalRandom.current().nextInt(0, effect.getCooldown()) == 0) this.effect = effect;
 		} else this.effect = EffectTracker.getEffect(this);
 
+
 		if (!ignoreEntities) {
 			if (effect != null) {
 				if (effect.getType() == EffectType.BEAM)
@@ -119,12 +125,10 @@ public class Beam {
 		if (trace.hitVec == null) return;
 		this.finalLoc = trace.hitVec;
 
-		if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+		/*if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
 			EnumFacing facing = Utils.getCollisionSide(this);
 			if (facing != null) {
 				BlockPos pos = new BlockPos(finalLoc).offset(facing);
-				if (world.getBlockState(pos).getBlock() == ModBlocks.DISCO_BALL)
-					Minecraft.getMinecraft().thePlayer.sendChatMessage(lastTouchedBlocks + " - ");
 				if (lastTouchedBlocks.size() < 3) lastTouchedBlocks.add(pos);
 				else {
 					int i = Collections.frequency(lastTouchedBlocks, pos);
@@ -132,7 +136,18 @@ public class Beam {
 					else lastTouchedBlocks.remove(0).add(pos);
 				}
 			}
-		}
+		}*/
+
+		/*if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+			BlockPos pos = trace.getBlockPos();
+			if (lastTouchedBlock == null) lastTouchedBlock = pos;
+			else if (lastTouchedBlock.getX() == pos.getX()
+					&& lastTouchedBlock.getY() == pos.getY()
+					&& lastTouchedBlock.getZ() == pos.getZ()) return;
+			else lastTouchedBlock = pos;
+		}*/
+
+		if (finalLoc.distanceTo(initLoc) <= 1 / 8) return;
 
 		if (enableEffect && trace.typeOfHit == RayTraceResult.Type.ENTITY) {
 			if (effect != null) {

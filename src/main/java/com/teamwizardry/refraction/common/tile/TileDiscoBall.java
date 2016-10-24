@@ -1,17 +1,16 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -22,7 +21,6 @@ public class TileDiscoBall extends TileMod implements IBeamHandler, ITickable {
 
 	public double tick = 0;
 	private Set<BeamHandler> handlers = new HashSet<>();
-	private double rot = 0;
 
 	public TileDiscoBall() {
 	}
@@ -45,16 +43,16 @@ public class TileDiscoBall extends TileMod implements IBeamHandler, ITickable {
 				biggest = beam;
 		}
 		if (biggest == null) return;
-		biggest.setColor(new Color(biggest.color.getRed(), biggest.color.getGreen(), biggest.color.getBlue(), biggest.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8)));
 		for (int i = 0; i < 4; i++) {
 
-			double radius = 5;
-			int x = (int) (radius * Math.cos(2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius)));
-			int z = (int) (radius * Math.sin(2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius)));
+			double radius = 5, rotX = ThreadLocalRandom.current().nextDouble(0, 360), rotZ = ThreadLocalRandom.current().nextDouble(0, 360);
+			int x = (int) (radius * MathHelper.cos((float) Math.toRadians(rotX)));
+			int z = (int) (radius * MathHelper.sin((float) Math.toRadians(rotZ)));
 
 			Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
 
-			handlers.add(new BeamHandler(biggest.createSimilarBeam(new Vec3d(pos).addVector(0.5, 0.3, 0.5), dest)));
+			Beam beam = biggest.createSimilarBeam(new Vec3d(pos).addVector(0.5, 0.3, 0.5), dest).setColor(new Color(biggest.color.getRed(), biggest.color.getGreen(), biggest.color.getBlue(), biggest.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8)));
+			handlers.add(new BeamHandler(beam, rotX, rotZ));
 		}
 
 	}
@@ -67,29 +65,36 @@ public class TileDiscoBall extends TileMod implements IBeamHandler, ITickable {
 		}
 
 		if (handlers.isEmpty()) return;
-		if (rot < 360) rot += 5;
-		else rot = 0;
 
-		for (Iterator<BeamHandler> iterator = handlers.iterator(); iterator.hasNext(); ) {
-			BeamHandler handler = iterator.next();
+		handlers.removeIf(handler -> {
 			handler.life--;
-			Matrix4 matrix = new Matrix4();
-			matrix.rotate(Math.toRadians(rot), new Vec3d(0, handler.invert ? -1 : 1, 0));
+
 			Color c = new Color(handler.beam.color.getRed(), handler.beam.color.getGreen(), handler.beam.color.getBlue(), handler.beam.color.getAlpha() * handler.life / handler.maxLife);
-			handler.beam = handler.beam.setColor(c).createSimilarBeam(matrix.apply(handler.beam.finalLoc));
+
+			handler.rotX = handler.invertX ? handler.rotX + 5 : handler.rotX - 5;
+			handler.rotZ = handler.invertZ ? handler.rotZ + 5 : handler.rotZ - 5;
+
+			double radius = 5;
+			int x = (int) (radius * MathHelper.cos((float) Math.toRadians(handler.rotX)));
+			int z = (int) (radius * MathHelper.sin((float) Math.toRadians(handler.rotZ)));
+			handler.beam = handler.beam.createSimilarBeam().setColor(c).setSlope(handler.beam.slope.addVector(x, 0, z));
 			handler.beam.spawn();
-			if (handler.life <= 0) iterator.remove();
-		}
+			return handler.life <= 0;
+		});
 	}
 
 	private class BeamHandler {
 		public Beam beam;
-		public boolean invert = false;
+		public boolean invertX = false, invertZ = false;
 		public int life = 20, maxLife = 20;
+		public double rotX = 0, rotZ;
 
-		public BeamHandler(Beam beam) {
+		public BeamHandler(Beam beam, double rotX, double rotZ) {
 			this.beam = beam;
-			this.invert = ThreadLocalRandom.current().nextBoolean();
+			this.rotX = rotX;
+			this.rotZ = rotZ;
+			this.invertX = ThreadLocalRandom.current().nextBoolean();
+			this.invertZ = ThreadLocalRandom.current().nextBoolean();
 			this.life = this.maxLife = ThreadLocalRandom.current().nextInt(5, 10);
 		}
 	}

@@ -7,6 +7,8 @@ import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 
+import java.awt.*;
+
 /**
  * Created by Saad on 10/16/2016.
  */
@@ -48,7 +50,8 @@ public class TileReflectiveAlloyBlock extends TileMod implements IBeamHandler {
 				default:
 					outgoingDir = incomingDir;
 			}
-			beam.createSimilarBeam(beam.finalLoc, outgoingDir);
+			Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / 4);
+			beam.createSimilarBeam(outgoingDir).setColor(c).spawn();
 		}
 	}
 }

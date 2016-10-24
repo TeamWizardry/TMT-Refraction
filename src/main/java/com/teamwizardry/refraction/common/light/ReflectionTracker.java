@@ -13,36 +13,28 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.*;
 
-public class ReflectionTracker
-{
+public class ReflectionTracker {
 	private static final TickTracker INSTANCE = new TickTracker();
-	
+
 	private static WeakHashMap<World, ReflectionTracker> instances = new WeakHashMap<>();
 	private Set<ILightSource> sources;
 	private Map<IBeamHandler, Integer> delayBuffers;
-	private Map<IBeamHandler, Integer> delayBufferProcessingSwap;
 	private Multimap<IBeamHandler, Beam> sinkBlocks;
-	private Map<Beam, Integer> beams;
 
-	public ReflectionTracker()
-	{
-		beams = new WeakHashMap<>();
+	public ReflectionTracker() {
 		sources = Collections.newSetFromMap(new WeakHashMap<>());
 		delayBuffers = new WeakHashMap<>();
-		delayBufferProcessingSwap = new WeakHashMap<>();
 		sinkBlocks = HashMultimap.create();
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	public static ReflectionTracker getInstance(World world)
-	{
+	public static ReflectionTracker getInstance(World world) {
 		if (!instances.containsKey(world))
 			addInstance(world);
 		return instances.get(world);
 	}
-	
-	public static boolean addInstance(World world)
-	{
+
+	public static boolean addInstance(World world) {
 		return instances.putIfAbsent(world, new ReflectionTracker()) == null;
 	}
 
@@ -52,89 +44,58 @@ public class ReflectionTracker
 	}
 
 	@SubscribeEvent
-	public void generateBeams(TickEvent.WorldTickEvent event)
-	{
-		if(event.world.isRemote)
+	public void generateBeams(TickEvent.WorldTickEvent event) {
+		if (event.world.isRemote)
 			return;
-		if(event.phase != TickEvent.Phase.START || event.side != Side.SERVER)
+		if (event.phase != TickEvent.Phase.START || event.side != Side.SERVER)
 			return;
-		if (TickTracker.ticks % BeamConstants.SOURCE_TIMER == 0)
-		{
+		if (TickTracker.ticks % BeamConstants.SOURCE_TIMER == 0) {
 			Set<ILightSource> lights = new HashSet<>();
 			lights.addAll(sources);
-			for (ILightSource source : lights)
-			{
-				try
-				{
+			for (ILightSource source : lights) {
+				try {
 					source.generateBeam();
+				} catch (IllegalArgumentException ignored) {
 				}
-				catch (IllegalArgumentException ignored)
-				{}
 			}
-			sources.removeIf((e) -> e instanceof TileEntity && ((TileEntity)e).isInvalid());
+			sources.removeIf((e) -> e instanceof TileEntity && ((TileEntity) e).isInvalid());
 		}
 	}
 
 	@SubscribeEvent
-	public void handleBeams(TickEvent.WorldTickEvent event)
-	{
-		if(event.world.isRemote)
+	public void handleBeams(TickEvent.WorldTickEvent event) {
+		if (event.world.isRemote)
 			return;
-		Map<IBeamHandler, Integer> temp = delayBuffers;
-		delayBuffers = delayBufferProcessingSwap;
 
-		HashSet<IBeamHandler> remove = new HashSet<>();
-		for (IBeamHandler handler : temp.keySet())
-		{
-			int delay = temp.get(handler);
-			if (delay > 0) temp.put(handler, delay - 1);
-			else
-			{
-				remove.add(handler);
+		Set<IBeamHandler> temp = new HashSet<>(delayBuffers.keySet());
+		ArrayList<IBeamHandler> remove = new ArrayList<>();
+		for (IBeamHandler handler : temp) {
+			int delay = delayBuffers.get(handler);
+			if (delay > 0) delayBuffers.put(handler, delay - 1);
+			else {
 				Collection<Beam> beams = sinkBlocks.removeAll(handler);
 				handler.handle(beams.toArray(new Beam[beams.size()]));
+				remove.add(handler);
 			}
 		}
-		remove.forEach(temp::remove);
 
-		delayBuffers = temp;
-		delayBufferProcessingSwap.entrySet().forEach((e) -> delayBuffers.put(e.getKey(), e.getValue()));
-		delayBufferProcessingSwap.clear();
-
-		for (Beam beam : beams.keySet())
-		{
-			int delay = beams.get(beam);
-			if (delay > 0) beams.put(beam, delay - 1);
-			else beams.remove(beam);
-		}
+		for (IBeamHandler handler : remove) delayBuffers.remove(handler);
 	}
 
-	public void recieveBeam(IBeamHandler handler, Beam beam)
-	{
-		delayBuffers.put(handler, handler instanceof TileReflectionChamber ? BeamConstants.COMBINER_DELAY : BeamConstants.BUFFER_DELAY);
+	public void recieveBeam(IBeamHandler handler, Beam beam) {
+		if (!delayBuffers.containsKey(handler))
+			delayBuffers.put(handler, handler instanceof TileReflectionChamber ? BeamConstants.COMBINER_DELAY : BeamConstants.BUFFER_DELAY);
 		sinkBlocks.put(handler, beam);
 	}
 
-	public void addBeam(Beam beam)
-	{
-		beams.put(beam, BeamConstants.SOURCE_TIMER);
-	}
-	
-	public Set<Beam> beams()
-	{
-		return beams.keySet();
-	}
-	
-	public void addSource(ILightSource source)
-	{
+	public void addSource(ILightSource source) {
 		sources.add(source);
 	}
-	
-	public void removeSource(ILightSource source)
-	{
+
+	public void removeSource(ILightSource source) {
 		sources.remove(source);
 	}
-	
+
 	private static class TickTracker {
 		public static int ticks = 0;
 
@@ -144,7 +105,7 @@ public class ReflectionTracker
 
 		@SubscribeEvent
 		public void tick(TickEvent.WorldTickEvent event) {
-			if(event.phase == TickEvent.Phase.START && event.side == Side.SERVER)
+			if (event.phase == TickEvent.Phase.START && event.side == Side.SERVER)
 				ticks++;
 		}
 	}

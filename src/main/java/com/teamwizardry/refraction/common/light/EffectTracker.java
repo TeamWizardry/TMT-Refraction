@@ -19,7 +19,6 @@ import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.WeakHashMap;
 
 /**
@@ -99,24 +98,21 @@ public class EffectTracker {
 
 			blockTracker.generateEffects();
 
-			for (Iterator<Effect> iterator = effects.keySet().iterator(); iterator.hasNext(); ) {
-				Effect effect = iterator.next();
-				World w = world.get();
-				if (effect != null && w != null && effects.get(effect) != null) {
-					effect.run(w, effects.get(effect));
-					iterator.remove();
-				}
-			}
+			World w = world.get();
+			effects.keySet().removeIf(effect -> {
+				if (effect != null && w != null && effects.get(effect) != null) effect.run(w, effects.get(effect));
+				return true;
+			});
 
-			for (Iterator<Entity> iterator = gravityReset.keySet().iterator(); iterator.hasNext(); ) {
-				Entity entity = iterator.next();
-				if (gravityReset.get(entity) > 0)
+			gravityReset.keySet().removeIf(entity -> {
+				if (gravityReset.get(entity) > 0) {
 					gravityReset.put(entity, gravityReset.get(entity) - 1);
-				else {
+					return false;
+				} else {
 					entity.setNoGravity(false);
-					iterator.remove();
+					return true;
 				}
-			}
+			});
 
 			if (cooldown > 0) {
 				cooldown--;
@@ -131,7 +127,6 @@ public class EffectTracker {
 							ItemStack stack = inv.decrStackSize(i, slotStack.stackSize < effect.getPotency() / 50 ? slotStack.stackSize : effect.getPotency() / 50);
 							if (stack != null) {
 
-								World w = world.get();
 								if (w == null) return false;
 								EntityItem item = new EntityItem(w, effect.beam.finalLoc.xCoord, effect.beam.finalLoc.yCoord, effect.beam.finalLoc.zCoord, stack);
 								item.motionX = 0;

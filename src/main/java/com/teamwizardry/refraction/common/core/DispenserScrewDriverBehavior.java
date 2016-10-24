@@ -26,7 +26,7 @@ public class DispenserScrewDriverBehavior extends BehaviorDefaultDispenseItem {
 		BlockPos pos = source.getBlockPos().offset(facing);
 		Block block = world.getBlockState(pos).getBlock();
 		if (block instanceof IPrecision) {
-			boolean invert = ItemNBTHelper.getBoolean(par2ItemStack, "invert", true);
+			boolean invert = ItemNBTHelper.getBoolean(par2ItemStack, "invertX", true);
 			((IPrecision) block).adjust(world, pos, par2ItemStack, invert, facing.getOpposite());
 			return par2ItemStack;
 		}
