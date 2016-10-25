@@ -125,34 +125,41 @@ public class Beam {
 		if (trace.hitVec == null) return;
 		this.finalLoc = trace.hitVec;
 
-		/*if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
-			EnumFacing facing = Utils.getCollisionSide(this);
-			if (facing != null) {
-				BlockPos pos = new BlockPos(finalLoc).offset(facing);
-				if (lastTouchedBlocks.size() < 3) lastTouchedBlocks.add(pos);
-				else {
-					int i = Collections.frequency(lastTouchedBlocks, pos);
-					if (i >= 3) return;
-					else lastTouchedBlocks.remove(0).add(pos);
-				}
-			}
-		}*/
-
-		/*if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
-			BlockPos pos = trace.getBlockPos();
-			if (lastTouchedBlock == null) lastTouchedBlock = pos;
-			else if (lastTouchedBlock.getX() == pos.getX()
-					&& lastTouchedBlock.getY() == pos.getY()
-					&& lastTouchedBlock.getZ() == pos.getZ()) return;
-			else lastTouchedBlock = pos;
-		}*/
-
-		if (finalLoc.distanceTo(initLoc) <= 1 / 8) return;
 
 		if (enableEffect && trace.typeOfHit == RayTraceResult.Type.ENTITY) {
 			if (effect != null) {
 				if (effect.getType() == EffectType.SINGLE) EffectTracker.addEffect(world, trace.hitVec, effect);
 				else if (effect.getType() == EffectType.BEAM) EffectTracker.addEffect(world, this);
+//		if (trace.typeOfHit == RayTraceResult.Type.BLOCK)
+//		{
+//			EnumFacing facing = Utils.getCollisionSide(this);
+//			if (facing != null)
+//			{
+//				BlockPos pos = new BlockPos(finalLoc).offset(facing);
+//				if (lastTouchedBlocks.size() < 3)
+//					lastTouchedBlocks.add(pos);
+//				else
+//				{
+//					int i = Collections.frequency(lastTouchedBlocks, pos);
+//					if (i >= 3)
+//						return;
+//					else lastTouchedBlocks.remove(0).add(pos);
+//				}
+//			}
+//		}
+//
+//		if (trace.typeOfHit == RayTraceResult.Type.BLOCK)
+//		{
+//			BlockPos pos = trace.getBlockPos();
+//			if (lastTouchedBlock == null)
+//				lastTouchedBlock = pos;
+//			else if (lastTouchedBlock.getX() == pos.getX() && lastTouchedBlock.getY() == pos.getY() && lastTouchedBlock.getZ() == pos.getZ())
+//				return;
+//			else lastTouchedBlock = pos;
+//		}
+
+		if (finalLoc.distanceTo(initLoc) <= 1.0 / 16.0)
+			return;
 			}
 		} else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
 			try {
