@@ -1,12 +1,13 @@
 package com.teamwizardry.refraction.common.light;
 
-import java.lang.ref.WeakReference;
-import java.util.HashSet;
+import com.google.common.collect.HashMultimap;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import com.google.common.collect.HashMultimap;
+
+import java.lang.ref.WeakReference;
+import java.util.HashSet;
 
 public class BlockTracker
 {
@@ -21,8 +22,8 @@ public class BlockTracker
 
 	public void addBeam(Beam beam)
 	{
-		HashSet<BlockPos> possible = new HashSet<BlockPos>();
-		Vec3d slope = beam.finalLoc.subtract(beam.initLoc).normalize();
+		HashSet<BlockPos> possible = new HashSet<>();
+		Vec3d slope = beam.slope;
 		Vec3d curPos = beam.initLoc;
 		boolean finished = false;
 		while (!finished)

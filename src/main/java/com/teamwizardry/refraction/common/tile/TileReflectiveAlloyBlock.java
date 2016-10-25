@@ -50,7 +50,7 @@ public class TileReflectiveAlloyBlock extends TileMod implements IBeamHandler {
 				default:
 					outgoingDir = incomingDir;
 			}
-			Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / 4);
+			Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
 			beam.createSimilarBeam(outgoingDir).setColor(c).spawn();
 		}
 	}
