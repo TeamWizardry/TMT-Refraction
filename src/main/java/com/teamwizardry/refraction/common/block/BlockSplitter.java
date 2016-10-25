@@ -5,8 +5,8 @@ import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.IPrecision;
+import com.teamwizardry.refraction.client.render.RenderSplitter;
 import com.teamwizardry.refraction.common.light.ILaserTrace;
-import com.teamwizardry.refraction.common.tile.TileMirror;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
 import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.Block;
@@ -23,7 +23,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -39,6 +42,11 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
 		GameRegistry.registerTileEntity(TileSplitter.class, "splitter");
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void initModel() {
+		ClientRegistry.bindTileEntitySpecialRenderer(TileSplitter.class, new RenderSplitter());
 	}
 
 	private TileSplitter getTE(World world, BlockPos pos) {
@@ -101,7 +109,7 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 
 		RayTraceResult superResult = super.collisionRayTrace(blockState, worldIn, pos, startRaw, endRaw);
 
-		TileMirror tile = (TileMirror) worldIn.getTileEntity(pos);
+		TileSplitter tile = (TileSplitter) worldIn.getTileEntity(pos);
 		if (tile == null) return null;
 		Vec3d start = startRaw.subtract((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
 		Vec3d end = endRaw.subtract((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());

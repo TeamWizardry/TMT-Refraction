@@ -2,7 +2,7 @@ package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.proxy.ClientProxy;
-import com.teamwizardry.refraction.common.tile.TileMirror;
+import com.teamwizardry.refraction.common.tile.TileSplitter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -23,11 +23,11 @@ import org.lwjgl.opengl.GL11;
 /**
  * Created by LordSaad44
  */
-public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
+public class RenderSplitter extends TileEntitySpecialRenderer<TileSplitter> {
 
 	private IBakedModel modelArms, modelMirror, modelMirrorSplitter;
 
-	public RenderMirror() {
+	public RenderSplitter() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
@@ -66,7 +66,7 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileMirror te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void renderTileEntityAt(TileSplitter te, double x, double y, double z, float partialTicks, int destroyStage) {
 		double subtractedMillis = (te.getWorld().getTotalWorldTime() - te.worldTime);
 		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((te.rotPrevX - te.rotDestX) / 2.0), 20)),
 				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((te.rotPrevY - te.rotDestY) / 2.0), 20));
@@ -120,7 +120,7 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		GlStateManager.rotate(rotX, 1, 0, 0);
 
 		Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelBrightnessColor(
-				modelMirror, 1.0F, 1, 1, 1);
+				modelMirrorSplitter, 1.0F, 1, 1, 1);
 
 		GlStateManager.disableBlend();
 		GlStateManager.popMatrix();

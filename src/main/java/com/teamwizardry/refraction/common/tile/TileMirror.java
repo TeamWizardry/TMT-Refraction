@@ -12,6 +12,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.awt.*;
+
 /**
  * Created by LordSaad44
  */
@@ -88,7 +90,8 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 
 			Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
-			beam.createSimilarBeam(outgoingDir).spawn();
+			Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
+			beam.createSimilarBeam(outgoingDir).setColor(c).spawn();
 		}
 	}
 
@@ -144,7 +147,8 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 
 					Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
-					beam.createSimilarBeam(outgoingDir).spawn();
+					Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
+					beam.createSimilarBeam(outgoingDir).setColor(c).spawn();
 				}
 			}
 		} else beams = null;

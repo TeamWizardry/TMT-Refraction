@@ -22,11 +22,6 @@ public class EffectBonemeal extends Effect {
 	}
 
 	@Override
-	public EffectType getType() {
-		return EffectType.BEAM;
-	}
-
-	@Override
 	public void run(World world, Set<BlockPos> locations) {
 		for (BlockPos pos : locations) {
 			if (world.getBlockState(pos).getBlock() instanceof IGrowable) {

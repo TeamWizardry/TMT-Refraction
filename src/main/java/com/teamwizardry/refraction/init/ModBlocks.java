@@ -49,5 +49,6 @@ public class ModBlocks {
 		MIRROR.initModel();
 		REF_CHAMBER.initModel();
 		SPECTROMETER.initModel();
+		SPLITTER.initModel();
 	}
 }
