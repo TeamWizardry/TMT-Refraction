@@ -28,11 +28,6 @@ public class EffectPlace extends Effect {
 	private static FakePlayer fakePlayer;
 
 	@Override
-	public EffectType getType() {
-		return EffectType.BEAM;
-	}
-
-	@Override
 	public int getCooldown() {
 		return potency == 0 ? 0 : 25500 / potency;
 	}
@@ -48,7 +43,7 @@ public class EffectPlace extends Effect {
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
 			List<EntityItem> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
 			for (EntityItem entity : entities) {
-
+				if (entity == null) continue;
 				EnumFacing facing = Utils.getCollisionSide(beam);
 				if (facing == null) continue;
 				fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, entity.getEntityItem(), EnumHand.MAIN_HAND, pos, facing, 0, 0, 0);
