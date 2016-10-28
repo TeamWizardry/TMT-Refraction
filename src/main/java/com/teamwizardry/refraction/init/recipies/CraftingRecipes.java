@@ -20,5 +20,6 @@ public class CraftingRecipes
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.SCREW_DRIVER), " AA", " BA", "B  ", 'A', "ingotIron", 'B', Items.STICK));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.LASER_PEN), "  A", " BC", "D  ", 'A', Blocks.STONE_BUTTON, 'B', "dustRedstone", 'C', "ingotIron", 'D', "blockGlass"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.REFLECTIVE_ALLOY), "AAA", "AAA", "AAA", 'A', ModBlocks.REFLECTIVE_ALLOY_BLOCK));
+		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.BOOK), ModItems.LASER_PEN, Items.BOOK);
 	}
 }

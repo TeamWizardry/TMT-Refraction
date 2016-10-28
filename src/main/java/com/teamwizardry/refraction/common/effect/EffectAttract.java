@@ -5,6 +5,7 @@ import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.EffectTracker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
@@ -44,7 +45,7 @@ public class EffectAttract extends Effect {
 		for (BlockPos pos : locations) {
 			int potency = (this.potency - this.getDistance(pos) * BeamConstants.DISTANCE_LOSS) / 10;
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
-			List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, axis);
+			List<Entity> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
 			if (potency > 128)
 				entities.addAll(world.getEntitiesWithinAABB(EntityLiving.class, axis));
 			toPull.addAll(entities);

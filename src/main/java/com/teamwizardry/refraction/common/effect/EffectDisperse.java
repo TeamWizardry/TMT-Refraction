@@ -48,7 +48,7 @@ public class EffectDisperse extends Effect {
 		for (BlockPos pos : locations) {
 			int potency = (this.potency - this.getDistance(pos) * BeamConstants.DISTANCE_LOSS) * 3 / 64;
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
-			List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, axis);
+			List<Entity> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
 			if (potency > 128)
 				entities.addAll(world.getEntitiesWithinAABB(EntityLiving.class, axis));
 			toPush.addAll(entities);
