@@ -101,7 +101,7 @@ public class TilePrism extends TileMod implements IBeamHandler {
 	}
 
 	private void showBeam(Vec3d start, Vec3d end, Color color) {
-		PacketHandler.INSTANCE.getNetwork().sendToAllAround(new PacketLaserFX(start, end, color),
+		PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
 				new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
 	}
 }

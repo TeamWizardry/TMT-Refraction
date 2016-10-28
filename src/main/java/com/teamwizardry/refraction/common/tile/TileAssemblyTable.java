@@ -6,7 +6,7 @@ import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpColorFad
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
-import com.teamwizardry.librarianlib.common.util.tilesaving.Save;
+import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
