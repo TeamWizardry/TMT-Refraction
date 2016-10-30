@@ -1,24 +1,23 @@
 package com.teamwizardry.refraction.common.tile;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.common.block.BlockOpticFiber;
 import com.teamwizardry.refraction.common.block.BlockOpticFiber.EnumBiFacing;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.init.ModBlocks;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 
 /**
  * Created by Saad on 9/15/2016.
  */
-public class TileOpticFiber extends TileEntity implements IBeamHandler
+public class TileOpticFiber extends TileMod implements IBeamHandler
 {
 	@Override
 	public void handle(Beam... beams)

@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.client.render.RenderAssemblyTable;
 import com.teamwizardry.refraction.common.tile.TileAssemblyTable;
 import com.teamwizardry.refraction.init.ModTab;
@@ -18,7 +19,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +34,7 @@ public class BlockAssemblyTable extends BlockModContainer {
 		super("assembly_table", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		GameRegistry.registerTileEntity(TileAssemblyTable.class, "assembly_table");
+		TileMod.registerTile(TileAssemblyTable.class, "assembly_table");
 	}
 
 	private TileAssemblyTable getTE(World world, BlockPos pos) {

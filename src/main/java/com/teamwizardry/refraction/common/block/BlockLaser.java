@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.api.ISpamSoundProvider;
 import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.common.light.ILightSource;
@@ -23,7 +24,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class BlockLaser extends BlockModContainer implements ISpamSoundProvider 
 		super("laser", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		GameRegistry.registerTileEntity(TileLaser.class, "laser");
+		TileMod.registerTile(TileLaser.class, "laser");
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}

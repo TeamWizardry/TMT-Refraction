@@ -33,7 +33,7 @@ public class CommonProxy {
 		ModEntities.init();
 		ModEffects.init();
 
-		new EasyConfigHandler().init(Refraction.MOD_ID, event.getSuggestedConfigurationFile(), event.getAsmData());
+		EasyConfigHandler.init(Refraction.MOD_ID, event.getSuggestedConfigurationFile(), event.getAsmData());
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
 		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);

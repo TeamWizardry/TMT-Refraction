@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.common.tile.TileOpticFiber;
 import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
@@ -21,7 +22,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +58,7 @@ public class BlockOpticFiber extends BlockModContainer {
 		super("optic_fiber", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
-		GameRegistry.registerTileEntity(TileOpticFiber.class, "optic_fiber");
+		TileMod.registerTile(TileOpticFiber.class, "optic_fiber");
 	}
 
 	@Override

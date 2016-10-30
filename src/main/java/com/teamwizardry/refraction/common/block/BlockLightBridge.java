@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.api.ISpamSoundProvider;
 import com.teamwizardry.refraction.common.tile.TileLightBridge;
 import com.teamwizardry.refraction.init.ModTab;
@@ -24,7 +25,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
@@ -47,7 +47,7 @@ public class BlockLightBridge extends BlockModContainer implements ISpamSoundPro
 		super("light_bridge", Material.GLASS);
 		setBlockUnbreakable();
 		setSoundType(SoundType.GLASS);
-		GameRegistry.registerTileEntity(TileLightBridge.class, "light_bridge");
+		TileMod.registerTile(TileLightBridge.class, "light_bridge");
 		setTickRandomly(true);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(VERTICAL, false));

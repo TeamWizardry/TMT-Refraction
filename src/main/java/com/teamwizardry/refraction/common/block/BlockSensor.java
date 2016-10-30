@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.tile.TileSensor;
 import com.teamwizardry.refraction.init.ModTab;
@@ -22,7 +23,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
@@ -46,7 +46,7 @@ public class BlockSensor extends BlockModContainer {
 		super("sensor", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
-		GameRegistry.registerTileEntity(TileSensor.class, "sensor");
+		TileMod.registerTile(TileSensor.class, "sensor");
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.client.render.RenderReflectionChamber;
 import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
 import com.teamwizardry.refraction.init.ModTab;
@@ -15,7 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +31,7 @@ public class BlockReflectionChamber extends BlockModContainer {
 		super("reflection_chamber", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		GameRegistry.registerTileEntity(TileReflectionChamber.class, "reflection_chamber");
+		TileMod.registerTile(TileReflectionChamber.class, "reflection_chamber");
 	}
 
 	@SideOnly(Side.CLIENT)
