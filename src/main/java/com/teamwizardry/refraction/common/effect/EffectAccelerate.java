@@ -4,6 +4,7 @@ import com.teamwizardry.refraction.api.Effect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.awt.*;
@@ -21,9 +22,8 @@ public class EffectAccelerate extends Effect {
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
-		if (beam.trace == null) return;
-		if (beam.trace.getBlockPos() == null) return;
-		if (beam.trace.getBlockPos().getY() < 0 || beam.trace.getBlockPos().getY() >= 256) return;
+		if (beam.trace.typeOfHit != RayTraceResult.Type.BLOCK) return;
+
 		TileEntity tile = world.getTileEntity(beam.trace.getBlockPos());
 		if (tile != null && tile instanceof ITickable)
 			for (double i = 0; i < (potency / 10.0); i++)

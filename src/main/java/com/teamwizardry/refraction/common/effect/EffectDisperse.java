@@ -45,9 +45,6 @@ public class EffectDisperse extends Effect {
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
-		if (beam.trace == null) return;
-		if (beam.trace.getBlockPos() == null) return;
-		if (beam.trace.getBlockPos().getY() < 0 || beam.trace.getBlockPos().getY() >= 256) return;
 		Set<Entity> toPush = new HashSet<>();
 		for (BlockPos pos : locations) {
 			AxisAlignedBB axis = new AxisAlignedBB(pos);

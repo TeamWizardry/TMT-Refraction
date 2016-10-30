@@ -5,6 +5,7 @@ import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.awt.*;
@@ -20,9 +21,7 @@ public class EffectBreak extends Effect {
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
-		if (beam.trace == null) return;
-		if (beam.trace.getBlockPos() == null) return;
-		if (beam.trace.getBlockPos().getY() < 0 || beam.trace.getBlockPos().getY() >= 256) return;
+		if (beam.trace.typeOfHit == RayTraceResult.Type.MISS) return;
 
 		TileEntity tile = world.getTileEntity(beam.trace.getBlockPos());
 		if (tile instanceof IBeamHandler || tile instanceof ILightSource) return;

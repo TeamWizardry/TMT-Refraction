@@ -6,6 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.awt.*;
@@ -23,9 +24,7 @@ public class EffectBonemeal extends Effect {
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
-		if (beam.trace == null) return;
-		if (beam.trace.getBlockPos() == null) return;
-		if (beam.trace.getBlockPos().getY() < 0 || beam.trace.getBlockPos().getY() >= 256) return;
+		if (beam.trace.typeOfHit != RayTraceResult.Type.BLOCK) return;
 		if (world.getBlockState(beam.trace.getBlockPos()).getBlock() instanceof IGrowable) {
 			ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, beam.trace.getBlockPos());
 		}

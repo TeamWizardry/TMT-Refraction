@@ -19,33 +19,30 @@ public class EffectBurn extends Effect {
 
 	@Override
 	public int getCooldown() {
-		return potency == 0 ? 0 : 25500 / potency;
+		return potency == 0 ? 0 : 255 / potency;
 	}
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
 		if (world.isRemote) return;
-		if (beam.trace == null) return;
-		if (beam.trace.getBlockPos() == null) return;
-		if (beam.trace.getBlockPos().getY() < 0 || beam.trace.getBlockPos().getY() >= 256) return;
-		TileEntity tile = world.getTileEntity(beam.trace.getBlockPos());
-		if (tile != null) {
-			if (!EffectTracker.burnedTileTracker.contains(beam.trace.getBlockPos())) {
-				if (tile instanceof IInventory || tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))
-					EffectTracker.burnedTileTracker.add(beam.trace.getBlockPos());
-			} else if (EffectTracker.burnedTileTracker.contains(beam.trace.getBlockPos()))
-				EffectTracker.burnedTileTracker.remove(beam.trace.getBlockPos());
-			return;
-		}
-
+		if (beam.trace.typeOfHit == RayTraceResult.Type.MISS) return;
 
 		if (beam.trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+			TileEntity tile = world.getTileEntity(beam.trace.getBlockPos());
+			if (tile != null) {
+				if (!EffectTracker.burnedTileTracker.contains(beam.trace.getBlockPos())) {
+					if (tile instanceof IInventory || tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))
+						EffectTracker.burnedTileTracker.add(beam.trace.getBlockPos());
+				} else if (EffectTracker.burnedTileTracker.contains(beam.trace.getBlockPos()))
+					EffectTracker.burnedTileTracker.remove(beam.trace.getBlockPos());
+				return;
+			}
 			if (potency >= 50 && ThreadLocalRandom.current().nextInt(0, 10) == 0) {
 				IBlockState state = world.getBlockState(beam.trace.getBlockPos());
 				if (state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.FIRE)
 					world.setBlockState(beam.trace.getBlockPos(), Blocks.FIRE.getDefaultState());
 			}
-		} else if (beam.trace.entityHit != null) beam.trace.entityHit.setFire(potency / 250);
+		} else if (beam.trace.entityHit != null) beam.trace.entityHit.setFire(potency);
 	}
 
 	@Override

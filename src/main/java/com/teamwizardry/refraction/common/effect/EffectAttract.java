@@ -3,7 +3,6 @@ package com.teamwizardry.refraction.common.effect;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.common.light.EffectTracker;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -16,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,15 +43,13 @@ public class EffectAttract extends Effect {
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
-		if (beam.trace == null) return;
-		if (beam.trace.getBlockPos() == null) return;
-		if (beam.trace.getBlockPos().getY() < 0 || beam.trace.getBlockPos().getY() >= 256) return;
 		Set<Entity> toPull = new HashSet<>();
 		for (BlockPos pos : locations) {
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
-			List<Entity> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
-			if (potency > 128)
-				entities.addAll(world.getEntitiesWithinAABB(EntityLiving.class, axis));
+			List<Entity> entities = new ArrayList<>();
+			if (potency > 128) {
+				entities.addAll(world.getEntitiesWithinAABB(Entity.class, axis));
+			} else entities.addAll(world.getEntitiesWithinAABB(EntityItem.class, axis));
 			toPull.addAll(entities);
 
 			TileEntity tile = world.getTileEntity(pos);
@@ -65,12 +63,14 @@ public class EffectAttract extends Effect {
 							ItemStack stack = inv.decrStackSize(i, slotStack.stackSize < potency / 50 ? slotStack.stackSize : potency / 50);
 							if (stack != null) {
 
-								EntityItem item = new EntityItem(world, beam.trace.hitVec.xCoord, beam.trace.hitVec.yCoord, beam.trace.hitVec.zCoord, stack);
-								item.motionX = 0;
-								item.motionY = 0;
-								item.motionZ = 0;
-								world.spawnEntityInWorld(item);
-								break;
+								if (beam.trace != null) {
+									EntityItem item = new EntityItem(world, beam.trace.hitVec.xCoord, beam.trace.hitVec.yCoord, beam.trace.hitVec.zCoord, stack);
+									item.motionX = 0;
+									item.motionY = 0;
+									item.motionZ = 0;
+									world.spawnEntityInWorld(item);
+									break;
+								}
 							}
 						}
 					}

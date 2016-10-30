@@ -37,7 +37,6 @@ public class EffectPlace extends Effect {
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
 		if (world.isRemote) return;
-		if (beam.trace == null) return;
 
 		if (fakePlayer == null)
 			fakePlayer = FakePlayerFactory.get((WorldServer) world, new GameProfile(UUID.randomUUID(), "Refraction Place Effect"));
