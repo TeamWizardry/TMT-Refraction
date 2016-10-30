@@ -1,9 +1,8 @@
 package com.teamwizardry.refraction.common.effect;
 
 import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.common.entity.EntityAccelerator;
-import com.teamwizardry.refraction.common.light.BeamConstants;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -17,20 +16,18 @@ public class EffectAccelerate extends Effect {
 
 	@Override
 	public int getCooldown() {
-		return potency == 0 ? 0 : 25500 / potency;
+		return potency == 0 ? 0 : 255 / potency;
 	}
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
-		for (BlockPos pos : locations)
-		{
-			int potency = this.potency - this.getDistance(pos)*BeamConstants.DISTANCE_LOSS;
-			if (world.getEntitiesWithinAABB(EntityAccelerator.class, new AxisAlignedBB(pos)).size() > 0)
-			{
-				EntityAccelerator a = new EntityAccelerator(world, pos, potency, 5);
-				world.spawnEntityInWorld(a);
-			}
-		}
+		if (beam.trace == null) return;
+		if (beam.trace.getBlockPos() == null) return;
+		if (beam.trace.getBlockPos().getY() < 0 || beam.trace.getBlockPos().getY() >= 256) return;
+		TileEntity tile = world.getTileEntity(beam.trace.getBlockPos());
+		if (tile != null && tile instanceof ITickable)
+			for (double i = 0; i < (potency / 10.0); i++)
+				((ITickable) tile).update();
 	}
 
 	@Override

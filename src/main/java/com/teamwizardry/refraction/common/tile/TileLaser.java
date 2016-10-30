@@ -47,7 +47,7 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ITile
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			if (stack.getItem() == Items.GLOWSTONE_DUST) return super.insertItem(slot, stack, simulate);
-			else return null;
+			else return stack;
 		}
 	};
 	private int soundTicker = 0, tick = 0;
@@ -75,35 +75,13 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ITile
 
 	@Override
 	public void generateBeam() {
-		if (worldObj.isRemote) return;
 		if (inventory.getStackInSlot(0) != null && inventory.getStackInSlot(0).stackSize > 0) {
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			EnumFacing face = worldObj.getBlockState(pos).getValue(BlockDirectional.FACING);
-			Vec3d vec;
-			switch (face) {
-				case NORTH:
-					vec = new Vec3d(0, 0, -1);
-					break;
-				case SOUTH:
-					vec = new Vec3d(0, 0, 1);
-					break;
-				case EAST:
-					vec = new Vec3d(1, 0, 0);
-					break;
-				case WEST:
-					vec = new Vec3d(-1, 0, 0);
-					break;
-				case UP:
-					vec = new Vec3d(0, 1, 0);
-					break;
-				case DOWN:
-					vec = new Vec3d(0, -1, 0);
-					break;
-				default:
-					vec = new Vec3d(0, 1, 0);
-					break;
-			}
-			new Beam(worldObj, center, vec, Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.GLOWSTONE_ALPHA).spawn();
+			Vec3d vec = PosUtils.getVecFromFacing(face);
+			Color color = new Color(255, 255, 255, BeamConstants.GLOWSTONE_ALPHA);
+			new Beam(worldObj, center, vec, color).spawn();
+
 			if (tick < 50) tick++;
 			else {
 				tick = 0;
@@ -124,7 +102,7 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ITile
 
 	@Override
 	public void update() {
-		if (emittingSound && inventory.getStackInSlot(0) != null && inventory.getStackInSlot(0).stackSize > 0) {
+		if (inventory.getStackInSlot(0) != null && inventory.getStackInSlot(0).stackSize > 0) {
 			ParticleBuilder glitter = new ParticleBuilder(ThreadLocalRandom.current().nextInt(20, 30));
 			glitter.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 1));
 			glitter.setAlpha((float) ThreadLocalRandom.current().nextDouble(0.3, 0.7));
@@ -136,12 +114,14 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ITile
 			glitter.setMotion(facingVec.scale(1.0 / 50.0));
 			ParticleSpawner.spawn(glitter, worldObj, new StaticInterp<>(center), 2);
 
-			if (soundTicker > 20 * 2) {
-				soundTicker = 0;
+			if (emittingSound) {
+				if (soundTicker > 20 * 2) {
+					soundTicker = 0;
 
-				worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(), ModSounds.electrical_hums.get(ThreadLocalRandom.current().nextInt(0, ModSounds.electrical_hums.size() - 1)), SoundCategory.BLOCKS, 0.1F, 1F);
+					worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(), ModSounds.electrical_hums.get(ThreadLocalRandom.current().nextInt(0, ModSounds.electrical_hums.size() - 1)), SoundCategory.BLOCKS, 0.1F, 1F);
 
-			} else soundTicker++;
+				} else soundTicker++;
+			}
 		}
 	}
 

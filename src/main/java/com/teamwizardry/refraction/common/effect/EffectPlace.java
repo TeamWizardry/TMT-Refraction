@@ -2,14 +2,11 @@ package com.teamwizardry.refraction.common.effect;
 
 import com.mojang.authlib.GameProfile;
 import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.api.Utils;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
@@ -29,27 +26,31 @@ public class EffectPlace extends Effect {
 
 	@Override
 	public int getCooldown() {
-		return potency == 0 ? 0 : 25500 / potency;
+		return potency == 0 ? 0 : 2550 / potency;
+	}
+
+	@Override
+	public EffectType getType() {
+		return EffectType.BEAM;
 	}
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
+		if (world.isRemote) return;
+		if (beam.trace == null) return;
+
 		if (fakePlayer == null)
 			fakePlayer = FakePlayerFactory.get((WorldServer) world, new GameProfile(UUID.randomUUID(), "Refraction Place Effect"));
-		if (beam.trace.typeOfHit != RayTraceResult.Type.BLOCK) return;
-		if (world.getBlockState(beam.trace.getBlockPos()).getBlock() == Blocks.AIR) return;
-		setLocationEdge(beam.trace.getBlockPos().offset(EnumFacing.UP), EnumFacing.DOWN);
+		fakePlayer.setSneaking(true);
+
 		for (BlockPos pos : locations) {
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
 			List<EntityItem> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
 			for (EntityItem entity : entities) {
 				if (entity == null) continue;
-				EnumFacing facing = Utils.getCollisionSide(beam);
-				if (facing == null) continue;
-				fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, entity.getEntityItem(), EnumHand.MAIN_HAND, pos, facing, 0, 0, 0);
+				fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, entity.getEntityItem(), EnumHand.MAIN_HAND, pos, beam.trace.sideHit, 0, 0, 0);
 			}
 		}
-
 	}
 
 	@Override

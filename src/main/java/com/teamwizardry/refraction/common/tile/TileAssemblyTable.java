@@ -80,7 +80,6 @@ public class TileAssemblyTable extends TileMod implements IBeamHandler {
 
 	@Override
 	public void handle(Beam... inputs) {
-		if (worldObj.isRemote) return;
 		if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
 		if (inputs.length <= 0) return;
 		int red = 0, green = 0, blue = 0, alpha = 0;

@@ -1,7 +1,6 @@
 package com.teamwizardry.refraction.common.effect;
 
 import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.EffectTracker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -10,10 +9,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -44,9 +45,11 @@ public class EffectDisperse extends Effect {
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
+		if (beam.trace == null) return;
+		if (beam.trace.getBlockPos() == null) return;
+		if (beam.trace.getBlockPos().getY() < 0 || beam.trace.getBlockPos().getY() >= 256) return;
 		Set<Entity> toPush = new HashSet<>();
 		for (BlockPos pos : locations) {
-			int potency = (this.potency - this.getDistance(pos) * BeamConstants.DISTANCE_LOSS) * 3 / 64;
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
 			List<Entity> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
 			if (potency > 128)
@@ -54,13 +57,21 @@ public class EffectDisperse extends Effect {
 			toPush.addAll(entities);
 
 			if (!world.isRemote) {
-				TileEntity tile = world.getTileEntity(pos);
-				if (tile != null && tile instanceof IInventory && EffectTracker.burnedTileTracker.contains(pos)) {
-					IInventory inv = (IInventory) tile;
+				TileEntity tile = world.getTileEntity(beam.trace.getBlockPos());
+				if (tile != null && EffectTracker.burnedTileTracker.contains(beam.trace.getBlockPos())) {
+					if (tile instanceof IInventory) {
+						IInventory inv = (IInventory) tile;
 
-					for (Entity item : toPush)
-						if (item instanceof EntityItem)
-							EffectTracker.itemInput.putIfAbsent((EntityItem) item, inv);
+						for (Entity item : toPush)
+							if (item instanceof EntityItem)
+								TileEntityHopper.putDropInInventoryAllSlots(inv, (EntityItem) item);
+					} else if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit)) {
+						for (Entity item : toPush)
+							if (item instanceof EntityItem) {
+								((EntityItem) item).getEntityItem().stackSize--;
+								tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit).insertItem(0, ((EntityItem) item).getEntityItem(), false);
+							}
+					}
 				}
 			}
 		}

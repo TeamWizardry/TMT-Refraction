@@ -3,10 +3,6 @@ package com.teamwizardry.refraction.common.light;
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.refraction.api.Effect;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -29,8 +25,6 @@ public class EffectTracker {
 	public static ArrayList<Effect> effectRegistry = new ArrayList<>();
 	public static ArrayList<BlockPos> burnedTileTracker = new ArrayList<>();
 	public static HashMap<Entity, Integer> gravityReset = new HashMap<>();
-	public static HashMap<EntityItem, IInventory> itemInput = new HashMap<>();
-	public static HashMap<IInventory, Effect> itemOutput = new HashMap<>();
 	private static WeakHashMap<World, EffectTracker> effectInstances = new WeakHashMap<>();
 	private HashMultimap<Effect, BlockPos> effects = HashMultimap.create();
 	private BlockTracker blockTracker;
@@ -117,29 +111,6 @@ public class EffectTracker {
 			if (cooldown > 0) {
 				cooldown--;
 			} else {
-				itemInput.keySet().removeIf(item -> TileEntityHopper.putDropInInventoryAllSlots(itemInput.get(item), item));
-
-				itemOutput.keySet().removeIf(inv -> {
-					Effect effect = itemOutput.get(inv);
-					for (int i = 0; i < inv.getSizeInventory() - 1; i++) {
-						ItemStack slotStack = inv.getStackInSlot(i);
-						if (slotStack != null) {
-							ItemStack stack = inv.decrStackSize(i, slotStack.stackSize < effect.getPotency() / 50 ? slotStack.stackSize : effect.getPotency() / 50);
-							if (stack != null) {
-
-								if (w == null) return false;
-								EntityItem item = new EntityItem(w, effect.beam.finalLoc.xCoord, effect.beam.finalLoc.yCoord, effect.beam.finalLoc.zCoord, stack);
-								item.motionX = 0;
-								item.motionY = 0;
-								item.motionZ = 0;
-								w.spawnEntityInWorld(item);
-								break;
-							}
-						}
-					}
-					return true;
-				});
-
 				cooldown = BeamConstants.SOURCE_TIMER;
 				burnedTileTracker.clear();
 			}

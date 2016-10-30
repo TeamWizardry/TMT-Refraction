@@ -18,16 +18,16 @@ public class EffectBonemeal extends Effect {
 
 	@Override
 	public int getCooldown() {
-		return potency == 0 ? 0 : 25500 / potency;
+		return potency == 0 ? 0 : 255 / potency;
 	}
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
-		for (BlockPos pos : locations) {
-			if (world.getBlockState(pos).getBlock() instanceof IGrowable) {
-				for (int i = 0; i < (3 * potency / 32); i++)
-					ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos);
-			}
+		if (beam.trace == null) return;
+		if (beam.trace.getBlockPos() == null) return;
+		if (beam.trace.getBlockPos().getY() < 0 || beam.trace.getBlockPos().getY() >= 256) return;
+		if (world.getBlockState(beam.trace.getBlockPos()).getBlock() instanceof IGrowable) {
+			ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, beam.trace.getBlockPos());
 		}
 	}
 

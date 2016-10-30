@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
@@ -28,30 +29,7 @@ public class TileCreativeLaser extends TileMod implements ILightSource {
 	public void generateBeam() {
 		Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 		EnumFacing face = worldObj.getBlockState(pos).getValue(BlockDirectional.FACING);
-		Vec3d vec;
-		switch (face) {
-			case NORTH:
-				vec = new Vec3d(0, 0, -1);
-				break;
-			case SOUTH:
-				vec = new Vec3d(0, 0, 1);
-				break;
-			case EAST:
-				vec = new Vec3d(1, 0, 0);
-				break;
-			case WEST:
-				vec = new Vec3d(-1, 0, 0);
-				break;
-			case UP:
-				vec = new Vec3d(0, 1, 0);
-				break;
-			case DOWN:
-				vec = new Vec3d(0, -1, 0);
-				break;
-			default:
-				vec = new Vec3d(0, 1, 0);
-				break;
-		}
+		Vec3d vec = PosUtils.getVecFromFacing(face);
 		new Beam(worldObj, center, vec, Color.WHITE).spawn();
 	}
 }

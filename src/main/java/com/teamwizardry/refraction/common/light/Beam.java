@@ -42,10 +42,6 @@ public class Beam {
 		this(world, new Vec3d(initX, initY, initZ), new Vec3d(slopeX, slopeY, slopeZ), color);
 	}
 
-	public Beam(World world, Vec3d initLoc, Vec3d dir, float red, float green, float blue, float alpha) {
-		this(world, initLoc, dir, new Color(red, green, blue, alpha));
-	}
-
 	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, float red, float green, float blue, float alpha) {
 		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha));
 	}
@@ -109,12 +105,12 @@ public class Beam {
 		if (world.isRemote) return;
 		if (color.getAlpha() <= 1) return;
 
-		Effect effect = EffectTracker.getEffect(this);
-		if (effect != null) {
-			if (effect.getCooldown() == 0) this.effect = effect;
-			else if (ThreadLocalRandom.current().nextInt(0, effect.getCooldown()) == 0) this.effect = effect;
-		} else this.effect = EffectTracker.getEffect(this);
-
+		Effect tempEffect = EffectTracker.getEffect(this);
+		if (tempEffect != null) {
+			if (tempEffect.getCooldown() == 0) effect = tempEffect;
+			else if (ThreadLocalRandom.current().nextInt(0, tempEffect.getCooldown()) == 0) effect = tempEffect;
+			else effect = null;
+		} else effect = null;
 
 		if (!ignoreEntities) {
 			if (effect != null) {
