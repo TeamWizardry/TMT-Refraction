@@ -113,26 +113,26 @@ public class TileAssemblyTable extends TileMod implements IBeamHandler {
 				});
 			} else {
 				isCrafting = false;
+				ParticleBuilder builder = new ParticleBuilder(1);
+				builder.setAlphaFunction(new InterpFadeInOut(0.1f, 0.3f));
+				builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
+				builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+				ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1.25, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(200, 300), 0, (aFloat, particleBuilder) -> {
+					double radius = 0.1;
+					double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
+					double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
+					double r = (u > 1) ? 2 - u : u;
+					double x = r * Math.cos(t), z = r * Math.sin(t);
+					builder.setPositionOffset(new Vec3d(x, ThreadLocalRandom.current().nextDouble(-0.1, 0.1), z));
+					builder.setScale(ThreadLocalRandom.current().nextFloat());
+					builder.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
+							ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
+							ThreadLocalRandom.current().nextDouble(-0.01, 0.01)));
+					builder.setLifetime(ThreadLocalRandom.current().nextInt(20, 80));
+				});
 				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 			}
 			return;
-		}
-
-		if (output.getStackInSlot(0) != null && !isCrafting) {
-			ParticleBuilder builder = new ParticleBuilder(5);
-			builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
-			builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
-			builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
-			ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1.25, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(50, 80), 0, (aFloat, particleBuilder) -> {
-				double radius = 5;
-				double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
-				double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
-				double r = (u > 1) ? 2 - u : u;
-				double x = r * Math.cos(t), z = r * Math.sin(t);
-				builder.setScale(ThreadLocalRandom.current().nextFloat());
-				builder.addMotion(new Vec3d(x / 1000, ThreadLocalRandom.current().nextFloat() / 1000, z / 1000));
-				builder.setLifetime(ThreadLocalRandom.current().nextInt(20, 30));
-			});
 		}
 
 		if (getOccupiedSlotCount() <= 0) return;

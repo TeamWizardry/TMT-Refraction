@@ -98,8 +98,8 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 	@Override
 	public void update() {
 		if (worldObj.isRemote) return;
-		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((rotPrevX - rotDestX) / 2.0), 20)),
-				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((rotPrevY - rotDestY) / 2.0), 20));
+		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((rotPrevX - rotDestX) / 2.0), 15)),
+				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((rotPrevY - rotDestY) / 2.0), 15));
 		double worldTimeTransition = (worldObj.getTotalWorldTime() - worldTime);
 		float rotX = rotDestX, rotY = rotDestY;
 
