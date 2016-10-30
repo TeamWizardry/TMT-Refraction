@@ -50,8 +50,8 @@ public class TileElectronExciter extends TileMod implements IBeamHandler, ITileS
 
 				IBlockState bridge;
 				if (neighborFacing == EnumFacing.UP || neighborFacing == EnumFacing.DOWN)
-				bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, front).withProperty(BlockLightBridge.VERTICAL, true);
-				else bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockDirectional.FACING, front).withProperty(BlockLightBridge.VERTICAL, false);
+				bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, front.getAxis());
+				else bridge = ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, front.getAxis());
 
 				worldObj.setBlockState(pos.offset(front), bridge);
 				TileLightBridge tileLightBridge = (TileLightBridge) worldObj.getTileEntity(pos.offset(front));

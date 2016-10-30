@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -36,7 +37,7 @@ import static net.minecraft.util.EnumFacing.*;
 public class BlockOpticFiber extends BlockModContainer {
 
 	public static final PropertyEnum<EnumBiFacing> FACING = PropertyEnum.create("facings", EnumBiFacing.class);
-	private AxisAlignedBB[] AABBS = new AxisAlignedBB[] {
+	private static final AxisAlignedBB[] AABBS = new AxisAlignedBB[] {
             new AxisAlignedBB(6  / 16.0, 6  / 16.0, 0, 10 / 16.0, 1, 10 / 16.0), // UP_NORTH
             new AxisAlignedBB(6  / 16.0, 6  / 16.0, 6  / 16.0, 10 / 16.0, 1, 1), // UP_SOUTH
             new AxisAlignedBB(0, 6  / 16.0, 6  / 16.0, 10 / 16.0, 1, 10 / 16.0), // UP_WEST
@@ -53,6 +54,15 @@ public class BlockOpticFiber extends BlockModContainer {
             new AxisAlignedBB(6  / 16.0, 6  / 16.0, 6  / 16.0, 1, 10 / 16.0, 1), // EAST_SOUTH
             new AxisAlignedBB(6  / 16.0, 6  / 16.0, 0, 10 / 16.0, 10 / 16.0, 1)  // NORTH_SOUTH
     };
+
+    private static final AxisAlignedBB CENTER = new AxisAlignedBB(6  / 16.0, 6  / 16.0, 6  / 16.0, 10 / 16.0, 10 / 16.0, 10 / 16.0);
+
+	private static final AxisAlignedBB DOWN_AABB  = new AxisAlignedBB(6  / 16.0, 0, 6  / 16.0, 10 / 16.0, 6  / 16.0, 10 / 16.0);
+	private static final AxisAlignedBB UP_AABB    = new AxisAlignedBB(6  / 16.0, 10 / 16.0, 6  / 16.0, 10 / 16.0, 1, 10 / 16.0);
+	private static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(6  / 16.0, 6  / 16.0, 0, 10 / 16.0, 10 / 16.0, 6  / 16.0);
+	private static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(6  / 16.0, 6  / 16.0, 10 / 16.0, 10 / 16.0, 10 / 16.0, 1);
+	private static final AxisAlignedBB WEST_AABB  = new AxisAlignedBB(0, 6  / 16.0, 6  / 16.0, 6  / 16.0, 10 / 16.0, 10 / 16.0);
+	private static final AxisAlignedBB EAST_AABB  = new AxisAlignedBB(10 / 16.0, 6  / 16.0, 6  / 16.0, 1, 10 / 16.0, 10 / 16.0);
 
 	public BlockOpticFiber() {
 		super("optic_fiber", Material.GLASS);
@@ -123,7 +133,21 @@ public class BlockOpticFiber extends BlockModContainer {
         }
     }
 
-    private void updateBlockState(World worldIn, BlockPos pos, EnumFacing f) {
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @javax.annotation.Nullable Entity entityIn) {
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER);
+
+		EnumBiFacing biFacing = state.getValue(FACING);
+
+		if (biFacing.contains(DOWN)) addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB);
+		if (biFacing.contains(UP)) addCollisionBoxToList(pos, entityBox, collidingBoxes, UP_AABB);
+		if (biFacing.contains(NORTH)) addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
+		if (biFacing.contains(SOUTH)) addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
+		if (biFacing.contains(WEST)) addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
+		if (biFacing.contains(EAST)) addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
+	}
+
+	private void updateBlockState(World worldIn, BlockPos pos, EnumFacing f) {
         IBlockState offset = worldIn.getBlockState(pos.offset(f));
         if (offset.getBlock() instanceof BlockOpticFiber) {
             EnumFacing facing = getConnectible(worldIn, pos, f);

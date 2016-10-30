@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
@@ -13,11 +12,9 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -36,160 +33,224 @@ import java.util.List;
  */
 public class BlockLightBridge extends BlockModContainer implements ISpamSoundProvider {
 
-	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
-	public static final PropertyBool VERTICAL = PropertyBool.create("vertical");
+    public static final PropertyEnum<EnumFacing.Axis> FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
+    public static final PropertyBool UP = PropertyBool.create("up");
+    public static final PropertyBool DOWN = PropertyBool.create("down");
+    public static final PropertyBool LEFT = PropertyBool.create("left");
+    public static final PropertyBool RIGHT = PropertyBool.create("right");
 
-	private static final AxisAlignedBB AABB_VERT_EW = new AxisAlignedBB(0, 0, 0.40625, 1, 1, 0.59375);
-	private static final AxisAlignedBB AABB_VERT_NS = new AxisAlignedBB(0.40625, 0, 0, 0.59375, 1, 1);
-	private static final AxisAlignedBB AABB_HORIZ = new AxisAlignedBB(0, 0.40625, 0, 1, 0.59375, 1);
+    private static final EnumFacing[][] SPINS = new EnumFacing[][]{
+            {EnumFacing.UP, EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.SOUTH},
+            {EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST},
+            {EnumFacing.UP, EnumFacing.DOWN, EnumFacing.EAST, EnumFacing.WEST}
+    };
 
-	public BlockLightBridge() {
-		super("light_bridge", Material.GLASS);
-		setBlockUnbreakable();
-		setSoundType(SoundType.GLASS);
-		TileMod.registerTile(TileLightBridge.class, "light_bridge");
-		setTickRandomly(true);
+    private static final AxisAlignedBB AABB_X = new AxisAlignedBB(0, 7.5 / 16, 7.5 / 16, 1, 8.5 / 16, 8.5 / 16);
+    private static final AxisAlignedBB AABB_Y = new AxisAlignedBB(7.5 / 16, 0, 7.5 / 16, 8.5 / 16, 1, 8.5 / 16);
+    private static final AxisAlignedBB AABB_Z = new AxisAlignedBB(7.5 / 16, 7.5 / 16, 0, 8.5 / 16, 8.5 / 16, 1);
 
-		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(VERTICAL, false));
-	}
+    private static final AxisAlignedBB AABB_X_UP    = new AxisAlignedBB(0, 8.5 / 16, 7.5 / 16, 1, 1, 8.5 / 16);
+    private static final AxisAlignedBB AABB_X_DOWN  = new AxisAlignedBB(0, 0, 7.5 / 16, 1, 7.5 / 16, 8.5 / 16);
+    private static final AxisAlignedBB AABB_X_LEFT  = new AxisAlignedBB(0, 7.5 / 16, 0, 1, 8.5 / 16, 7.5 / 16);
+    private static final AxisAlignedBB AABB_X_RIGHT = new AxisAlignedBB(0, 7.5 / 16, 8.5 / 16, 1, 8.5 / 16, 1);
 
-	
+    private static final AxisAlignedBB AABB_Y_UP    = new AxisAlignedBB(7.5 / 16, 0, 0, 8.5 / 16, 1, 7.5 / 16);
+    private static final AxisAlignedBB AABB_Y_DOWN  = new AxisAlignedBB(7.5 / 16, 0, 8.5 / 16, 8.5 / 16, 1, 1);
+    private static final AxisAlignedBB AABB_Y_LEFT  = new AxisAlignedBB(8.5 / 16, 0, 7.5 / 16, 1, 1, 8.5 / 16);
+    private static final AxisAlignedBB AABB_Y_RIGHT = new AxisAlignedBB(0, 0, 7.5 / 16, 7.5 / 16, 1, 8.5 / 16);
 
-	@Nullable
-	@Override
-	public ItemBlock createItemForm() {
-		return null;
-	}
+    private static final AxisAlignedBB AABB_Z_UP    = new AxisAlignedBB(7.5 / 16, 8.5 / 16, 0, 8.5 / 16, 1, 1);
+    private static final AxisAlignedBB AABB_Z_DOWN  = new AxisAlignedBB(7.5 / 16, 0, 0, 8.5 / 16, 7.5 / 16, 1);
+    private static final AxisAlignedBB AABB_Z_LEFT  = new AxisAlignedBB(8.5 / 16, 7.5 / 16, 0, 1, 8.5 / 16, 1);
+    private static final AxisAlignedBB AABB_Z_RIGHT = new AxisAlignedBB(0, 7.5 / 16, 0, 7.5 / 16, 8.5 / 16, 1);
 
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
-	}
+    public BlockLightBridge() {
+        super("light_bridge", Material.GLASS);
+        setBlockUnbreakable();
+        setSoundType(SoundType.GLASS);
+        TileMod.registerTile(TileLightBridge.class, "light_bridge");
+        setTickRandomly(true);
 
-	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		EnumFacing placerFacing = placer.getAdjustedHorizontalFacing();
-		IBlockState state = getStateFromMeta(meta);
+        setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.Axis.Y).withProperty(UP, false).withProperty(DOWN, false).withProperty(LEFT, false).withProperty(RIGHT, false));
+    }
 
-		if (placer.rotationPitch > 45) {
-			state = state.withProperty(FACING, EnumFacing.DOWN);
-			switch (placerFacing) {
-				case NORTH:
-				case SOUTH:
-				default:
-					return state.withProperty(VERTICAL, false);
-				case EAST:
-				case WEST:
-					return state.withProperty(VERTICAL, true);
-			}
-		}
-		if (placer.rotationPitch < -45) {
-			state = state.withProperty(FACING, EnumFacing.UP);
-			switch (placerFacing) {
-				case NORTH:
-				case SOUTH:
-				default:
-					return state.withProperty(VERTICAL, false);
-				case EAST:
-				case WEST:
-					return state.withProperty(VERTICAL, true);
-			}
-		}
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        EnumFacing.Axis axis = state.getValue(FACING);
+        EnumFacing[] facings = SPINS[axis.ordinal()];
+        IBlockState upState = worldIn.getBlockState(pos.offset(facings[0]));
+        boolean up = upState.getBlock() == this && upState.getValue(FACING) == axis;
 
-		// Place Vertically
-		if (hitY > 0.5) return state.withProperty(FACING, placerFacing).withProperty(VERTICAL, true);
-		 else return state.withProperty(FACING, placerFacing).withProperty(VERTICAL, false);
-	}
+        IBlockState downState = worldIn.getBlockState(pos.offset(facings[1]));
+        boolean down = downState.getBlock() == this && downState.getValue(FACING) == axis;
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		EnumFacing enumfacing = state.getValue(FACING);
-		boolean isVert = state.getValue(VERTICAL);
+        IBlockState leftState = worldIn.getBlockState(pos.offset(facings[2]));
+        boolean left = leftState.getBlock() == this && leftState.getValue(FACING) == axis;
 
-		switch (enumfacing) {
-			case UP:
-			case DOWN:
-				return isVert ? AABB_VERT_NS : AABB_VERT_EW;
-			case NORTH:
-			case SOUTH:
-				return isVert ? AABB_VERT_NS : AABB_HORIZ;
-			case EAST:
-			case WEST:
-				return isVert ? AABB_VERT_EW : AABB_HORIZ;
-			default:
-				return AABB_HORIZ;
-		}
-	}
+        IBlockState rightState = worldIn.getBlockState(pos.offset(facings[3]));
+        boolean right = rightState.getBlock() == this && rightState.getValue(FACING) == axis;
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		meta = meta % 12;
-		if (meta < 6)
-			return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta)).withProperty(VERTICAL, false);
-		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta - 6)).withProperty(VERTICAL, true);
+        return state.withProperty(UP, up && (!down || left || right))
+                .withProperty(DOWN, down && (!up || left || right))
+                .withProperty(LEFT, left && (up || down || !right))
+                .withProperty(RIGHT, right && (up || down || !left));
+    }
 
-	}
+    @Nullable
+    @Override
+    public ItemBlock createItemForm() {
+        return null;
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getIndex() + (state.getValue(VERTICAL) ? 0 : 6);
-	}
+    @Override
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+        EnumFacing.Axis enumfacing = state.getValue(FACING);
+        EnumFacing[] facings = SPINS[enumfacing.ordinal()];
+
+        IBlockState upState = worldIn.getBlockState(pos.offset(facings[0]));
+        boolean up = upState.getBlock() == this && upState.getValue(FACING) == enumfacing;
+
+        IBlockState downState = worldIn.getBlockState(pos.offset(facings[1]));
+        boolean down = downState.getBlock() == this && downState.getValue(FACING) == enumfacing;
+
+        IBlockState leftState = worldIn.getBlockState(pos.offset(facings[2]));
+        boolean left = leftState.getBlock() == this && leftState.getValue(FACING) == enumfacing;
+
+        IBlockState rightState = worldIn.getBlockState(pos.offset(facings[3]));
+        boolean right = rightState.getBlock() == this && rightState.getValue(FACING) == enumfacing;
+
+        switch (enumfacing) {
+            case X:
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X);
+                if (up) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_UP);
+                if (down) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_DOWN);
+                if (left) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_LEFT);
+                if (right) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_RIGHT);
+                break;
+            case Y:
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y);
+                if (up) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_UP);
+                if (down) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_DOWN);
+                if (left) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_LEFT);
+                if (right) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_RIGHT);
+                break;
+            case Z:
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z);
+                if (up) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_UP);
+                if (down) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_DOWN);
+                if (left) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_LEFT);
+                if (right) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_RIGHT);
+                break;
+        }
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        EnumFacing.Axis enumfacing = state.getValue(FACING);
+        EnumFacing[] facings = SPINS[enumfacing.ordinal()];
 
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, VERTICAL);
-	}
+        IBlockState upState = source.getBlockState(pos.offset(facings[0]));
+        boolean up = upState.getBlock() == this && upState.getValue(FACING) == enumfacing;
 
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
-	}
+        IBlockState downState = source.getBlockState(pos.offset(facings[1]));
+        boolean down = downState.getBlock() == this && downState.getValue(FACING) == enumfacing;
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-		return false;
-	}
+        IBlockState leftState = source.getBlockState(pos.offset(facings[2]));
+        boolean left = leftState.getBlock() == this && leftState.getValue(FACING) == enumfacing;
 
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
+        IBlockState rightState = source.getBlockState(pos.offset(facings[3]));
+        boolean right = rightState.getBlock() == this && rightState.getValue(FACING) == enumfacing;
 
-	@Override
-	public boolean isOpaqueCube(IBlockState blockState) {
-		return false;
-	}
+        AxisAlignedBB box;
+        switch (enumfacing) {
+            case X:
+                box = AABB_X;
+                if (up) box = box.union(AABB_X_UP);
+                if (down) box = box.union(AABB_X_DOWN);
+                if (left) box = box.union(AABB_X_LEFT);
+                if (right) box = box.union(AABB_X_RIGHT);
+                break;
+            case Y:
+                box = AABB_Y;
+                if (up) box = box.union(AABB_Y_UP);
+                if (down) box = box.union(AABB_Y_DOWN);
+                if (left) box = box.union(AABB_Y_LEFT);
+                if (right) box = box.union(AABB_Y_RIGHT);
+                break;
+            case Z:
+                box = AABB_Z;
+                if (up) box = box.union(AABB_Z_UP);
+                if (down) box = box.union(AABB_Z_DOWN);
+                if (left) box = box.union(AABB_Z_LEFT);
+                if (right) box = box.union(AABB_Z_RIGHT);
+                break;
+            default:
+                box = NULL_AABB;
+        }
+        return box;
+    }
 
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileLightBridge bridge = (TileLightBridge) world.getTileEntity(pos);
-		if (bridge != null && bridge.getDirection() != null) {
-			bridge.setShouldEmitSound(false);
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        meta = meta % 3;
+        return getDefaultState().withProperty(FACING, EnumFacing.Axis.values()[meta]);
 
-			IBlockState front = world.getBlockState(pos.offset(bridge.getDirection()));
-			IBlockState back = world.getBlockState(pos.offset(bridge.getDirection().getOpposite()));
-			if (front.getBlock() == this)
-				world.setBlockState(pos.offset(bridge.getDirection()), Blocks.AIR.getDefaultState());
-			if (back.getBlock() == this)
-				world.setBlockState(pos.offset(bridge.getDirection().getOpposite()), Blocks.AIR.getDefaultState());
-		}
+    }
 
-		recalculateAllSurroundingSpammables(world, pos);
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).ordinal();
+    }
 
-		super.breakBlock(world, pos, state);
-	}
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, UP, DOWN, LEFT, RIGHT);
+    }
 
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
-		return new TileLightBridge();
-	}
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.TRANSLUCENT;
+    }
 
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
-	}
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState blockState) {
+        return false;
+    }
+
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileLightBridge bridge = (TileLightBridge) world.getTileEntity(pos);
+        if (bridge != null && bridge.getDirection() != null) {
+            bridge.setShouldEmitSound(false);
+
+            IBlockState front = world.getBlockState(pos.offset(bridge.getDirection()));
+            IBlockState back = world.getBlockState(pos.offset(bridge.getDirection().getOpposite()));
+            if (front.getBlock() == this)
+                world.setBlockState(pos.offset(bridge.getDirection()), Blocks.AIR.getDefaultState());
+            if (back.getBlock() == this)
+                world.setBlockState(pos.offset(bridge.getDirection().getOpposite()), Blocks.AIR.getDefaultState());
+        }
+
+        recalculateAllSurroundingSpammables(world, pos);
+
+        super.breakBlock(world, pos, state);
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState iBlockState) {
+        return new TileLightBridge();
+    }
+
+    @Nullable
+    @Override
+    public ModCreativeTab getCreativeTab() {
+        return ModTab.INSTANCE;
+    }
 }

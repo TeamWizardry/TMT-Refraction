@@ -6,7 +6,6 @@ import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.init.ModSounds;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
@@ -19,7 +18,6 @@ public class TileLightBridge extends TileMod implements ITileSpamSound, ITickabl
 
 	@Save
 	private BlockPos source;
-	@Save
 	private EnumFacing direction;
 	@Save
 	private boolean emittingSound = false;
@@ -41,26 +39,6 @@ public class TileLightBridge extends TileMod implements ITileSpamSound, ITickabl
 				bridge.createNextBlock();
 			}
 		}
-	}
-
-	@Override
-	public void readCustomNBT(NBTTagCompound compound) {
-		int x = 0, y = 0, z = 0;
-		if (compound.hasKey("source_x")) x = compound.getInteger("source_x");
-		if (compound.hasKey("source_y")) y = compound.getInteger("source_y");
-		if (compound.hasKey("source_z")) z = compound.getInteger("source_z");
-		if (compound.hasKey("direction")) direction = EnumFacing.byName(compound.getString("direction"));
-		source = new BlockPos(x, y, z);
-	}
-
-	@Override
-	public void writeCustomNBT(NBTTagCompound compound) {
-		if (source != null) {
-			compound.setInteger("source_x", source.getX());
-			compound.setInteger("source_y", source.getY());
-			compound.setInteger("source_z", source.getZ());
-		}
-		if (direction != null) compound.setString("direction", direction.getName());
 	}
 
 	public void setSource(BlockPos source) {
