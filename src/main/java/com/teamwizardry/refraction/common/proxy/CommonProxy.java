@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.proxy;
 
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.librarianlib.common.util.EasyConfigHandler;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.gui.GuiHandler;
 import com.teamwizardry.refraction.common.core.CatChaseHandler;
@@ -31,6 +32,8 @@ public class CommonProxy {
 		ModItems.init();
 		ModEntities.init();
 		ModEffects.init();
+
+		new EasyConfigHandler().init(Refraction.MOD_ID, event.getSuggestedConfigurationFile(), event.getAsmData());
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
 		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);

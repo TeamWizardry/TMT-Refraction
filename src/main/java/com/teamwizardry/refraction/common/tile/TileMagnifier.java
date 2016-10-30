@@ -1,8 +1,12 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.common.light.*;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
+import com.teamwizardry.refraction.common.light.ILightSource;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.state.IBlockState;
@@ -38,7 +42,7 @@ public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler
 	public void generateBeam() {
 		boolean hasLens = false;
 		int worldTime = (int) (worldObj.getWorldTime() % 24000L);
-		if (!(worldTime >= BeamConstants.NIGHT_START && worldTime < BeamConstants.NIGHT_END)) {
+		if (!(worldTime >= Constants.NIGHT_START && worldTime < Constants.NIGHT_END)) {
 			for (int y = 1; y < 10; y++) {
 				BlockPos lens = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
 				if (worldObj.getBlockState(lens).getBlock() != ModBlocks.LENS || !worldObj.canBlockSeeSky(lens))
@@ -66,7 +70,7 @@ public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler
 			if (hasLens) {
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);
-				Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), BeamConstants.SOLAR_ALPHA);
+				Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), Constants.SOLAR_ALPHA);
 
 				new Beam(worldObj, center, dir, color).spawn();
 

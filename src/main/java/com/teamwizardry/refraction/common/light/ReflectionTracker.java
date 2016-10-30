@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.light;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -49,7 +50,7 @@ public class ReflectionTracker {
 			return;
 		if (event.phase != TickEvent.Phase.START || event.side != Side.SERVER)
 			return;
-		if (TickTracker.ticks % BeamConstants.SOURCE_TIMER == 0) {
+		if (TickTracker.ticks % Constants.SOURCE_TIMER == 0) {
 			Set<ILightSource> lights = new HashSet<>();
 			lights.addAll(sources);
 			for (ILightSource source : lights) {
@@ -84,7 +85,7 @@ public class ReflectionTracker {
 
 	public void recieveBeam(IBeamHandler handler, Beam beam) {
 		if (!delayBuffers.containsKey(handler))
-			delayBuffers.put(handler, handler instanceof TileReflectionChamber ? BeamConstants.COMBINER_DELAY : BeamConstants.BUFFER_DELAY);
+			delayBuffers.put(handler, handler instanceof TileReflectionChamber ? Constants.COMBINER_DELAY : Constants.BUFFER_DELAY);
 		sinkBlocks.put(handler, beam);
 	}
 

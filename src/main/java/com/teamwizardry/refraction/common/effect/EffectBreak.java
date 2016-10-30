@@ -21,13 +21,13 @@ public class EffectBreak extends Effect {
 
 	@Override
 	public void run(World world, Set<BlockPos> locations) {
-		if (beam.trace.typeOfHit == RayTraceResult.Type.MISS) return;
+		if (beam.trace.typeOfHit != RayTraceResult.Type.BLOCK) return;
 
 		TileEntity tile = world.getTileEntity(beam.trace.getBlockPos());
-		if (tile instanceof IBeamHandler || tile instanceof ILightSource) return;
+		if (tile != null)
+			if (tile instanceof IBeamHandler || tile instanceof ILightSource) return;
 		float hardness = world.getBlockState(beam.trace.getBlockPos()).getBlockHardness(world, beam.trace.getBlockPos());
-
-		if (hardness * 32 * 2 / 3 < potency)
+		if (hardness > 0 && hardness * 32 * 2 / 3 < potency)
 			world.destroyBlock(beam.trace.getBlockPos(), true);
 	}
 

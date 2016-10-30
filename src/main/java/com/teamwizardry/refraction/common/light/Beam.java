@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.light;
 
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.Effect.EffectType;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
@@ -115,10 +116,10 @@ public class Beam {
 		if (!ignoreEntities) {
 			if (effect != null) {
 				if (effect.getType() == EffectType.BEAM)
-					trace = EntityTrace.cast(world, initLoc, slope, 128, true);
-				else trace = EntityTrace.cast(world, initLoc, slope, 128, false);
-			} else trace = EntityTrace.cast(world, initLoc, slope, 128, false);
-		} else trace = EntityTrace.cast(world, initLoc, slope, 128, true);
+					trace = EntityTrace.cast(world, initLoc, slope, Constants.BEAM_RANGE, true);
+				else trace = EntityTrace.cast(world, initLoc, slope, Constants.BEAM_RANGE, false);
+			} else trace = EntityTrace.cast(world, initLoc, slope, Constants.BEAM_RANGE, false);
+		} else trace = EntityTrace.cast(world, initLoc, slope, Constants.BEAM_RANGE, true);
 		if (trace == null) return;
 		if (trace.hitVec == null) return;
 		this.finalLoc = trace.hitVec;

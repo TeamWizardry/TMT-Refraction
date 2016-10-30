@@ -1,8 +1,6 @@
 package com.teamwizardry.refraction.api;
 
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.BeamConstants;
-import com.teamwizardry.refraction.common.light.EffectTracker;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;

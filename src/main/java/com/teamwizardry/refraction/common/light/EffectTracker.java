@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.light;
 
 import com.google.common.collect.HashMultimap;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Effect;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -111,7 +112,7 @@ public class EffectTracker {
 			if (cooldown > 0) {
 				cooldown--;
 			} else {
-				cooldown = BeamConstants.SOURCE_TIMER;
+				cooldown = Constants.SOURCE_TIMER;
 				burnedTileTracker.clear();
 			}
 		}

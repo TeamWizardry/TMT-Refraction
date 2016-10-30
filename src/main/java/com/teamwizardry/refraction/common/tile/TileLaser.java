@@ -7,10 +7,10 @@ import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.BeamConstants;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -79,7 +79,7 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ITile
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			EnumFacing face = worldObj.getBlockState(pos).getValue(BlockDirectional.FACING);
 			Vec3d vec = PosUtils.getVecFromFacing(face);
-			Color color = new Color(255, 255, 255, BeamConstants.GLOWSTONE_ALPHA);
+			Color color = new Color(255, 255, 255, Constants.GLOWSTONE_ALPHA);
 			new Beam(worldObj, center, vec, color).spawn();
 
 			if (tick < 50) tick++;
