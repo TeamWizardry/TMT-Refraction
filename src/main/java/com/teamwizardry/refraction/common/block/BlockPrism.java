@@ -50,7 +50,7 @@ public class BlockPrism extends BlockModContainer implements ILaserTrace {
 
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return this.getStateFromMeta(meta).withProperty(FACING, facing);
+		return this.getStateFromMeta(meta).withProperty(FACING, placer.getHorizontalFacing());
 	}
 
 	@Override

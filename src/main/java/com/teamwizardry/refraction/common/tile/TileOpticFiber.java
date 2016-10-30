@@ -1,17 +1,19 @@
 package com.teamwizardry.refraction.common.tile;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.block.BlockOpticFiber;
 import com.teamwizardry.refraction.common.block.BlockOpticFiber.EnumBiFacing;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.init.ModBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 
 /**
  * Created by Saad on 9/15/2016.
@@ -35,7 +37,6 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 		{
 			for (Beam beam : beams)
 				beam.createSimilarBeam(beam.slope).spawn();
-
 			return;
 		}
 
@@ -83,24 +84,26 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 		{
 			EnumFacing beamDir = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
 
+			IBlockState state = worldObj.getBlockState(pos);
+			AxisAlignedBB axis = state.getBoundingBox(null, null);
 			if (primaryOpen && secondaryOpen)
 			{
 				if (facing.contains(beamDir.getOpposite()))
 				{
-					if (beamDir.getOpposite() == Utils.getCollisionSide(beam))
+					if (beamDir.getOpposite() == getCollisionSide(axis, beam))
 					{
 						EnumFacing opposite = beamDir.getOpposite();
 						EnumFacing other = facing.getOther(opposite);
 						beam.createSimilarBeam(getSideCenter(pos, other), getFacingVector(other)).spawn();
+						continue;
 					}
 				}
-				continue;
 			}
 			if (primaryOpen)
 			{
 				if (facing.primary == beamDir.getOpposite())
 				{
-					if (beamDir.getOpposite() == Utils.getCollisionSide(beam))
+					if (beamDir.getOpposite() == getCollisionSide(axis, beam))
 					{
 						beam.createSimilarBeam(getSideCenter(curPos, curFacing), getFacingVector(curFacing)).spawn();
 						continue;
@@ -111,7 +114,7 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 			{
 				if (facing.secondary == beamDir.getOpposite())
 				{
-					if (beamDir.getOpposite() == Utils.getCollisionSide(beam))
+					if (beamDir.getOpposite() == getCollisionSide(axis, beam))
 					{
 						beam.createSimilarBeam(getSideCenter(curPos, curFacing), getFacingVector(curFacing)).spawn();
 						continue;
@@ -166,6 +169,36 @@ public class TileOpticFiber extends TileEntity implements IBeamHandler
 				return new Vec3d(1, 0, 0);
 			case WEST:
 				return new Vec3d(-1, 0, 0);
+		}
+		return null;
+	}
+	
+	private EnumFacing getCollisionSide(AxisAlignedBB axis, Beam beam)
+	{
+		if (beam.trace != null && beam.trace.typeOfHit == RayTraceResult.Type.BLOCK)
+		{
+			BlockPos pos = beam.trace.getBlockPos();
+			Vec3d hitPos = beam.trace.hitVec;
+			Vec3d dir = hitPos.subtract(pos.getX(), pos.getY(), pos.getZ());
+			
+			if (dir.xCoord == axis.minX)
+				if (dir.yCoord > axis.minY && dir.yCoord < axis.maxY && dir.zCoord > axis.minZ && dir.zCoord < axis.maxZ)
+					return EnumFacing.WEST;
+			if (dir.xCoord == axis.maxX)
+				if (dir.yCoord > axis.minY && dir.yCoord < axis.maxY && dir.zCoord > axis.minZ && dir.zCoord < axis.maxZ)
+					return EnumFacing.EAST;
+			if (dir.yCoord == axis.minY)
+				if (dir.xCoord > axis.minX && dir.xCoord < axis.maxX && dir.zCoord > axis.minZ && dir.zCoord < axis.maxZ)
+					return EnumFacing.DOWN;
+			if (dir.yCoord == axis.maxY)
+				if (dir.xCoord > axis.minX && dir.xCoord < axis.maxX && dir.zCoord > axis.minZ && dir.zCoord < axis.maxZ)
+					return EnumFacing.UP;
+			if (dir.zCoord == axis.minZ)
+				if (dir.xCoord > axis.minX && dir.xCoord < axis.maxX && dir.yCoord > axis.minY && dir.yCoord < axis.maxY)
+					return EnumFacing.NORTH;
+			if (dir.zCoord == axis.maxZ)
+				if (dir.yCoord > axis.minY && dir.yCoord < axis.maxY && dir.yCoord > axis.minY && dir.yCoord < axis.maxY)
+					return EnumFacing.SOUTH;
 		}
 		return null;
 	}
