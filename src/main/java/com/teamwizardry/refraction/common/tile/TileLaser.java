@@ -13,18 +13,14 @@ import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModSounds;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -88,15 +84,6 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ITile
 				inventory.getStackInSlot(0).stackSize--;
 				markDirty();
 			}
-		} else {
-			EnumFacing frontDirection = worldObj.getBlockState(pos).getValue(BlockDirectional.FACING);
-			BlockPos front = pos.offset(frontDirection);
-			IBlockState blockFront = worldObj.getBlockState(front);
-			if (blockFront.getBlock() != ModBlocks.LIGHT_BRIDGE) return;
-			TileLightBridge bridge = (TileLightBridge) worldObj.getTileEntity(front);
-			if (bridge == null) return;
-			if (bridge.getDirection() == frontDirection || bridge.getDirection() == frontDirection.getOpposite())
-				worldObj.setBlockState(front, Blocks.AIR.getDefaultState());
 		}
 	}
 

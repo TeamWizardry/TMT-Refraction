@@ -130,29 +130,6 @@ public class BlockElectronExciter extends BlockModContainer implements ISpamSoun
 		return state.getBlock() == this && state.getValue(FACING) == facing;
 	}
 
-    @Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-	/*	TileElectronExciter te = (TileElectronExciter) world.getTileEntity(pos);
-		if (te == null) return;
-		if (world.getBlockState(neighbor).getBlock() != this) return;
-		EnumFacing front = world.getBlockState(pos).getValue(FACING);
-		Vec3i diff = pos.subtract(neighbor);
-		EnumFacing directionChange = EnumFacing.getFacingFromVector(diff.getX(), diff.getY(), diff.getZ());
-
-		if (directionChange == front || directionChange == front.getOpposite()) return;
-
-		IBlockState link = world.getBlockState(neighbor);
-		if (link.getValue(FACING) != world.getBlockState(pos).getValue(FACING)) return;
-		if (link.getBlock() != this) {
-			te.invokeUpdate();
-			world.getBlockState(pos).withProperty(LINKED_BLOCK, front);
-		} else {
-			world.getBlockState(pos).withProperty(LINKED_BLOCK, directionChange);
-			link.withProperty(LINKED_BLOCK, directionChange.getOpposite());
-			te.invokeUpdate();
-		}*/
-	}
-
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));

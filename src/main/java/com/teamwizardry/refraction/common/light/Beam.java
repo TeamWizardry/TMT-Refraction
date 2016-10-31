@@ -4,10 +4,13 @@ import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.Effect.EffectType;
+import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.raytrace.EntityTrace;
+import com.teamwizardry.refraction.common.tile.TileLightBridge;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -150,8 +153,12 @@ public class Beam {
 			if (effect != null && effect.getType() == EffectType.BEAM)
 				EffectTracker.addEffect(world, this);
 		}
-
 		PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
+
+		if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+			EnumFacing facing = PosUtils.getFacing(initLoc, finalLoc);
+			TileLightBridge.invokeUpdate(trace.getBlockPos(), world, facing == null ? null : facing.getOpposite());
+		}
 	}
 
 	@Override
