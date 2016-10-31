@@ -4,8 +4,6 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.refraction.api.ISpamSoundProvider;
-import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
@@ -33,7 +31,7 @@ import java.util.List;
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockElectronExciter extends BlockModContainer implements ISpamSoundProvider {
+public class BlockElectronExciter extends BlockModContainer {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	private static final PropertyBool UP = PropertyBool.create("up");
@@ -57,11 +55,6 @@ public class BlockElectronExciter extends BlockModContainer implements ISpamSoun
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
-	}
-
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		getTE(worldIn, pos).setShouldEmitSound(shouldEmitSound(worldIn, pos));
 	}
 
 	@Override
@@ -165,9 +158,6 @@ public class BlockElectronExciter extends BlockModContainer implements ISpamSoun
 		TileEntity entity = world.getTileEntity(pos);
 		if (entity instanceof ILightSource)
 			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
-		if (entity instanceof ITileSpamSound)
-			((ITileSpamSound) entity).setShouldEmitSound(false);
-		recalculateAllSurroundingSpammables(world, pos);
 
 		super.breakBlock(world, pos, state);
 	}

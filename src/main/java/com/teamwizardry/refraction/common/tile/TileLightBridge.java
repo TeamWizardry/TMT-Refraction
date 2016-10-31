@@ -3,36 +3,29 @@ package com.teamwizardry.refraction.common.tile;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.common.block.BlockLightBridge;
 import com.teamwizardry.refraction.init.ModBlocks;
-import com.teamwizardry.refraction.init.ModSounds;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
  * Created by Saad on 8/18/2016.
  */
-public class TileLightBridge extends TileMod implements ITileSpamSound, ITickable {
+public class TileLightBridge extends TileMod implements ITickable {
 
 	@Save
 	public BlockPos source;
 	@Save
 	public EnumFacing direction;
 	@Save
-	public boolean emittingSound = false;
-	@Save
 	public int expire = Constants.SOURCE_TIMER;
 	@Save
 	public boolean isEnd = false;
-	private int soundTicker = 0;
-	private int soundTrack = 0;
 
 	public TileLightBridge() {
 	}
@@ -96,31 +89,11 @@ public class TileLightBridge extends TileMod implements ITileSpamSound, ITickabl
 	}
 
 	@Override
-	public boolean isEmittingSound() {
-		return emittingSound;
-	}
-
-	@Override
-	public void setShouldEmitSound(boolean shouldEmitSound) {
-		this.emittingSound = shouldEmitSound;
-	}
-
-	@Override
 	public void update() {
 		if (worldObj.isRemote) return;
 		if (isEnd) {
 			if (expire > 0) expire--;
-			else {
-				worldObj.setBlockState(pos, Blocks.AIR.getDefaultState());
-			}
+			else worldObj.setBlockState(pos, Blocks.AIR.getDefaultState());
 		}
-		if (emittingSound)
-			if (soundTicker > 33 * 2) {
-				soundTicker = 0;
-				if (soundTrack > 18) soundTrack = 0;
-				else soundTrack++;
-
-				worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(), ModSounds.light_bridges.get(soundTrack), SoundCategory.BLOCKS, 1F, 1F);
-			} else soundTicker++;
 	}
 }

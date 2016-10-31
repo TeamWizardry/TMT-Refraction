@@ -3,7 +3,6 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.refraction.api.ISpamSoundProvider;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.common.tile.TileLightBridge;
 import com.teamwizardry.refraction.init.ModTab;
@@ -32,7 +31,7 @@ import java.util.List;
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockLightBridge extends BlockModContainer implements ISpamSoundProvider {
+public class BlockLightBridge extends BlockModContainer {
 
 	public static final PropertyEnum<EnumFacing.Axis> FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
 	public static final PropertyBool UP = PropertyBool.create("up");
@@ -238,8 +237,6 @@ public class BlockLightBridge extends BlockModContainer implements ISpamSoundPro
 				}
 			}
 
-			bridge.setShouldEmitSound(false);
-
 			IBlockState front = world.getBlockState(pos.offset(bridge.direction));
 			IBlockState back = world.getBlockState(pos.offset(bridge.direction.getOpposite()));
 			if (front.getBlock() == this)
@@ -247,8 +244,6 @@ public class BlockLightBridge extends BlockModContainer implements ISpamSoundPro
 			if (back.getBlock() == this)
 				world.setBlockState(pos.offset(bridge.direction.getOpposite()), Blocks.AIR.getDefaultState());
 		}
-
-		recalculateAllSurroundingSpammables(world, pos);
 
 		super.breakBlock(world, pos, state);
 	}

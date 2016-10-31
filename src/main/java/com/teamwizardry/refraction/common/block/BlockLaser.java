@@ -4,8 +4,6 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.refraction.api.ISpamSoundProvider;
-import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.tile.TileLaser;
@@ -17,6 +15,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -31,7 +30,7 @@ import java.util.List;
 /**
  * Created by LordSaad44
  */
-public class BlockLaser extends BlockModContainer implements ISpamSoundProvider {
+public class BlockLaser extends BlockModContainer {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
@@ -56,20 +55,17 @@ public class BlockLaser extends BlockModContainer implements ISpamSoundProvider 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (heldItem != null) {
+			if (heldItem.getItem() != Items.GLOWSTONE_DUST) return false;
 
 			TileLaser laser = getTE(worldIn, pos);
 			if (laser == null) return false;
 			ItemStack stack = heldItem.copy();
 			stack.stackSize = 1;
-			laser.inventory.insertItem(0, stack, false);
-			heldItem.stackSize--;
+			ItemStack left = laser.inventory.insertItem(0, stack, false);
+			if (left != null) heldItem.stackSize--;
+			laser.markDirty();
 		}
 		return true;
-	}
-
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		getTE(worldIn, pos).setShouldEmitSound(shouldEmitSound(worldIn, pos));
 	}
 
 	@Override
@@ -115,9 +111,6 @@ public class BlockLaser extends BlockModContainer implements ISpamSoundProvider 
 		TileEntity entity = world.getTileEntity(pos);
 		if (entity instanceof ILightSource)
 			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
-		if (entity instanceof ITileSpamSound)
-			((ITileSpamSound) entity).setShouldEmitSound(false);
-		recalculateAllSurroundingSpammables(world, pos);
 		super.breakBlock(world, pos, state);
 	}
 

@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.proxy;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.EasyConfigHandler;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.soundmanager.SoundManager;
 import com.teamwizardry.refraction.client.gui.GuiHandler;
 import com.teamwizardry.refraction.common.core.CatChaseHandler;
 import com.teamwizardry.refraction.common.core.DispenserScrewDriverBehavior;
@@ -33,6 +34,8 @@ public class CommonProxy {
 		ModEntities.init();
 		ModEffects.init();
 
+		SoundManager.INSTANCE.getClass();
+
 		EasyConfigHandler.init(Refraction.MOD_ID, event.getSuggestedConfigurationFile(), event.getAsmData());
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
@@ -46,6 +49,8 @@ public class CommonProxy {
 
 	public void postInit(FMLPostInitializationEvent event) {
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.SCREW_DRIVER, new DispenserScrewDriverBehavior());
+		SoundManager.INSTANCE.addSpeaker(ModBlocks.LASER, 40, ModSounds.electrical_hums, 0.1f, 1f, false);
+		SoundManager.INSTANCE.addSpeaker(ModBlocks.LIGHT_BRIDGE, 66, ModSounds.light_bridges, 0.5f, 1f, false);
 	}
 
 	public boolean isClient() {

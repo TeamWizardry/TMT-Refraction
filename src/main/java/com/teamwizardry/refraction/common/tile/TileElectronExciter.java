@@ -3,7 +3,6 @@ package com.teamwizardry.refraction.common.tile;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
@@ -19,15 +18,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by Saad on 8/16/2016.
  */
-public class TileElectronExciter extends TileMod implements IBeamHandler, ITileSpamSound, ITickable {
+public class TileElectronExciter extends TileMod implements IBeamHandler, ITickable {
 
 	@Save
 	public int reset = Constants.SOURCE_TIMER;
 	@Save
 	public BlockPos bridge = null;
 	public Beam[] beams = new Beam[]{};
-	@Save
-	private boolean emittingSound = false;
 
 	public TileElectronExciter() {
 	}
@@ -42,16 +39,6 @@ public class TileElectronExciter extends TileMod implements IBeamHandler, ITileS
 	public void handle(Beam... inputs) {
 		beams = inputs;
 		reset = Constants.SOURCE_TIMER;
-	}
-
-	@Override
-	public boolean isEmittingSound() {
-		return emittingSound;
-	}
-
-	@Override
-	public void setShouldEmitSound(boolean shouldEmitSound) {
-		emittingSound = shouldEmitSound;
 	}
 
 	public boolean hasAdjancetExciter() {

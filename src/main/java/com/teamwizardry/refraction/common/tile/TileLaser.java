@@ -5,22 +5,20 @@ import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
-import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.ITileSpamSound;
 import com.teamwizardry.refraction.api.PosUtils;
+import com.teamwizardry.refraction.api.soundmanager.IConditionalSoundEmitter;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.init.ModSounds;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -31,9 +29,8 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by LordSaad44
  */
-public class TileLaser extends TileMod implements ILightSource, ITickable, ITileSpamSound {
+public class TileLaser extends TileMod implements ILightSource, ITickable, IConditionalSoundEmitter {
 
-	@Save
 	public ItemStackHandler inventory = new ItemStackHandler(1) {
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
@@ -46,11 +43,24 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ITile
 			else return stack;
 		}
 	};
-	private int soundTicker = 0, tick = 0;
-	@Save
-	private boolean emittingSound = false;
+	private int tick = 0;
 
 	public TileLaser() {
+	}
+
+	@Override
+	public void readCustomNBT(NBTTagCompound compound) {
+		inventory.deserializeNBT(compound.getCompoundTag("inventory"));
+	}
+
+	@Override
+	public void writeCustomNBT(NBTTagCompound compound) {
+		compound.setTag("inventory", inventory.serializeNBT());
+	}
+
+	@Override
+	public boolean getUseFastSync() {
+		return false;
 	}
 
 	@Override
@@ -100,25 +110,11 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ITile
 			Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(facingVec);
 			glitter.setMotion(facingVec.scale(1.0 / 50.0));
 			ParticleSpawner.spawn(glitter, worldObj, new StaticInterp<>(center), 2);
-
-			if (emittingSound) {
-				if (soundTicker > 20 * 2) {
-					soundTicker = 0;
-
-					worldObj.playSound(null, pos.getX(), pos.getY(), pos.getZ(), ModSounds.electrical_hums.get(ThreadLocalRandom.current().nextInt(0, ModSounds.electrical_hums.size() - 1)), SoundCategory.BLOCKS, 0.1F, 1F);
-
-				} else soundTicker++;
-			}
 		}
 	}
 
 	@Override
-	public void setShouldEmitSound(boolean shouldEmitSound) {
-		this.emittingSound = shouldEmitSound;
-	}
-
-	@Override
-	public boolean isEmittingSound() {
-		return emittingSound;
+	public boolean shouldEmit() {
+		return inventory.getStackInSlot(0) != null && inventory.getStackInSlot(0).stackSize > 0;
 	}
 }

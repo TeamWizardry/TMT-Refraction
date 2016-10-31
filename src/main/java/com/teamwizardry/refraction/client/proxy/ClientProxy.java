@@ -28,6 +28,7 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
+
 		OBJLoader.INSTANCE.addDomain(Refraction.MOD_ID);
 		LaserRenderer.INSTANCE.getClass();
 		ScrewdriverOverlay.INSTANCE.getClass();
@@ -46,6 +47,7 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		super.postInit(event);
 		if (Minecraft.getMinecraft().getResourceManager() instanceof IReloadableResourceManager)
 			((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
+
 	}
 
 	@Override
