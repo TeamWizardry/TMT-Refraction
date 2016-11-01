@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.init.recipies;
+package com.teamwizardry.refraction.api;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
