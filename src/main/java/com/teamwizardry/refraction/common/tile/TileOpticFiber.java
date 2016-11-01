@@ -1,18 +1,20 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.refraction.common.block.BlockOpticFiber;
-import com.teamwizardry.refraction.common.block.BlockOpticFiber.EnumBiFacing;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
-import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.refraction.api.ICableHandler;
+import com.teamwizardry.refraction.common.block.BlockOpticFiber;
+import com.teamwizardry.refraction.common.block.BlockOpticFiber.EnumBiFacing;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.IBeamHandler;
+import com.teamwizardry.refraction.init.ModBlocks;
 
 /**
  * Created by Saad on 9/15/2016.
@@ -93,7 +95,7 @@ public class TileOpticFiber extends TileMod implements IBeamHandler
 					{
 						EnumFacing opposite = beamDir.getOpposite();
 						EnumFacing other = facing.getOther(opposite);
-						beam.createSimilarBeam(getSideCenter(pos, other), getFacingVector(other)).spawn();
+						spawnBeam(beam, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), other);
 						continue;
 					}
 				}
@@ -104,7 +106,7 @@ public class TileOpticFiber extends TileMod implements IBeamHandler
 				{
 					if (beamDir.getOpposite() == getCollisionSide(axis, beam))
 					{
-						beam.createSimilarBeam(getSideCenter(curPos, curFacing), getFacingVector(curFacing)).spawn();
+						spawnBeam(beam, new Vec3d(curPos.getX() + 0.5, curPos.getY() + 0.5, curPos.getZ() + 0.5), curFacing);
 						continue;
 					}
 				}
@@ -115,7 +117,7 @@ public class TileOpticFiber extends TileMod implements IBeamHandler
 				{
 					if (beamDir.getOpposite() == getCollisionSide(axis, beam))
 					{
-						beam.createSimilarBeam(getSideCenter(curPos, curFacing), getFacingVector(curFacing)).spawn();
+						spawnBeam(beam, new Vec3d(curPos.getX() + 0.5, curPos.getY() + 0.5, curPos.getZ() + 0.5), curFacing);
 						continue;
 					}
 				}
@@ -130,26 +132,6 @@ public class TileOpticFiber extends TileMod implements IBeamHandler
 		if (state.getBlock() != ModBlocks.OPTIC_FIBER)
 			return null;
 		return state.getValue(BlockOpticFiber.FACING);
-	}
-
-	private Vec3d getSideCenter(BlockPos pos, EnumFacing facing)
-	{
-		switch (facing)
-		{
-			case UP:
-				return new Vec3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
-			case DOWN:
-				return new Vec3d(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-			case NORTH:
-				return new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ());
-			case SOUTH:
-				return new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 1);
-			case EAST:
-				return new Vec3d(pos.getX() + 1, pos.getY() + 0.5, pos.getZ() + 0.5);
-			case WEST:
-				return new Vec3d(pos.getX(), pos.getY() + 0.5, pos.getZ() + 0.5);
-		}
-		return new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 	}
 
 	private Vec3d getFacingVector(EnumFacing facing)
@@ -200,5 +182,16 @@ public class TileOpticFiber extends TileMod implements IBeamHandler
 					return EnumFacing.SOUTH;
 		}
 		return null;
+	}
+
+	private void spawnBeam(Beam beam, Vec3d loc, EnumFacing dir)
+	{
+		TileEntity tile = worldObj.getTileEntity(new BlockPos(loc).offset(dir));
+		Beam newBeam = beam.createSimilarBeam(loc, getFacingVector(dir));
+		if (tile instanceof ICableHandler)
+		{
+			((ICableHandler) tile).handle(newBeam);
+		}
+		else newBeam.spawn();
 	}
 }

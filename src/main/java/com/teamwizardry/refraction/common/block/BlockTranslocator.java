@@ -1,22 +1,30 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.google.common.collect.Lists;
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.api.IOpticConnectable;
+import java.util.List;
+import javax.annotation.Nonnull;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import javax.annotation.Nonnull;
-import java.util.List;
+import com.google.common.collect.Lists;
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
+import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
+import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.refraction.api.IOpticConnectable;
+import com.teamwizardry.refraction.common.tile.TileTranslocator;
+import com.teamwizardry.refraction.init.ModTab;
 
 /**
  * @author WireSegal
@@ -30,12 +38,13 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
         super("translocator", Material.GLASS);
         setHardness(1F);
         setSoundType(SoundType.GLASS);
+        TileMod.registerTile(TileTranslocator.class, "translocator");
     }
 
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState iBlockState) {
-        return null;
+        return new TileTranslocator();
     }
 
     @Nonnull
@@ -67,5 +76,29 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
     @Override
     public boolean isOpaqueCube(IBlockState blockState) {
         return false;
+    }
+    
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced)
+    {
+    	TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
+    }
+    
+    @Override
+    public boolean canRenderInLayer(BlockRenderLayer layer)
+    {
+    	return layer == BlockRenderLayer.CUTOUT;
+    }
+    
+    @Override
+    public ModCreativeTab getCreativeTab()
+    {
+    	return ModTab.INSTANCE;
+    }
+
+    @Override
+    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+    	return getDefaultState().withProperty(DIRECTION, facing);
     }
 }
