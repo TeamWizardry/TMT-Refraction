@@ -47,7 +47,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 
 	@Nonnull
 	@Override
-	public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos, EnumFacing facing) {
 		return Lists.newArrayList(EnumFacing.VALUES);
 	}
 

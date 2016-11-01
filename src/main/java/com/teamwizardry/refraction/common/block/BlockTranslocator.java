@@ -1,7 +1,13 @@
 package com.teamwizardry.refraction.common.block;
 
-import java.util.List;
-import javax.annotation.Nonnull;
+import com.google.common.collect.Lists;
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
+import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
+import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.refraction.api.IOpticConnectable;
+import com.teamwizardry.refraction.common.tile.TileTranslocator;
+import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -17,14 +23,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import com.google.common.collect.Lists;
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.refraction.api.IOpticConnectable;
-import com.teamwizardry.refraction.common.tile.TileTranslocator;
-import com.teamwizardry.refraction.init.ModTab;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * @author WireSegal
@@ -49,7 +50,8 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
 
     @Nonnull
     @Override
-    public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos, EnumFacing facing) {
+        if (facing != state.getValue(DIRECTION)) return Lists.newArrayList();
         return Lists.newArrayList(state.getValue(DIRECTION).getOpposite());
     }
 
@@ -99,6 +101,6 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
     @Override
     public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-    	return getDefaultState().withProperty(DIRECTION, facing);
+    	return getDefaultState().withProperty(DIRECTION, facing.getOpposite());
     }
 }

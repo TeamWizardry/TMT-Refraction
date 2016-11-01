@@ -85,10 +85,40 @@ public class BlockOpticFiber extends BlockModContainer implements IOpticConnecta
         return AABBS[state.getValue(FACING).ordinal()];
     }
 
+
 	@Nonnull
 	@Override
-	public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return Lists.newArrayList(state.getValue(FACING).primary, state.getValue(FACING).secondary);
+	public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos, EnumFacing original) {
+		EnumBiFacing facings = state.getValue(FACING);
+		List<EnumFacing> ret = Lists.newArrayList();
+
+		EnumFacing facing = facings.primary;
+		IBlockState offsetState = source.getBlockState(pos.offset(facing));
+		if (offsetState.getBlock() instanceof BlockOpticFiber) {
+			EnumBiFacing offsetFacings = offsetState.getValue(FACING);
+			if (!offsetFacings.contains(facing.getOpposite()))
+				ret.add(facing);
+		} else if (offsetState.getBlock() instanceof IOpticConnectable) {
+			List<EnumFacing> offsetFacings = ((IOpticConnectable) offsetState.getBlock()).getAvailableFacings(offsetState, source, pos.offset(facing), facing);
+			if (!offsetFacings.contains(facing.getOpposite()))
+				ret.add(facing);
+		} else
+			ret.add(facing);
+
+		facing = facings.secondary;
+		offsetState = source.getBlockState(pos.offset(facing));
+		if (offsetState.getBlock() instanceof BlockOpticFiber) {
+			EnumBiFacing offsetFacings = offsetState.getValue(FACING);
+			if (!offsetFacings.contains(facing.getOpposite()))
+				ret.add(facing);
+		} else if (offsetState.getBlock() instanceof IOpticConnectable) {
+			List<EnumFacing> offsetFacings = ((IOpticConnectable) offsetState.getBlock()).getAvailableFacings(offsetState, source, pos.offset(facing), facing);
+			if (!offsetFacings.contains(facing.getOpposite()))
+				ret.add(facing);
+		} else
+			ret.add(facing);
+
+		return ret;
 	}
 
 	@NotNull
@@ -175,18 +205,12 @@ public class BlockOpticFiber extends BlockModContainer implements IOpticConnecta
     private EnumFacing getConnectible(IBlockAccess world, BlockPos pos, EnumFacing facing) {
         IBlockState state = world.getBlockState(pos.offset(facing));
         if (state.getBlock() instanceof IOpticConnectable) {
-        	List<EnumFacing> facings = ((IOpticConnectable) state.getBlock()).getAvailableFacings(state, world, pos);
+        	List<EnumFacing> facings = ((IOpticConnectable) state.getBlock()).getAvailableFacings(state, world, pos.offset(facing), facing);
             if (facings.contains(facing.getOpposite()))
                 return facing.getOpposite();
 
             for (EnumFacing cross : EnumFacing.VALUES) if (cross != facing.getOpposite() && facings.contains(cross)) {
-                IBlockState offsetState = world.getBlockState(pos.offset(facing).offset(cross));
-                if (offsetState.getBlock() instanceof IOpticConnectable) {
-					List<EnumFacing> offsetFacings = ((IOpticConnectable) offsetState.getBlock()).getAvailableFacings(offsetState, world, pos);
-					if (offsetFacings.contains(cross.getOpposite()))
-						continue;
-				}
-				return cross;
+                return cross;
             }
         }
         return null;

@@ -1,14 +1,12 @@
 package com.teamwizardry.refraction.api;
 
-import java.util.List;
-import javax.annotation.Nonnull;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * @author WireSegal
@@ -18,5 +16,5 @@ import com.teamwizardry.refraction.common.light.IBeamHandler;
  */
 public interface IOpticConnectable {
     @Nonnull
-    List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos);
+    List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos, EnumFacing facing);
 }
