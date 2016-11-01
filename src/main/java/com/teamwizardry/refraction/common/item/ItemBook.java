@@ -26,11 +26,13 @@ public class ItemBook extends ItemMod {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		playerIn.addChatComponentMessage(new TextComponentString("Guide is still WIP, use this link for now:"));
-		ITextComponent url = new TextComponentString("https://goo.gl/0alA00");
-		url.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://goo.gl/0alA00")).setColor(TextFormatting.BLUE).setUnderlined(true);
-		playerIn.addChatComponentMessage(url);
-		return new ActionResult(EnumActionResult.PASS, itemStackIn);
+		if (worldIn.isRemote) {
+			playerIn.addChatComponentMessage(new TextComponentString("Guide is still WIP, use this link for now:"));
+			ITextComponent url = new TextComponentString("https://goo.gl/0alA00");
+			url.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://goo.gl/0alA00")).setColor(TextFormatting.BLUE).setUnderlined(true);
+			playerIn.addChatComponentMessage(url);
+		}
+		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 	}
 
 	@Nullable

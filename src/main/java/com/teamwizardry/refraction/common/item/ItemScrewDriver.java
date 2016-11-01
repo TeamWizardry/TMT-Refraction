@@ -2,17 +2,26 @@ package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
+import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
+import com.teamwizardry.librarianlib.common.util.MethodHandleHelper;
 import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.init.ModTab;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function2;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -21,10 +30,13 @@ import org.jetbrains.annotations.Nullable;
 public class ItemScrewDriver extends ItemMod {
 
 	public static final String MODE_TAG = "mode";
-	protected static final float[] multipliers = { // out of order so it defaults to 5
-			5, 22.5f, 45, 90,
-			1f / 8f, 1f / 4f, 1f / 2f, 1
+	protected static final float[] multipliers = {
+			0.125f, 0.25f, 0.5f, 1,
+			5,      22.5f, 45,   90
 	};
+	protected static final int DEFAULT_MULTIPLIER = 4;
+
+	private static Function2<GuiIngame, Object, Unit> remainingHighlightTicksSetter = MethodHandleHelper.wrapperForSetter(GuiIngame.class, "q", "field_92017_k", "remainingHighlightTicks");
 
 	public ItemScrewDriver() {
 		super("screw_driver");
@@ -37,24 +49,41 @@ public class ItemScrewDriver extends ItemMod {
 
 		if (block instanceof IPrecision) {
 			((IPrecision) block).adjust(worldIn, pos, stack, playerIn.isSneaking(), facing);
+			return EnumActionResult.SUCCESS;
 		} else {
-			if (stack.getTagCompound() == null) stack.setTagCompound(new NBTTagCompound());
-			int i = stack.getTagCompound().getInteger(MODE_TAG);
-			i = (i + (playerIn.isSneaking() ? -1 : 1));
-			while (i < 0) i += multipliers.length;
-			i = i % multipliers.length;
-			stack.getTagCompound().setInteger(MODE_TAG, i);
-		}
+			int i = getRotationIndex(stack);
+			if (playerIn.isSneaking()) i--;
+			else i++;
 
-		return EnumActionResult.FAIL;
+			ItemNBTHelper.setInt(stack, MODE_TAG, MathHelper.clamp_int(i, 0, multipliers.length - 1));
+			if (playerIn.worldObj.isRemote)
+				displayItemName(30);
+			return EnumActionResult.SUCCESS;
+		}
+	}
+
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		int i = getRotationIndex(stack);
+		if (playerIn.isSneaking()) i--;
+		else i++;
+
+		ItemNBTHelper.setInt(stack, MODE_TAG, MathHelper.clamp_int(i, 0, multipliers.length - 1));
+		if (playerIn.worldObj.isRemote)
+			displayItemName(30);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+	}
+
+	@SideOnly(Side.CLIENT)
+	private void displayItemName(int ticks) {
+		GuiIngame gui = Minecraft.getMinecraft().ingameGUI;
+		remainingHighlightTicksSetter.invoke(gui, ticks);
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		int i = 0;
-		if (stack.getTagCompound() != null)
-			i = stack.getTagCompound().getInteger(MODE_TAG);
-		return super.getUnlocalizedName(stack) + "." + (i % multipliers.length);
+		int i = getRotationIndex(stack);
+		return super.getUnlocalizedName(stack) + "." + i;
 	}
 
 	public float getRotationMultiplier(ItemStack stack) {
@@ -62,12 +91,8 @@ public class ItemScrewDriver extends ItemMod {
 	}
 
 	public int getRotationIndex(ItemStack stack) {
-		int i = 0;
-		if (stack.getTagCompound() != null)
-			i = stack.getTagCompound().getInteger(MODE_TAG);
-		while (i < 0)
-			i += multipliers.length;
-		return i % multipliers.length;
+		int i = ItemNBTHelper.getInt(stack, MODE_TAG, DEFAULT_MULTIPLIER);
+		return MathHelper.clamp_int(i, 0, multipliers.length - 1);
 	}
 
 	@Nullable
