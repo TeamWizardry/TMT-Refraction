@@ -1,6 +1,5 @@
 {
 "__comment": "Designed by Wiresegal with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
-"parent": "block/block",
 "textures": {
     "particle": "refraction:blocks/translocator_portal",
     "translocator_portal": "refraction:blocks/translocator_portal",
@@ -224,5 +223,47 @@
         "east":  { "uv": [ 5, 10, 7, 16 ], "texture": "#optic_fiber_strip" }
     }
 }
-]
+],
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [ 10, 180, 0 ],
+            "translation": [ 0, 1.7, -0.5 ],
+            "scale": [ 0.37, 0.37, 0.37 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 10, 180, 0 ],
+            "translation": [ 0, 1.7, -0.5 ],
+            "scale": [ 0.37, 0.37, 0.37 ]
+        },
+        "head": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, -10 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 2, 1 ],
+            "scale": [ 0.37, 0.37, 0.37 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, -7.75 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, -3.97 ],
+            "scale": [ 0.56, 0.56, 0.56 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, -3.97 ],
+            "scale": [ 0.56, 0.56, 0.56 ]
+        },
+        "gui": {
+            "rotation": [ 27, 45, 0 ],
+            "translation": [ 2.46, -1.32, 0 ],
+            "scale": [ 0.75, 0.75, 0.75 ]
+        }
+    }
 }

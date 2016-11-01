@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.init.recipies;
 
+import com.teamwizardry.refraction.api.AssemblyRecipe;
 import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.init.Blocks;
@@ -30,6 +31,6 @@ public class AssemblyRecipies {
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.OPTIC_FIBER, 4), new Color(0xA60000FF, true), new Color(0xCCFF0080, true), new ItemStack(ModBlocks.LENS, 3), new ItemStack(ModItems.REFLECTIVE_ALLOY, 3), new ItemStack(Items.DIAMOND)));
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.SPECTROMETER), new Color(0x59FFFFFF, true), new Color(0xB3FFFFFF, true), new ItemStack(ModBlocks.LENS, 6), new ItemStack(ModItems.REFLECTIVE_ALLOY, 6), new ItemStack(Items.DIAMOND, 2), new ItemStack(Items.DYE, 2, 4), new ItemStack(Items.DYE, 2, 10), new ItemStack(Items.DYE, 2, 1)));
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.SENSOR), new Color(0x40FF3200, true), new Color(0xB3FF0032, true), new ItemStack(ModBlocks.LENS, 6), new ItemStack(Items.REDSTONE, 3), new ItemStack(Items.DIAMOND, 1)));
-		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.TRANSLOCATOR, 4), new Color(0xA60000FF, true), new Color(0xCCFF0080, true), new ItemStack(ModBlocks.OPTIC_FIBER, 4), new ItemStack(Items.ENDER_PEARL)));
+		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.TRANSLOCATOR, 4), new Color(0xA60000FF, true), new Color(0xCCFF0080, true), new ItemStack(ModBlocks.OPTIC_FIBER, 4), new ItemStack(Items.ENDER_PEARL), new ItemStack(Items.IRON_INGOT)));
 	}
 }

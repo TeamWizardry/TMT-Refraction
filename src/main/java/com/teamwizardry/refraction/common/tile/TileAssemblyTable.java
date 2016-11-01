@@ -11,7 +11,7 @@ import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
-import com.teamwizardry.refraction.init.recipies.AssemblyRecipe;
+import com.teamwizardry.refraction.api.AssemblyRecipe;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;

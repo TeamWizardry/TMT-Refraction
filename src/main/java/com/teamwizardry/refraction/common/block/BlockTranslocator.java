@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -34,6 +35,13 @@ import java.util.List;
 public class BlockTranslocator extends BlockModContainer implements IOpticConnectable {
 
     public static final PropertyDirection DIRECTION = PropertyDirection.create("side");
+
+    private static final AxisAlignedBB DOWN_AABB  = new AxisAlignedBB(1 / 16.0, 0, 1 / 16.0, 15 / 16.0, 10 / 16.0, 15 / 16.0);
+    private static final AxisAlignedBB UP_AABB    = new AxisAlignedBB(1 / 16.0, 6  / 16.0, 1 / 16.0, 15 / 16.0, 1, 15 / 16.0);
+    private static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(1 / 16.0, 1 / 16.0, 0, 15 / 16.0, 15 / 16.0, 10 / 16.0);
+    private static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(1 / 16.0, 1 / 16.0, 6  / 16.0, 15 / 16.0, 15 / 16.0, 1);
+    private static final AxisAlignedBB WEST_AABB  = new AxisAlignedBB(0, 1 / 16.0, 1 / 16.0, 10 / 16.0, 15 / 16.0, 15 / 16.0);
+    private static final AxisAlignedBB EAST_AABB  = new AxisAlignedBB(6  / 16.0, 1 / 16.0, 1 / 16.0, 1, 15 / 16.0, 15 / 16.0);
 
     public BlockTranslocator() {
         super("translocator", Material.GLASS);
@@ -63,6 +71,26 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(DIRECTION, EnumFacing.VALUES[meta % EnumFacing.VALUES.length]);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        switch (state.getValue(DIRECTION)) {
+            case DOWN:
+                return DOWN_AABB;
+            case UP:
+                return UP_AABB;
+            case NORTH:
+                return NORTH_AABB;
+            case SOUTH:
+                return SOUTH_AABB;
+            case WEST:
+                return WEST_AABB;
+            case EAST:
+                return EAST_AABB;
+            default:
+                return NULL_AABB;
+        }
     }
 
     @Override

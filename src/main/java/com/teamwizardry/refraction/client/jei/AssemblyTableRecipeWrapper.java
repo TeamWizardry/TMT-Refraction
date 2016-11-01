@@ -6,7 +6,7 @@ import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.init.recipies.AssemblyRecipe;
+import com.teamwizardry.refraction.api.AssemblyRecipe;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

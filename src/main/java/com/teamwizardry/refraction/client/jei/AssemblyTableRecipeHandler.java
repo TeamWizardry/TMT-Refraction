@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client.jei;
 
-import com.teamwizardry.refraction.init.recipies.AssemblyRecipe;
+import com.teamwizardry.refraction.api.AssemblyRecipe;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
