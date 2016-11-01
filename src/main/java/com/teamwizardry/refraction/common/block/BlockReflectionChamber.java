@@ -1,9 +1,11 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.client.render.RenderReflectionChamber;
 import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
 import com.teamwizardry.refraction.init.ModTab;
@@ -14,18 +16,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
  * Created by LordSaad44
  */
-public class BlockReflectionChamber extends BlockModContainer {
+public class BlockReflectionChamber extends BlockModContainer implements IOpticConnectable {
 
 	public BlockReflectionChamber() {
 		super("reflection_chamber", Material.IRON);
@@ -37,6 +43,12 @@ public class BlockReflectionChamber extends BlockModContainer {
 	@SideOnly(Side.CLIENT)
 	public void initModel() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileReflectionChamber.class, new RenderReflectionChamber());
+	}
+
+	@Nonnull
+	@Override
+	public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return Lists.newArrayList(EnumFacing.VALUES);
 	}
 
 	@Override

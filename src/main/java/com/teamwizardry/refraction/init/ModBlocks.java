@@ -23,6 +23,7 @@ public class ModBlocks {
 	public static BlockOpticFiber OPTIC_FIBER;
 	public static BlockCreativeLaser CREATIVE_LASER;
 	public static BlockReflectiveAlloyBlock REFLECTIVE_ALLOY_BLOCK;
+	public static BlockTranslocator TRANSLOCATOR;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -41,6 +42,7 @@ public class ModBlocks {
 		OPTIC_FIBER = new BlockOpticFiber();
 		CREATIVE_LASER = new BlockCreativeLaser();
 		REFLECTIVE_ALLOY_BLOCK = new BlockReflectiveAlloyBlock();
+		TRANSLOCATOR = new BlockTranslocator();
 	}
 
 	public static void initModels() {

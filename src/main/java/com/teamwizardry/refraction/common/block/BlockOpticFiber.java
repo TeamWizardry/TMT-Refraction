@@ -1,9 +1,11 @@
 package com.teamwizardry.refraction.common.block;
 
+import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.common.tile.TileOpticFiber;
 import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
@@ -26,6 +28,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,7 +37,7 @@ import static net.minecraft.util.EnumFacing.*;
 /**
  * Created by Saad on 9/15/2016.
  */
-public class BlockOpticFiber extends BlockModContainer {
+public class BlockOpticFiber extends BlockModContainer implements IOpticConnectable {
 
 	public static final PropertyEnum<EnumBiFacing> FACING = PropertyEnum.create("facings", EnumBiFacing.class);
 	private static final AxisAlignedBB[] AABBS = new AxisAlignedBB[] {
@@ -82,7 +85,13 @@ public class BlockOpticFiber extends BlockModContainer {
         return AABBS[state.getValue(FACING).ordinal()];
     }
 
-    @NotNull
+	@Nonnull
+	@Override
+	public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return Lists.newArrayList(state.getValue(FACING).primary, state.getValue(FACING).secondary);
+	}
+
+	@NotNull
     @Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 	    int largestPriority = 0;
@@ -165,14 +174,19 @@ public class BlockOpticFiber extends BlockModContainer {
 
     private EnumFacing getConnectible(IBlockAccess world, BlockPos pos, EnumFacing facing) {
         IBlockState state = world.getBlockState(pos.offset(facing));
-        if (state.getBlock() instanceof BlockOpticFiber) {
-            if (state.getValue(FACING).contains(facing.getOpposite()))
+        if (state.getBlock() instanceof IOpticConnectable) {
+        	List<EnumFacing> facings = ((IOpticConnectable) state.getBlock()).getAvailableFacings(state, world, pos);
+            if (facings.contains(facing.getOpposite()))
                 return facing.getOpposite();
 
-            for (EnumFacing cross : EnumFacing.VALUES) if (cross != facing.getOpposite() && state.getValue(FACING).contains(cross)) {
+            for (EnumFacing cross : EnumFacing.VALUES) if (cross != facing.getOpposite() && facings.contains(cross)) {
                 IBlockState offsetState = world.getBlockState(pos.offset(facing).offset(cross));
-                if (!(offsetState.getBlock() instanceof BlockOpticFiber && offsetState.getValue(FACING).contains(cross.getOpposite())))
-                    return cross;
+                if (offsetState.getBlock() instanceof IOpticConnectable) {
+					List<EnumFacing> offsetFacings = ((IOpticConnectable) offsetState.getBlock()).getAvailableFacings(offsetState, world, pos);
+					if (offsetFacings.contains(cross.getOpposite()))
+						continue;
+				}
+				return cross;
             }
         }
         return null;

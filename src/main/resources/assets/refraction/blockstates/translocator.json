@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "side=up":    { "model": "refraction:translocator", "x": -90 },
+    "side=down":  { "model": "refraction:translocator", "x": 90 },
+    "side=east":  { "model": "refraction:translocator", "y": -90 },
+    "side=west":  { "model": "refraction:translocator", "y": 90 },
+    "side=south": { "model": "refraction:translocator", "y": 180 },
+    "side=north": { "model": "refraction:translocator" }
+  }
+}
