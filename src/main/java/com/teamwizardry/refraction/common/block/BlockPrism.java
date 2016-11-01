@@ -164,9 +164,9 @@ public class BlockPrism extends BlockModContainer implements ILaserTrace {
 //		matrixB.translate(new Vec3d(-0.5, -0.5, -0.5));
 
 		Vec3d
-				a = new Vec3d(0, 0, 0),
+				a = new Vec3d(1.0e-3, 0, 0), // This needs to be offset
 				b = new Vec3d(1, 0, 0.5),
-				c = new Vec3d(0, 0, 1),
+				c = new Vec3d(1.0e-3, 0, 1), // and this too. Just so that blue refracts in ALL cases
 				A = a.addVector(0, 1, 0),
 				B = b.addVector(0, 1, 0),
 				C = c.addVector(0, 1, 0);
