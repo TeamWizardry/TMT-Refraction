@@ -14,8 +14,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by LordSaad.
@@ -24,43 +22,43 @@ public class SoundManager {
 
 	public static SoundManager INSTANCE = new SoundManager();
 	public static int soundRange = 8;
-	public Set<Speaker> speakers = new HashSet<>();
-	public HashMap<BlockPos, SpeakerNode> speakerNodes = new HashMap<>();
+
+
 
 	private SoundManager() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	public void addSpeakerNode(Speaker speaker, World world, BlockPos pos) {
-		if (speakerNodes.isEmpty()) {
-			speakerNodes.put(pos, new SpeakerNode(speaker, pos, world));
+		if (WorldSavedDataSound.getSpeakerNodes().isEmpty()) {
+			WorldSavedDataSound.putInSpeakerNodes(pos, new SpeakerNode(speaker, pos, world));
 			return;
 		}
 		IBlockState state = world.getBlockState(pos);
 		if (speaker.block.hasTileEntity(state))
 			if (world.getTileEntity(pos) instanceof IConditionalSoundEmitter) {
-				speakerNodes.put(pos, new SpeakerNode(speaker, pos, world));
+				WorldSavedDataSound.putInSpeakerNodes(pos, new SpeakerNode(speaker, pos, world));
 				return;
 			}
 
-		for (BlockPos nodePos : speakerNodes.keySet()) {
-			SpeakerNode node = speakerNodes.get(nodePos);
+		for (BlockPos nodePos : WorldSavedDataSound.getSpeakerNodes().keySet()) {
+			SpeakerNode node = WorldSavedDataSound.getSpeakerNodes().get(nodePos);
 			if (node.world.provider.getDimension() == world.provider.getDimension())
 				if (node.pos.compareTo(pos) <= 20) continue;
-			speakerNodes.put(pos, new SpeakerNode(speaker, pos, world));
+			WorldSavedDataSound.putInSpeakerNodes(pos, new SpeakerNode(speaker, pos, world));
 			break;
 		}
 	}
 
 	public void addSpeaker(Block block, int interval, ArrayList<SoundEvent> sounds, float volume, float pitch, boolean loopOnce) {
-		for (Speaker speaker : speakers) if (speaker.block == block) return;
-		speakers.add(new Speaker(block, interval, sounds, volume, pitch, loopOnce));
+		for (Speaker speaker : WorldSavedDataSound.getSpeakers()) if (speaker.block == block) return;
+		WorldSavedDataSound.addToSpeakers(new Speaker(block, interval, sounds, volume, pitch, loopOnce));
 	}
 
 	@SubscribeEvent
 	public void tick(TickEvent.ClientTickEvent event) {
 		HashMap<BlockPos, SpeakerNode> tempNodes = new HashMap<>();
-		tempNodes.putAll(speakerNodes);
+		tempNodes.putAll(WorldSavedDataSound.getSpeakerNodes());
 		tempNodes.keySet().removeIf(nodePos -> {
 			SpeakerNode node = tempNodes.get(nodePos);
 			IBlockState state = node.world.getBlockState(node.pos);
@@ -101,8 +99,8 @@ public class SoundManager {
 				return true;
 			}
 		});
-		speakerNodes.clear();
-		speakerNodes.putAll(tempNodes);
+		WorldSavedDataSound.getSpeakerNodes().clear();
+		WorldSavedDataSound.getSpeakerNodes().putAll(tempNodes);
 	}
 
 	public BlockPos searchForAnotherBlock(Block block, BlockPos pos, World world) {
@@ -131,8 +129,8 @@ public class SoundManager {
 		final Speaker[] nodeSpeaker = new Speaker[1];
 		final World[] nodeWorld = new World[1];
 		final BlockPos[] nodePos = new BlockPos[1];
-		speakerNodes.keySet().removeIf(nodePos1 -> {
-			SpeakerNode node = speakerNodes.get(nodePos1);
+		WorldSavedDataSound.getSpeakerNodes().keySet().removeIf(nodePos1 -> {
+			SpeakerNode node = WorldSavedDataSound.getSpeakerNodes().get(nodePos1);
 			if (node.world.provider.getDimension() != event.getWorld().provider.getDimension()) return false;
 			if (node.pos.compareTo(event.getPos()) == 0) {
 				BlockPos pos = searchForAnotherBlock(node.speaker.block, node.pos, node.world);
@@ -151,7 +149,7 @@ public class SoundManager {
 
 	@SubscribeEvent
 	public void place(BlockEvent.PlaceEvent event) {
-		for (Speaker speaker : speakers)
+		for (Speaker speaker : WorldSavedDataSound.getSpeakers())
 			if (speaker.block == event.getPlacedBlock().getBlock()) {
 				addSpeakerNode(speaker, event.getWorld(), event.getPos());
 				return;
