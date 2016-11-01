@@ -141,4 +141,9 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
     {
     	return getDefaultState().withProperty(DIRECTION, facing.getOpposite());
     }
+
+    @Override
+    public int damageDropped(IBlockState state) {
+        return 0;
+    }
 }
