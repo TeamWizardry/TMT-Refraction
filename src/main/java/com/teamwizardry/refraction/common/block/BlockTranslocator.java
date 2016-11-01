@@ -10,6 +10,7 @@ import com.teamwizardry.refraction.common.tile.TileTranslocator;
 import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -35,6 +36,7 @@ import java.util.List;
 public class BlockTranslocator extends BlockModContainer implements IOpticConnectable {
 
     public static final PropertyDirection DIRECTION = PropertyDirection.create("side");
+    public static final PropertyBool CONNECTED = PropertyBool.create("connected");
 
     private static final AxisAlignedBB DOWN_AABB  = new AxisAlignedBB(1 / 16.0, 0, 1 / 16.0, 15 / 16.0, 10 / 16.0, 15 / 16.0);
     private static final AxisAlignedBB UP_AABB    = new AxisAlignedBB(1 / 16.0, 6  / 16.0, 1 / 16.0, 15 / 16.0, 1, 15 / 16.0);
@@ -65,7 +67,15 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, DIRECTION);
+        return new BlockStateContainer(this, DIRECTION, CONNECTED);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        IBlockState fiber = worldIn.getBlockState(pos.offset(state.getValue(DIRECTION).getOpposite()));
+        return state.withProperty(CONNECTED,
+                fiber.getBlock() instanceof BlockOpticFiber &&
+                fiber.getValue(BlockOpticFiber.FACING).contains(state.getValue(DIRECTION)));
     }
 
     @Override
