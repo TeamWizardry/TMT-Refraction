@@ -143,6 +143,7 @@ public class SoundManager {
 			}
 			return false;
 		});
+		WorldSavedDataSound.markDirty();
 		if (nodeSpeaker[0] != null && nodeWorld[0] != null && nodePos[0] != null)
 			addSpeakerNode(nodeSpeaker[0], nodeWorld[0], nodePos[0]);
 	}
