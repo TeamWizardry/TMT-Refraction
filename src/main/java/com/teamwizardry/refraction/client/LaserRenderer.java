@@ -37,7 +37,12 @@ public class LaserRenderer {
 	public void unload(WorldEvent.Unload event) {
 		lasers.clear();
 	}
-	
+
+	@SubscribeEvent
+	public void load(WorldEvent.Load event) {
+		lasers.clear();
+	}
+
 	@SubscribeEvent
 	public void renderWorldLast(RenderWorldLastEvent event) {
 		GlStateManager.pushMatrix();
