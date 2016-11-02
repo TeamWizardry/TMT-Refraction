@@ -45,14 +45,14 @@ simple_name.refraction:optic_fiber=&7Optic Fiber
 simple_name.refraction:translocator=&7Beam Translocator
 simple_name.refraction:reflective_alloy_block=&7Reflective Alloy Block
 
-gui.screw_driver.angle.0=5°
-gui.screw_driver.angle.1=22.5°
-gui.screw_driver.angle.2=45°
-gui.screw_driver.angle.3=90°
-gui.screw_driver.angle.4=1/8°
-gui.screw_driver.angle.5=1/4°
-gui.screw_driver.angle.6=1/2°
-gui.screw_driver.angle.7=1°
+gui.screw_driver.angle.0=1/8°
+gui.screw_driver.angle.1=1/4°
+gui.screw_driver.angle.2=1/2°
+gui.screw_driver.angle.3=1°
+gui.screw_driver.angle.4=5°
+gui.screw_driver.angle.5=22 1/2°
+gui.screw_driver.angle.6=45°
+gui.screw_driver.angle.7=90°
 
 itemGroup.refraction=Refraction
 refraction.jei.assembly_table=Assembly Table
