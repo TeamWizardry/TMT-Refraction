@@ -20,6 +20,7 @@ import java.util.Set;
 /**
  * Created by LordSaad.
  */
+// TODO: Find an event or other way of detecting when a block is placed or broken regardless if it's the player who did it
 public class SoundManager {
 
 	public static SoundManager INSTANCE = new SoundManager();
@@ -62,7 +63,6 @@ public class SoundManager {
 
 	@SubscribeEvent
 	public void tick(TickEvent.ClientTickEvent event) {
-		//	Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new TextComponentString(speakerNodes  + ""));
 		HashMap<BlockPos, SpeakerNode> tempNodes = new HashMap<>();
 		tempNodes.putAll(speakerNodes);
 		tempNodes.keySet().removeIf(nodePos -> {
