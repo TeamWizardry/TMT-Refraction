@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.*;
 
 public class ReflectionTracker {
+
 	private static final TickTracker INSTANCE = new TickTracker();
 
 	private static WeakHashMap<World, ReflectionTracker> instances = new WeakHashMap<>();
@@ -40,8 +41,13 @@ public class ReflectionTracker {
 	}
 
 	@SubscribeEvent
-	public void unload(WorldEvent.Unload event) {
+	public void onWorldUnload(WorldEvent.Unload event) {
 		instances.remove(event.getWorld());
+	}
+
+	@SubscribeEvent
+	public void onWorldLoad(WorldEvent.Load event) {
+		addInstance(event.getWorld());
 	}
 
 	@SubscribeEvent

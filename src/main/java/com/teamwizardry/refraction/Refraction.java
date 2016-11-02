@@ -1,17 +1,13 @@
 package com.teamwizardry.refraction;
 
 import com.teamwizardry.refraction.api.soundmanager.WorldSavedDataSound;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(
 		modid = Refraction.MOD_ID,
@@ -36,7 +32,6 @@ public class Refraction {
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		proxy.preInit(event);
-		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Mod.EventHandler
@@ -52,10 +47,5 @@ public class Refraction {
 	@Mod.EventHandler
 	public void serverstart(FMLServerStartingEvent event) {
 		WorldSavedDataSound.getSaveData();
-	}
-
-	@SubscribeEvent
-	public void onWorldLoad(WorldEvent.Load event) {
-		ReflectionTracker.addInstance(event.getWorld());
 	}
 }
