@@ -65,14 +65,19 @@ public class LaserRenderer {
 
 		GlStateManager.popMatrix();
 		GlStateManager.popAttrib();
-
-		lasers.entrySet().removeIf((e) -> e.getValue() <= 0);
 	}
 	
 	@SubscribeEvent
 	public void tick(TickEvent.ClientTickEvent event) {
-		if(event.phase == TickEvent.Phase.START)
-			lasers.entrySet().forEach((e) -> e.setValue(e.getValue() - 1));
+		if (event.phase == TickEvent.Phase.START) {
+			lasers.entrySet().removeIf((e) -> {
+				if (e.getValue() <= 0) return true;
+				else {
+					e.setValue(e.getValue() - 1);
+					return false;
+				}
+			});
+		}
 	}
 
 	public static class LaserRenderInfo {
