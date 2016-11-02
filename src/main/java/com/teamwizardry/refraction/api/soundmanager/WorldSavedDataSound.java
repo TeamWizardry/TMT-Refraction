@@ -9,90 +9,71 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.Map;
 
 public final class WorldSavedDataSound {
-    private static final String SOUND = "refraction-sound";
+	private static final String SOUND = "refraction-sound";
 
-    public static void putInSpeakerNodes(BlockPos uuid, SpeakerNode animus) {
-        getSaveData().speakerNodes.put(uuid, animus);
-        markDirty();
-    }
+	public static void markDirty() {
+		getSaveData().markDirty();
+	}
 
-    public static HashMap<BlockPos, SpeakerNode> getSpeakerNodes() {
-        return getSaveData().speakerNodes;
-    }
+	@Nonnull
+	public static SoundSavedData getSaveData() {
+		World world = DimensionManager.getWorld(0);
+		if (world == null || world.getMapStorage() == null)
+			return new SoundSavedData();
 
-    public static void addToSpeakers(Speaker speaker) {
-        getSaveData().speakers.add(speaker);
-        markDirty();
-    }
+		SoundSavedData saveData = (SoundSavedData) world.getMapStorage().getOrLoadData(SoundSavedData.class, SOUND);
 
-    public static Set<Speaker> getSpeakers() {
-        return getSaveData().speakers;
-    }
+		if (saveData == null) {
+			saveData = new SoundSavedData();
+			world.getMapStorage().setData(SOUND, saveData);
+		}
 
-    public static void markDirty() {
-        getSaveData().markDirty();
-    }
+		return saveData;
+	}
 
-    @Nonnull
-    private static SoundSavedData getSaveData() {
-        World world = DimensionManager.getWorld(0);
-        if (world == null || world.getMapStorage() == null)
-            return new SoundSavedData();
+	public static class SoundSavedData extends WorldSavedData {
 
-        SoundSavedData saveData = (SoundSavedData) world.getMapStorage().getOrLoadData(SoundSavedData.class, SOUND);
+		public SoundSavedData(String id) {
+			super(id);
+		}
 
-        if (saveData == null) {
-            saveData = new SoundSavedData();
-            world.getMapStorage().setData(SOUND, saveData);
-        }
+		public SoundSavedData() {
+			super(SOUND);
+		}
 
-        return saveData;
-    }
+		@Override
+		@Nonnull
+		public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound compound) {
+			NBTTagCompound speakerNodesTag = new NBTTagCompound();
+			for (Map.Entry<BlockPos, SpeakerNode> entry : SoundManager.speakerNodes.entrySet())
+				speakerNodesTag.setTag(entry.getKey().toLong() + "", entry.getValue().serializeNBT());
+			compound.setTag("speakerNodes", speakerNodesTag);
 
-    public static class SoundSavedData extends WorldSavedData {
+			NBTTagList list = new NBTTagList();
+			for (Speaker speaker : SoundManager.speakers)
+				list.appendTag(speaker.serializeNBT());
+			compound.setTag("speakers", list);
+			return compound;
+		}
 
-        public HashMap<BlockPos, SpeakerNode> speakerNodes = new HashMap<>();
-        public Set<Speaker> speakers = new HashSet<>();
+		@Override
+		public void readFromNBT(@Nonnull NBTTagCompound compound) {
+			for (String key : compound.getCompoundTag("speakerNodes").getKeySet()) {
+				SpeakerNode speaker = new SpeakerNode();
+				speaker.deserializeNBT(compound.getCompoundTag("speakerNodes").getCompoundTag(key));
+				SoundManager.speakerNodes.put(BlockPos.fromLong(Long.parseLong(key)), speaker);
+			}
 
-        public SoundSavedData(String id) {
-            super(id);
-        }
+			NBTTagList list = compound.getTagList("speakers", NBTTypes.COMPOUND);
+			for (int i = 0; i < list.tagCount(); i++) {
+				Speaker speaker = new Speaker();
+				speaker.deserializeNBT(list.getCompoundTagAt(i));
+				SoundManager.speakers.add(speaker);
+			}
 
-        public SoundSavedData() {
-            super(SOUND);
-        }
-
-        @Override
-        @Nonnull
-        public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound compound) {
-            NBTTagCompound speakerNodesTag = new NBTTagCompound();
-            for (Map.Entry<BlockPos, SpeakerNode> entry : speakerNodes.entrySet())
-                speakerNodesTag.setTag(entry.getKey().toLong() + "", entry.getValue().serializeNBT());
-            compound.setTag("speakerNodes", speakerNodesTag);
-            NBTTagList list = new NBTTagList();
-            for(Speaker speaker : speakers)
-                list.appendTag(speaker.serializeNBT());
-            compound.setTag("speakers", list);
-            return compound;
-        }
-
-        @Override
-        public void readFromNBT(@Nonnull NBTTagCompound compound) {
-            for (String key : compound.getCompoundTag("speakerNodes").getKeySet()) {
-                SpeakerNode speaker = new SpeakerNode();
-                speaker.deserializeNBT(compound.getCompoundTag("speakerNodes").getCompoundTag(key));
-                speakerNodes.put(BlockPos.fromLong(Long.parseLong(key)), speaker);
-            }
-            NBTTagList list = compound.getTagList("speakers", NBTTypes.COMPOUND);
-            for(int i = 0; i < list.tagCount(); i++) {
-                Speaker speaker = new Speaker();
-                speaker.deserializeNBT(list.getCompoundTagAt(i));
-                speakers.add(speaker);
-            }
-
-        }
-    }
+		}
+	}
 }

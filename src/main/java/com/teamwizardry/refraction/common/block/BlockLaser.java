@@ -62,7 +62,7 @@ public class BlockLaser extends BlockModContainer {
 			ItemStack stack = heldItem.copy();
 			stack.stackSize = 1;
 			ItemStack left = laser.inventory.insertItem(0, stack, false);
-			if (left != null) heldItem.stackSize--;
+			if (left == null) heldItem.stackSize--;
 			laser.markDirty();
 		}
 		return true;

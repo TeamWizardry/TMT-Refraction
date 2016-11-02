@@ -46,7 +46,7 @@ public class Speaker implements INBTSerializable<NBTTagCompound> {
 		tag.setBoolean("loopOnce", loopOnce);
 		tag.setFloat("volume", volume);
 		tag.setFloat("pitch", pitch);
-		return null;
+		return tag;
 	}
 
 	@Override
