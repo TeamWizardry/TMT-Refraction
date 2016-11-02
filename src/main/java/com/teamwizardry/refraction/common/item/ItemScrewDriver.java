@@ -36,7 +36,8 @@ public class ItemScrewDriver extends ItemMod {
 	};
 	protected static final int DEFAULT_MULTIPLIER = 4;
 
-	private static Function2<GuiIngame, Object, Unit> remainingHighlightTicksSetter = MethodHandleHelper.wrapperForSetter(GuiIngame.class, "q", "field_92017_k", "remainingHighlightTicks");
+	@SideOnly(Side.CLIENT)
+	private static Function2<GuiIngame, Object, Unit> remainingHighlightTicksSetter = null;
 
 	public ItemScrewDriver() {
 		super("screw_driver");
@@ -77,6 +78,8 @@ public class ItemScrewDriver extends ItemMod {
 	@SideOnly(Side.CLIENT)
 	private void displayItemName(int ticks) {
 		GuiIngame gui = Minecraft.getMinecraft().ingameGUI;
+		if (remainingHighlightTicksSetter == null)
+			remainingHighlightTicksSetter = MethodHandleHelper.wrapperForSetter(GuiIngame.class, "q", "field_92017_k", "remainingHighlightTicks");
 		remainingHighlightTicksSetter.invoke(gui, ticks);
 	}
 
