@@ -28,9 +28,11 @@ public class TileReflectiveAlloyBlock extends TileMod implements IBeamHandler {
 
 			Vec3d incomingDir = beam.slope;
 			Vec3d outgoingDir;
+			Vec3d outgoingLoc = beam.finalLoc;
 			switch (facing) {
 				case UP:
 					outgoingDir = new Vec3d(incomingDir.xCoord, Math.abs(incomingDir.yCoord), incomingDir.zCoord);
+					outgoingLoc = outgoingLoc.subtract(0, 0.001, 0);
 					break;
 				case DOWN:
 					outgoingDir = new Vec3d(incomingDir.xCoord, -Math.abs(incomingDir.yCoord), incomingDir.zCoord);
@@ -40,9 +42,11 @@ public class TileReflectiveAlloyBlock extends TileMod implements IBeamHandler {
 					break;
 				case SOUTH:
 					outgoingDir = new Vec3d(incomingDir.xCoord, incomingDir.yCoord, Math.abs(incomingDir.zCoord));
+					outgoingLoc = outgoingLoc.subtract(0, 0, 0.001);
 					break;
 				case EAST:
 					outgoingDir = new Vec3d(Math.abs(incomingDir.xCoord), incomingDir.yCoord, incomingDir.zCoord);
+					outgoingLoc = outgoingLoc.subtract(0.001, 0, 0);
 					break;
 				case WEST:
 					outgoingDir = new Vec3d(-Math.abs(incomingDir.xCoord), incomingDir.yCoord, incomingDir.zCoord);
@@ -51,7 +55,7 @@ public class TileReflectiveAlloyBlock extends TileMod implements IBeamHandler {
 					outgoingDir = incomingDir;
 			}
 			Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
-			beam.createSimilarBeam(outgoingDir).setColor(c).spawn();
+			beam.createSimilarBeam(outgoingLoc, outgoingDir).setColor(c).spawn();
 		}
 	}
 }
