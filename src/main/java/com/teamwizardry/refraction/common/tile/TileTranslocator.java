@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.refraction.api.ICableHandler;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.common.block.BlockTranslocator;
@@ -11,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 
+@TileRegister(id = "translocator")
 public class TileTranslocator extends TileMod implements IBeamHandler, ICableHandler
 {
 	@Override

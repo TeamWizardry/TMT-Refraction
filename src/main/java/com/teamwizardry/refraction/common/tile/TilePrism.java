@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.refraction.common.block.BlockPrism;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
@@ -17,6 +18,7 @@ import java.awt.*;
 /**
  * Created by LordSaad44
  */
+@TileRegister(id = "prism")
 public class TilePrism extends TileMod implements IBeamHandler {
 
 	public static double airIOR = 1, glassIOR = 1.75;

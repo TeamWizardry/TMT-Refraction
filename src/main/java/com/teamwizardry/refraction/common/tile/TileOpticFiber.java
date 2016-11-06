@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -19,6 +20,7 @@ import com.teamwizardry.refraction.init.ModBlocks;
 /**
  * Created by Saad on 9/15/2016.
  */
+@TileRegister(id = "optic_fiber")
 public class TileOpticFiber extends TileMod implements IBeamHandler
 {
 	@Override

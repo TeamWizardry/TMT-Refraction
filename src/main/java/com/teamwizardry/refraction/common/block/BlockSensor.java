@@ -1,12 +1,9 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.tile.TileSensor;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -46,7 +43,6 @@ public class BlockSensor extends BlockModContainer {
 		super("sensor", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
-		TileMod.registerTile(TileSensor.class, "sensor");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -219,11 +215,5 @@ public class BlockSensor extends BlockModContainer {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileSensor();
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 }

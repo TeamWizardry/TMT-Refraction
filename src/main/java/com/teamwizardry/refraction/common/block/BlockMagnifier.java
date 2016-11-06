@@ -1,13 +1,10 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.tile.TileMagnifier;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +27,6 @@ public class BlockMagnifier extends BlockModContainer {
 		super("magnifier", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileMagnifier.class, "magnifier");
 	}
 	
 	@Override
@@ -66,11 +62,5 @@ public class BlockMagnifier extends BlockModContainer {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileMagnifier();
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 }

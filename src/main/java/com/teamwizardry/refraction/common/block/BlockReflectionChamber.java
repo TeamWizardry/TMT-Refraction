@@ -2,13 +2,10 @@ package com.teamwizardry.refraction.common.block;
 
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.client.render.RenderReflectionChamber;
 import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -37,7 +34,6 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 		super("reflection_chamber", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileReflectionChamber.class, "reflection_chamber");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -75,11 +71,5 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileReflectionChamber();
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 }

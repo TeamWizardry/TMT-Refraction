@@ -1,15 +1,12 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.client.render.RenderMirror;
 import com.teamwizardry.refraction.common.light.ILaserTrace;
 import com.teamwizardry.refraction.common.tile.TileMirror;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -41,7 +38,6 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 		super("mirror", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileMirror.class, "mirror");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -146,11 +142,5 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileMirror();
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 }

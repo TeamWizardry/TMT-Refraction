@@ -9,11 +9,19 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ModTab extends ModCreativeTab {
 
-	public static ModTab INSTANCE = new ModTab();
+	private static boolean isInitialized = false;
+
+	public static void init() {
+		if (isInitialized) return;
+		new ModTab().registerDefaultTab();
+		isInitialized = true;
+	}
+
+	private ModTab() { super(); }
 
 	@NotNull
 	@Override
-	public ItemStack getIconItemStack() {
+	public ItemStack getIconStack() {
 		return new ItemStack(ModItems.SCREW_DRIVER);
 	}
 }

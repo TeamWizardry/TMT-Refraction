@@ -1,12 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.awt.Color;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.refraction.api.ICableHandler;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.RotationHelper;
@@ -14,10 +9,18 @@ import com.teamwizardry.refraction.common.block.BlockOpticFiber;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.init.ModBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.awt.*;
 
 /**
  * Created by LordSaad44
  */
+@TileRegister(id = "reflection_chamber")
 public class TileReflectionChamber extends TileMod implements IBeamHandler, ICableHandler {
 
 	public TileReflectionChamber() {

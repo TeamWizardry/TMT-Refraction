@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
@@ -13,6 +14,7 @@ import java.awt.*;
 /**
  * Created by Saad on 9/11/2016.
  */
+@TileRegister(id = "spectrometer")
 public class TileSpectrometer extends TileMod implements IBeamHandler, ITickable {
 
 	@Save

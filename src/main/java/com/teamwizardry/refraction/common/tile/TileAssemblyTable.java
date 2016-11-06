@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpColorFade;
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.Refraction;
@@ -30,6 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by LordSaad44
  */
+@TileRegister(id = "assembly_table")
 public class TileAssemblyTable extends TileMod implements IBeamHandler {
 
 	@Save

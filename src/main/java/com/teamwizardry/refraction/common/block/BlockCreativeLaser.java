@@ -1,11 +1,8 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.common.tile.TileCreativeLaser;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -34,7 +31,6 @@ public class BlockCreativeLaser  extends BlockModContainer {
 		super("creative_laser", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileCreativeLaser.class, "creative_laser");
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
@@ -88,9 +84,4 @@ public class BlockCreativeLaser  extends BlockModContainer {
 		return new TileCreativeLaser();
 	}
 
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
-	}
 }

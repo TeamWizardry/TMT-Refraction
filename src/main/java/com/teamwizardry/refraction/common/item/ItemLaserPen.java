@@ -1,10 +1,8 @@
 package com.teamwizardry.refraction.common.item;
 
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -14,7 +12,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
@@ -58,11 +55,5 @@ public class ItemLaserPen extends ItemMod {
 			Vec3d playerVec = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord, player.posZ + cross.zCoord);
 			new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0x26FF0000, true)).setEnableEffect(false).spawn();
 		}
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 }

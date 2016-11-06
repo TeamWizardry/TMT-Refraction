@@ -1,11 +1,8 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.common.tile.TileLightBridge;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -68,7 +65,6 @@ public class BlockLightBridge extends BlockModContainer {
 		super("light_bridge", Material.GLASS);
 		setBlockUnbreakable();
 		setSoundType(SoundType.GLASS);
-		TileMod.registerTile(TileLightBridge.class, "light_bridge");
 		setTickRandomly(true);
 
 		setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.Axis.Y).withProperty(UP, false).withProperty(DOWN, false).withProperty(LEFT, false).withProperty(RIGHT, false));
@@ -252,11 +248,5 @@ public class BlockLightBridge extends BlockModContainer {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileLightBridge();
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 }

@@ -2,12 +2,9 @@ package com.teamwizardry.refraction.common.block;
 
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.common.tile.TileTranslocator;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -49,7 +46,6 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
         super("translocator", Material.GLASS);
         setHardness(1F);
         setSoundType(SoundType.GLASS);
-        TileMod.registerTile(TileTranslocator.class, "translocator");
     }
 
     @Nullable
@@ -128,12 +124,6 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
     public boolean canRenderInLayer(BlockRenderLayer layer)
     {
     	return layer == BlockRenderLayer.CUTOUT;
-    }
-    
-    @Override
-    public ModCreativeTab getCreativeTab()
-    {
-    	return ModTab.INSTANCE;
     }
 
     @Override

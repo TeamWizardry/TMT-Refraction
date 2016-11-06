@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.IPrecisionTile;
@@ -17,6 +18,7 @@ import java.awt.*;
 /**
  * Created by LordSaad44
  */
+@TileRegister(id = "mirror")
 public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPrecisionTile {
 
 	@Save
