@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
@@ -29,6 +30,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by LordSaad44
  */
+@TileRegister(id="refraction:laser")
 public class TileLaser extends TileMod implements ILightSource, ITickable, IConditionalSoundEmitter {
 
 	public ItemStackHandler inventory = new ItemStackHandler(1) {

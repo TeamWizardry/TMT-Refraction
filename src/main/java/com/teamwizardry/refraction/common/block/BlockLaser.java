@@ -38,7 +38,6 @@ public class BlockLaser extends BlockModContainer {
 		super("laser", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileLaser.class, "laser");
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}

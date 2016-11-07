@@ -34,7 +34,6 @@ public class BlockCreativeLaser  extends BlockModContainer {
 		super("creative_laser", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileCreativeLaser.class, "creative_laser");
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}

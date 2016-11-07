@@ -26,7 +26,6 @@ public class BlockReflectiveAlloyBlock extends BlockModContainer {
 		super("reflective_alloy_block", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileReflectiveAlloyBlock.class, "reflective_alloy_block");
 	}
 
 	@Override

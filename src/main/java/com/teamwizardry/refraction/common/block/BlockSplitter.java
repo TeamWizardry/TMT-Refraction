@@ -41,7 +41,6 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 		super("splitter", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileSplitter.class, "splitter");
 	}
 
 	@SideOnly(Side.CLIENT)

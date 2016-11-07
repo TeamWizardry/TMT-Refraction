@@ -39,7 +39,6 @@ public class BlockDiscoBall extends BlockModContainer {
 		super("disco_ball", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileDiscoBall.class, "disco_ball");
 	}
 
 	@SideOnly(Side.CLIENT)

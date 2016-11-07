@@ -71,7 +71,6 @@ public class BlockOpticFiber extends BlockModContainer implements IOpticConnecta
 		super("optic_fiber", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
-		TileMod.registerTile(TileOpticFiber.class, "optic_fiber");
 	}
 
 	@Override

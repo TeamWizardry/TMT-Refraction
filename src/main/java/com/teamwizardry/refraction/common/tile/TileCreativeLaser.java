@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ILightSource;
@@ -14,6 +15,7 @@ import java.awt.*;
 /**
  * Created by Saad on 10/6/2016.
  */
+@TileRegister(id="refraction:creative_laser")
 public class TileCreativeLaser extends TileMod implements ILightSource {
 
 	public TileCreativeLaser() {

@@ -43,7 +43,6 @@ public class BlockElectronExciter extends BlockModContainer {
 		super("electron_exciter", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileElectronExciter.class, "electron_exciter");
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}

@@ -38,7 +38,6 @@ public class BlockSpectrometer extends BlockModContainer {
 		super("spectrometer", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileSpectrometer.class, "spectrometer");
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 

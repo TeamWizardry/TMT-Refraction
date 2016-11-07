@@ -49,7 +49,6 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
         super("translocator", Material.GLASS);
         setHardness(1F);
         setSoundType(SoundType.GLASS);
-        TileMod.registerTile(TileTranslocator.class, "translocator");
     }
 
     @Nullable

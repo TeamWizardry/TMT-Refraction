@@ -34,7 +34,6 @@ public class BlockAssemblyTable extends BlockModContainer {
 		super("assembly_table", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileAssemblyTable.class, "assembly_table");
 	}
 
 	private TileAssemblyTable getTE(World world, BlockPos pos) {

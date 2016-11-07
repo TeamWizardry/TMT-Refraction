@@ -41,7 +41,6 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 		super("mirror", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileMirror.class, "mirror");
 	}
 
 	@SideOnly(Side.CLIENT)

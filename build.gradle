@@ -24,6 +24,12 @@ archivesBaseName = "refraction"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+repositories {
+    maven {
+        url "http://maven.amadornes.com/"
+    }
+}
+
 minecraft {
     version = "1.10.2-12.18.1.2095"
     runDir = "run"

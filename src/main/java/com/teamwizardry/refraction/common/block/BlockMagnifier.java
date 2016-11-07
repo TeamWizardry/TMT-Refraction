@@ -30,7 +30,6 @@ public class BlockMagnifier extends BlockModContainer {
 		super("magnifier", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileMagnifier.class, "magnifier");
 	}
 	
 	@Override

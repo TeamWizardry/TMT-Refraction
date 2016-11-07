@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by Saad on 8/16/2016.
  */
+@TileRegister(id="refraction:electron_exciter")
 public class TileElectronExciter extends TileMod implements IBeamHandler, ITickable {
 
 	@Save

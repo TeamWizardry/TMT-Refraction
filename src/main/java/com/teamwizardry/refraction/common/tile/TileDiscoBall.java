@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.util.ITickable;
@@ -17,6 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by LordSaad44
  */
+@TileRegister(id="refraction:disco_ball")
 public class TileDiscoBall extends TileMod implements IBeamHandler, ITickable {
 
 	public double tick = 0;

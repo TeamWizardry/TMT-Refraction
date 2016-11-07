@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.common.block.BlockLightBridge;
@@ -16,6 +17,7 @@ import net.minecraft.world.World;
 /**
  * Created by Saad on 8/18/2016.
  */
+@TileRegister(id="refraction:light_bridge")
 public class TileLightBridge extends TileMod implements ITickable {
 
 	@Save

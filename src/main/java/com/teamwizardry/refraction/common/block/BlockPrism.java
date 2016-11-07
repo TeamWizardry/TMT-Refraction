@@ -45,7 +45,6 @@ public class BlockPrism extends BlockModContainer implements ILaserTrace {
 		super("prism", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
-		TileMod.registerTile(TilePrism.class, "prism");
 	}
 
 	@Override

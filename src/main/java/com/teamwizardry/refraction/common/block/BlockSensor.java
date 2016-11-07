@@ -46,7 +46,6 @@ public class BlockSensor extends BlockModContainer {
 		super("sensor", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
-		TileMod.registerTile(TileSensor.class, "sensor");
 	}
 
 	@SideOnly(Side.CLIENT)

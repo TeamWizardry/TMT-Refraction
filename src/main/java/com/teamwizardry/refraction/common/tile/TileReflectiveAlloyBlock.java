@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
@@ -12,6 +13,7 @@ import java.awt.*;
 /**
  * Created by Saad on 10/16/2016.
  */
+@TileRegister(id="refraction:reflective_alloy_block")
 public class TileReflectiveAlloyBlock extends TileMod implements IBeamHandler {
 	public TileReflectiveAlloyBlock() {
 	}

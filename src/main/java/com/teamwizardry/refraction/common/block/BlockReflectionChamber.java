@@ -37,7 +37,6 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 		super("reflection_chamber", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
-		TileMod.registerTile(TileReflectionChamber.class, "reflection_chamber");
 	}
 
 	@SideOnly(Side.CLIENT)

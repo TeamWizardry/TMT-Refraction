@@ -68,7 +68,6 @@ public class BlockLightBridge extends BlockModContainer {
 		super("light_bridge", Material.GLASS);
 		setBlockUnbreakable();
 		setSoundType(SoundType.GLASS);
-		TileMod.registerTile(TileLightBridge.class, "light_bridge");
 		setTickRandomly(true);
 
 		setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.Axis.Y).withProperty(UP, false).withProperty(DOWN, false).withProperty(LEFT, false).withProperty(RIGHT, false));
