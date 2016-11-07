@@ -19,7 +19,7 @@ import java.awt.*;
 /**
  * Created by LordSaad44
  */
-@TileRegister(id="refraction:splitter")
+@TileRegister(id = "splitter")
 public class TileSplitter extends TileMod implements IBeamHandler, ITickable, IPrecisionTile {
 
 	@Save

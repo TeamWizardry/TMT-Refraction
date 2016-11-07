@@ -1,8 +1,6 @@
 package com.teamwizardry.refraction.common.item;
 
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -13,7 +11,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by Saad on 10/7/2016.
@@ -33,11 +30,5 @@ public class ItemBook extends ItemMod {
 			playerIn.addChatComponentMessage(url);
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 }

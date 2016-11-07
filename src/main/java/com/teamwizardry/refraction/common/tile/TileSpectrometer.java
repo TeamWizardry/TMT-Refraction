@@ -14,7 +14,7 @@ import java.awt.*;
 /**
  * Created by Saad on 9/11/2016.
  */
-@TileRegister(id="refraction:spectrometer")
+@TileRegister(id = "spectrometer")
 public class TileSpectrometer extends TileMod implements IBeamHandler, ITickable {
 
 	@Save

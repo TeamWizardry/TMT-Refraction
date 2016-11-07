@@ -18,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by LordSaad44
  */
-@TileRegister(id="refraction:disco_ball")
+@TileRegister(id = "disco_ball")
 public class TileDiscoBall extends TileMod implements IBeamHandler, ITickable {
 
 	public double tick = 0;

@@ -15,7 +15,7 @@ import java.awt.*;
 /**
  * Created by Saad on 10/6/2016.
  */
-@TileRegister(id="refraction:creative_laser")
+@TileRegister(id = "creative_laser")
 public class TileCreativeLaser extends TileMod implements ILightSource {
 
 	public TileCreativeLaser() {

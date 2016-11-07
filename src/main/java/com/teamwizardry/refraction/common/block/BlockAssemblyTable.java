@@ -1,12 +1,9 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.client.render.RenderAssemblyTable;
 import com.teamwizardry.refraction.common.tile.TileAssemblyTable;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -98,11 +95,5 @@ public class BlockAssemblyTable extends BlockModContainer {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileAssemblyTable();
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 }

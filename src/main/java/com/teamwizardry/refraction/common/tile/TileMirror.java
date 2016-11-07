@@ -18,7 +18,7 @@ import java.awt.*;
 /**
  * Created by LordSaad44
  */
-@TileRegister(id="refraction:mirror")
+@TileRegister(id = "mirror")
 public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPrecisionTile {
 
 	@Save

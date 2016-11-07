@@ -31,7 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by LordSaad44
  */
-@TileRegister(id="refraction:assembly_table")
+@TileRegister(id = "assembly_table")
 public class TileAssemblyTable extends TileMod implements IBeamHandler {
 
 	@Save

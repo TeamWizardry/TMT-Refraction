@@ -29,6 +29,7 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		CatChaseHandler.INSTANCE.getClass(); // load the class
 		ModSounds.init();
+		ModTab.init();
 		ModBlocks.init();
 		ModItems.init();
 		ModEntities.init();

@@ -18,7 +18,7 @@ import java.awt.*;
 /**
  * Created by LordSaad44
  */
-@TileRegister(id="refraction:prism")
+@TileRegister(id = "prism")
 public class TilePrism extends TileMod implements IBeamHandler {
 
 	public static double airIOR = 1, glassIOR = 1.75;

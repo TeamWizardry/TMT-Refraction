@@ -20,7 +20,7 @@ import java.awt.*;
 /**
  * Created by LordSaad44
  */
-@TileRegister(id="refraction:reflection_chamber")
+@TileRegister(id = "reflection_chamber")
 public class TileReflectionChamber extends TileMod implements IBeamHandler, ICableHandler {
 
 	public TileReflectionChamber() {

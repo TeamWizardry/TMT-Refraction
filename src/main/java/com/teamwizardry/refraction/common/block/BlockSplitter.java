@@ -1,15 +1,12 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.client.render.RenderSplitter;
 import com.teamwizardry.refraction.common.light.ILaserTrace;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -140,11 +137,5 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileSplitter();
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 }

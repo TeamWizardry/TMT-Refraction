@@ -2,12 +2,9 @@ package com.teamwizardry.refraction.common.block;
 
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.common.tile.TileOpticFiber;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -251,12 +248,6 @@ public class BlockOpticFiber extends BlockModContainer implements IOpticConnecta
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileOpticFiber();
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 
 	public enum EnumBiFacing implements IStringSerializable {

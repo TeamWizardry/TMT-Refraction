@@ -1,11 +1,9 @@
 package com.teamwizardry.refraction.common.item;
 
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.librarianlib.common.util.MethodHandleHelper;
 import com.teamwizardry.refraction.api.IPrecision;
-import com.teamwizardry.refraction.init.ModTab;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
 import net.minecraft.block.Block;
@@ -22,7 +20,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by LordSaad44
@@ -98,11 +95,5 @@ public class ItemScrewDriver extends ItemMod {
 	public int getRotationIndex(ItemStack stack) {
 		int i = ItemNBTHelper.getInt(stack, MODE_TAG, DEFAULT_MULTIPLIER);
 		return MathHelper.clamp_int(i, 0, multipliers.length - 1);
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 }

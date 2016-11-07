@@ -1,12 +1,9 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.refraction.client.render.RenderDiscoBall;
 import com.teamwizardry.refraction.common.tile.TileDiscoBall;
-import com.teamwizardry.refraction.init.ModTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -115,11 +112,5 @@ public class BlockDiscoBall extends BlockModContainer {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileDiscoBall();
-	}
-
-	@Nullable
-	@Override
-	public ModCreativeTab getCreativeTab() {
-		return ModTab.INSTANCE;
 	}
 }

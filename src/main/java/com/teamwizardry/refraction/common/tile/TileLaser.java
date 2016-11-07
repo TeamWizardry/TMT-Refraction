@@ -30,7 +30,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by LordSaad44
  */
-@TileRegister(id="refraction:laser")
+@TileRegister(id = "laser")
 public class TileLaser extends TileMod implements ILightSource, ITickable, IConditionalSoundEmitter {
 
 	public ItemStackHandler inventory = new ItemStackHandler(1) {
