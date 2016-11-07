@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by LordSaad44
  */
-@TileRegister(id = "sensor")
+@TileRegister("sensor")
 public class TileSensor extends TileMod implements IBeamHandler {
 
 	private Beam[] beams = new Beam[]{};

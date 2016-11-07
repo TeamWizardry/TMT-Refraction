@@ -9,10 +9,10 @@ import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.AssemblyRecipe;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.IBeamHandler;
-import com.teamwizardry.refraction.api.AssemblyRecipe;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -31,7 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by LordSaad44
  */
-@TileRegister(id = "assembly_table")
+@TileRegister("assembly_table")
 public class TileAssemblyTable extends TileMod implements IBeamHandler {
 
 	@Save

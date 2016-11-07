@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 /**
  * Created by Saad on 8/18/2016.
  */
-@TileRegister(id = "light_bridge")
+@TileRegister("light_bridge")
 public class TileLightBridge extends TileMod implements ITickable {
 
 	@Save

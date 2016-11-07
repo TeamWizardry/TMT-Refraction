@@ -22,7 +22,7 @@ import java.awt.*;
 /**
  * Created by LordSaad44
  */
-@TileRegister(id = "magnifier")
+@TileRegister("magnifier")
 public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler {
 
 	public TileMagnifier() {

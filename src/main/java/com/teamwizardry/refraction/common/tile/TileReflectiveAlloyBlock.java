@@ -13,7 +13,7 @@ import java.awt.*;
 /**
  * Created by Saad on 10/16/2016.
  */
-@TileRegister(id = "reflective_alloy_block")
+@TileRegister("reflective_alloy_block")
 public class TileReflectiveAlloyBlock extends TileMod implements IBeamHandler {
 	public TileReflectiveAlloyBlock() {
 	}

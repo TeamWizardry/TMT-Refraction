@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by Saad on 8/16/2016.
  */
-@TileRegister(id = "electron_exciter")
+@TileRegister("electron_exciter")
 public class TileElectronExciter extends TileMod implements IBeamHandler, ITickable {
 
 	@Save

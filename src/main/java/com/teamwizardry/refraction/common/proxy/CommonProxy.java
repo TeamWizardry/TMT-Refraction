@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.proxy;
 
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.EasyConfigHandler;
+import com.teamwizardry.librarianlib.common.util.autoregister.AutoRegisterHandler;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.soundmanager.SoundManager;
 import com.teamwizardry.refraction.client.gui.GuiHandler;
@@ -38,7 +39,7 @@ public class CommonProxy {
 		SoundManager.INSTANCE.getClass();
 
 		EasyConfigHandler.init(Refraction.MOD_ID, event.getSuggestedConfigurationFile(), event.getAsmData());
-
+		AutoRegisterHandler.INSTANCE.registerPrefix("com.teamwizardry.refraction.", Refraction.MOD_ID);
 		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
 		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
 	}
