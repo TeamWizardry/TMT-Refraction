@@ -26,7 +26,6 @@ import net.minecraftforge.fml.server.FMLServerHandler;
  */
 public class CommonProxy {
 
-
 	public void preInit(FMLPreInitializationEvent event) {
 		CatChaseHandler.INSTANCE.getClass(); // load the class
 		ModSounds.init();
@@ -38,8 +37,8 @@ public class CommonProxy {
 
 		SoundManager.INSTANCE.getClass();
 
-		EasyConfigHandler.init(Refraction.MOD_ID, event.getSuggestedConfigurationFile(), event.getAsmData());
-		AutoRegisterHandler.INSTANCE.registerPrefix("com.teamwizardry.refraction.", Refraction.MOD_ID);
+		EasyConfigHandler.init(event.getSuggestedConfigurationFile());
+		AutoRegisterHandler.registerPrefix("com.teamwizardry.refraction.", Refraction.MOD_ID);
 		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
 		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
 	}
