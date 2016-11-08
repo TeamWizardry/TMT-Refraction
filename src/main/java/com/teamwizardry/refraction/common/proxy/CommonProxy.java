@@ -38,7 +38,7 @@ public class CommonProxy {
 		SoundManager.INSTANCE.getClass();
 
 		EasyConfigHandler.init(event.getSuggestedConfigurationFile());
-		AutoRegisterHandler.registerPrefix("com.teamwizardry.refraction.", Refraction.MOD_ID);
+		AutoRegisterHandler.registerPrefix("com.teamwizardry.refraction.");
 		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
 		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
 	}
