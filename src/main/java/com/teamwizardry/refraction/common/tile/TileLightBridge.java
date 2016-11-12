@@ -1,11 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
-import com.teamwizardry.librarianlib.common.util.saving.Save;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.common.block.BlockLightBridge;
-import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -13,6 +7,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.common.util.saving.Save;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.common.block.BlockLightBridge;
+import com.teamwizardry.refraction.init.ModBlocks;
 
 /**
  * Created by Saad on 8/18/2016.

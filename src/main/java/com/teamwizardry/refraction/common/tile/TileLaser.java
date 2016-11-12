@@ -1,5 +1,17 @@
 package com.teamwizardry.refraction.common.tile;
 
+import java.awt.Color;
+import java.util.concurrent.ThreadLocalRandom;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
@@ -13,19 +25,6 @@ import com.teamwizardry.refraction.api.soundmanager.IConditionalSoundEmitter;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-
-import java.awt.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44
@@ -56,7 +55,7 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ICond
 	}
 
 	@Override
-	public void writeCustomNBT(NBTTagCompound compound) {
+	public void writeCustomNBT(NBTTagCompound compound, boolean sync) {
 		compound.setTag("inventory", inventory.serializeNBT());
 	}
 
@@ -71,6 +70,7 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ICond
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, net.minecraft.util.EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) inventory : super.getCapability(capability, facing);
 	}

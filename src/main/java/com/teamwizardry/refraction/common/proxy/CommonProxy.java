@@ -1,17 +1,5 @@
 package com.teamwizardry.refraction.common.proxy;
 
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
-import com.teamwizardry.librarianlib.common.util.EasyConfigHandler;
-import com.teamwizardry.librarianlib.common.util.autoregister.AutoRegisterHandler;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.soundmanager.SoundManager;
-import com.teamwizardry.refraction.client.gui.GuiHandler;
-import com.teamwizardry.refraction.common.core.CatChaseHandler;
-import com.teamwizardry.refraction.common.core.DispenserScrewDriverBehavior;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
-import com.teamwizardry.refraction.init.*;
-import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
-import com.teamwizardry.refraction.init.recipies.CraftingRecipes;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -20,6 +8,22 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.librarianlib.common.util.EasyConfigHandler;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.soundmanager.SoundManager;
+import com.teamwizardry.refraction.client.gui.GuiHandler;
+import com.teamwizardry.refraction.common.core.CatChaseHandler;
+import com.teamwizardry.refraction.common.core.DispenserScrewDriverBehavior;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
+import com.teamwizardry.refraction.init.ModBlocks;
+import com.teamwizardry.refraction.init.ModEffects;
+import com.teamwizardry.refraction.init.ModEntities;
+import com.teamwizardry.refraction.init.ModItems;
+import com.teamwizardry.refraction.init.ModSounds;
+import com.teamwizardry.refraction.init.ModTab;
+import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
+import com.teamwizardry.refraction.init.recipies.CraftingRecipes;
 
 /**
  * Created by LordSaad44
@@ -38,7 +42,6 @@ public class CommonProxy {
 		SoundManager.INSTANCE.getClass();
 
 		EasyConfigHandler.init(event.getSuggestedConfigurationFile());
-		AutoRegisterHandler.registerPrefix("com.teamwizardry.refraction.");
 		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
 		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
 	}

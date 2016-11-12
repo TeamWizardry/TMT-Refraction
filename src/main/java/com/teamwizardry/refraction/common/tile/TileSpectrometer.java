@@ -38,7 +38,7 @@ public class TileSpectrometer extends TileMod implements IBeamHandler, ITickable
 	}
 
 	@Override
-	public void writeCustomNBT(NBTTagCompound compound) {
+	public void writeCustomNBT(NBTTagCompound compound, boolean sync) {
 		compound.setInteger("current_integer", currentColor.getRGB());
 		compound.setInteger("current_alpha", currentTransparency);
 	}

@@ -1,16 +1,15 @@
 package com.teamwizardry.refraction.common.tile;
 
+import java.awt.Color;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.Vec3d;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.Vec3d;
-
-import java.awt.*;
 
 /**
  * Created by Saad on 10/6/2016.

@@ -1,6 +1,22 @@
 package com.teamwizardry.refraction.init;
 
-import com.teamwizardry.refraction.common.block.*;
+import com.teamwizardry.refraction.common.block.BlockAssemblyTable;
+import com.teamwizardry.refraction.common.block.BlockCreativeLaser;
+import com.teamwizardry.refraction.common.block.BlockDiscoBall;
+import com.teamwizardry.refraction.common.block.BlockElectronExciter;
+import com.teamwizardry.refraction.common.block.BlockLaser;
+import com.teamwizardry.refraction.common.block.BlockLens;
+import com.teamwizardry.refraction.common.block.BlockLightBridge;
+import com.teamwizardry.refraction.common.block.BlockMagnifier;
+import com.teamwizardry.refraction.common.block.BlockMirror;
+import com.teamwizardry.refraction.common.block.BlockOpticFiber;
+import com.teamwizardry.refraction.common.block.BlockPrism;
+import com.teamwizardry.refraction.common.block.BlockReflectionChamber;
+import com.teamwizardry.refraction.common.block.BlockReflectiveAlloyBlock;
+import com.teamwizardry.refraction.common.block.BlockSensor;
+import com.teamwizardry.refraction.common.block.BlockSpectrometer;
+import com.teamwizardry.refraction.common.block.BlockSplitter;
+import com.teamwizardry.refraction.common.block.BlockTranslocator;
 
 /**
  * Created by LordSaad44
