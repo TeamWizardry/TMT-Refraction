@@ -330,7 +330,7 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
                 arr2[i] = l.get(i).getValue();
             }
 
-            PacketHandler.NETWORK.sendToDimension(new PacketAXYZMarks(arr1, arr2), dim);
+            PacketHandler.NETWORK.sendToAll(new PacketAXYZMarks(arr1, arr2, dim));
         }
     }
 
