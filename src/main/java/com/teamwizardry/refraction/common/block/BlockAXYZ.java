@@ -392,7 +392,7 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
             public String getUnlocalizedName(ItemStack par1ItemStack) {
                 if (par1ItemStack.getItemDamage() == 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
                     if (RAND_NAMES == 0)
-                        for (RAND_NAMES = 0; I18n.hasKey(super.getUnlocalizedName(par1ItemStack) + "." + RAND_NAMES + 1 + ".name"); RAND_NAMES++);
+                        for (RAND_NAMES = 0; I18n.hasKey(super.getUnlocalizedName(par1ItemStack) + "." + (RAND_NAMES + 1) + ".name"); RAND_NAMES++);
 
                     StackTraceElement stackTrace[] = (new Throwable()).getStackTrace();
                     if ("net.minecraft.item.Item".equals(stackTrace[1].getClassName())) {
