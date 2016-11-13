@@ -55,6 +55,7 @@ import java.util.List;
  * @author WireSegal
  *         Created at 9:34 PM on 11/12/16.
  */
+@SuppressWarnings("StatementWithEmptyBody")
 public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectable {
 
     public static final PropertyBool[] PROPS = new PropertyBool[] {
@@ -390,16 +391,8 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
             @Override
             public String getUnlocalizedName(ItemStack par1ItemStack) {
                 if (par1ItemStack.getItemDamage() == 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-                    if (RAND_NAMES == 0) {
-                        int i = 0;
-                        while (true) {
-                            i++;
-                            if (!I18n.hasKey(super.getUnlocalizedName(par1ItemStack) + "." + i + ".name")) {
-                                RAND_NAMES = i;
-                                break;
-                            }
-                        }
-                    }
+                    if (RAND_NAMES == 0)
+                        for (RAND_NAMES = 0; I18n.hasKey(super.getUnlocalizedName(par1ItemStack) + "." + RAND_NAMES + 1 + ".name"); RAND_NAMES++);
 
                     StackTraceElement stackTrace[] = (new Throwable()).getStackTrace();
                     if ("net.minecraft.item.Item".equals(stackTrace[1].getClassName())) {
