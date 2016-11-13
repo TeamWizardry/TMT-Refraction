@@ -61,21 +61,12 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 
 			Vec3d hitPos = beam.finalLoc;
 
-			if (!beam.enableEffect) {
-				if (beam.color.getRed() != 0)
-					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam.enableEffect, beam.ignoreEntities);
-				if (beam.color.getGreen() != 0)
-					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam.enableEffect, beam.ignoreEntities);
-				if (beam.color.getBlue() != 0)
-					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam.enableEffect, beam.ignoreEntities);
-			} else {
-				if (beam.color.getRed() != 0)
-					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam.enableEffect, beam.ignoreEntities);
-				if (beam.color.getGreen() != 0)
-					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam.enableEffect, beam.ignoreEntities);
-				if (beam.color.getBlue() != 0)
-					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam.enableEffect, beam.ignoreEntities);
-			}
+			if (beam.color.getRed() != 0)
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam.enableEffect, beam.ignoreEntities);
+			if (beam.color.getGreen() != 0)
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam.enableEffect, beam.ignoreEntities);
+			if (beam.color.getBlue() != 0)
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam.enableEffect, beam.ignoreEntities);
 		}
 	}
 
