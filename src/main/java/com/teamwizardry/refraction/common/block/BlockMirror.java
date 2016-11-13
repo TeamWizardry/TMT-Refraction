@@ -125,7 +125,6 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 		return false;
 	}
 
-	@NotNull
 	@SuppressWarnings("deprecation")
 	@Override
 	public RayTraceResult collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
@@ -137,6 +136,7 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 		RayTraceResult superResult = super.collisionRayTrace(blockState, worldIn, pos, startRaw, endRaw);
 
 		TileMirror tile = (TileMirror) worldIn.getTileEntity(pos);
+		if (tile == null) return null;
 
 		Vec3d start = startRaw.subtract((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
 		Vec3d end = endRaw.subtract((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());

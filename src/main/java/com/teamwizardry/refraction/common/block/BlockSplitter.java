@@ -4,9 +4,9 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.api.ILaserTrace;
 import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.client.render.RenderSplitter;
-import com.teamwizardry.refraction.api.ILaserTrace;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
 import net.minecraft.block.Block;
@@ -123,7 +123,6 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 		return false;
 	}
 
-	@NotNull
 	@SuppressWarnings("deprecation")
 	@Override
 	public RayTraceResult collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {

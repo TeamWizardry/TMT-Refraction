@@ -18,11 +18,9 @@ public class TileSpectrometer extends TileMod implements ITickable {
 
 	@Save
 	public Color maxColor = Color.BLACK;
-	@Save
 	public Color currentColor = Color.BLACK;
 	@Save
 	public int maxTransparency = 0;
-	@Save
 	public int currentTransparency = 0;
 	private Beam[] beams = new Beam[]{};
 	private int tick = 0;
@@ -38,7 +36,7 @@ public class TileSpectrometer extends TileMod implements ITickable {
 
 	@Override
 	public void writeCustomNBT(NBTTagCompound compound, boolean sync) {
-		compound.setInteger("current_integer", currentColor.getRGB());
+		compound.setInteger("current_color", currentColor.getRGB());
 		compound.setInteger("current_alpha", currentTransparency);
 	}
 
@@ -50,13 +48,13 @@ public class TileSpectrometer extends TileMod implements ITickable {
 	@Override
 	public void update() {
 		if (worldObj.isRemote) return;
-		if (tick < 10) tick++;
+		if (tick < 20) tick++;
 		else {
 			tick = 0;
 			beams = null;
 			maxColor = new Color(0, 0, 0);
 			maxTransparency = 0;
-			markDirty();
+			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		}
 
 		if (currentColor.getRGB() != maxColor.getRGB() || currentTransparency != maxTransparency) {

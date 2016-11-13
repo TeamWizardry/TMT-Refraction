@@ -36,7 +36,7 @@ public class ModBlocks {
 		PRISM = new BlockPrism();
 		REF_CHAMBER = new BlockReflectionChamber();
 		SPLITTER = new BlockSplitter();
-//		ELECTRON_EXCITER = new BlockElectronExciter();
+		ELECTRON_EXCITER = new BlockElectronExciter();
 		LIGHT_BRIDGE = new BlockLightBridge();
 		SENSOR = new BlockSensor();
 		SPECTROMETER = new BlockSpectrometer();

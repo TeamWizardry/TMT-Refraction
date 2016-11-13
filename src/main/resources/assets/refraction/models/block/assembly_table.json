@@ -4,7 +4,8 @@
 "textures": {
     "assembly_side": "refraction:blocks/assembly_side",
     "assembly_reflective": "refraction:blocks/assembly_reflective",
-    "assembly_faceup": "refraction:blocks/assembly_faceup"
+  "assembly_faceup": "refraction:blocks/assembly_faceup",
+  "particle": "refraction:blocks/assembly_side"
 },
 "elements": [ 
 {

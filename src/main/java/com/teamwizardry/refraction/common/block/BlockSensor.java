@@ -158,8 +158,6 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 		return true;
 	}
 
-
-
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(ON, (meta & 8) != 0);

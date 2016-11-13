@@ -40,9 +40,8 @@ import java.util.List;
  */
 public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 
-	public static double airIOR = 1, glassIOR = 1.2, redIOR = 0.6, greenIOR = 0.4, blueIOR = 0.2;
-
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
+	public static double airIOR = 1, glassIOR = 1.2, redIOR = 0.6, greenIOR = 0.4, blueIOR = 0.2;
 
 	public BlockPrism() {
 		super("prism", Material.GLASS);
@@ -82,7 +81,6 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 
 	private void fireColor(World worldObj, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities) {
 		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, worldObj, pos, hitPos.subtract(ref), hitPos.add(ref));
-		if (r == null) return;
 		Vec3d normal = r.data;
 		ref = refracted(airIOR + IORMod, glassIOR + IORMod, ref, normal).normalize();
 		hitPos = r.hitVec;
@@ -92,18 +90,15 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 			r = collisionRayTraceLaser(state, worldObj, pos, hitPos.add(ref), hitPos);
 			// trace backward so we don't hit hitPos first
 
-			if (r == null) break;
-			else {
-				normal = r.data.scale(-1);
-				Vec3d oldRef = ref;
-				ref = refracted(glassIOR + IORMod, airIOR + IORMod, ref, normal).normalize();
-				if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
-					ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
-					break;
-				}
-				showBeam(worldObj, hitPos, r.hitVec, color);
-				hitPos = r.hitVec;
+			normal = r.data.scale(-1);
+			Vec3d oldRef = ref;
+			ref = refracted(glassIOR + IORMod, airIOR + IORMod, ref, normal).normalize();
+			if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
+				ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
+				break;
 			}
+			showBeam(worldObj, hitPos, r.hitVec, color);
+			hitPos = r.hitVec;
 		}
 
 		new Beam(worldObj, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).spawn();
@@ -204,7 +199,6 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 		return false;
 	}
 
-	@NotNull
 	@Override
 	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
 
