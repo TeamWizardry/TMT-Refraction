@@ -64,6 +64,7 @@ public class BlockLightBridge extends BlockModContainer {
 	public BlockLightBridge() {
 		super("light_bridge", Material.GLASS);
 		setBlockUnbreakable();
+		setResistance(6000000F);
 		setSoundType(SoundType.GLASS);
 		setTickRandomly(true);
 		setLightLevel(1f);
