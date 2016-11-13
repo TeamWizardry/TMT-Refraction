@@ -45,13 +45,14 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		if (value == EnumFacing.SOUTH) {
 			GlStateManager.translate(0, 0, 0.501);
 		} else if (value == EnumFacing.NORTH) {
-			GlStateManager.translate(0, 0, -0.501);
+			GlStateManager.rotate(180, 0, 1, 0);
+			GlStateManager.translate(-1, 0, 0.501);
 		} else if (value == EnumFacing.EAST) {
 			GlStateManager.rotate(90, 0, 1, 0);
 			GlStateManager.translate(-0.5, 0, 1.01);
 		} else {
-			GlStateManager.rotate(90, 0, 1, 0);
-			GlStateManager.translate(-0.5, 0, -0.01);
+			GlStateManager.rotate(270, 0, 1, 0);
+			GlStateManager.translate(-0.5, 0, 0.01);
 		}
 		GlStateManager.scale(6.0 / 16.0, 6.0 / 16.0, 0);
 		GlStateManager.translate(5.25 / 16.0, 2.5 / 16.0, 0);
