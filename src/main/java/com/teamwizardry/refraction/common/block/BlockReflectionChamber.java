@@ -97,17 +97,17 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 		for (Beam beam : beams) {
 			Color color = beam.color;
 			if (!beam.enableEffect) {
-				aRed += color.getRed();
-				aGreen += color.getGreen();
-				aBlue += color.getBlue();
+				aRed += color.getRed() * (color.getAlpha() / 255f);
+				aGreen += color.getGreen() * (color.getAlpha() / 255f);
+				aBlue += color.getBlue() * (color.getAlpha() / 255f);
 				aAlpha += color.getAlpha();
 				aestheticCount++;
 
 				angles1.add(beam.finalLoc.subtract(beam.initLoc));
 			} else {
-				eRed += color.getRed();
-				eGreen += color.getGreen();
-				eBlue += color.getBlue();
+				eRed += color.getRed() * (color.getAlpha() / 255f);
+				eGreen += color.getGreen() * (color.getAlpha() / 255f);
+				eBlue += color.getBlue() * (color.getAlpha() / 255f);
 				eAlpha += color.getAlpha();
 				effectCount++;
 

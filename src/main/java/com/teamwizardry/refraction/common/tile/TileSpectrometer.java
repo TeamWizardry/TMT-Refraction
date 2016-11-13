@@ -48,6 +48,7 @@ public class TileSpectrometer extends TileMod implements ITickable {
 	@Override
 	public void update() {
 		if (worldObj.isRemote) return;
+
 		if (tick < 20) tick++;
 		else {
 			tick = 0;
@@ -74,9 +75,9 @@ public class TileSpectrometer extends TileMod implements ITickable {
 
 		for (Beam beam : beams) {
 			Color color = beam.color;
-			red += color.getRed();
-			green += color.getGreen();
-			blue += color.getBlue();
+			red += color.getRed() * (color.getAlpha() / 255f);
+			green += color.getGreen() * (color.getAlpha() / 255f);
+			blue += color.getBlue() * (color.getAlpha() / 255f);
 			alpha += color.getAlpha();
 		}
 		red = Math.min(red / beams.length, 255);
