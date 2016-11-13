@@ -30,7 +30,7 @@ public class LaserRenderer {
 	}
 	
 	public static void add(Vec3d start, Vec3d end, Color color) {
-		INSTANCE.lasers.put(new LaserRenderInfo(start, end, color), 1);
+		INSTANCE.lasers.put(new LaserRenderInfo(start, end, color), 2);
 	}
 	
 	@SubscribeEvent
