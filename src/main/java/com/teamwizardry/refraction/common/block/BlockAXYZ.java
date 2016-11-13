@@ -292,6 +292,25 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
                     }
                 }
             }
+            HashMap<Integer, List<Pair<BlockPos, BlockPos>>> map = new HashMap<>();
+            for (Map.Entry<DimWithPos, DimWithPos> s : mappedPositions.entrySet()) {
+                int dim = s.getKey().dim;
+                if (!map.containsKey(dim)) map.put(dim, Lists.newArrayList());
+
+                map.get(dim).add(new Pair<>(s.getValue().blockPos, s.getKey().blockPos));
+            }
+
+            for (Integer dim : map.keySet()) {
+                List<Pair<BlockPos, BlockPos>> l = map.get(dim);
+                BlockPos[] arr1 = new BlockPos[l.size()];
+                BlockPos[] arr2 = new BlockPos[l.size()];
+                for (int i = 0; i < arr1.length; i++) {
+                    arr1[i] = l.get(i).getKey();
+                    arr2[i] = l.get(i).getValue();
+                }
+
+                PacketHandler.NETWORK.sendToAll(new PacketAXYZMarks(arr1, arr2, dim));
+            }
         }
 
         for(DimWithPos s : removeQueue) {
@@ -299,26 +318,6 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
             checkedCoords.remove(s);
         }
         removeQueue.clear();
-
-        HashMap<Integer, List<Pair<BlockPos, BlockPos>>> map = new HashMap<>();
-        for (Map.Entry<DimWithPos, DimWithPos> s : mappedPositions.entrySet()) {
-            int dim = s.getKey().dim;
-            if (!map.containsKey(dim)) map.put(dim, Lists.newArrayList());
-
-            map.get(dim).add(new Pair<>(s.getValue().blockPos, s.getKey().blockPos));
-        }
-
-        for (Integer dim : map.keySet()) {
-            List<Pair<BlockPos, BlockPos>> l = map.get(dim);
-            BlockPos[] arr1 = new BlockPos[l.size()];
-            BlockPos[] arr2 = new BlockPos[l.size()];
-            for (int i = 0; i < arr1.length; i++) {
-                arr1[i] = l.get(i).getKey();
-                arr2[i] = l.get(i).getValue();
-            }
-
-            PacketHandler.NETWORK.sendToAll(new PacketAXYZMarks(arr1, arr2, dim));
-        }
     }
 
     public void save(World world) {
