@@ -368,8 +368,7 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
         DimWithPos key = new DimWithPos(dim, pos);
         if (mappedPositions.containsKey(key)) {
             BlockPos mapPos = mappedPositions.get(key).blockPos;
-            if (world.isAirBlock(mapPos))
-                beam.createSimilarBeam(new Vec3d(mapPos).addVector(0.5, 0.5, 0.5), beam.slope).setColor(c).spawn();
+            beam.createSimilarBeam(new Vec3d(mapPos).addVector(0.5, 0.5, 0.5), beam.slope).setColor(c).spawn();
         }
     }
 }
