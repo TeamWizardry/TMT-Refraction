@@ -44,6 +44,8 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 		super("sensor", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
+
+		setDefaultState(getDefaultState().withProperty(ON, false));
 	}
 
 	@Override

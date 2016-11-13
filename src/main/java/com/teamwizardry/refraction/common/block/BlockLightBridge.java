@@ -66,6 +66,7 @@ public class BlockLightBridge extends BlockModContainer {
 		setBlockUnbreakable();
 		setSoundType(SoundType.GLASS);
 		setTickRandomly(true);
+		setLightLevel(1f);
 
 		setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.Axis.Y).withProperty(UP, false).withProperty(DOWN, false).withProperty(LEFT, false).withProperty(RIGHT, false));
 	}

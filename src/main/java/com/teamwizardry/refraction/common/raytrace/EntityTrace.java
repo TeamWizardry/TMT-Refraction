@@ -12,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +27,6 @@ public class EntityTrace
 	 *            The restingDistance to check
 	 * @return The first block or entity along the given ray
 	 */
-	@NotNull
 	public static RayTraceResult cast(World world, Vec3d pos, Vec3d dir, double distance, boolean ignoreEntities)
 	{
 		RayTraceResult focusedBlock = blockTrace(world, pos, dir, distance);
