@@ -154,6 +154,16 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 	}
 
 	@Override
+	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return blockState.getValue(ON) ? 15 : 0;
+	}
+
+	@Override
+	public boolean canProvidePower(IBlockState state) {
+		return true;
+	}
+
+	@Override
 	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return true;
 	}
