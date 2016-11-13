@@ -3,9 +3,11 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.client.render.RenderSplitter;
-import com.teamwizardry.refraction.common.light.ILaserTrace;
+import com.teamwizardry.refraction.api.ILaserTrace;
+import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -24,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -32,7 +35,7 @@ import java.util.Random;
 /**
  * Created by LordSaad44
  */
-public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPrecision {
+public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPrecision, IBeamHandler {
 
 	public BlockSplitter() {
 		super("splitter", Material.IRON);
@@ -47,6 +50,31 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 
 	private TileSplitter getTE(World world, BlockPos pos) {
 		return (TileSplitter) world.getTileEntity(pos);
+	}
+
+	@Override
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
+		getTE(world, pos).handle(beams);
+	}
+
+	@Override
+	public float getRotX(World worldIn, BlockPos pos) {
+		return getTE(worldIn, pos).getRotX();
+	}
+
+	@Override
+	public void setRotX(World worldIn, BlockPos pos, float x) {
+		getTE(worldIn, pos).setRotX(x);
+	}
+
+	@Override
+	public float getRotY(World worldIn, BlockPos pos) {
+		return getTE(worldIn, pos).getRotY();
+	}
+
+	@Override
+	public void setRotY(World worldIn, BlockPos pos, float y) {
+		getTE(worldIn, pos).setRotY(y);
 	}
 
 	@Override
@@ -95,10 +123,10 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 		return false;
 	}
 
+	@NotNull
 	@SuppressWarnings("deprecation")
-	@Nullable
 	@Override
-	public RayTraceResult collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
+	public RayTraceResult collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
 		double pixels = 1.0 / 16.0;
 
 		AxisAlignedBB aabb = new AxisAlignedBB(pixels, 0, pixels, 1 - pixels, pixels, 1 - pixels).offset(-0.5, -pixels / 2, -0.5);

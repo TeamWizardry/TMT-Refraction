@@ -2,9 +2,10 @@ package com.teamwizardry.refraction.common.block;
 
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.refraction.api.IOpticConnectable;
-import com.teamwizardry.refraction.common.tile.TileTranslocator;
+import com.teamwizardry.refraction.api.PosUtils;
+import com.teamwizardry.refraction.common.light.Beam;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -14,14 +15,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.List;
  * @author WireSegal
  *         Created at 10:33 PM on 10/31/16.
  */
-public class BlockTranslocator extends BlockModContainer implements IOpticConnectable {
+public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 
     public static final PropertyDirection DIRECTION = PropertyDirection.create("side");
     public static final PropertyBool CONNECTED = PropertyBool.create("connected");
@@ -48,15 +49,9 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
         setSoundType(SoundType.GLASS);
     }
 
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState iBlockState) {
-        return new TileTranslocator();
-    }
-
     @Nonnull
     @Override
-    public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos, EnumFacing facing) {
+    public List<EnumFacing> getAvailableFacings(@NotNull IBlockState state, @NotNull IBlockAccess source, @NotNull BlockPos pos, @NotNull EnumFacing facing) {
         if (facing != state.getValue(DIRECTION)) return Lists.newArrayList();
         return Lists.newArrayList(state.getValue(DIRECTION).getOpposite());
     }
@@ -135,5 +130,19 @@ public class BlockTranslocator extends BlockModContainer implements IOpticConnec
     @Override
     public int damageDropped(IBlockState state) {
         return 0;
+    }
+
+    @Override
+    public void handleFiberBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+        IBlockState state = world.getBlockState(pos);
+        EnumFacing dir = state.getValue(BlockTranslocator.DIRECTION);
+        if (!beam.slope.equals(PosUtils.getVecFromFacing(dir)))
+            return;
+        if (!world.isAirBlock(pos.offset(dir)))
+        {
+            Vec3d slope = beam.slope.normalize().scale(15.0/16.0);
+            beam.createSimilarBeam(PosUtils.getSideCenter(pos, dir).add(slope), PosUtils.getVecFromFacing(dir)).spawn();
+        }
+        else beam.createSimilarBeam(PosUtils.getSideCenter(pos, dir), PosUtils.getVecFromFacing(dir)).spawn();
     }
 }

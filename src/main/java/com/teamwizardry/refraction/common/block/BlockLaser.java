@@ -2,7 +2,7 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.common.light.ILightSource;
+import com.teamwizardry.refraction.api.ILightSource;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.tile.TileLaser;
 import net.minecraft.block.SoundType;
@@ -20,14 +20,17 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by LordSaad44
  */
-public class BlockLaser extends BlockModContainer {
+public class BlockLaser extends BlockModContainer implements ILightSource {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
@@ -35,8 +38,26 @@ public class BlockLaser extends BlockModContainer {
 		super("laser", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
+		setTickRandomly(true);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+	}
+
+	@Override
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
+		worldIn.scheduleUpdate(pos, this, 20);
+	}
+
+	@Override
+	public void updateTick(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random random) {
+		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
+		worldIn.scheduleUpdate(pos, this, 20);
+	}
+
+	@Override
+	public void generateBeam(@NotNull World world, @Nonnull BlockPos pos) {
+		getTE(world, pos).generateBeam();
 	}
 
 	private TileLaser getTE(World world, BlockPos pos) {
@@ -100,14 +121,6 @@ public class BlockLaser extends BlockModContainer {
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileEntity entity = world.getTileEntity(pos);
-		if (entity instanceof ILightSource)
-			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
-		super.breakBlock(world, pos, state);
 	}
 
 	@Nullable

@@ -1,11 +1,14 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
-import com.teamwizardry.refraction.common.light.ILaserTrace;
+import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.api.ILaserTrace;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.raytrace.Tri;
-import com.teamwizardry.refraction.common.tile.TilePrism;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -15,7 +18,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
@@ -25,16 +27,20 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.List;
 
 /**
  * Created by LordSaad44
  */
-public class BlockPrism extends BlockModContainer implements ILaserTrace {
+public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
+
+	public static double airIOR = 1, glassIOR = 1.2, redIOR = 0.6, greenIOR = 0.4, blueIOR = 0.2;
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
@@ -42,6 +48,75 @@ public class BlockPrism extends BlockModContainer implements ILaserTrace {
 		super("prism", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
+	}
+
+	@Override
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
+		IBlockState state = world.getBlockState(pos);
+
+		for (Beam beam : beams) {
+			int sum = beam.color.getRed() + beam.color.getBlue() + beam.color.getGreen();
+			double red = beam.color.getAlpha() * beam.color.getRed() / sum;
+			double green = beam.color.getAlpha() * beam.color.getGreen() / sum;
+			double blue = beam.color.getAlpha() * beam.color.getBlue() / sum;
+
+			Vec3d hitPos = beam.finalLoc;
+
+			if (!beam.enableEffect) {
+				if (beam.color.getRed() != 0)
+					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam.enableEffect, beam.ignoreEntities);
+				if (beam.color.getGreen() != 0)
+					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam.enableEffect, beam.ignoreEntities);
+				if (beam.color.getBlue() != 0)
+					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam.enableEffect, beam.ignoreEntities);
+			} else {
+				if (beam.color.getRed() != 0)
+					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam.enableEffect, beam.ignoreEntities);
+				if (beam.color.getGreen() != 0)
+					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam.enableEffect, beam.ignoreEntities);
+				if (beam.color.getBlue() != 0)
+					fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam.enableEffect, beam.ignoreEntities);
+			}
+		}
+	}
+
+	private void fireColor(World worldObj, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities) {
+		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, worldObj, pos, hitPos.subtract(ref), hitPos.add(ref));
+		if (r == null) return;
+		Vec3d normal = r.data;
+		ref = refracted(airIOR + IORMod, glassIOR + IORMod, ref, normal).normalize();
+		hitPos = r.hitVec;
+
+		for (int i = 0; i < 5; i++) {
+
+			r = collisionRayTraceLaser(state, worldObj, pos, hitPos.add(ref), hitPos);
+			// trace backward so we don't hit hitPos first
+
+			if (r == null) break;
+			else {
+				normal = r.data.scale(-1);
+				Vec3d oldRef = ref;
+				ref = refracted(glassIOR + IORMod, airIOR + IORMod, ref, normal).normalize();
+				if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
+					ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
+					break;
+				}
+				showBeam(worldObj, hitPos, r.hitVec, color);
+				hitPos = r.hitVec;
+			}
+		}
+
+		new Beam(worldObj, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).spawn();
+	}
+
+	private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {
+		double r = from / to, c = -normal.dotProduct(vec);
+		return vec.scale(r).add(normal.scale((r * c) - Math.sqrt(1 - (r * r) * (1 - (c * c)))));
+	}
+
+	private void showBeam(World worldObj, Vec3d start, Vec3d end, Color color) {
+		PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
+				new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
 	}
 
 	@Override
@@ -129,8 +204,9 @@ public class BlockPrism extends BlockModContainer implements ILaserTrace {
 		return false;
 	}
 
+	@NotNull
 	@Override
-	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
+	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
 
 		EnumFacing facing = blockState.getValue(FACING);
 
@@ -204,12 +280,6 @@ public class BlockPrism extends BlockModContainer implements ILaserTrace {
 			return null;
 
 		return new RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
-	}
-
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
-		return new TilePrism();
 	}
 
 	public static class RayTraceResultData<T> extends RayTraceResult {

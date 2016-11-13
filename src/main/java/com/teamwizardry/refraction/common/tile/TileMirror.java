@@ -1,24 +1,23 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.awt.Color;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.librarianlib.common.util.saving.Save;
+import com.teamwizardry.refraction.common.light.Beam;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
-import com.teamwizardry.librarianlib.common.util.math.Matrix4;
-import com.teamwizardry.librarianlib.common.util.saving.Save;
-import com.teamwizardry.refraction.api.IPrecisionTile;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
+
+import java.awt.*;
 
 /**
  * Created by LordSaad44
  */
 @TileRegister("mirror")
-public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPrecisionTile {
+public class TileMirror extends TileMod implements ITickable {
 
 	@Save
 	public float rotXUnpowered, rotYUnpowered, rotXPowered = Float.NaN, rotYPowered = Float.NaN;
@@ -39,12 +38,10 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 		return INFINITE_EXTENT_AABB;
 	}
 
-	@Override
 	public float getRotX() {
 		return rotDestX;
 	}
 
-	@Override
 	public void setRotX(float rotX) {
 		if (transitionX) return;
 		if (rotX == rotDestX) return;
@@ -55,12 +52,10 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 		markDirty();
 	}
 
-	@Override
 	public float getRotY() {
 		return rotDestY;
 	}
 
-	@Override
 	public void setRotY(float rotY) {
 		if (transitionY) return;
 		if (rotY == rotDestY) return;
@@ -71,7 +66,6 @@ public class TileMirror extends TileMod implements IBeamHandler, ITickable, IPre
 		markDirty();
 	}
 
-	@Override
 	public void handle(Beam... beams) {
 		this.beams = beams;
 		if (beams.length == 0) return;

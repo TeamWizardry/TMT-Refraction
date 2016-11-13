@@ -1,17 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.awt.Color;
-import java.util.concurrent.ThreadLocalRandom;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
@@ -23,14 +11,26 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.soundmanager.IConditionalSoundEmitter;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.ILightSource;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.init.ModBlocks;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
+
+import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44
  */
 @TileRegister("laser")
-public class TileLaser extends TileMod implements ILightSource, ITickable, IConditionalSoundEmitter {
+public class TileLaser extends TileMod implements ITickable, IConditionalSoundEmitter {
 
 	public ItemStackHandler inventory = new ItemStackHandler(1) {
 		@Override
@@ -44,9 +44,12 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ICond
 			else return stack;
 		}
 	};
+
 	private int tick = 0;
 
-	public TileLaser() {
+	@Override
+	public void onLoad() {
+		worldObj.scheduleUpdate(pos, ModBlocks.LASER, 1);
 	}
 
 	@Override
@@ -75,13 +78,6 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ICond
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) inventory : super.getCapability(capability, facing);
 	}
 
-	@Override
-	public void onLoad() {
-		super.onLoad();
-		ReflectionTracker.getInstance(worldObj).addSource(this);
-	}
-
-	@Override
 	public void generateBeam() {
 		if (inventory.getStackInSlot(0) != null && inventory.getStackInSlot(0).stackSize > 0) {
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);

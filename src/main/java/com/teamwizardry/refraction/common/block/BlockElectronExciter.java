@@ -2,8 +2,8 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.common.light.ILightSource;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockElectronExciter extends BlockModContainer {
+public class BlockElectronExciter extends BlockModContainer implements IBeamHandler {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	private static final PropertyBool UP = PropertyBool.create("up");
@@ -61,7 +61,12 @@ public class BlockElectronExciter extends BlockModContainer {
 		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing().getOpposite());
 	}
 
-    @NotNull
+	@Override
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
+		getTE(world, pos).handle(beams);
+	}
+
+	@NotNull
     @Override
     public IBlockState getActualState(@NotNull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         EnumFacing facing = state.getValue(FACING);
@@ -147,15 +152,6 @@ public class BlockElectronExciter extends BlockModContainer {
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileEntity entity = world.getTileEntity(pos);
-		if (entity instanceof ILightSource)
-			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
-
-		super.breakBlock(world, pos, state);
 	}
 
 	@Nullable

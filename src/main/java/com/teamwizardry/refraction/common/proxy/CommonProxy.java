@@ -22,7 +22,7 @@ import com.teamwizardry.refraction.init.ModEntities;
 import com.teamwizardry.refraction.init.ModItems;
 import com.teamwizardry.refraction.init.ModSounds;
 import com.teamwizardry.refraction.init.ModTab;
-import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
+import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import com.teamwizardry.refraction.init.recipies.CraftingRecipes;
 
 /**
@@ -48,7 +48,7 @@ public class CommonProxy {
 
 	public void init(FMLInitializationEvent event) {
 		CraftingRecipes.init();
-		AssemblyRecipies.init();
+		AssemblyRecipes.init();
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {

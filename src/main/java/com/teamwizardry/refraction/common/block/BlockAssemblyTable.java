@@ -2,7 +2,9 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.client.render.RenderAssemblyTable;
+import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.tile.TileAssemblyTable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -18,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -25,7 +28,7 @@ import java.util.List;
 /**
  * Created by LordSaad44
  */
-public class BlockAssemblyTable extends BlockModContainer {
+public class BlockAssemblyTable extends BlockModContainer implements IBeamHandler {
 
 	public BlockAssemblyTable() {
 		super("assembly_table", Material.IRON);
@@ -45,6 +48,11 @@ public class BlockAssemblyTable extends BlockModContainer {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
+	}
+
+	@Override
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
+		getTE(world, pos).handle(beams);
 	}
 
 	@Override

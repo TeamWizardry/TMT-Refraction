@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.common.effect;
 
 import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
-import com.teamwizardry.refraction.common.light.ILightSource;
+import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.api.ILightSource;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
