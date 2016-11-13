@@ -81,6 +81,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 
 	private void fireColor(World worldObj, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities) {
 		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, worldObj, pos, hitPos.subtract(ref), hitPos.add(ref));
+		assert r != null;
 		Vec3d normal = r.data;
 		ref = refracted(airIOR + IORMod, glassIOR + IORMod, ref, normal).normalize();
 		hitPos = r.hitVec;
@@ -90,6 +91,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 			r = collisionRayTraceLaser(state, worldObj, pos, hitPos.add(ref), hitPos);
 			// trace backward so we don't hit hitPos first
 
+			assert r != null;
 			normal = r.data.scale(-1);
 			Vec3d oldRef = ref;
 			ref = refracted(glassIOR + IORMod, airIOR + IORMod, ref, normal).normalize();

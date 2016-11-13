@@ -86,7 +86,7 @@ public class TileLaser extends TileMod implements ITickable, IConditionalSoundEm
 			Color color = new Color(255, 255, 255, Constants.GLOWSTONE_ALPHA);
 			new Beam(worldObj, center, vec, color).spawn();
 
-			if (tick < 500) tick++;
+			if (tick < Constants.GLOWSTONE_FUEL_EXPIRE_DELAY) tick++;
 			else {
 				tick = 0;
 				inventory.getStackInSlot(0).stackSize--;
