@@ -236,12 +236,12 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 //		matrixB.translate(new Vec3d(-0.5, -0.5, -0.5));
 
 		Vec3d
-				a = new Vec3d(1.0e-3, 0, 0), // This needs to be offset
-				b = new Vec3d(1, 0, 0.5),
-				c = new Vec3d(1.0e-3, 0, 1), // and this too. Just so that blue refracts in ALL cases
-				A = a.addVector(0, 1, 0),
-				B = b.addVector(0, 1, 0),
-				C = c.addVector(0, 1, 0);
+				a = new Vec3d(0.001, 0.001, 0), // This needs to be offset
+				b = new Vec3d(1, 0.001, 0.5),
+				c = new Vec3d(0.001, 0.001, 1), // and this too. Just so that blue refracts in ALL cases
+				A = a.addVector(0, 0.998, 0),
+				B = b.addVector(0, 0.998, 0), // these y offsets are to fix translocation issues
+				C = c.addVector(0, 0.998, 0);
 
 		Tri[] tris = new Tri[]{
 				new Tri(a, b, c),

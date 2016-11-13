@@ -1,22 +1,6 @@
 package com.teamwizardry.refraction.init;
 
-import com.teamwizardry.refraction.common.block.BlockAssemblyTable;
-import com.teamwizardry.refraction.common.block.BlockCreativeLaser;
-import com.teamwizardry.refraction.common.block.BlockDiscoBall;
-import com.teamwizardry.refraction.common.block.BlockElectronExciter;
-import com.teamwizardry.refraction.common.block.BlockLaser;
-import com.teamwizardry.refraction.common.block.BlockLens;
-import com.teamwizardry.refraction.common.block.BlockLightBridge;
-import com.teamwizardry.refraction.common.block.BlockMagnifier;
-import com.teamwizardry.refraction.common.block.BlockMirror;
-import com.teamwizardry.refraction.common.block.BlockOpticFiber;
-import com.teamwizardry.refraction.common.block.BlockPrism;
-import com.teamwizardry.refraction.common.block.BlockReflectionChamber;
-import com.teamwizardry.refraction.common.block.BlockReflectiveAlloyBlock;
-import com.teamwizardry.refraction.common.block.BlockSensor;
-import com.teamwizardry.refraction.common.block.BlockSpectrometer;
-import com.teamwizardry.refraction.common.block.BlockSplitter;
-import com.teamwizardry.refraction.common.block.BlockTranslocator;
+import com.teamwizardry.refraction.common.block.*;
 
 /**
  * Created by LordSaad44
@@ -40,6 +24,7 @@ public class ModBlocks {
 	public static BlockCreativeLaser CREATIVE_LASER;
 	public static BlockReflectiveAlloyBlock REFLECTIVE_ALLOY_BLOCK;
 	public static BlockTranslocator TRANSLOCATOR;
+	public static BlockAXYZ AXYZ;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -59,6 +44,7 @@ public class ModBlocks {
 		CREATIVE_LASER = new BlockCreativeLaser();
 		REFLECTIVE_ALLOY_BLOCK = new BlockReflectiveAlloyBlock();
 		TRANSLOCATOR = new BlockTranslocator();
+		AXYZ = new BlockAXYZ();
 	}
 
 	public static void initModels() {
