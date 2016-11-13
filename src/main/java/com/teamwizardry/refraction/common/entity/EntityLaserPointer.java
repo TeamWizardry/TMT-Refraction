@@ -28,27 +28,27 @@ import java.util.UUID;
  * Created by TheCodeWarrior
  */
 public class EntityLaserPointer extends EntityLivingBase implements IEntityAdditionalSpawnData {
-	public static final DataParameter<Byte> AXIS_HIT = EntityDataManager.<Byte>createKey(EntityLaserPointer.class, DataSerializers.BYTE);
+	public static final DataParameter<Byte> AXIS_HIT = EntityDataManager.createKey(EntityLaserPointer.class, DataSerializers.BYTE);
+	public static final DataParameter<Boolean> HAND_HIT = EntityDataManager.createKey(EntityLaserPointer.class, DataSerializers.BOOLEAN);
+
+	private WeakReference<EntityPlayer> player;
 	
-	WeakReference<EntityPlayer> player;
-	
-	public EntityLaserPointer(World worldIn, EntityPlayer player) {
+	public EntityLaserPointer(World worldIn, EntityPlayer player, boolean hit) {
 		super(worldIn);
 		this.player = new WeakReference<>(player);
 		this.setSize(0.1F, 0.1F);
+		dataManager.set(HAND_HIT, hit);
 	}
 	
 	public EntityLaserPointer(World worldIn) {
 		super(worldIn);
 		this.setSize(0.1F, 0.1F);
 	}
-	
-	
-	
+
 	@Override
 	public void onEntityUpdate() {
 	}
-	
+
 	@Override
 	protected void damageEntity(DamageSource damageSrc, float damageAmount) {
 		// noop
@@ -94,12 +94,13 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 	public RayTraceResult rayTrace(EntityPlayer player, double blockReachDistance)
 	{
 		Vec3d cross = player.getLook(1).crossProduct(new Vec3d(0, player.getEyeHeight(), 0)).normalize().scale(player.width / 2);
+		if (!dataManager.get(HAND_HIT)) cross = cross.scale(-1);
 		Vec3d vec3d = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord, player.posZ + cross.zCoord);
 		Vec3d vec3d1 = this.getVectorForRotation(player.rotationPitch, player.rotationYawHead);
 		Vec3d vec3d2 = vec3d.addVector(vec3d1.xCoord * blockReachDistance, vec3d1.yCoord * blockReachDistance, vec3d1.zCoord * blockReachDistance);
 		return player.worldObj.rayTraceBlocks(vec3d, vec3d2, false, false, true);
 	}
-	
+
 	@Override
 	public EnumHandSide getPrimaryHand() {
 		return null;
@@ -108,14 +109,15 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataManager.register(AXIS_HIT, Byte.valueOf((byte)0));
+		this.dataManager.register(AXIS_HIT, (byte) 0);
+		this.dataManager.register(HAND_HIT, false);
 	}
 	
 	@Override
 	public Iterable<ItemStack> getArmorInventoryList() {
 		return ImmutableList.of();
 	}
-	
+
 	@Nullable
 	@Override
 	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
