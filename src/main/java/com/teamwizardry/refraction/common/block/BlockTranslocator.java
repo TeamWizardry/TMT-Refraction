@@ -3,9 +3,13 @@ package com.teamwizardry.refraction.common.block;
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.PosUtils;
+import com.teamwizardry.refraction.common.effect.EffectDisperse;
 import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.EffectTracker;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -14,6 +18,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -138,11 +143,30 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
         EnumFacing dir = state.getValue(BlockTranslocator.DIRECTION);
         if (!beam.slope.equals(PosUtils.getVecFromFacing(dir)))
             return;
-        if (!world.isAirBlock(pos.offset(dir)))
-        {
-            Vec3d slope = beam.slope.normalize().scale(15.0/16.0);
-            beam.createSimilarBeam(PosUtils.getSideCenter(pos, dir).add(slope), PosUtils.getVecFromFacing(dir)).spawn();
+
+        Effect effect = EffectTracker.getEffect(beam);
+        if (effect instanceof EffectDisperse) {
+            IBlockState axyz = world.getBlockState(pos.offset(dir));
+            IBlockState check2 = world.getBlockState(pos.offset(dir, 2));
+            if (axyz.getBlock() == ModBlocks.AXYZ && check2.getBlock().isAir(check2, world, pos.offset(dir, 2))) {
+                BlockAXYZ.DimWithPos key = new BlockAXYZ.DimWithPos(world.provider.getDimension(), pos.offset(dir));
+                if (ModBlocks.AXYZ.mappedPositions.containsKey(key)) {
+                    BlockAXYZ.DimWithPos mapped = ModBlocks.AXYZ.mappedPositions.get(key);
+                    BlockAXYZ.DimWithPos newKey = new BlockAXYZ.DimWithPos(world.provider.getDimension(), pos.offset(dir, 2));
+                    ModBlocks.AXYZ.mappedPositions.remove(key);
+                    ModBlocks.AXYZ.mappedPositions.put(newKey, mapped);
+
+                    world.setBlockState(pos.offset(dir), Blocks.AIR.getDefaultState());
+                    world.setBlockState(pos.offset(dir, 2), axyz);
+
+                    return;
+                }
+            } else if (check2.getBlock() == ModBlocks.AXYZ) return;
         }
-        else beam.createSimilarBeam(PosUtils.getSideCenter(pos, dir), PosUtils.getVecFromFacing(dir)).spawn();
+
+        if (!world.isAirBlock(pos.offset(dir))) {
+            Vec3d slope = beam.slope.normalize().scale(15.0 / 16.0);
+            beam.createSimilarBeam(PosUtils.getSideCenter(pos, dir).add(slope), PosUtils.getVecFromFacing(dir)).spawn();
+        } else beam.createSimilarBeam(PosUtils.getSideCenter(pos, dir), PosUtils.getVecFromFacing(dir)).spawn();
     }
 }

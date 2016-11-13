@@ -13,7 +13,6 @@ import com.teamwizardry.refraction.init.ModBlocks;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import javafx.util.Pair;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPistonExtension;
 import net.minecraft.block.BlockPistonMoving;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
@@ -259,7 +258,6 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
                 Block block = getBlockAt(s);
                 if(block == Blocks.PISTON_EXTENSION) {
                     IBlockState state = getStateAt(s);
-                    boolean sticky = BlockPistonExtension.EnumPistonType.STICKY == state.getValue(BlockPistonMoving.TYPE);
                     EnumFacing dir = state.getValue(BlockPistonMoving.FACING);
 
                     MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
@@ -287,20 +285,9 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
                         BlockPos pos2 = dPos.blockPos;
                         world = server.worldServerForDimension(worldId);
 
-                        IBlockState srcState = world.getBlockState(pos2);
 
-                        if(!sticky && canPush(world, pos2)) {
-                            Material destMat = world.getBlockState(pos2.offset(dir)).getMaterial();
-                            if(world.isAirBlock(pos2.offset(dir)) || destMat.isReplaceable()) {
-                                world.setBlockState(pos2, Blocks.AIR.getDefaultState());
-                                world.setBlockState(pos2.offset(dir), srcState, 1 | 2);
-                                mappedPositions.put(s, new DimWithPos(world.provider.getDimension(), pos2.offset(dir)));
-                            }
-                        }
-
-                        dPos = mappedPositions.get(s);
                         mappedPositions.remove(s);
-                        mappedPositions.put(newPos, dPos);
+                        mappedPositions.put(newPos, new DimWithPos(world.provider.getDimension(), pos2.offset(dir)));
                         save(world);
                     }
                 }
@@ -392,8 +379,7 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
         DimWithPos key = new DimWithPos(dim, pos);
         if (mappedPositions.containsKey(key)) {
             BlockPos mapPos = mappedPositions.get(key).blockPos;
-            if (canPush(world, mapPos))
-                beam.createSimilarBeam(new Vec3d(mapPos).addVector(0.5, 0.5, 0.5), beam.slope).setColor(c).spawn();
+            beam.createSimilarBeam(new Vec3d(mapPos).addVector(0.5, 0.5, 0.5), beam.slope).setColor(c).spawn();
         }
     }
 }
