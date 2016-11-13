@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ import java.util.List;
 @TileRegister("reflection_chamber")
 public class TileReflectionChamber extends TileMod implements ITickable {
 
-	public HashMap<Beam, Integer> beams = new HashMap<>();
+	public List<Beam> beams = new ArrayList<>();
 	@Save
 	private long worldTime = 0;
 
@@ -55,7 +54,7 @@ public class TileReflectionChamber extends TileMod implements ITickable {
 		int aGreen = 0, eGreen = 0;
 		int aBlue = 0, eBlue = 0;
 		int aAlpha = 0, eAlpha = 0;
-		for (Beam beam : beams.keySet()) {
+		for (Beam beam : beams) {
 			Color color = beam.color;
 			if (!beam.enableEffect) {
 				aRed += color.getRed();

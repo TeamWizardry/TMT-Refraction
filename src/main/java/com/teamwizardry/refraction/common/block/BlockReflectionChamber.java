@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -81,9 +82,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
 		TileReflectionChamber chamber = (TileReflectionChamber) world.getTileEntity(pos);
 		if (chamber != null)
-			for (Beam beam : beams) {
-				chamber.beams.put(beam, 20);
-			}
+			Collections.addAll(chamber.beams, beams);
 	}
 
 	@Override
