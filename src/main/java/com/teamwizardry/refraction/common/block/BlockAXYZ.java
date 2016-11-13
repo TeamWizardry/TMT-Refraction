@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.librarianlib.common.base.block.ItemModBlock;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.IBeamHandler;
@@ -19,9 +20,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,6 +42,9 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -49,6 +55,7 @@ import java.util.List;
  * @author WireSegal
  *         Created at 9:34 PM on 11/12/16.
  */
+@SuppressWarnings("StatementWithEmptyBody")
 public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectable {
 
     public static final PropertyBool[] PROPS = new PropertyBool[] {
@@ -370,5 +377,38 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
             BlockPos mapPos = mappedPositions.get(key).blockPos;
             beam.createSimilarBeam(new Vec3d(mapPos).addVector(0.5, 0.5, 0.5), beam.slope).setColor(c).spawn();
         }
+    }
+
+    @Nullable
+    @Override
+    public ItemBlock createItemForm() {
+
+        return new ItemModBlock(this) {
+
+            private int RAND_NAMES = 0;
+
+            @NotNull
+            @Override
+            public String getUnlocalizedName(ItemStack par1ItemStack) {
+                if (par1ItemStack.getItemDamage() == 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+                    if (RAND_NAMES == 0)
+                        for (RAND_NAMES = 0; I18n.hasKey(super.getUnlocalizedName(par1ItemStack) + "." + (RAND_NAMES + 1) + ".name"); RAND_NAMES++);
+
+                    StackTraceElement stackTrace[] = (new Throwable()).getStackTrace();
+                    if ("net.minecraft.item.Item".equals(stackTrace[1].getClassName())) {
+                        long curTime = System.currentTimeMillis();
+                        if (curTime - prevTime > 1000L || curRand == -1)
+                            curRand = rand.nextInt(RAND_NAMES);
+                        prevTime = curTime;
+                        return super.getUnlocalizedName(par1ItemStack) + "." + curRand;
+                    }
+                }
+                return super.getUnlocalizedName(par1ItemStack);
+            }
+
+            private Random rand = new Random();
+            private long prevTime = 0x80000000L;
+            private int curRand = -1;
+        };
     }
 }

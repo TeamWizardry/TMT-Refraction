@@ -15,7 +15,17 @@ tile.refraction:creative_laser.name=Quantum Cascading Laser Of Infinite Creativi
 tile.refraction:optic_fiber.name=Optical Fibril Coaxial
 tile.refraction:translocator.name=Photovoltaic Teleposition Array
 tile.refraction:reflective_alloy_block.name=Reflective Alloy Block
-tile.refraction:axyz.name=Asynchronous Force-Defined Quantum Translocational Anomaly
+tile.refraction:axyz.name=AFDQTA (Asynchronous Force-Defined Quantum Translocational Anomaly)
+tile.refraction:axyz.0.name=AFDQTA (Asynchronous Force-Defined Quantum Translocational Anomaly)
+tile.refraction:axyz.1.name=AFDQTA (Absolutely Fantastic Duck-Question True Asker)
+tile.refraction:axyz.2.name=AFDQTA (Anglican-French Deal Questioning Trade Agreements)
+tile.refraction:axyz.3.name=AFDQTA (Articulated Fluctuating Deformed Quantum Tethering Actuators)
+tile.refraction:axyz.4.name=AFDQTA (Atypically Formed Devolved Quantum Tunnel Actualizer)
+tile.refraction:axyz.5.name=AFDQTA (A Friggin Daunting Quantum Tuberous Array)
+tile.refraction:axyz.6.name=AFDQTA (Apart, Fools Do Question True Agnomens)
+tile.refraction:axyz.7.name=AFDQTA (Attacking, Flampling Demon Quests To Agadeem)
+tile.refraction:axyz.8.name=AFDQTA (A Fool Doesn't Question This Acronym)
+
 
 item.refraction:laser_pen.name=Laser Pen
 item.refraction:screw_driver.0.name=Screwdriver (1/8°)
