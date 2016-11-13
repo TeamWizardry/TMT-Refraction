@@ -11,7 +11,7 @@ import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.init.ModBlocks;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import javafx.util.Pair;
+import kotlin.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonMoving;
 import net.minecraft.block.SoundType;
@@ -300,8 +300,8 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
                 BlockPos[] arr1 = new BlockPos[l.size()];
                 BlockPos[] arr2 = new BlockPos[l.size()];
                 for (int i = 0; i < arr1.length; i++) {
-                    arr1[i] = l.get(i).getKey();
-                    arr2[i] = l.get(i).getValue();
+                    arr1[i] = l.get(i).getFirst();
+                    arr2[i] = l.get(i).getSecond();
                 }
 
                 PacketHandler.NETWORK.sendToAll(new PacketAXYZMarks(arr1, arr2, dim));
