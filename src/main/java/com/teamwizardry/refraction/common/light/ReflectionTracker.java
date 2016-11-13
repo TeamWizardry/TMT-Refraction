@@ -22,14 +22,14 @@ public class ReflectionTracker {
 
 	private transient World world;
 
-	private static WeakHashMap<World, ReflectionTracker> instances = new WeakHashMap<>();
+	private static Map<World, ReflectionTracker> instances = new HashMap<>();
 	private Set<SourcePair> sources;
 	private Map<BeamPair, Integer> delayBuffers;
 	private Multimap<BeamPair, Beam> sinkBlocks;
 
-	public ReflectionTracker() {
-		sources = Collections.newSetFromMap(new WeakHashMap<>());
-		delayBuffers = new WeakHashMap<>();
+	private ReflectionTracker() {
+		sources = new HashSet<>();
+		delayBuffers = new HashMap<>();
 		sinkBlocks = HashMultimap.create();
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -44,7 +44,7 @@ public class ReflectionTracker {
 		return world;
 	}
 
-	public ReflectionTracker setWorld(World world) {
+	private ReflectionTracker setWorld(World world) {
 		this.world = world;
 		return this;
 	}

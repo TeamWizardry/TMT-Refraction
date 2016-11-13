@@ -1,11 +1,12 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.ILightSource;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.common.tile.TileCreativeLaser;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -15,12 +16,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -30,7 +33,7 @@ import java.util.Random;
 /**
  * Created by Saad on 10/6/2016.
  */
-public class BlockCreativeLaser  extends BlockMod implements ILightSource {
+public class BlockCreativeLaser extends BlockModContainer implements ILightSource {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
@@ -46,17 +49,13 @@ public class BlockCreativeLaser  extends BlockMod implements ILightSource {
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
+		worldIn.scheduleUpdate(pos, this, 20);
 	}
-
-	@Override
-	public int tickRate(World worldIn) {
-		return 1;
-	}
-
 
 	@Override
 	public void updateTick(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random random) {
 		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
+		worldIn.scheduleUpdate(pos, this, 20);
 	}
 
 	@Override
@@ -95,6 +94,12 @@ public class BlockCreativeLaser  extends BlockMod implements ILightSource {
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
+		return new TileCreativeLaser();
 	}
 
 	@Override

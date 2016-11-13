@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Created by LordSaad44
  */
-@TileRegister("magnifier")
-public class TileMagnifier extends TileMod {
+@TileRegister("creative_laser")
+public class TileCreativeLaser extends TileMod {
 
 	@NotNull
 	@SideOnly(Side.CLIENT)
@@ -23,6 +23,6 @@ public class TileMagnifier extends TileMod {
 
 	@Override
 	public void onLoad() {
-		worldObj.scheduleUpdate(pos, ModBlocks.MAGNIFIER, 5);
+		worldObj.scheduleUpdate(pos, ModBlocks.CREATIVE_LASER, 5);
 	}
 }

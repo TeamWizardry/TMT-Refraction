@@ -11,6 +11,7 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.soundmanager.IConditionalSoundEmitter;
 import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -43,9 +44,12 @@ public class TileLaser extends TileMod implements ITickable, IConditionalSoundEm
 			else return stack;
 		}
 	};
+
 	private int tick = 0;
 
-	public TileLaser() {
+	@Override
+	public void onLoad() {
+		worldObj.scheduleUpdate(pos, ModBlocks.LASER, 1);
 	}
 
 	@Override
