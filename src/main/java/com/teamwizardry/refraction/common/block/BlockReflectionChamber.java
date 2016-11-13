@@ -152,11 +152,6 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 	}
 
 	@Override
-	public int beamDelay(@NotNull World world, @NotNull BlockPos pos) {
-		return Constants.COMBINER_DELAY;
-	}
-
-	@Override
 	public void handleFiberBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
 		Vec3d slope = beam.slope.normalize().scale(0.5);
 		beam.initLoc.subtract(slope);

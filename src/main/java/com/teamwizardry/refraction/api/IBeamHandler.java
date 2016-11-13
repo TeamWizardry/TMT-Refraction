@@ -14,6 +14,6 @@ public interface IBeamHandler {
 	void handleBeams(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam... beams);
 
 	default int beamDelay(@Nonnull World world, @Nonnull BlockPos pos) {
-		return Constants.BUFFER_DELAY;
+		return 0;
 	}
 }
