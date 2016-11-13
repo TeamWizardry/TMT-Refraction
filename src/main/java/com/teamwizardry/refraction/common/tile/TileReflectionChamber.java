@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ import java.util.List;
 @TileRegister("reflection_chamber")
 public class TileReflectionChamber extends TileMod implements ITickable {
 
-	public List<Beam> beams = new ArrayList<>();
+	public HashMap<Beam, Integer> beams = new HashMap<>();
 	@Save
 	private long worldTime = 0;
 
@@ -47,15 +48,14 @@ public class TileReflectionChamber extends TileMod implements ITickable {
 		int effectCount = 0;
 		int aestheticCount = 0;
 
-		Vec3d[] angles1 = new Vec3d[beams.size() - 1];
-		Vec3d[] angles2 = new Vec3d[beams.size() - 1];
+		List<Vec3d> angles1 = new ArrayList<>(beams.size() - 1);
+		List<Vec3d> angles2 = new ArrayList<>(beams.size() - 1);
 
 		int aRed = 0, eRed = 0;
 		int aGreen = 0, eGreen = 0;
 		int aBlue = 0, eBlue = 0;
 		int aAlpha = 0, eAlpha = 0;
-		for (int i = 0; i < beams.size() - 1; i++) {
-			Beam beam = beams.get(i);
+		for (Beam beam : beams.keySet()) {
 			Color color = beam.color;
 			if (!beam.enableEffect) {
 				aRed += color.getRed();
@@ -64,7 +64,7 @@ public class TileReflectionChamber extends TileMod implements ITickable {
 				aAlpha += color.getAlpha();
 				aestheticCount++;
 
-				angles1[i] = beam.finalLoc.subtract(beam.initLoc);
+				angles1.add(beam.finalLoc.subtract(beam.initLoc));
 			} else {
 				eRed += color.getRed();
 				eGreen += color.getGreen();
@@ -72,7 +72,7 @@ public class TileReflectionChamber extends TileMod implements ITickable {
 				eAlpha += color.getAlpha();
 				effectCount++;
 
-				angles2[i] = beam.finalLoc.subtract(beam.initLoc);
+				angles2.add(beam.finalLoc.subtract(beam.initLoc));
 			}
 		}
 		if (aestheticCount > 0) {

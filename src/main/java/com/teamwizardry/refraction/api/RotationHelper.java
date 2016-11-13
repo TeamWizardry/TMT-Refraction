@@ -2,6 +2,8 @@ package com.teamwizardry.refraction.api;
 
 import net.minecraft.util.math.Vec3d;
 
+import java.util.List;
+
 public class RotationHelper
 {
 	public static Vec3d toVec3d(float pitch, float yaw)
@@ -39,21 +41,21 @@ public class RotationHelper
 	 *            The list of vectors to average. Will be normalized.
 	 * @return The average direction of all the given vectors.
 	 */
-	public static Vec3d averageDirection(Vec3d... vectors)
+	public static Vec3d averageDirection(List<Vec3d> vectors)
 	{
 		if (vectors == null) return Vec3d.ZERO;
-		if (vectors.length == 0) return Vec3d.ZERO;
+		if (vectors.isEmpty()) return Vec3d.ZERO;
 		double x = 0;
 		double y = 0;
 		double z = 0;
 
-		for (int i = 0; i < vectors.length; i++)
+		for (Vec3d vec : vectors)
 		{
-			if (vectors[i] == null) continue;
-			vectors[i] = vectors[i].normalize();
-			x += vectors[i].xCoord;
-			y += vectors[i].yCoord;
-			z += vectors[i].zCoord;
+			if (vec == null) continue;
+			vec.normalize();
+			x += vec.xCoord;
+			y += vec.yCoord;
+			z += vec.zCoord;
 		}
 
 		return new Vec3d(x, y, z);
