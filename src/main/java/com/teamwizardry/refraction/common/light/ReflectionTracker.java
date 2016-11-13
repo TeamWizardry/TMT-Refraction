@@ -70,7 +70,12 @@ public class ReflectionTracker {
 
 		ArrayList<SourcePair> remove = new ArrayList<>();
 
+		Set<BlockPos> poses = new HashSet<>();
+
 		for (SourcePair source : sources) {
+			if (poses.contains(source.getPos())) continue;
+			poses.add(source.getPos());
+
 			Block blockAtWorld = event.world.getBlockState(source.getPos()).getBlock();
 			if (source.getSource() == blockAtWorld)
 				source.getSource().generateBeam(event.world, source.getPos());
