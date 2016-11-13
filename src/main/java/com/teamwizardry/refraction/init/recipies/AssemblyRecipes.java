@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by LordSaad44
  */
-public class AssemblyRecipies {
+public class AssemblyRecipes {
 
 	public static ArrayList<AssemblyRecipe> recipes;
 
@@ -32,5 +32,6 @@ public class AssemblyRecipies {
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.SPECTROMETER), new Color(0x59FFFFFF, true), new Color(0xB3FFFFFF, true), new ItemStack(ModBlocks.LENS, 6), new ItemStack(ModItems.REFLECTIVE_ALLOY, 6), new ItemStack(Items.DIAMOND, 2), new ItemStack(Items.DYE, 2, 4), new ItemStack(Items.DYE, 2, 10), new ItemStack(Items.DYE, 2, 1)));
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.SENSOR), new Color(0x40FF3200, true), new Color(0xB3FF0032, true), new ItemStack(ModBlocks.LENS, 6), new ItemStack(Items.REDSTONE, 3), new ItemStack(Items.DIAMOND, 1)));
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.TRANSLOCATOR, 4), new Color(0xA60000FF, true), new Color(0xCCFF0080, true), new ItemStack(ModBlocks.OPTIC_FIBER, 4), new ItemStack(Items.ENDER_PEARL), new ItemStack(Items.IRON_INGOT)));
+		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.AXYZ), new Color(0xC87000DF, true), new Color(0xFF9020FF, true), new ItemStack(ModBlocks.TRANSLOCATOR, 6), new ItemStack(Blocks.CHORUS_FLOWER), new ItemStack(Blocks.PISTON, 2)));
 	}
 }

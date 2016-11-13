@@ -1,7 +1,11 @@
 {
-	"variants": {
-		"normal": {
-			"model": "refraction:axyz"
-		}
-	}
+	"multipart": [
+		{"apply": {"model": "refraction:axyz" }},
+		{"when": { "down": "true"}, "apply": { "model": "refraction:optic_fiber_dongle", "x": 180 }},
+		{ "when": { "up": "true" }, "apply": { "model": "refraction:optic_fiber_dongle" } },
+		{ "when": { "south": "true" }, "apply": { "model": "refraction:optic_fiber_dongle", "x": 270 } },
+		{ "when": { "north": "true" }, "apply": { "model": "refraction:optic_fiber_dongle", "x": 90 } },
+		{ "when": { "west": "true" }, "apply": { "model": "refraction:optic_fiber_dongle", "x": 90, "y": 270 } },
+		{ "when": { "east": "true" }, "apply": { "model": "refraction:optic_fiber_dongle", "x": 90, "y": 90 } }
+	]
 }

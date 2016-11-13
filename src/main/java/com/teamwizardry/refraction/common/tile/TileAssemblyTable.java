@@ -12,7 +12,7 @@ import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.AssemblyRecipe;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
+import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -137,7 +137,7 @@ public class TileAssemblyTable extends TileMod {
 		}
 
 		if (getOccupiedSlotCount() <= 0) return;
-		for (AssemblyRecipe recipe : AssemblyRecipies.recipes) {
+		for (AssemblyRecipe recipe : AssemblyRecipes.recipes) {
 
 			if (recipe.getItems().size() != getOccupiedSlotCount()) continue;
 			if (red > recipe.getMaxRed()) continue;

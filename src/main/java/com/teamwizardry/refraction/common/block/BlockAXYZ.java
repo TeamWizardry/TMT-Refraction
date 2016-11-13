@@ -15,6 +15,8 @@ import net.minecraft.block.BlockPistonMoving;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +28,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
@@ -38,7 +41,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author WireSegal
@@ -46,12 +51,44 @@ import java.util.*;
  */
 public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectable {
 
+    public static final PropertyBool[] PROPS = new PropertyBool[] {
+            PropertyBool.create("down"),
+            PropertyBool.create("up"),
+            PropertyBool.create("north"),
+            PropertyBool.create("south"),
+            PropertyBool.create("west"),
+            PropertyBool.create("east")
+    };
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        for (int i = 0; i < PROPS.length; i++) {
+            EnumFacing facing = EnumFacing.VALUES[i];
+            IBlockState fiber = worldIn.getBlockState(pos.offset(facing));
+            state = state.withProperty(PROPS[i], fiber.getBlock() instanceof BlockOpticFiber &&
+                    fiber.getValue(BlockOpticFiber.FACING).contains(facing.getOpposite()));
+        }
+        return state;
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, PROPS);
+    }
+
     // Bindings
     public final Map<DimWithPos, DimWithPos> mappedPositions = new HashMap<>();
 
     private final Set<DimWithPos> removeQueue = new HashSet<>();
     private final Set<DimWithPos> checkedCoords = new HashSet<>();
     private final TObjectIntHashMap<DimWithPos> coordsToCheck = new TObjectIntHashMap<>(10, 0.5F, -1);
+
+    private final AxisAlignedBB AABB = new AxisAlignedBB(3 / 16.0, 3 / 16.0, 3 / 16.0, 13 / 16.0, 13 / 16.0, 13 / 16.0);
 
     public BlockAXYZ() {
         super("axyz", Material.GOURD);
@@ -85,6 +122,26 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
+    }
+
+    @Override
+    public boolean isFullBlock(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isFullyOpaque(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return AABB;
     }
 
     @Override
@@ -308,11 +365,12 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
     @Override
     public void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
         int dim = world.provider.getDimension();
+        Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
         DimWithPos key = new DimWithPos(dim, pos);
         if (mappedPositions.containsKey(key)) {
             BlockPos mapPos = mappedPositions.get(key).blockPos;
             if (canPush(world, mapPos))
-                beam.createSimilarBeam(new Vec3d(mapPos).addVector(0.5, 0.5, 0.5), beam.slope).spawn();
+                beam.createSimilarBeam(new Vec3d(mapPos).addVector(0.5, 0.5, 0.5), beam.slope).setColor(c).spawn();
         }
     }
 }

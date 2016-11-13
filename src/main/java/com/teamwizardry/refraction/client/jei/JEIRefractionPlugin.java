@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.client.jei;
 
 import com.teamwizardry.refraction.init.ModBlocks;
-import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
+import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import mezz.jei.api.*;
 import net.minecraft.item.ItemStack;
 
@@ -21,7 +21,7 @@ public class JEIRefractionPlugin implements IModPlugin {
 
 		registry.addRecipeHandlers(new AssemblyTableRecipeHandler());
 
-		registry.addRecipes(AssemblyRecipies.recipes);
+		registry.addRecipes(AssemblyRecipes.recipes);
 
 		registry.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.ASSEMBLY_TABLE), AssemblyTableRecipeCategory.UID);
 	}
