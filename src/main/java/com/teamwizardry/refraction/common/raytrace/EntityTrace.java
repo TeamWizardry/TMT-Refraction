@@ -1,9 +1,7 @@
 package com.teamwizardry.refraction.common.raytrace;
 
-import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
-import com.sun.istack.internal.NotNull;
 import com.teamwizardry.refraction.common.light.BeamPulsar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,8 +12,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.List;
 
@@ -42,13 +40,7 @@ public class EntityTrace
 		Vec3d cast = pos.addVector(dir.xCoord * distance, dir.yCoord * distance, dir.zCoord * distance);
 		Entity focusedEntity = null;
 		Vec3d vec = null;
-		List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(new BlockPos(pos)).addCoord(dir.xCoord * distance, dir.yCoord * distance, dir.zCoord * distance).expand(1, 1, 1), Predicates.and(new Predicate<Entity>()
-		{
-			public boolean apply(@Nullable Entity apply)
-			{
-				return apply != null && !ignoreEntities && (apply.canBeCollidedWith() || (apply instanceof EntityItem));
-			}
-		}, EntitySelectors.NOT_SPECTATING));
+		List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(new BlockPos(pos)).addCoord(dir.xCoord * distance, dir.yCoord * distance, dir.zCoord * distance).expand(1, 1, 1), Predicates.and(apply -> apply != null && !ignoreEntities && (apply.canBeCollidedWith() || (apply instanceof EntityItem)), EntitySelectors.NOT_SPECTATING));
 		double blockDistCopy = blockDistance;
 
 		int j = 0;
