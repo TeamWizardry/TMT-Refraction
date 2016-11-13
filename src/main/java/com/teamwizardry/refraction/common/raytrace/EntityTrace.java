@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.raytrace;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
+import com.sun.istack.internal.NotNull;
 import com.teamwizardry.refraction.common.light.BeamPulsar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,6 +30,7 @@ public class EntityTrace
 	 *            The restingDistance to check
 	 * @return The first block or entity along the given ray
 	 */
+	@NotNull
 	public static RayTraceResult cast(World world, Vec3d pos, Vec3d dir, double distance, boolean ignoreEntities)
 	{
 		RayTraceResult focusedBlock = blockTrace(world, pos, dir, distance);

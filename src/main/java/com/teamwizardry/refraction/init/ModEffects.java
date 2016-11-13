@@ -7,7 +7,7 @@ public class ModEffects
 {
 	public static void init()
 	{
-		EffectTracker.registerEffect(new EffectAccelerate());
+		EffectTracker.registerEffect(new EffectFreeze());
 		EffectTracker.registerEffect(new EffectAttract());
 		EffectTracker.registerEffect(new EffectBonemeal());
 		EffectTracker.registerEffect(new EffectBreak());

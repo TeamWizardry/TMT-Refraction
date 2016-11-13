@@ -24,6 +24,7 @@ import static com.teamwizardry.refraction.common.light.EffectTracker.gravityRese
 
 /**
  * Created by LordSaad44
+ * Will attract any entities that intersect with the beam. < 128 only attracts item entities.
  */
 public class EffectAttract extends Effect {
 
@@ -82,10 +83,7 @@ public class EffectAttract extends Effect {
 			}
 		}
 
-		int pulled = 0;
 		for (Entity entity : toPull) {
-			pulled++;
-			if (pulled > 200) break;
 			setEntityMotion(entity);
 			gravityReset.put(entity, 30);
 			if (entity instanceof EntityPlayer)

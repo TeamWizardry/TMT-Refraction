@@ -25,6 +25,7 @@ import static com.teamwizardry.refraction.common.light.EffectTracker.gravityRese
 
 /**
  * Created by LordSaad44
+ * Will disperse any entities that intersect with the beam. < 128 only disperses item entities.
  */
 public class EffectDisperse extends Effect {
 
@@ -73,11 +74,8 @@ public class EffectDisperse extends Effect {
 			}
 		}
 
-		int pushed = 0;
 		for (Entity entity : toPush) {
 			if (!entity.isEntityAlive()) continue;
-			pushed++;
-			if (pushed > 200) break;
 			setEntityMotion(entity);
 			gravityReset.put(entity, 30);
 			if (entity instanceof EntityPlayer)
