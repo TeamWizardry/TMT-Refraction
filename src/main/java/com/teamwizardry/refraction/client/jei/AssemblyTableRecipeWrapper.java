@@ -29,7 +29,7 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 	private static Sprite
 			BAR = texture.getSprite("bar", 64, 8),
 			OUTLINE = texture.getSprite("outline", 34 * 2, 12),
-			SLOT = texture.getSprite("slot", 16, 16);
+			SLOT = texture.getSprite("slot", 18, 18);
 	private ArrayList<ItemStack> inputs = new ArrayList<>();
 	private ArrayList<ItemStack> outputs = new ArrayList<>();
 	private List<FluidStack> fluidInputs = ImmutableList.of();
@@ -99,7 +99,7 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 		texture.bind();
 
 		GlStateManager.color(1f, 1f, 1f);
-		SLOT.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - SLOT.getWidth() / 2, 101);
+		SLOT.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - SLOT.getWidth() / 2, 100);
 
 		GlStateManager.color(0.3f, 0.3f, 0.3f);
 		BAR.draw(ClientTickHandler.getTicks(), recipeWidth / 2 + 1 - BAR.getWidth() / 2 + 33, 0);
