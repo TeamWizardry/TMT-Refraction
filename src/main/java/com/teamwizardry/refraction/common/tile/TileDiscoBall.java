@@ -1,24 +1,24 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.awt.Color;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.refraction.common.light.Beam;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
+
+import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44
  */
 @TileRegister("disco_ball")
-public class TileDiscoBall extends TileMod implements IBeamHandler, ITickable {
+public class TileDiscoBall extends TileMod implements ITickable {
 
 	public double tick = 0;
 	private Set<BeamHandler> handlers = new HashSet<>();
@@ -32,7 +32,6 @@ public class TileDiscoBall extends TileMod implements IBeamHandler, ITickable {
 		return INFINITE_EXTENT_AABB;
 	}
 
-	@Override
 	public void handle(Beam... inputs) {
 		if (!worldObj.isBlockPowered(pos) && worldObj.isBlockIndirectlyGettingPowered(pos) == 0) return;
 

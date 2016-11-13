@@ -1,17 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpColorFade;
@@ -24,14 +12,26 @@ import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.AssemblyRecipe;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipies;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44
  */
 @TileRegister("assembly_table")
-public class TileAssemblyTable extends TileMod implements IBeamHandler {
+public class TileAssemblyTable extends TileMod {
 
 	@Save
 	public boolean isCrafting = false;
@@ -80,7 +80,6 @@ public class TileAssemblyTable extends TileMod implements IBeamHandler {
 		return INFINITE_EXTENT_AABB;
 	}
 
-	@Override
 	public void handle(Beam... inputs) {
 		if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
 		if (inputs.length <= 0) return;

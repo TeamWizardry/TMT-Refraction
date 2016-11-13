@@ -2,7 +2,9 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.common.light.ILightSource;
+import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.api.ILightSource;
+import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import net.minecraft.block.SoundType;
@@ -28,7 +30,7 @@ import java.util.List;
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockElectronExciter extends BlockModContainer {
+public class BlockElectronExciter extends BlockModContainer implements IBeamHandler {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	private static final PropertyBool UP = PropertyBool.create("up");
@@ -61,7 +63,12 @@ public class BlockElectronExciter extends BlockModContainer {
 		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing().getOpposite());
 	}
 
-    @NotNull
+	@Override
+	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+		getTE(world, pos).handle(beams);
+	}
+
+	@NotNull
     @Override
     public IBlockState getActualState(@NotNull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         EnumFacing facing = state.getValue(FACING);

@@ -4,12 +4,13 @@ import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.Effect.EffectType;
+import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.raytrace.EntityTrace;
 import com.teamwizardry.refraction.common.tile.TileLightBridge;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -138,9 +139,9 @@ public class Beam {
 			try {
 				if (enableEffect && effect != null && effect.getType() == EffectType.BEAM)
 					EffectTracker.addEffect(world, this);
-				TileEntity tile = world.getTileEntity(trace.getBlockPos());
-				if (tile instanceof IBeamHandler)
-					ReflectionTracker.getInstance(world).recieveBeam((IBeamHandler) tile, this);
+				IBlockState state = world.getBlockState(trace.getBlockPos());
+				if (state.getBlock() instanceof IBeamHandler)
+					ReflectionTracker.getInstance(world).recieveBeam(world, trace.getBlockPos(), (IBeamHandler) state.getBlock(), this);
 				else if (enableEffect) {
 					BlockPos pos = trace.getBlockPos();
 					if (effect != null && effect.getType() == EffectType.SINGLE)

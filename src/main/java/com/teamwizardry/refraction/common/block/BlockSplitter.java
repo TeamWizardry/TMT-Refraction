@@ -3,9 +3,11 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.client.render.RenderSplitter;
-import com.teamwizardry.refraction.common.light.ILaserTrace;
+import com.teamwizardry.refraction.api.ILaserTrace;
+import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -32,7 +34,7 @@ import java.util.Random;
 /**
  * Created by LordSaad44
  */
-public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPrecision {
+public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPrecision, IBeamHandler {
 
 	public BlockSplitter() {
 		super("splitter", Material.IRON);
@@ -47,6 +49,31 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 
 	private TileSplitter getTE(World world, BlockPos pos) {
 		return (TileSplitter) world.getTileEntity(pos);
+	}
+
+	@Override
+	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+		getTE(world, pos).handle(beams);
+	}
+
+	@Override
+	public float getRotX(World worldIn, BlockPos pos) {
+		return getTE(worldIn, pos).getRotX();
+	}
+
+	@Override
+	public void setRotX(World worldIn, BlockPos pos, float x) {
+		getTE(worldIn, pos).setRotX(x);
+	}
+
+	@Override
+	public float getRotY(World worldIn, BlockPos pos) {
+		return getTE(worldIn, pos).getRotY();
+	}
+
+	@Override
+	public void setRotY(World worldIn, BlockPos pos, float y) {
+		getTE(worldIn, pos).setRotY(y);
 	}
 
 	@Override

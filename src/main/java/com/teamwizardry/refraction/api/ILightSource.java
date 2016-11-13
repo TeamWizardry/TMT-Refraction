@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.common.light;
+package com.teamwizardry.refraction.api;
 
 public interface ILightSource
 {

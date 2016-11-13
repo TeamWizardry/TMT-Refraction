@@ -1,6 +1,13 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.awt.Color;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.ILightSource;
+import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -8,24 +15,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
-import com.teamwizardry.refraction.common.light.ILightSource;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
-import com.teamwizardry.refraction.init.ModBlocks;
+
+import java.awt.*;
 
 /**
  * Created by LordSaad44
  */
 @TileRegister("magnifier")
-public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler {
-
-	public TileMagnifier() {
-	}
+public class TileMagnifier extends TileMod implements ILightSource {
 
 	@Override
 	public void onLoad() {
@@ -121,7 +118,6 @@ public class TileMagnifier extends TileMod implements ILightSource, IBeamHandler
 		}
 	}
 
-	@Override
 	public void handle(Beam... beams)
 	{
 		for (Beam beam : beams)

@@ -2,7 +2,6 @@ package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.api.IPrecision;
-import com.teamwizardry.refraction.api.IPrecisionTile;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -14,9 +13,9 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -99,13 +98,14 @@ public class ScrewdriverOverlay {
 		if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
 			// HIGHLIGHT ANGLE
 			if (highlighting != null) {
-				TileEntity precisiontile = Minecraft.getMinecraft().theWorld.getTileEntity(highlighting);
-				if (precisiontile != null && precisiontile instanceof IPrecisionTile) {
-					IPrecisionTile tile = (IPrecisionTile) precisiontile;
+				World world = Minecraft.getMinecraft().theWorld;
+				IBlockState state = world.getBlockState(highlighting);
+				if (state.getBlock() instanceof IPrecision) {
+					IPrecision prec = (IPrecision) state.getBlock();
 					GlStateManager.pushMatrix();
 					GlStateManager.enableTexture2D();
 					GlStateManager.color(1, 1, 1);
-					String s = tile.getRotX() + ", " + tile.getRotY();
+					String s = prec.getRotX(world, highlighting) + ", " + prec.getRotY(world, highlighting);
 					Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(s, event.getResolution().getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(s) / 2, event.getResolution().getScaledHeight() / 2 + 30, 0xFFFFFF);
 					GlStateManager.popMatrix();
 					highlighting = null;

@@ -5,7 +5,6 @@ import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.IBeamHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 
@@ -15,7 +14,7 @@ import java.awt.*;
  * Created by Saad on 9/11/2016.
  */
 @TileRegister("spectrometer")
-public class TileSpectrometer extends TileMod implements IBeamHandler, ITickable {
+public class TileSpectrometer extends TileMod implements ITickable {
 
 	@Save
 	public Color maxColor = Color.BLACK;
@@ -43,7 +42,6 @@ public class TileSpectrometer extends TileMod implements IBeamHandler, ITickable
 		compound.setInteger("current_alpha", currentTransparency);
 	}
 
-	@Override
 	public void handle(Beam... beams) {
 		this.beams = beams;
 		tick = 1;

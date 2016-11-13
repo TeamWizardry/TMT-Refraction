@@ -2,7 +2,9 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.client.render.RenderSpectrometer;
+import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.tile.TileSpectrometer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -27,7 +29,7 @@ import java.util.List;
 /**
  * Created by Saad on 9/10/2016.
  */
-public class BlockSpectrometer extends BlockModContainer {
+public class BlockSpectrometer extends BlockModContainer implements IBeamHandler {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
@@ -36,6 +38,13 @@ public class BlockSpectrometer extends BlockModContainer {
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+	}
+
+	@Override
+	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+		TileEntity te = world.getTileEntity(pos);
+		if (te != null)
+			((TileSpectrometer) te).handle(beams);
 	}
 
 	@SideOnly(Side.CLIENT)

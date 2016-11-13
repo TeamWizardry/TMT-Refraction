@@ -1,7 +1,18 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.awt.Color;
-import java.util.concurrent.ThreadLocalRandom;
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
+import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
+import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.ILightSource;
+import com.teamwizardry.refraction.api.PosUtils;
+import com.teamwizardry.refraction.api.soundmanager.IConditionalSoundEmitter;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -12,19 +23,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
-import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.PosUtils;
-import com.teamwizardry.refraction.api.soundmanager.IConditionalSoundEmitter;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.ILightSource;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
+
+import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44

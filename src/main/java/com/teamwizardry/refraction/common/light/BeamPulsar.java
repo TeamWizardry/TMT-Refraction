@@ -2,6 +2,8 @@ package com.teamwizardry.refraction.common.light;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.teamwizardry.refraction.api.ILaserTrace;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

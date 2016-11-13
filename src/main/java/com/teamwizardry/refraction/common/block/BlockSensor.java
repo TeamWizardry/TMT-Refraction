@@ -1,37 +1,35 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.tile.TileSensor;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by LordSaad44
  */
-public class BlockSensor extends BlockModContainer {
+public class BlockSensor extends BlockMod implements IBeamHandler {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
+	public static final PropertyBool ON = PropertyBool.create("on");
 	private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0, 11.0 / 16.0, 11.0 / 16.0, 10.0 / 16.0, 5.0 / 16.0, 5.0 / 16.0);
 	private static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(6.0 / 16.0, 5.0 / 16.0, 5.0 / 16.0, 1, 11.0 / 16.0, 11.0 / 16.0);
 	private static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(5.0 / 16.0, 5.0 / 16.0, 6.0 / 16.0, 11.0 / 16.0, 11.0 / 16.0, 1);
@@ -43,11 +41,6 @@ public class BlockSensor extends BlockModContainer {
 		super("sensor", Material.GLASS);
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
-	}
-
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
@@ -104,7 +97,7 @@ public class BlockSensor extends BlockModContainer {
 
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return this.getStateFromMeta(meta).withProperty(FACING, facing);
+		return getDefaultState().withProperty(FACING, facing);
 	}
 
 	@Override
@@ -153,32 +146,8 @@ public class BlockSensor extends BlockModContainer {
 	}
 
 	@Override
-	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		boolean red = false;
-		boolean green = false;
-		boolean blue = false;
-		TileEntity entity = world.getTileEntity(pos);
-		if (entity instanceof TileSensor) {
-			for (Beam beam : ((TileSensor) entity).getBeams()) {
-				if (beam.color.getRed() > 0) red = true;
-				if (beam.color.getGreen() > 0) green = true;
-				if (beam.color.getBlue() > 0) blue = true;
-			}
-		}
-		return (red ? 8 : 0) + (green ? 4 : 0) + (blue ? 2 : 0);
-	}
-
-	@Override
-	public int getComparatorInputOverride(IBlockState blockState, World world, BlockPos pos) {
-		float strength = 0;
-		TileEntity entity = world.getTileEntity(pos);
-		if (entity instanceof TileSensor) {
-			for (Beam beam : ((TileSensor) entity).getBeams()) {
-				strength += beam.color.getAlpha();
-			}
-		}
-		strength *= 256;
-		return ((int) strength) / 32;
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return state.getValue(ON) ? 15 : 0;
 	}
 
 	@Override
@@ -186,19 +155,21 @@ public class BlockSensor extends BlockModContainer {
 		return true;
 	}
 
+
+
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
+		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(ON, (meta & 8) != 0);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getIndex();
+		return state.getValue(FACING).getIndex() | (state.getValue(ON) ? 8 : 0);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, ON);
 	}
 
 	@Override
@@ -207,13 +178,20 @@ public class BlockSensor extends BlockModContainer {
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(IBlockState state) {
-		return true;
+	public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
+		// NO-OP
 	}
 
-	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
-		return new TileSensor();
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(ON, false));
+	}
+
+	@Override
+	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+		for (Beam beam : beams)
+			beam.createSimilarBeam(beam.finalLoc, beam.slope).spawn();
+		world.setBlockState(pos, world.getBlockState(pos).withProperty(ON, true));
+		world.scheduleUpdate(pos, this, 20);
 	}
 }

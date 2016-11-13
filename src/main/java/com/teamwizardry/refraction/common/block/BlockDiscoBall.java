@@ -2,7 +2,9 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.client.render.RenderDiscoBall;
+import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.tile.TileDiscoBall;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -28,7 +30,7 @@ import java.util.List;
 /**
  * Created by LordSaad44
  */
-public class BlockDiscoBall extends BlockModContainer {
+public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
@@ -41,6 +43,13 @@ public class BlockDiscoBall extends BlockModContainer {
 	@SideOnly(Side.CLIENT)
 	public void initModel() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileDiscoBall.class, new RenderDiscoBall());
+	}
+
+	@Override
+	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+		TileEntity te = world.getTileEntity(pos);
+		if (te != null)
+			((TileDiscoBall) te).handle(beams);
 	}
 
 	@Override

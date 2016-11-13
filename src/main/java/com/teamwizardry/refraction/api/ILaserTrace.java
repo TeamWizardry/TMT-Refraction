@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.common.light;
+package com.teamwizardry.refraction.api;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
