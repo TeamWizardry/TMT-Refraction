@@ -284,6 +284,7 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
             for(DimWithPos s : removeQueue) {
                 coordsToCheck.remove(s);
                 checkedCoords.remove(s);
+                mappedPositions.remove(s);
             }
             removeQueue.clear();
 
