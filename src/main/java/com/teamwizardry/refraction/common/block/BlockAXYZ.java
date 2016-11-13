@@ -3,12 +3,15 @@ package com.teamwizardry.refraction.common.block;
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.init.ModBlocks;
 import gnu.trove.map.hash.TObjectIntHashMap;
+import javafx.util.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonExtension;
 import net.minecraft.block.BlockPistonMoving;
@@ -309,6 +312,26 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
             checkedCoords.remove(s);
         }
         removeQueue.clear();
+
+        HashMap<Integer, List<Pair<BlockPos, BlockPos>>> map = new HashMap<>();
+        for (Map.Entry<DimWithPos, DimWithPos> s : mappedPositions.entrySet()) {
+            int dim = s.getKey().dim;
+            if (!map.containsKey(dim)) map.put(dim, Lists.newArrayList());
+
+            map.get(dim).add(new Pair<>(s.getValue().blockPos, s.getKey().blockPos));
+        }
+
+        for (Integer dim : map.keySet()) {
+            List<Pair<BlockPos, BlockPos>> l = map.get(dim);
+            BlockPos[] arr1 = new BlockPos[l.size()];
+            BlockPos[] arr2 = new BlockPos[l.size()];
+            for (int i = 0; i < arr1.length; i++) {
+                arr1[i] = l.get(i).getKey();
+                arr2[i] = l.get(i).getValue();
+            }
+
+            PacketHandler.NETWORK.sendToDimension(new PacketAXYZMarks(arr1, arr2), dim);
+        }
     }
 
     public void save(World world) {

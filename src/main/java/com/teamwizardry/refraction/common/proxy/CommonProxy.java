@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.proxy;
 
+import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -44,6 +45,7 @@ public class CommonProxy {
 		EasyConfigHandler.init(event.getSuggestedConfigurationFile());
 		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
 		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
+		PacketHandler.register(PacketAXYZMarks.class, Side.CLIENT);
 	}
 
 	public void init(FMLInitializationEvent event) {
