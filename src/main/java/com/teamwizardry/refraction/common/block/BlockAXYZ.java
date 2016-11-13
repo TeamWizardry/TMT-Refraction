@@ -15,7 +15,6 @@ import javafx.util.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonMoving;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -28,7 +27,6 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -235,16 +233,6 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
             }
             return data;
         }
-    }
-
-    public boolean canPush(World world, BlockPos pos) {
-        IBlockState srcState = world.getBlockState(pos);
-        TileEntity tile = world.getTileEntity(pos);
-        Material mat = srcState.getMaterial();
-        return tile == null &&
-                mat.getMobilityFlag() == EnumPushReaction.NORMAL &&
-                srcState.getBlockHardness(world, pos) != -1 &&
-                !srcState.getBlock().isAir(srcState, world, pos);
     }
 
     @SubscribeEvent
