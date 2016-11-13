@@ -44,7 +44,6 @@ public class Beam {
 	 * The destination of the beam. Don't touch this, just set the slope to the final loc
 	 * and let this class handle it unless you know what you're doing.
 	 */
-	@Nullable
 	public Vec3d finalLoc;
 
 	/**

@@ -34,12 +34,15 @@ public class EffectAttract extends Effect {
 	}
 
 	private void setEntityMotion(Entity entity) {
-		Vec3d pullDir = beam.initLoc.subtract(beam.finalLoc).normalize();
-		entity.setNoGravity(true);
-		entity.motionX = pullDir.xCoord * potency / 255.0;
-		entity.motionY = Math.max(-0.25, pullDir.yCoord * potency / 255.0);
-		entity.motionZ = pullDir.zCoord * potency / 255.0;
-		entity.fallDistance = 0;
+		Vec3d pullDir;
+		if (beam.finalLoc != null) {
+			pullDir = beam.initLoc.subtract(beam.finalLoc).normalize();
+			entity.setNoGravity(true);
+			entity.motionX = pullDir.xCoord * potency / 255.0;
+			entity.motionY = Math.max(-0.25, pullDir.yCoord * potency / 255.0);
+			entity.motionZ = pullDir.zCoord * potency / 255.0;
+			entity.fallDistance = 0;
+		}
 	}
 
 	@Override

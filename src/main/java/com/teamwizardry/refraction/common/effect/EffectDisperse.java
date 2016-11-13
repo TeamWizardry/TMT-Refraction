@@ -3,7 +3,6 @@ package com.teamwizardry.refraction.common.effect;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.common.light.EffectTracker;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,7 +35,9 @@ public class EffectDisperse extends Effect {
 	}
 
 	private void setEntityMotion(Entity entity) {
-		Vec3d pullDir = beam.finalLoc.subtract(beam.initLoc).normalize();
+		Vec3d pullDir;
+		if (beam.finalLoc == null) return;
+		pullDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 
 		entity.setNoGravity(true);
 		entity.motionX = pullDir.xCoord * potency / 255.0;
@@ -49,9 +51,10 @@ public class EffectDisperse extends Effect {
 		Set<Entity> toPush = new HashSet<>();
 		for (BlockPos pos : locations) {
 			AxisAlignedBB axis = new AxisAlignedBB(pos);
-			List<Entity> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
-			if (potency > 128)
-				entities.addAll(world.getEntitiesWithinAABB(EntityLiving.class, axis));
+			List<Entity> entities = new ArrayList<>();
+			if (potency > 128) {
+				entities.addAll(world.getEntitiesWithinAABB(Entity.class, axis));
+			} else entities.addAll(world.getEntitiesWithinAABB(EntityItem.class, axis));
 			toPush.addAll(entities);
 
 			if (!world.isRemote) {

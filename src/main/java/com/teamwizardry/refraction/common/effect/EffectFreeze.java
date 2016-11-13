@@ -22,8 +22,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class EffectFreeze extends Effect {
 
 	@Override
-	public int getCooldown() {
-		return potency == 0 ? 0 : 255 / potency;
+	public EffectType getType() {
+		return EffectType.BEAM;
 	}
 
 	@Override
@@ -49,33 +49,32 @@ public class EffectFreeze extends Effect {
 
 			Potion slowness = Potion.getPotionById(2);
 			if (slowness != null)
-				entity.addPotionEffect(new PotionEffect(slowness, effectDuration, potency / 10, true, false));
+				entity.addPotionEffect(new PotionEffect(slowness, effectDuration, 5 * potency / 255, true, false));
 
 			if (potency >= 50) {
-				Potion fatigue = Potion.getPotionById(4);
-				if (fatigue != null)
-					entity.addPotionEffect(new PotionEffect(fatigue, effectDuration, potency / 10, true, false));
+				entity.motionX *= 10.0 * potency / 255.0;
+				entity.motionZ *= 10.0 * potency / 255.0;
 			}
 
 			if (potency >= 100) {
 				Potion weakness = Potion.getPotionById(18);
 				if (weakness != null)
-					entity.addPotionEffect(new PotionEffect(weakness, effectDuration, potency / 10, true, false));
+					entity.addPotionEffect(new PotionEffect(weakness, effectDuration, 5 * potency / 255, true, false));
 				Potion blindness = Potion.getPotionById(15);
 				if (blindness != null)
-					entity.addPotionEffect(new PotionEffect(blindness, effectDuration, potency / 10, true, false));
+					entity.addPotionEffect(new PotionEffect(blindness, effectDuration, 5 * potency / 255, true, false));
 			}
 
 			if (potency >= 150) {
 				Potion nausea = Potion.getPotionById(9);
 				if (nausea != null)
-					entity.addPotionEffect(new PotionEffect(nausea, effectDuration, potency / 10, true, false));
+					entity.addPotionEffect(new PotionEffect(nausea, effectDuration, 5 * potency / 255, true, false));
 			}
 
 			if (potency >= 200) {
 				Potion nightVision = Potion.getPotionById(16);
 				if (nightVision != null)
-					entity.addPotionEffect(new PotionEffect(nightVision, effectDuration, potency / 10, true, false));
+					entity.addPotionEffect(new PotionEffect(nightVision, effectDuration, potency / 25, true, false));
 			}
 		}
 	}
