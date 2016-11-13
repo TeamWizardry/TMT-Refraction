@@ -38,6 +38,7 @@ public class BlockCreativeLaser  extends BlockMod implements ILightSource {
 		super("creative_laser", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
+		setTickRandomly(true);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
@@ -45,13 +46,17 @@ public class BlockCreativeLaser  extends BlockMod implements ILightSource {
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
-		worldIn.scheduleUpdate(pos, this, 20);
 	}
+
+	@Override
+	public int tickRate(World worldIn) {
+		return 1;
+	}
+
 
 	@Override
 	public void updateTick(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random random) {
 		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
-		worldIn.scheduleUpdate(pos, this, 20);
 	}
 
 	@Override

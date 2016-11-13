@@ -3,9 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.IBeamHandler;
-import com.teamwizardry.refraction.api.ILightSource;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -154,15 +152,6 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileEntity entity = world.getTileEntity(pos);
-		if (entity instanceof ILightSource)
-			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
-
-		super.breakBlock(world, pos, state);
 	}
 
 	@Nullable

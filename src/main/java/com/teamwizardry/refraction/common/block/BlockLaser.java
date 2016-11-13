@@ -38,6 +38,7 @@ public class BlockLaser extends BlockModContainer implements ILightSource {
 		super("laser", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
+		setTickRandomly(true);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
@@ -45,13 +46,16 @@ public class BlockLaser extends BlockModContainer implements ILightSource {
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
-		worldIn.scheduleUpdate(pos, this, 20);
+	}
+
+	@Override
+	public int tickRate(World worldIn) {
+		return 1;
 	}
 
 	@Override
 	public void updateTick(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random random) {
 		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
-		worldIn.scheduleUpdate(pos, this, 20);
 	}
 
 	@Override
@@ -120,14 +124,6 @@ public class BlockLaser extends BlockModContainer implements ILightSource {
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileEntity entity = world.getTileEntity(pos);
-		if (entity instanceof ILightSource)
-			ReflectionTracker.getInstance(world).removeSource((ILightSource) entity);
-		super.breakBlock(world, pos, state);
 	}
 
 	@Nullable

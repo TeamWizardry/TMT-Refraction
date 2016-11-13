@@ -2,9 +2,9 @@ package com.teamwizardry.refraction.common.light;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.api.ILightSource;
+import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,12 +14,13 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
 
 public class ReflectionTracker {
 
 	private static final TickTracker INSTANCE = new TickTracker();
+
+	private transient World world;
 
 	private static WeakHashMap<World, ReflectionTracker> instances = new WeakHashMap<>();
 	private Set<SourcePair> sources;
@@ -39,16 +40,17 @@ public class ReflectionTracker {
 		return instances.get(world);
 	}
 
-	@Nullable
 	private World getWorld() {
-		for (Map.Entry<World, ReflectionTracker> entry : instances.entrySet()) {
-			if (entry.getValue() == this) return entry.getKey();
-		}
-		return null;
+		return world;
+	}
+
+	public ReflectionTracker setWorld(World world) {
+		this.world = world;
+		return this;
 	}
 
 	public static boolean addInstance(World world) {
-		return instances.putIfAbsent(world, new ReflectionTracker()) == null;
+		return instances.putIfAbsent(world, new ReflectionTracker().setWorld(world)) == null;
 	}
 
 	@SubscribeEvent
@@ -63,21 +65,25 @@ public class ReflectionTracker {
 
 	@SubscribeEvent
 	public void generateBeams(TickEvent.WorldTickEvent event) {
-		if (event.world.isRemote)
+		if (event.world.isRemote || getWorld() != event.world)
 			return;
-		if (event.phase != TickEvent.Phase.START || event.side != Side.SERVER)
-			return;
-		if (TickTracker.ticks % Constants.SOURCE_TIMER == 0) {
-			sources.removeIf((e) -> event.world.getBlockState(e.getPos()).getBlock() != e.getSource());
-			for (SourcePair source : sources) {
+
+		ArrayList<SourcePair> remove = new ArrayList<>();
+
+		for (SourcePair source : sources) {
+			Block blockAtWorld = event.world.getBlockState(source.getPos()).getBlock();
+			if (source.getSource() == blockAtWorld)
 				source.getSource().generateBeam(event.world, source.getPos());
-			}
+			else
+				remove.add(source);
 		}
+
+		for (SourcePair pair : remove) sources.remove(pair);
 	}
 
 	@SubscribeEvent
 	public void handleBeams(TickEvent.WorldTickEvent event) {
-		if (event.world.isRemote)
+		if (event.world.isRemote || getWorld() != event.world)
 			return;
 
 		Set<BeamPair> temp = new HashSet<>(delayBuffers.keySet());
@@ -105,10 +111,6 @@ public class ReflectionTracker {
 
 	public void addSource(BlockPos pos, ILightSource source) {
 		sources.add(new SourcePair(source, pos));
-	}
-
-	public void removeSource(ILightSource source) {
-		sources.removeIf((e) -> e.getSource() == source);
 	}
 
 	private static class TickTracker {
