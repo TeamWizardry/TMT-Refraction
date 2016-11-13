@@ -19,9 +19,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -155,6 +157,8 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
                     BlockAXYZ.DimWithPos newKey = new BlockAXYZ.DimWithPos(world.provider.getDimension(), pos.offset(dir, 2));
                     ModBlocks.AXYZ.mappedPositions.remove(key);
                     ModBlocks.AXYZ.mappedPositions.put(newKey, mapped);
+
+                    world.playSound(null, pos.offset(dir, 2), SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 1f, 1f);
 
                     world.setBlockState(pos.offset(dir), Blocks.AIR.getDefaultState());
                     world.setBlockState(pos.offset(dir, 2), axyz);
