@@ -278,8 +278,15 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
                         mappedPositions.put(newPos, new DimWithPos(world.provider.getDimension(), pos2.offset(dir)));
                         save(world);
                     }
-                }
+                } else removeQueue.add(s);
             }
+
+            for(DimWithPos s : removeQueue) {
+                coordsToCheck.remove(s);
+                checkedCoords.remove(s);
+            }
+            removeQueue.clear();
+
             HashMap<Integer, List<Pair<BlockPos, BlockPos>>> map = new HashMap<>();
             for (Map.Entry<DimWithPos, DimWithPos> s : mappedPositions.entrySet()) {
                 int dim = s.getKey().dim;
@@ -300,12 +307,6 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
                 PacketHandler.NETWORK.sendToAll(new PacketAXYZMarks(arr1, arr2, dim));
             }
         }
-
-        for(DimWithPos s : removeQueue) {
-            coordsToCheck.remove(s);
-            checkedCoords.remove(s);
-        }
-        removeQueue.clear();
     }
 
     public void save(World world) {
