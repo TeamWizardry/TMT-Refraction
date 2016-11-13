@@ -13,6 +13,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
@@ -34,7 +35,7 @@ public class BlockReflectiveAlloyBlock extends BlockMod implements IBeamHandler 
 	}
 
 	@Override
-	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
 		if (beams.length == 0)
 			return;
 

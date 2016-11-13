@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -47,7 +48,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 
 	@Nonnull
 	@Override
-	public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos, EnumFacing facing) {
+	public List<EnumFacing> getAvailableFacings(@NotNull IBlockState state, @NotNull IBlockAccess source, @NotNull BlockPos pos, @NotNull EnumFacing facing) {
 		return Lists.newArrayList(EnumFacing.VALUES);
 	}
 
@@ -78,7 +79,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 	}
 
 	@Override
-	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
 		if (beams.length <= 0)
 			return;
 
@@ -151,12 +152,12 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 	}
 
 	@Override
-	public int beamDelay(World world, BlockPos pos) {
+	public int beamDelay(@NotNull World world, @NotNull BlockPos pos) {
 		return Constants.COMBINER_DELAY;
 	}
 
 	@Override
-	public void handleFiberBeam(World world, BlockPos pos, Beam beam) {
+	public void handleFiberBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
 		Vec3d slope = beam.slope.normalize().scale(0.5);
 		beam.initLoc.subtract(slope);
 		beam.finalLoc.subtract(slope);

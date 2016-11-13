@@ -7,6 +7,7 @@ import com.teamwizardry.refraction.common.light.Beam;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,6 +20,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
@@ -172,6 +175,12 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 		return new BlockStateContainer(this, FACING, ON);
 	}
 
+	@Nullable
+	@Override
+	public IProperty<?>[] getIgnoredProperties() {
+		return new IProperty[] {ON};
+	}
+
 	@Override
 	public boolean getWeakChanges(IBlockAccess world, BlockPos pos) {
 		return true;
@@ -188,7 +197,7 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 	}
 
 	@Override
-	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
 		for (Beam beam : beams)
 			beam.createSimilarBeam(beam.finalLoc, beam.slope).spawn();
 		world.setBlockState(pos, world.getBlockState(pos).withProperty(ON, true));

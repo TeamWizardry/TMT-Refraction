@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class BlockSpectrometer extends BlockModContainer implements IBeamHandler
 	}
 
 	@Override
-	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null)
 			((TileSpectrometer) te).handle(beams);

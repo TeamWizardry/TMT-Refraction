@@ -6,7 +6,6 @@ import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -23,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -51,7 +51,7 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 
     @Nonnull
     @Override
-    public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos, EnumFacing facing) {
+    public List<EnumFacing> getAvailableFacings(@NotNull IBlockState state, @NotNull IBlockAccess source, @NotNull BlockPos pos, @NotNull EnumFacing facing) {
         if (facing != state.getValue(DIRECTION)) return Lists.newArrayList();
         return Lists.newArrayList(state.getValue(DIRECTION).getOpposite());
     }
@@ -133,10 +133,8 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
     }
 
     @Override
-    public void handleFiberBeam(World world, BlockPos pos, Beam beam) {
+    public void handleFiberBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
         IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() != ModBlocks.TRANSLOCATOR)
-            beam.spawn();
         EnumFacing dir = state.getValue(BlockTranslocator.DIRECTION);
         if (!beam.slope.equals(PosUtils.getVecFromFacing(dir)))
             return;

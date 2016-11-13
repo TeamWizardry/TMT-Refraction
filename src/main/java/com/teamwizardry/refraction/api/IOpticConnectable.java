@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface IOpticConnectable {
     @Nonnull
-    List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos, EnumFacing facing);
+    List<EnumFacing> getAvailableFacings(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos, @Nonnull EnumFacing facing);
 
-    void handleFiberBeam(World world, BlockPos pos, Beam beam);
+    void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam);
 }

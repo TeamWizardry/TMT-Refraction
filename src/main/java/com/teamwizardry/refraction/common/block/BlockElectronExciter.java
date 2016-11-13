@@ -64,7 +64,7 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 	}
 
 	@Override
-	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
 		getTE(world, pos).handle(beams);
 	}
 

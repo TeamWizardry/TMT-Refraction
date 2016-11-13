@@ -8,11 +8,9 @@ import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.ILightSource;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.soundmanager.IConditionalSoundEmitter;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -31,7 +29,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by LordSaad44
  */
 @TileRegister("laser")
-public class TileLaser extends TileMod implements ILightSource, ITickable, IConditionalSoundEmitter {
+public class TileLaser extends TileMod implements ITickable, IConditionalSoundEmitter {
 
 	public ItemStackHandler inventory = new ItemStackHandler(1) {
 		@Override
@@ -76,13 +74,6 @@ public class TileLaser extends TileMod implements ILightSource, ITickable, ICond
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) inventory : super.getCapability(capability, facing);
 	}
 
-	@Override
-	public void onLoad() {
-		super.onLoad();
-		ReflectionTracker.getInstance(worldObj).addSource(this);
-	}
-
-	@Override
 	public void generateBeam() {
 		if (inventory.getStackInSlot(0) != null && inventory.getStackInSlot(0).stackSize > 0) {
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);

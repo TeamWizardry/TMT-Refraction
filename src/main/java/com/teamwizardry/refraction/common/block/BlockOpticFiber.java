@@ -73,14 +73,15 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 	}
 
 	@Override
-	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
 		EnumBiFacing facing = getBiFacing(world, pos);
 		if (facing == null)
 			return;
 
 		EnumBiFacing primary = getBiFacing(world, pos.offset(facing.primary));
 		EnumBiFacing secondary = getBiFacing(world, pos.offset(facing.secondary));
-		if (primary != null && secondary != null && primary.contains(facing.primary.getOpposite()) && secondary.contains(facing.secondary.getOpposite())) {
+		if (primary != null && secondary != null && primary.contains(facing.primary.getOpposite()) && secondary.contains(facing.secondary.getOpposite()))
+		{
 			for (Beam beam : beams)
 				beam.createSimilarBeam(beam.slope).spawn();
 			return;
@@ -96,21 +97,25 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 		BlockPos curPos = null;
 		EnumFacing curFacing = null;
 		EnumBiFacing curBiFacing = null;
-		if (primaryOpen && secondaryOpen) {
-			// NO-OP
-		} else if (primaryOpen) {
+		if (primaryOpen && secondaryOpen)
+		{}
+		else if (primaryOpen)
+		{
 			curPos = pos.offset(facing.secondary);
 			curFacing = secondary.getOther(facing.secondary.getOpposite());
 			curBiFacing = secondary;
-		} else if (secondaryOpen) {
+		}
+		else if (secondaryOpen)
+		{
 			curPos = pos.offset(facing.primary);
 			curFacing = primary.getOther(facing.primary.getOpposite());
 			curBiFacing = primary;
 		}
 
-		BlockPos nextPos;
+		BlockPos nextPos = curPos;
 		EnumBiFacing nextBiFacing = curBiFacing;
-		while (nextBiFacing != null) {
+		while (nextBiFacing != null)
+		{
 			nextPos = curPos.offset(curFacing);
 			nextBiFacing = getBiFacing(world, nextPos);
 			if (nextBiFacing == null)
@@ -119,32 +124,52 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 				break;
 			curPos = nextPos;
 			curFacing = nextBiFacing.getOther(curFacing.getOpposite());
+			curBiFacing = nextBiFacing;
 		}
 
-		if (curPos != null)
-			for (Beam beam : beams) {
-				EnumFacing beamDir = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
+		for (Beam beam : beams)
+		{
+			EnumFacing beamDir = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
 
-				IBlockState state = world.getBlockState(pos);
-				AxisAlignedBB axis = state.getBoundingBox(world, pos);
-				if (primaryOpen) {
-					if (facing.primary == beamDir.getOpposite()) {
-						if (beamDir.getOpposite() == getCollisionSide(axis, beam)) {
-							spawnBeam(world, pos, beam, new Vec3d(curPos.getX() + 0.5, curPos.getY() + 0.5, curPos.getZ() + 0.5), curFacing);
-							continue;
-						}
+			IBlockState state = world.getBlockState(pos);
+			AxisAlignedBB axis = state.getBoundingBox(null, null);
+			if (primaryOpen && secondaryOpen)
+			{
+				if (facing.contains(beamDir.getOpposite()))
+				{
+					if (beamDir.getOpposite() == getCollisionSide(axis, beam))
+					{
+						EnumFacing opposite = beamDir.getOpposite();
+						EnumFacing other = facing.getOther(opposite);
+						spawnBeam(world, beam, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), other);
+						continue;
 					}
 				}
-				if (secondaryOpen) {
-					if (facing.secondary == beamDir.getOpposite()) {
-						if (beamDir.getOpposite() == getCollisionSide(axis, beam)) {
-							spawnBeam(world, pos, beam, new Vec3d(curPos.getX() + 0.5, curPos.getY() + 0.5, curPos.getZ() + 0.5), curFacing);
-							continue;
-						}
-					}
-				}
-				beam.createSimilarBeam(beam.slope).spawn();
 			}
+			if (primaryOpen)
+			{
+				if (facing.primary == beamDir.getOpposite())
+				{
+					if (beamDir.getOpposite() == getCollisionSide(axis, beam))
+					{
+						spawnBeam(world, beam, new Vec3d(curPos.getX() + 0.5, curPos.getY() + 0.5, curPos.getZ() + 0.5), curFacing);
+						continue;
+					}
+				}
+			}
+			if (secondaryOpen)
+			{
+				if (facing.secondary == beamDir.getOpposite())
+				{
+					if (beamDir.getOpposite() == getCollisionSide(axis, beam))
+					{
+						spawnBeam(world, beam, new Vec3d(curPos.getX() + 0.5, curPos.getY() + 0.5, curPos.getZ() + 0.5), curFacing);
+						continue;
+					}
+				}
+			}
+			beam.createSimilarBeam(beam.slope).spawn();
+		}
 	}
 
 	private EnumBiFacing getBiFacing(World worldObj, BlockPos pos) {
@@ -154,11 +179,12 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 		return state.getValue(BlockOpticFiber.FACING);
 	}
 
-	private void spawnBeam(World worldObj, BlockPos pos, Beam beam, Vec3d loc, EnumFacing dir) {
-		IBlockState state = worldObj.getBlockState(new BlockPos(loc).offset(dir));
+	private void spawnBeam(World worldObj, Beam beam, Vec3d loc, EnumFacing dir) {
+		BlockPos newPos = new BlockPos(loc).offset(dir);
+		IBlockState state = worldObj.getBlockState(newPos);
 		Beam newBeam = beam.createSimilarBeam(loc, getFacingVector(dir));
 		if (state.getBlock() instanceof IOpticConnectable) {
-			((IOpticConnectable) state.getBlock()).handleFiberBeam(worldObj, pos, newBeam);
+			((IOpticConnectable) state.getBlock()).handleFiberBeam(worldObj, newPos, newBeam);
 		} else newBeam.spawn();
 	}
 
@@ -209,7 +235,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 	}
 
 	@Override
-	public void handleFiberBeam(World world, BlockPos pos, Beam beam) {
+	public void handleFiberBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
 
 	}
 
@@ -227,7 +253,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 
 	@Nonnull
 	@Override
-	public List<EnumFacing> getAvailableFacings(IBlockState state, IBlockAccess source, BlockPos pos, EnumFacing original) {
+	public List<EnumFacing> getAvailableFacings(@NotNull IBlockState state, @NotNull IBlockAccess source, @NotNull BlockPos pos, @NotNull EnumFacing original) {
 		EnumBiFacing facings = state.getValue(FACING);
 		List<EnumFacing> ret = Lists.newArrayList();
 

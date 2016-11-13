@@ -20,14 +20,17 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by LordSaad44
  */
-public class BlockLaser extends BlockModContainer {
+public class BlockLaser extends BlockModContainer implements ILightSource {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
@@ -37,6 +40,23 @@ public class BlockLaser extends BlockModContainer {
 		setSoundType(SoundType.METAL);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+	}
+
+	@Override
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
+		worldIn.scheduleUpdate(pos, this, 20);
+	}
+
+	@Override
+	public void updateTick(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random random) {
+		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
+		worldIn.scheduleUpdate(pos, this, 20);
+	}
+
+	@Override
+	public void generateBeam(@NotNull World world, @Nonnull BlockPos pos) {
+		getTE(world, pos).generateBeam();
 	}
 
 	private TileLaser getTE(World world, BlockPos pos) {

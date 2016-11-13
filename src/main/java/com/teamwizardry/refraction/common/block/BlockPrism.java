@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
@@ -50,7 +51,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 	}
 
 	@Override
-	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
 		IBlockState state = world.getBlockState(pos);
 
 		for (Beam beam : beams) {
@@ -203,8 +204,9 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 		return false;
 	}
 
+	@NotNull
 	@Override
-	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw) {
+	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
 
 		EnumFacing facing = blockState.getValue(FACING);
 
