@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Beam {
@@ -74,6 +75,12 @@ public class Beam {
 	 * If true, the beam will phase through entities.
 	 */
 	public boolean ignoreEntities = false;
+
+	/**
+	 * A unique identifier for a beam. Used for uniqueness checks.
+	 */
+	@NotNull
+	private UUID uuid = UUID.randomUUID();
 
 	/**
 	 * The raytrace produced from the beam after it spawns.
@@ -134,7 +141,7 @@ public class Beam {
 	 * @return The new beam created. Can be modified as needed.
 	 */
 	public Beam createSimilarBeam(Vec3d init, Vec3d dir) {
-		return new Beam(world, init, dir, color).setIgnoreEntities(ignoreEntities).setEnableEffect(enableEffect).setLastTouchedBlocks(lastTouchedBlocks).setLastTouchedBlock(lastTouchedBlock);
+		return new Beam(world, init, dir, color).setIgnoreEntities(ignoreEntities).setEnableEffect(enableEffect).setLastTouchedBlocks(lastTouchedBlocks).setLastTouchedBlock(lastTouchedBlock).setUUID(uuid);
 	}
 
 	/**
@@ -239,6 +246,15 @@ public class Beam {
 		return this;
 	}
 
+	public Beam setUUID(UUID uuid) {
+		this.uuid = uuid;
+		return this;
+	}
+
+	public UUID getUUID() {
+		return this.uuid;
+	}
+
 	/**
 	 * Will spawn the final complete beam.
 	 */
@@ -310,32 +326,12 @@ public class Beam {
 
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof Beam))
-			return false;
-		Beam beam = (Beam) other;
-		float[] self = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
-		float[] others = Color.RGBtoHSB(beam.color.getRed(), beam.color.getBlue(), beam.color.getGreen(), null);
-		return initLoc.equals(beam.initLoc) && finalLoc.equals(beam.finalLoc) && self[0] == others[0] && self[1] == others[1] && self[2] == others[2] && color.getAlpha() == beam.color.getAlpha();
+		return other instanceof Beam && ((Beam) other).uuid.equals(uuid);
 	}
 
 	@Override
 	public int hashCode() {
-		float[] self = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
-		int start = initLoc.hashCode();
-		int end = finalLoc.hashCode();
-		long h = Double.doubleToLongBits(self[0]);
-		long s = Double.doubleToLongBits(self[1]);
-		long v = Double.doubleToLongBits(self[2]);
-		long a = Double.doubleToLongBits(this.color.getAlpha());
-		int color = (int) (h ^ h >>> 32);
-		color = 31 * color + (int) (s ^ s >>> 32);
-		color = 31 * color + (int) (v ^ v >>> 32);
-		color = 31 * color + (int) (a ^ a >>> 32);
-
-		int hash = start;
-		hash = 31 * start + end;
-		hash = 31 * end + color;
-		return hash;
+		return uuid.hashCode();
 	}
 
 	public void drawBeam() {

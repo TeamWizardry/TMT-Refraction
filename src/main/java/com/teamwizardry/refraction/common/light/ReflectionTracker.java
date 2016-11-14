@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.light;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.api.ILightSource;
 import net.minecraft.block.Block;
@@ -97,7 +98,7 @@ public class ReflectionTracker {
 			int delay = delayBuffers.get(handler);
 			if (delay > 0) delayBuffers.put(handler, delay - 1);
 			else {
-				Collection<Beam> beams = sinkBlocks.removeAll(handler);
+				Set<Beam> beams = Sets.newHashSet(sinkBlocks.removeAll(handler));
 				if (event.world.getBlockState(handler.getPos()).getBlock() == handler.getHandler())
 					handler.getHandler().handleBeams(event.world, handler.getPos(), beams.toArray(new Beam[beams.size()]));
 				remove.add(handler);

@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by LordSaad44
@@ -62,15 +63,15 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 			Vec3d hitPos = beam.finalLoc;
 
 			if (beam.color.getRed() != 0)
-				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam.enableEffect, beam.ignoreEntities);
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
 			if (beam.color.getGreen() != 0)
-				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam.enableEffect, beam.ignoreEntities);
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
 			if (beam.color.getBlue() != 0)
-				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam.enableEffect, beam.ignoreEntities);
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
 		}
 	}
 
-	private void fireColor(World worldObj, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities) {
+	private void fireColor(World worldObj, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities, UUID uuid) {
 		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, worldObj, pos, hitPos.subtract(ref), hitPos.add(ref));
 		assert r != null;
 		Vec3d normal = r.data;
@@ -94,7 +95,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 			hitPos = r.hitVec;
 		}
 
-		new Beam(worldObj, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).spawn();
+		new Beam(worldObj, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).setUUID(uuid).spawn();
 	}
 
 	private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {

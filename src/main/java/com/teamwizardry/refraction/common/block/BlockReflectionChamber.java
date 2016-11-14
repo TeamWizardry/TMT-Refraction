@@ -139,7 +139,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 
 			float[] hsbvals2 = Color.RGBtoHSB(eRed, eGreen, eBlue, null);
 			Color color2 = new Color(Color.HSBtoRGB(hsbvals2[0], hsbvals2[1], 1));
-			color2 = new Color(color2.getRed(), color2.getGreen(), color2.getBlue(), Math.min(eAlpha, 255));
+			color2 = new Color(color2.getRed(), color2.getGreen(), color2.getBlue(), Math.min(eAlpha / 2, 255));
 
 			Vec3d out2 = RotationHelper.averageDirection(angles2);
 
