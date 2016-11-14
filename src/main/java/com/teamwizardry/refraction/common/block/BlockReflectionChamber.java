@@ -146,7 +146,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 			Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out2, color2).setEnableEffect(true).setIgnoreEntities(false);
 			EnumFacing facing = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
 			IBlockState state = world.getBlockState(pos.offset(facing));
-			if (state.getBlock() == ModBlocks.OPTIC_FIBER && state.getValue(BlockOpticFiber.FACING).contains(facing))
+			if (state.getBlock() == ModBlocks.OPTIC_FIBER && state.getValue(BlockOpticFiber.FACING).contains(facing.getOpposite()))
 				beam.setSlope(PosUtils.getVecFromFacing(facing)).spawn();
 			else beam.spawn();
 		}
