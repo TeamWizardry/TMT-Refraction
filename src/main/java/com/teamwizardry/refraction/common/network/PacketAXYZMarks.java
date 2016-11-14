@@ -31,6 +31,7 @@ public class PacketAXYZMarks extends PacketBase {
 	private int dimension;
 
 	public PacketAXYZMarks() {
+		// NO-OP
 	}
 
 	public PacketAXYZMarks(BlockPos[] positions, BlockPos[] origins, int dimension) {
@@ -58,14 +59,15 @@ public class PacketAXYZMarks extends PacketBase {
 									ThreadLocalRandom.current().nextDouble(-range, range),
 									ThreadLocalRandom.current().nextDouble(-range, range))));
 
+			boolean isAir = world.isAirBlock(pos);
 
 			ParticleBuilder wormholeVoid = new ParticleBuilder(10);
-			ParticleSpawner.spawn(wormholeVoid, world, new StaticInterp<>(new Vec3d(pos).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(10, 20), 0, (aFloat, particleBuilder) -> {
+			ParticleSpawner.spawn(wormholeVoid, world, new StaticInterp<>(new Vec3d(pos).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(isAir ? 5 : 10, isAir ? 10 : 20), 0, (aFloat, particleBuilder) -> {
 				wormholeVoid.setAlphaFunction(new InterpFadeInOut(0.2f, 0.2f));
 				wormholeVoid.setRenderNormalLayer(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
 				double radius = 0.4;
 				double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
-				double r = radius * ThreadLocalRandom.current().nextFloat();
+				double r = radius * ThreadLocalRandom.current().nextFloat() + (isAir ? 0 : 0.5);
 				double x = r * MathHelper.cos((float) theta);
 				double z = r * MathHelper.sin((float) theta);
 				wormholeVoid.setPositionOffset(new Vec3d(x, 0, z));
@@ -76,10 +78,10 @@ public class PacketAXYZMarks extends PacketBase {
 			});
 
 			ParticleBuilder wormholeHalo = new ParticleBuilder(15);
-			ParticleSpawner.spawn(wormholeHalo, world, new StaticInterp<>(new Vec3d(pos).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(5, 10), 0, (aFloat, particleBuilder) -> {
+			ParticleSpawner.spawn(wormholeHalo, world, new StaticInterp<>(new Vec3d(pos).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(isAir ? 5 : 20, isAir ? 10 : 30), 0, (aFloat, particleBuilder) -> {
 				wormholeHalo.setAlphaFunction(new InterpFadeInOut(0.2f, 0.2f));
 				wormholeHalo.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
-				double r = 0.5;
+				double r = isAir ? 0.5 : 1;
 				double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
 				double x = r * MathHelper.cos((float) theta);
 				double z = r * MathHelper.sin((float) theta);
