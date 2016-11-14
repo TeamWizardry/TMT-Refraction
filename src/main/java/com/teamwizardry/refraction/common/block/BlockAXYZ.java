@@ -186,10 +186,8 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
 
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
-        if(!event.getWorld().isRemote) {
-            ModBlocks.AXYZ.mappedPositions.clear();
+        if(!event.getWorld().isRemote)
             WorldData.get(event.getWorld());
-        }
     }
 
     @SubscribeEvent
