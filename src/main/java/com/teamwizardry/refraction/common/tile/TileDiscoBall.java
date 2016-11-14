@@ -2,7 +2,9 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.refraction.common.block.BlockDiscoBall;
 import com.teamwizardry.refraction.common.light.Beam;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -35,6 +37,8 @@ public class TileDiscoBall extends TileMod implements ITickable {
 	public void handle(Beam... inputs) {
 		if (!worldObj.isBlockPowered(pos) && worldObj.isBlockIndirectlyGettingPowered(pos) == 0) return;
 
+		IBlockState state = worldObj.getBlockState(pos);
+
 		Beam biggest = null;
 		for (Beam beam : inputs) {
 			if (biggest == null)
@@ -51,7 +55,9 @@ public class TileDiscoBall extends TileMod implements ITickable {
 
 			Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
 
-			Beam beam = biggest.createSimilarBeam(new Vec3d(pos).addVector(0.5, 0.3, 0.5), dest).setColor(new Color(biggest.color.getRed(), biggest.color.getGreen(), biggest.color.getBlue(), biggest.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8)));
+			Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(new Vec3d(state.getValue(BlockDiscoBall.FACING).getDirectionVec()).scale(0.2));
+
+			Beam beam = biggest.createSimilarBeam(center, dest).setColor(new Color(biggest.color.getRed(), biggest.color.getGreen(), biggest.color.getBlue(), biggest.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8)));
 			handlers.add(new BeamHandler(beam, rotX, rotZ));
 		}
 
