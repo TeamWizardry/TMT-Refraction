@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.init;
 
+import com.teamwizardry.librarianlib.LibrarianLib;
 import com.teamwizardry.refraction.common.block.*;
 
 /**
@@ -26,6 +27,8 @@ public class ModBlocks {
 	public static BlockTranslocator TRANSLOCATOR;
 	public static BlockAXYZ AXYZ;
 
+	public static BlockFilter FILTER;
+
 	public static void init() {
 		MIRROR = new BlockMirror();
 		LENS = new BlockLens();
@@ -45,6 +48,9 @@ public class ModBlocks {
 		REFLECTIVE_ALLOY_BLOCK = new BlockReflectiveAlloyBlock();
 		TRANSLOCATOR = new BlockTranslocator();
 		AXYZ = new BlockAXYZ();
+
+		if (LibrarianLib.DEV_ENVIRONMENT)
+			FILTER = new BlockFilter();
 	}
 
 	public static void initModels() {

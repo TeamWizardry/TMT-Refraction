@@ -122,6 +122,15 @@ public class Beam {
 	}
 
 	/**
+	 * Will create a beam that's exactly like the one passed except in color.
+	 *
+	 * @return The new beam created. Can be modified as needed.
+	 */
+	public Beam createSimilarBeam(Color color) {
+		return createSimilarBeam(initLoc, finalLoc, color);
+	}
+
+	/**
 	 * Will create a similar beam that starts from the position this beam ended at
 	 * and will set it's slope to the one specified. So it's a new beam from the position
 	 * you last hit to the new one you specify.
@@ -133,6 +142,7 @@ public class Beam {
 		return createSimilarBeam(finalLoc, slope);
 	}
 
+
 	/**
 	 * Will create a similar beam that starts and ends in the positions you specify
 	 *
@@ -141,9 +151,20 @@ public class Beam {
 	 * @return The new beam created. Can be modified as needed.
 	 */
 	public Beam createSimilarBeam(Vec3d init, Vec3d dir) {
-		return new Beam(world, init, dir, color).setIgnoreEntities(ignoreEntities).setEnableEffect(enableEffect).setLastTouchedBlocks(lastTouchedBlocks).setLastTouchedBlock(lastTouchedBlock).setUUID(uuid);
+		return createSimilarBeam(init, dir, color);
 	}
 
+
+	/**
+	 * Will create a similar beam that starts and ends in the positions you specify, with a custom color.
+	 *
+	 * @param init The initial location or origin to spawn the beam from.
+	 * @param dir  The direction or slope or final destination or location the beam will point to.
+	 * @return The new beam created. Can be modified as needed.
+	 */
+	public Beam createSimilarBeam(Vec3d init, Vec3d dir, Color color) {
+		return new Beam(world, init, dir, color).setIgnoreEntities(ignoreEntities).setEnableEffect(enableEffect).setLastTouchedBlocks(lastTouchedBlocks).setLastTouchedBlock(lastTouchedBlock).setUUID(uuid);
+	}
 	/**
 	 * Will change the slope or destination or final location the beam will point to.
 	 *

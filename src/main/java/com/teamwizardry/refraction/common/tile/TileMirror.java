@@ -12,6 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
+import java.util.UUID;
 
 /**
  * Created by LordSaad44
@@ -86,7 +87,7 @@ public class TileMirror extends TileMod implements ITickable {
 			Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
 			Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
-			beam.createSimilarBeam(outgoingDir).setColor(c).spawn();
+			beam.createSimilarBeam(outgoingDir).setUUID(UUID.randomUUID()).setColor(c).spawn();
 		}
 	}
 

@@ -26,6 +26,15 @@ tile.refraction:axyz.6.name=AFDQTA (Apart, Fools Do Question True Agnomens)
 tile.refraction:axyz.7.name=AFDQTA (Attacking, Flampling Demon Quests To Agadeem)
 tile.refraction:axyz.8.name=AFDQTA (A Fool Doesn't Question This Acronym)
 
+tile.refraction:filter_white.name=White Dev Filter
+tile.refraction:filter_red.name=Red Dev Filter
+tile.refraction:filter_green.name=Green Dev Filter
+tile.refraction:filter_blue.name=Blue Dev Filter
+tile.refraction:filter_cyan.name=Cyan Dev Filter
+tile.refraction:filter_yellow.name=Yellow Dev Filter
+tile.refraction:filter_magenta.name=Magenta Dev Filter
+tile.refraction:filter_pink.name=Pink Dev Filter
+
 
 item.refraction:laser_pen.name=Laser Pen
 item.refraction:screw_driver.0.name=Screwdriver (1/8°)

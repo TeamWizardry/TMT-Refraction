@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Saad on 10/16/2016.
@@ -73,7 +74,7 @@ public class BlockReflectiveAlloyBlock extends BlockMod implements IBeamHandler 
 					outgoingDir = incomingDir;
 			}
 			Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
-			beam.createSimilarBeam(outgoingLoc, outgoingDir).setColor(c).spawn();
+			beam.createSimilarBeam(outgoingLoc, outgoingDir, c).setUUID(UUID.randomUUID()).spawn();
 		}
 	}
 }
