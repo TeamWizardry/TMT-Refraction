@@ -16,7 +16,7 @@ public class EffectBreak extends Effect {
 
 	@Override
 	public int getCooldown() {
-		return potency == 0 ? 0 : 1000 / potency;
+		return potency == 0 ? 0 : 5550 / potency;
 	}
 
 	@Override
