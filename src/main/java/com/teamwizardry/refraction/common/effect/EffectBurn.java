@@ -48,7 +48,7 @@ public class EffectBurn extends Effect {
 			}
 
 			if (tileFail && potency >= 50 && ThreadLocalRandom.current().nextInt(0, 10) == 0) {
-				EnumFacing facing = Utils.getCollisionSide(beam);
+				EnumFacing facing = Utils.getCollisionSide(beam.trace);
 				if (facing != null) {
 					BlockPos pos = beam.trace.getBlockPos().offset(facing);
 					IBlockState state = world.getBlockState(pos);

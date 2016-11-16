@@ -10,10 +10,13 @@ import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.AssemblyRecipe;
+import com.teamwizardry.refraction.api.CapsUtils;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.init.ModItems;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
@@ -59,6 +62,8 @@ public class TileAssemblyTable extends TileMod {
 	};
 	@Save
 	private int craftingTime = 0;
+	@Save
+	private boolean isGrenadeRecipe = false;
 
 	public TileAssemblyTable() {
 	}
@@ -85,22 +90,27 @@ public class TileAssemblyTable extends TileMod {
 		if (inputs.length <= 0) return;
 		int red = 0, green = 0, blue = 0, alpha = 0;
 
+		int count = 0;
 		for (Beam beam : inputs) {
 			if (beam.enableEffect) {
-				red += beam.color.getRed();
-				green += beam.color.getGreen();
-				blue += beam.color.getBlue();
+				count++;
+				red += beam.color.getRed() * (beam.color.getAlpha() / 255f);
+				green += beam.color.getGreen() * (beam.color.getAlpha() / 255f);
+				blue += beam.color.getBlue() * (beam.color.getAlpha() / 255f);
 				alpha += beam.color.getAlpha();
 			}
 		}
 
-		red = Math.min(red / inputs.length, 255);
-		green = Math.min(green / inputs.length, 255);
-		blue = Math.min(blue / inputs.length, 255);
-		alpha = Math.min(alpha / inputs.length, 255);
+		red = Math.min(red / count, 255);
+		green = Math.min(green / count, 255);
+		blue = Math.min(blue / count, 255);
+
+		float[] hsbvals2 = Color.RGBtoHSB(red, green, blue, null);
+		Color color = new Color(Color.HSBtoRGB(hsbvals2[0], hsbvals2[1], 1));
+		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha / 2, 255));
 
 		if (isCrafting) {
-			if (craftingTime < 50) {
+			if (craftingTime < 100) {
 				craftingTime++;
 				ParticleBuilder builder = new ParticleBuilder(5);
 				builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
@@ -131,23 +141,41 @@ public class TileAssemblyTable extends TileMod {
 							ThreadLocalRandom.current().nextDouble(-0.01, 0.01)));
 					builder.setLifetime(ThreadLocalRandom.current().nextInt(20, 80));
 				});
+				if (isGrenadeRecipe) {
+					ItemStack stack = new ItemStack(ModItems.GRENADE);
+					NBTTagCompound compound = new NBTTagCompound();
+					compound.setInteger("color", new Color(red, green, blue).getRGB());
+					compound.setInteger("color_alpha", Math.min(alpha, 255));
+					stack.setTagCompound(compound);
+					output.setStackInSlot(0, stack);
+				}
 				worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 			}
 			return;
 		}
 
 		if (getOccupiedSlotCount() <= 0) return;
+
+		if (CapsUtils.getListOfItems(inventory).size() == 1
+				&& CapsUtils.getListOfItems(inventory).get(0).getItem() == ModItems.GRENADE) {
+			isCrafting = true;
+			craftingTime = 0;
+			isGrenadeRecipe = true;
+			CapsUtils.clearInventory(inventory);
+			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+		}
+
 		for (AssemblyRecipe recipe : AssemblyRecipes.recipes) {
 
 			if (recipe.getItems().size() != getOccupiedSlotCount()) continue;
-			if (red > recipe.getMaxRed()) continue;
-			if (red < recipe.getMinRed()) continue;
-			if (green > recipe.getMaxGreen()) continue;
-			if (green < recipe.getMinGreen()) continue;
-			if (blue > recipe.getMaxBlue()) continue;
-			if (blue < recipe.getMinBlue()) continue;
-			if (alpha > recipe.getMaxStrength()) continue;
-			if (alpha < recipe.getMinStrength()) continue;
+			if (color.getRed() > recipe.getMaxRed()) continue;
+			if (color.getRed() < recipe.getMinRed()) continue;
+			if (color.getGreen() > recipe.getMaxGreen()) continue;
+			if (color.getGreen() < recipe.getMinGreen()) continue;
+			if (color.getBlue() > recipe.getMaxBlue()) continue;
+			if (color.getBlue() < recipe.getMinBlue()) continue;
+			if (color.getAlpha() > recipe.getMaxStrength()) continue;
+			if (color.getAlpha() < recipe.getMinStrength()) continue;
 
 			if (Utils.matchItemStackLists(recipe.getItems(), Utils.getListOfObjects(getListOfItems()))) {
 				output.setStackInSlot(0, recipe.getResult().copy());

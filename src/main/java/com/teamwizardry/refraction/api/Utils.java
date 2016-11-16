@@ -1,7 +1,6 @@
 package com.teamwizardry.refraction.api;
 
 import com.google.common.collect.Lists;
-import com.teamwizardry.refraction.common.light.Beam;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -77,15 +76,15 @@ public class Utils {
 	
 	/**
 	 * Returns whatever side of a block that the given {@code Beam} is hitting.
-	 * @param beam The {@link Beam} being checked
+	 * @param trace The RaytraceResult to be checked
 	 * @return The {@link EnumFacing} of the {@code Beam} - {@link BlockPos} collision
 	 */
-	public static EnumFacing getCollisionSide(Beam beam)
+	public static EnumFacing getCollisionSide(RayTraceResult trace)
 	{
-		if (beam.trace != null && beam.trace.typeOfHit == RayTraceResult.Type.BLOCK)
+		if (trace != null && trace.typeOfHit == RayTraceResult.Type.BLOCK)
 		{
-			BlockPos pos = beam.trace.getBlockPos();
-			Vec3d hitPos = beam.trace.hitVec;
+			BlockPos pos = trace.getBlockPos();
+			Vec3d hitPos = trace.hitVec;
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			Vec3d dir = hitPos.subtract(center);
 			return EnumFacing.getFacingFromVector((float) dir.xCoord, (float) dir.yCoord, (float) dir.zCoord);

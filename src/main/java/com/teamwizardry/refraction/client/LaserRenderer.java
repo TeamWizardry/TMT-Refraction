@@ -23,9 +23,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LaserRenderer {
 	public static final LaserRenderer INSTANCE = new LaserRenderer();
 
-	private static int currentTick;
-	private static long[] ticks = new long[600];
-
 	protected Map<LaserRenderInfo, Integer> lasers = new ConcurrentHashMap<>();
 
 	private LaserRenderer() {
@@ -33,27 +30,7 @@ public class LaserRenderer {
 	}
 	
 	public static void add(Vec3d start, Vec3d end, Color color) {
-		int life = (int) getTPS() / 20 + 1;
-		INSTANCE.lasers.put(new LaserRenderInfo(start, end, color), life);
-	}
-
-	public static double getTPS() {
-		return Math.max(getTPS(100) / 2, 20);
-	}
-
-	private static double getTPS(int tickCount) {
-		if (tickCount > ticks.length) {
-			tickCount = ticks.length;
-		}
-
-		if (ticks[tickCount] == 0.0) {
-			tickCount = currentTick;
-		}
-
-		int index = ((currentTick - tickCount) + ticks.length) % ticks.length;
-		long elapsed = ticks[currentTick] - ticks[index];
-
-		return (double) tickCount / ((double) elapsed / 1000.0D);
+		INSTANCE.lasers.put(new LaserRenderInfo(start, end, color), 3);
 	}
 
 	@SubscribeEvent
@@ -106,10 +83,6 @@ public class LaserRenderer {
 				}
 			});
 		}
-
-		currentTick = ++currentTick % ticks.length;
-
-		ticks[currentTick] = System.currentTimeMillis();
 	}
 
 	public static class LaserRenderInfo {

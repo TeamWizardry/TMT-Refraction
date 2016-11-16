@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.google.common.collect.Lists;
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.librarianlib.common.base.block.IBlockColorProvider;
 import com.teamwizardry.refraction.api.IBeamHandler;
@@ -13,6 +14,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -38,6 +41,16 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 	public static final PropertyEnum<EnumFilterType> TYPE = PropertyEnum.create("color", EnumFilterType.class);
 
 	public static final AxisAlignedBB AABB = new AxisAlignedBB(0.25, 0.25, 0.25, 0.75, 0.75, 0.75);
+	private static final String[] VARIANTS = new String[]{
+			"filter_white",
+			"filter_red",
+			"filter_green",
+			"filter_blue",
+			"filter_cyan",
+			"filter_yellow",
+			"filter_magenta",
+			"filter_pink"
+	};
 
 	public BlockFilter() {
 		super("filter", Material.GLASS, VARIANTS);
@@ -65,33 +78,6 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, TYPE);
 	}
-
-	public enum EnumFilterType implements IStringSerializable {
-		WHITE(0xFFFFFF), RED(0xFF0000), GREEN(0x00FF00), BLUE(0x0000FF),
-		CYAN(0x00FFFF), YELLOW(0xFFFF00), MAGENTA(0xFF00FF), PINK(0xFFAFAF);
-
-		public int color;
-
-		EnumFilterType(int color) {
-			this.color = color;
-		}
-
-		@Override
-		public String getName() {
-			return name().toLowerCase();
-		}
-	}
-
-	private static final String[] VARIANTS = new String[] {
-			"filter_white",
-			"filter_red",
-			"filter_green",
-			"filter_blue",
-			"filter_cyan",
-			"filter_yellow",
-			"filter_magenta",
-			"filter_pink"
-	};
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
@@ -131,16 +117,16 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 		beam.createSimilarBeam(new Vec3d(pos).addVector(0.5, 0.5, 0.5), beam.slope, new Color(state.getValue(TYPE).color)).spawn();
 	}
 
-//	@Override
-//	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-//		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath() + "." + stack.getItemDamage());
-//	}
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath() + "." + stack.getItemDamage());
+	}
 
 	@Override
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
-	
+
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
@@ -149,5 +135,21 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
+	}
+
+	public enum EnumFilterType implements IStringSerializable {
+		WHITE(0xFFFFFF), RED(0xFF0000), GREEN(0x00FF00), BLUE(0x0000FF),
+		CYAN(0x00FFFF), YELLOW(0xFFFF00), MAGENTA(0xFF00FF), PINK(0xFFAFAF);
+
+		public int color;
+
+		EnumFilterType(int color) {
+			this.color = color;
+		}
+
+		@Override
+		public String getName() {
+			return name().toLowerCase();
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.light;
 
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.librarianlib.common.util.bitsaving.IllegalValueSetException;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.Effect.EffectType;
@@ -12,11 +13,14 @@ import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.raytrace.EntityTrace;
 import com.teamwizardry.refraction.common.tile.TileLightBridge;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +30,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Beam {
+public class Beam implements INBTSerializable<NBTTagCompound> {
 
 	/**
 	 * The initial position the beams comes from.
@@ -75,25 +79,22 @@ public class Beam {
 	 * If true, the beam will phase through entities.
 	 */
 	public boolean ignoreEntities = false;
-
-	/**
-	 * A unique identifier for a beam. Used for uniqueness checks.
-	 */
-	@NotNull
-	private UUID uuid = UUID.randomUUID();
-
 	/**
 	 * The raytrace produced from the beam after it spawns.
 	 * Contains some neat methods you can use.
 	 */
 	public RayTraceResult trace;
-
 	/**
 	 * The range of the raytrace. Will default to Beam_RANGE unless otherwise specified.
 	 */
 	public double range = Constants.BEAM_RANGE;
-
+	/**
+	 * A unique identifier for a beam. Used for uniqueness checks.
+	 */
+	@NotNull
+	private UUID uuid = UUID.randomUUID();
 	private ArrayList<BlockPos> lastTouchedBlocks = new ArrayList<>();
+	@Nullable
 	private BlockPos lastTouchedBlock = null;
 
 	public Beam(@NotNull World world, @NotNull Vec3d initLoc, @NotNull Vec3d slope, @NotNull Color color) {
@@ -110,6 +111,10 @@ public class Beam {
 
 	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, float red, float green, float blue, float alpha) {
 		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha));
+	}
+
+	public Beam(NBTTagCompound compound) {
+		deserializeNBT(compound);
 	}
 
 	/**
@@ -165,6 +170,7 @@ public class Beam {
 	public Beam createSimilarBeam(Vec3d init, Vec3d dir, Color color) {
 		return new Beam(world, init, dir, color).setIgnoreEntities(ignoreEntities).setEnableEffect(enableEffect).setLastTouchedBlocks(lastTouchedBlocks).setLastTouchedBlock(lastTouchedBlock).setUUID(uuid);
 	}
+
 	/**
 	 * Will change the slope or destination or final location the beam will point to.
 	 *
@@ -267,22 +273,16 @@ public class Beam {
 		return this;
 	}
 
+	public UUID getUUID() {
+		return this.uuid;
+	}
+
 	public Beam setUUID(UUID uuid) {
 		this.uuid = uuid;
 		return this;
 	}
 
-	public UUID getUUID() {
-		return this.uuid;
-	}
-
-	/**
-	 * Will spawn the final complete beam.
-	 */
-	public void spawn() {
-		if (world.isRemote) return;
-		if (color.getAlpha() <= 1) return;
-
+	public Beam initializeVariables() {
 		// EFFECT CHECKING //
 		if (effect == null && enableEffect) {
 			Effect tempEffect = EffectTracker.getEffect(this);
@@ -297,13 +297,24 @@ public class Beam {
 		if (ignoreEntities || (effect != null && effect.getType() == EffectType.BEAM)) // If anyone of these are true, phase beam
 			trace = EntityTrace.cast(world, initLoc, slope, range, true);
 		else trace = EntityTrace.cast(world, initLoc, slope, range, false);
-		if (trace == null) return;
 		// BEAM PHASING CHECKS //
+		if (trace != null && trace.hitVec != null)
+			this.finalLoc = trace.hitVec;
+		return this;
+	}
 
-		this.finalLoc = trace.hitVec;
+	/**
+	 * Will spawn the final complete beam.
+	 */
+	public void spawn() {
+		if (world.isRemote) return;
+		if (color.getAlpha() <= 1) return;
 
-		// Bug check
-		if (finalLoc.distanceTo(initLoc) <= 1.0 / 16.0) return;
+		initializeVariables();
+
+		if (trace == null) return;
+		if (trace.hitVec == null) return;
+		if (finalLoc == null) return;
 
 		// EFFECT HANDLING //
 		boolean pass = true;
@@ -318,24 +329,26 @@ public class Beam {
 		}
 
 		// Effect handling
-		if (pass && effect != null) {
+		if (effect != null) {
 			if (effect.getType() == EffectType.BEAM)
 				EffectTracker.addEffect(world, this);
 
-			else if (effect.getType() == EffectType.SINGLE) {
-				if (trace.typeOfHit != RayTraceResult.Type.MISS)
-					EffectTracker.addEffect(world, trace.hitVec, effect);
+			else if (pass) {
+				if (effect.getType() == EffectType.SINGLE) {
+					if (trace.typeOfHit != RayTraceResult.Type.MISS)
+						EffectTracker.addEffect(world, trace.hitVec, effect);
 
-				else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
-					BlockPos pos = trace.getBlockPos();
-					EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
+					else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+						BlockPos pos = trace.getBlockPos();
+						EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
 
-					// LIGHT BRIDGE UPDATER //
-					if (effect instanceof EffectAttract) {
-						EnumFacing facing = PosUtils.getFacing(initLoc, finalLoc);
-						TileLightBridge.invokeUpdate(trace.getBlockPos(), world, facing == null ? null : facing.getOpposite());
+						// LIGHT BRIDGE UPDATER //
+						if (effect instanceof EffectAttract) {
+							EnumFacing facing = PosUtils.getFacing(initLoc, finalLoc);
+							TileLightBridge.invokeUpdate(trace.getBlockPos(), world, facing == null ? null : facing.getOpposite());
+						}
+						// LIGHT BRIDGE UPDATER //
 					}
-					// LIGHT BRIDGE UPDATER //
 				}
 			}
 		}
@@ -357,5 +370,48 @@ public class Beam {
 
 	public void drawBeam() {
 		RenderLaserUtil.renderLaser(color, initLoc, finalLoc);
+	}
+
+	@Override
+	public NBTTagCompound serializeNBT() {
+		NBTTagCompound compound = new NBTTagCompound();
+		compound.setDouble("init_loc_x", initLoc.xCoord);
+		compound.setDouble("init_loc_y", initLoc.yCoord);
+		compound.setDouble("init_loc_z", initLoc.zCoord);
+		compound.setDouble("slope_x", slope.xCoord);
+		compound.setDouble("slope_y", slope.yCoord);
+		compound.setDouble("slope_z", slope.zCoord);
+		compound.setInteger("color", color.getRGB());
+		compound.setInteger("color_alpha", color.getAlpha());
+		compound.setInteger("world", world.provider.getDimension());
+		compound.setUniqueId("uuid", uuid);
+		compound.setBoolean("ignore_entities", ignoreEntities);
+		compound.setBoolean("enable_effect", enableEffect);
+		return compound;
+	}
+
+	@Override
+	public void deserializeNBT(NBTTagCompound nbt) {
+		if (nbt.hasKey("world"))
+			world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(nbt.getInteger("dim"));
+		else throw new NullPointerException("'world' key not found or missing in deserialized beam object.");
+		if (nbt.hasKey("init_loc_x") && nbt.hasKey("init_loc_y") && nbt.hasKey("init_loc_z"))
+			initLoc = new Vec3d(nbt.getDouble("init_loc_x"), nbt.getDouble("init_loc_y"), nbt.getDouble("init_loc_z"));
+		else throw new NullPointerException("'init_loc' key not found or missing in deserialized beam object.");
+		if (nbt.hasKey("slope_loc_x") && nbt.hasKey("slope_loc_y") && nbt.hasKey("slope_loc_z")) {
+			slope = new Vec3d(nbt.getDouble("slope_x"), nbt.getDouble("slope_y"), nbt.getDouble("slope_z"));
+			finalLoc = slope.normalize().scale(128).add(initLoc);
+		} else throw new NullPointerException("'slope' key not found or missing in deserialized beam object.");
+
+		if (nbt.hasKey("color")) {
+			color = new Color(nbt.getInteger("color"));
+			color = new Color(color.getRed(), color.getGreen(), color.getBlue(), nbt.getInteger("color_alpha"));
+		} else
+			throw new NullPointerException("'color' or 'color_alpha' keys not found or missing in deserialized beam object.");
+
+		if (nbt.hasKey("uuid")) if (nbt.hasKey("uuid")) uuid = nbt.getUniqueId("uuid");
+		else throw new IllegalValueSetException("'uuid' key not found or missing in deserialized beam object.");
+		if (nbt.hasKey("ignore_entities")) ignoreEntities = nbt.getBoolean("ignore_entities");
+		if (nbt.hasKey("enable_effect")) enableEffect = nbt.getBoolean("enable_effect");
 	}
 }

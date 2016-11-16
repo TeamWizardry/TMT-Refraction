@@ -41,7 +41,7 @@ public class BlockReflectiveAlloyBlock extends BlockMod implements IBeamHandler 
 			return;
 
 		for (Beam beam : beams) {
-			EnumFacing facing = Utils.getCollisionSide(beam);
+			EnumFacing facing = Utils.getCollisionSide(beam.trace);
 			if (facing == null)
 				continue;
 
