@@ -8,9 +8,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -24,8 +22,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.refraction.api.ILaserTrace;
-import com.teamwizardry.refraction.common.tile.TileElectronExciter;
-import com.teamwizardry.refraction.common.tile.TileLightBridge;
 
 /**
  * Created by Saad on 8/16/2016.
@@ -221,31 +217,6 @@ public class BlockLightBridge extends BlockMod implements ILaserTrace {
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileLightBridge bridge = (TileLightBridge) world.getTileEntity(pos);
-		if (bridge != null && bridge.direction != null) {
-			if (bridge.source != null) {
-				if (bridge.isEnd) {
-					TileEntity entity = world.getTileEntity(bridge.source);
-					if (entity instanceof TileElectronExciter) {
-						TileElectronExciter exciter = (TileElectronExciter) entity;
-						exciter.bridge = null;
-					}
-				}
-			}
-
-			IBlockState front = world.getBlockState(pos.offset(bridge.direction));
-			IBlockState back = world.getBlockState(pos.offset(bridge.direction.getOpposite()));
-			if (front.getBlock() == this)
-				world.setBlockState(pos.offset(bridge.direction), Blocks.AIR.getDefaultState());
-			if (back.getBlock() == this)
-				world.setBlockState(pos.offset(bridge.direction.getOpposite()), Blocks.AIR.getDefaultState());
-		}
-
-		super.breakBlock(world, pos, state);
 	}
 
 	@Override

@@ -1,20 +1,11 @@
 package com.teamwizardry.refraction.common.light;
 
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
-import com.teamwizardry.librarianlib.common.util.bitsaving.IllegalValueSetException;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.api.Effect.EffectType;
-import com.teamwizardry.refraction.api.IBeamHandler;
-import com.teamwizardry.refraction.api.PosUtils;
-import com.teamwizardry.refraction.client.render.RenderLaserUtil;
-import com.teamwizardry.refraction.common.effect.EffectAttract;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
-import com.teamwizardry.refraction.common.raytrace.EntityTrace;
-import com.teamwizardry.refraction.common.tile.TileLightBridge;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -24,11 +15,15 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.librarianlib.common.util.bitsaving.IllegalValueSetException;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.api.Effect.EffectType;
+import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.client.render.RenderLaserUtil;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
+import com.teamwizardry.refraction.common.raytrace.EntityTrace;
 
 public class Beam implements INBTSerializable<NBTTagCompound> {
 
@@ -341,13 +336,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 					else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
 						BlockPos pos = trace.getBlockPos();
 						EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
-
-						// LIGHT BRIDGE UPDATER //
-						if (effect instanceof EffectAttract) {
-							EnumFacing facing = PosUtils.getFacing(initLoc, finalLoc);
-							TileLightBridge.invokeUpdate(trace.getBlockPos(), world, facing == null ? null : facing.getOpposite());
-						}
-						// LIGHT BRIDGE UPDATER //
 					}
 				}
 			}
