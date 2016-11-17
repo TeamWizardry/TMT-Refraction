@@ -1,8 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.common.tile.TileElectronExciter;
-import com.teamwizardry.refraction.common.tile.TileLightBridge;
+import java.util.List;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -17,18 +15,22 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.refraction.api.ILaserTrace;
+import com.teamwizardry.refraction.common.tile.TileElectronExciter;
+import com.teamwizardry.refraction.common.tile.TileLightBridge;
 
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockLightBridge extends BlockModContainer {
+public class BlockLightBridge extends BlockMod implements ILaserTrace {
 
 	public static final PropertyEnum<EnumFacing.Axis> FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
 	public static final PropertyBool UP = PropertyBool.create("up");
@@ -246,9 +248,9 @@ public class BlockLightBridge extends BlockModContainer {
 		super.breakBlock(world, pos, state);
 	}
 
-	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
-		return new TileLightBridge();
+	public RayTraceResult collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw)
+	{
+		return null;
 	}
 }

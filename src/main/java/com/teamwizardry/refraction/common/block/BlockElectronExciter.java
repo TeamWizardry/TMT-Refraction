@@ -1,10 +1,7 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.api.IBeamHandler;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.tile.TileElectronExciter;
+import java.awt.Color;
+import java.util.List;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -14,21 +11,25 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.EffectTracker;
+import com.teamwizardry.refraction.common.light.bridge.BridgeTracker;
 
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockElectronExciter extends BlockModContainer implements IBeamHandler {
+public class BlockElectronExciter extends BlockMod implements IBeamHandler {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	private static final PropertyBool UP = PropertyBool.create("up");
@@ -42,10 +43,6 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 		setSoundType(SoundType.METAL);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
-
-	private TileElectronExciter getTE(World world, BlockPos pos) {
-		return (TileElectronExciter) world.getTileEntity(pos);
 	}
 
 	@Override
@@ -63,7 +60,23 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 
 	@Override
 	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
-		getTE(world, pos).handle(beams);
+		for (Beam beam : beams)
+		{
+			EnumFacing block = world.getBlockState(pos).getValue(FACING);
+			Effect effect = beam.effect;
+			if (effect == null)
+				continue;
+			if (effect.getColor().equals(Color.CYAN))
+				if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999)
+					BridgeTracker.getInstance(world).power(pos);
+			
+		}
+	}
+	
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	{
+		BridgeTracker.getInstance(world).addExciter(pos, state.getValue(FACING));
 	}
 
 	@NotNull
@@ -152,11 +165,5 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
-	}
-
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
-		return new TileElectronExciter();
 	}
 }
