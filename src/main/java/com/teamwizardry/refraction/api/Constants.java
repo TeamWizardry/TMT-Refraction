@@ -21,6 +21,8 @@ public class Constants {
 	public static int GLOWSTONE_ALPHA = 64;
 	@ConfigPropertyInt(modid = Refraction.MOD_ID, category = "general", id = "glowstone_fuel_expire_delay", comment = "Change this and it'll set how long glowstone fuel will last in blocks like the laser", defaultValue = 500)
 	public static int GLOWSTONE_FUEL_EXPIRE_DELAY = 500;
+	@ConfigPropertyInt(modid = Refraction.MOD_ID, category = "general", id = "beam_particle_life", comment = "Change this and it'll set how long beams will stay. Higher numbers will make beams feel laggier but they just VISUALLY stay longer. This is useful if you have terrible TPS issues and/or beams start flickering for whatever reason.", defaultValue = 3)
+	public static int BEAM_PARTICLE_LIFE = 3;
 
 	public static int NIGHT_START = 12600;
 	public static int NIGHT_END = 23400;
