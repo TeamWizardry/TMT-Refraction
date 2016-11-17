@@ -23,7 +23,6 @@ import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.EffectTracker;
 import com.teamwizardry.refraction.common.light.bridge.BridgeTracker;
 
 /**
@@ -60,6 +59,11 @@ public class BlockElectronExciter extends BlockMod implements IBeamHandler {
 
 	@Override
 	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
+		if (BridgeTracker.getInstance(world).getExciterArray(pos) == null)
+		{
+			BridgeTracker.getInstance(world).addExciter(pos, world.getBlockState(pos).getValue(FACING));
+			return;
+		}
 		for (Beam beam : beams)
 		{
 			EnumFacing block = world.getBlockState(pos).getValue(FACING);
@@ -67,9 +71,13 @@ public class BlockElectronExciter extends BlockMod implements IBeamHandler {
 			if (effect == null)
 				continue;
 			if (effect.getColor().equals(Color.CYAN))
+			{
 				if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999)
+				{
 					BridgeTracker.getInstance(world).power(pos);
-			
+					return;
+				}
+			}
 		}
 	}
 	

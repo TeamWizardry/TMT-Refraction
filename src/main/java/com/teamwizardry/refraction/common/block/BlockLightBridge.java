@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
+import java.awt.Color;
 import java.util.List;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -13,7 +14,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -21,12 +21,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.refraction.api.ILaserTrace;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.bridge.BridgeTracker;
+import com.teamwizardry.refraction.common.light.bridge.ExciterArray;
 
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockLightBridge extends BlockMod implements ILaserTrace {
+public class BlockLightBridge extends BlockMod implements IBeamHandler
+{
 
 	public static final PropertyEnum<EnumFacing.Axis> FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
 	public static final PropertyBool UP = PropertyBool.create("up");
@@ -34,11 +39,7 @@ public class BlockLightBridge extends BlockMod implements ILaserTrace {
 	public static final PropertyBool LEFT = PropertyBool.create("left");
 	public static final PropertyBool RIGHT = PropertyBool.create("right");
 
-	private static final EnumFacing[][] SPINS = new EnumFacing[][]{
-			{EnumFacing.UP, EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.SOUTH},
-			{EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST},
-			{EnumFacing.UP, EnumFacing.DOWN, EnumFacing.EAST, EnumFacing.WEST}
-	};
+	private static final EnumFacing[][] SPINS = new EnumFacing[][] { { EnumFacing.UP, EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.SOUTH }, { EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST }, { EnumFacing.UP, EnumFacing.DOWN, EnumFacing.EAST, EnumFacing.WEST } };
 
 	private static final AxisAlignedBB AABB_X = new AxisAlignedBB(0, 7.5 / 16, 7.5 / 16, 1, 8.5 / 16, 8.5 / 16);
 	private static final AxisAlignedBB AABB_Y = new AxisAlignedBB(7.5 / 16, 0, 7.5 / 16, 8.5 / 16, 1, 8.5 / 16);
@@ -59,7 +60,8 @@ public class BlockLightBridge extends BlockMod implements ILaserTrace {
 	private static final AxisAlignedBB AABB_Z_LEFT = new AxisAlignedBB(8.5 / 16, 7.5 / 16, 0, 1, 8.5 / 16, 1);
 	private static final AxisAlignedBB AABB_Z_RIGHT = new AxisAlignedBB(0, 7.5 / 16, 0, 7.5 / 16, 8.5 / 16, 1);
 
-	public BlockLightBridge() {
+	public BlockLightBridge()
+	{
 		super("light_bridge", Material.GLASS);
 		setBlockUnbreakable();
 		setResistance(6000000F);
@@ -71,7 +73,8 @@ public class BlockLightBridge extends BlockMod implements ILaserTrace {
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+	{
 		EnumFacing.Axis axis = state.getValue(FACING);
 		EnumFacing[] facings = SPINS[axis.ordinal()];
 		IBlockState upState = worldIn.getBlockState(pos.offset(facings[0]));
@@ -86,20 +89,19 @@ public class BlockLightBridge extends BlockMod implements ILaserTrace {
 		IBlockState rightState = worldIn.getBlockState(pos.offset(facings[3]));
 		boolean right = rightState.getBlock() == this && rightState.getValue(FACING) == axis;
 
-		return state.withProperty(UP, up && (!down || left || right))
-				.withProperty(DOWN, down && (!up || left || right))
-				.withProperty(LEFT, left && (up || down || !right))
-				.withProperty(RIGHT, right && (up || down || !left));
+		return state.withProperty(UP, up && (!down || left || right)).withProperty(DOWN, down && (!up || left || right)).withProperty(LEFT, left && (up || down || !right)).withProperty(RIGHT, right && (up || down || !left));
 	}
 
 	@Nullable
 	@Override
-	public ItemBlock createItemForm() {
+	public ItemBlock createItemForm()
+	{
 		return null;
 	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn)
+	{
 		EnumFacing.Axis enumfacing = state.getValue(FACING);
 		EnumFacing[] facings = SPINS[enumfacing.ordinal()];
 
@@ -115,36 +117,49 @@ public class BlockLightBridge extends BlockMod implements ILaserTrace {
 		IBlockState rightState = worldIn.getBlockState(pos.offset(facings[3]));
 		boolean right = rightState.getBlock() == this && rightState.getValue(FACING) == enumfacing;
 
-		switch (enumfacing) {
+		switch (enumfacing)
+		{
 			case X:
 				addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X);
-				if (up) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_UP);
-				if (down) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_DOWN);
-				if (left) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_LEFT);
-				if (right) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_RIGHT);
+				if (up)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_UP);
+				if (down)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_DOWN);
+				if (left)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_LEFT);
+				if (right)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X_RIGHT);
 				break;
 			case Y:
 				addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y);
-				if (up) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_UP);
-				if (down) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_DOWN);
-				if (left) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_LEFT);
-				if (right) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_RIGHT);
+				if (up)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_UP);
+				if (down)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_DOWN);
+				if (left)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_LEFT);
+				if (right)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Y_RIGHT);
 				break;
 			case Z:
 				addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z);
-				if (up) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_UP);
-				if (down) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_DOWN);
-				if (left) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_LEFT);
-				if (right) addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_RIGHT);
+				if (up)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_UP);
+				if (down)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_DOWN);
+				if (left)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_LEFT);
+				if (right)
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_Z_RIGHT);
 				break;
 		}
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
 		EnumFacing.Axis enumfacing = state.getValue(FACING);
 		EnumFacing[] facings = SPINS[enumfacing.ordinal()];
-
 
 		IBlockState upState = source.getBlockState(pos.offset(facings[0]));
 		boolean up = upState.getBlock() == this && upState.getValue(FACING) == enumfacing;
@@ -159,27 +174,40 @@ public class BlockLightBridge extends BlockMod implements ILaserTrace {
 		boolean right = rightState.getBlock() == this && rightState.getValue(FACING) == enumfacing;
 
 		AxisAlignedBB box;
-		switch (enumfacing) {
+		switch (enumfacing)
+		{
 			case X:
 				box = AABB_X;
-				if (up) box = box.union(AABB_X_UP);
-				if (down) box = box.union(AABB_X_DOWN);
-				if (left) box = box.union(AABB_X_LEFT);
-				if (right) box = box.union(AABB_X_RIGHT);
+				if (up)
+					box = box.union(AABB_X_UP);
+				if (down)
+					box = box.union(AABB_X_DOWN);
+				if (left)
+					box = box.union(AABB_X_LEFT);
+				if (right)
+					box = box.union(AABB_X_RIGHT);
 				break;
 			case Y:
 				box = AABB_Y;
-				if (up) box = box.union(AABB_Y_UP);
-				if (down) box = box.union(AABB_Y_DOWN);
-				if (left) box = box.union(AABB_Y_LEFT);
-				if (right) box = box.union(AABB_Y_RIGHT);
+				if (up)
+					box = box.union(AABB_Y_UP);
+				if (down)
+					box = box.union(AABB_Y_DOWN);
+				if (left)
+					box = box.union(AABB_Y_LEFT);
+				if (right)
+					box = box.union(AABB_Y_RIGHT);
 				break;
 			case Z:
 				box = AABB_Z;
-				if (up) box = box.union(AABB_Z_UP);
-				if (down) box = box.union(AABB_Z_DOWN);
-				if (left) box = box.union(AABB_Z_LEFT);
-				if (right) box = box.union(AABB_Z_RIGHT);
+				if (up)
+					box = box.union(AABB_Z_UP);
+				if (down)
+					box = box.union(AABB_Z_DOWN);
+				if (left)
+					box = box.union(AABB_Z_LEFT);
+				if (right)
+					box = box.union(AABB_Z_RIGHT);
 				break;
 			default:
 				box = NULL_AABB;
@@ -188,40 +216,89 @@ public class BlockLightBridge extends BlockMod implements ILaserTrace {
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(int meta)
+	{
 		meta = meta % 3;
 		return getDefaultState().withProperty(FACING, EnumFacing.Axis.values()[meta]);
 
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(IBlockState state)
+	{
 		return state.getValue(FACING).ordinal();
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState() {
+	protected BlockStateContainer createBlockState()
+	{
 		return new BlockStateContainer(this, FACING, UP, DOWN, LEFT, RIGHT);
 	}
 
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getBlockLayer()
+	{
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState blockState) {
-		return false;
-	}
-
-	@Override
-	public RayTraceResult collisionRayTraceLaser(IBlockState blockState, World worldIn, BlockPos pos, Vec3d startRaw, Vec3d endRaw)
+	public boolean isFullCube(IBlockState state)
 	{
-		return null;
+		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState blockState)
+	{
+		return false;
+	}
+
+	@Override
+	public void handleBeams(World world, BlockPos pos, Beam... beams)
+	{
+		for (Beam beam : beams)
+		{
+			EnumFacing.Axis block = world.getBlockState(pos).getValue(FACING);
+			Effect effect = beam.effect;
+			if (effect == null)
+				continue;
+			if (effect.getColor().equals(Color.CYAN))
+			{
+				EnumFacing positive = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.POSITIVE, block);
+				EnumFacing negative = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.NEGATIVE, block);
+				Vec3d slope = beam.slope.normalize();
+				if (slope.dotProduct(new Vec3d(positive.getDirectionVec())) > 0.999 || slope.dotProduct(new Vec3d(negative.getDirectionVec())) > 0.999)
+				{
+					BridgeTracker tracker = BridgeTracker.getInstance(world);
+					ExciterArray array = tracker.getBridgeArray(pos);
+					if (array == null)
+					{
+						world.setBlockToAir(pos);
+						return;
+					}
+					BlockPos[] positions = array.getPositions().toArray(new BlockPos[array.getPositions().size()]);
+					if (positions.length == 0)
+					{
+						world.setBlockToAir(pos);
+						return;
+					}
+					switch (array.getFacing())
+					{
+						case UP:
+						case DOWN:
+							tracker.power(new BlockPos(pos.getX(), positions[0].getY(), pos.getZ()));
+							return;
+						case NORTH:
+						case SOUTH:
+							tracker.power(new BlockPos(pos.getX(), pos.getY(), positions[0].getZ()));
+							return;
+						case EAST:
+						case WEST:
+							tracker.power(new BlockPos(positions[0].getX(), pos.getY(), pos.getZ()));
+							return;
+					}
+				}
+			}
+		}
 	}
 }

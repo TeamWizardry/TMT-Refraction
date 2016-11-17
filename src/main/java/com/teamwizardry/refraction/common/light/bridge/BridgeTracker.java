@@ -104,6 +104,16 @@ public class BridgeTracker
 		if (array != null)
 			array.power(pos);
 	}
+	
+	public ExciterArray getBridgeArray(BlockPos pos)
+	{
+		return bridgePositions.get(pos);
+	}
+	
+	public ExciterArray getExciterArray(BlockPos pos)
+	{
+		return exciterPositions.get(pos);
+	}
 
 	@SubscribeEvent
 	public void onWorldTick(TickEvent.WorldTickEvent event)
