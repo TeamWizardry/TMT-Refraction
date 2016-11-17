@@ -158,15 +158,13 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
                     DimWithPos newKey = new DimWithPos(world.provider.getDimension(), pos.offset(dir, 2));
                     ModBlocks.AXYZ.mappedPositions.remove(key);
                     ModBlocks.AXYZ.mappedPositions.put(newKey, mapped);
-
-                    world.playSound(null, pos.offset(dir, 2), SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 1f, 1f);
-
-                    world.setBlockState(pos.offset(dir), Blocks.AIR.getDefaultState());
-                    world.setBlockState(pos.offset(dir, 2), axyz);
-
-                    return;
                 } else
                     ModBlocks.AXYZ.mappedPositions.put(new DimWithPos(world.provider.getDimension(), pos.offset(dir, 2)), key);
+
+                world.playSound(null, pos.offset(dir, 2), SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 1f, 1f);
+                world.setBlockState(pos.offset(dir), Blocks.AIR.getDefaultState());
+                world.setBlockState(pos.offset(dir, 2), axyz);
+                return;
             } else if (check2.getBlock() == ModBlocks.AXYZ) return;
         }
 
