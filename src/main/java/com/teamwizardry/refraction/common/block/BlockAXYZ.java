@@ -5,8 +5,8 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.librarianlib.common.base.block.ItemModBlock;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.librarianlib.common.util.DimWithPos;
 import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.DimWithPos;
 import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.common.light.Beam;
@@ -177,7 +177,7 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         if(server == null)
             return Blocks.AIR.getDefaultState();
-        return server.worldServerForDimension(key.dim).getBlockState(key.blockPos);
+        return server.worldServerForDimension(key.getDim()).getBlockState(key.getPos());
     }
 
     @SubscribeEvent
@@ -210,8 +210,8 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
                     if(server != null && getTimeInCoords(s) == 0) {
                         DimWithPos newPos;
 
-                        int worldId = s.dim, x = s.blockPos.getX(), y = s.blockPos.getY(), z = s.blockPos.getZ();
-                        BlockPos pos = s.blockPos;
+                        int worldId = s.getDim(), x = s.getPos().getX(), y = s.getPos().getY(), z = s.getPos().getZ();
+                        BlockPos pos = s.getPos();
                         World world = server.worldServerForDimension(worldId);
                         if(world.isAirBlock(pos.offset(dir)))
                             world.setBlockState(pos.offset(dir), ModBlocks.AXYZ.getDefaultState());
@@ -222,18 +222,17 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
                         checkedCoords.add(s);
                         newPos = new DimWithPos(world.provider.getDimension(), pos.offset(dir));
 
-                        if(!mappedPositions.containsKey(s))
-                            mappedPositions.put(s, new DimWithPos(s.dim, s.blockPos.offset(dir, 3)));
-
-                        DimWithPos dPos = mappedPositions.get(s);
-                        worldId = dPos.dim;
-                        BlockPos pos2 = dPos.blockPos;
-                        world = server.worldServerForDimension(worldId);
+                        if(mappedPositions.containsKey(s)) {
+                            DimWithPos dPos = mappedPositions.get(s);
+                            worldId = dPos.getDim();
+                            BlockPos pos2 = dPos.getPos();
+                            world = server.worldServerForDimension(worldId);
 
 
-                        mappedPositions.remove(s);
-                        mappedPositions.put(newPos, new DimWithPos(world.provider.getDimension(), pos2.offset(dir)));
-                        save(world);
+                            mappedPositions.remove(s);
+                            mappedPositions.put(newPos, new DimWithPos(world.provider.getDimension(), pos2.offset(dir)));
+                            save(world);
+                        }
                     }
                 } else removeQueue.add(s);
             }
@@ -247,10 +246,10 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
 
             HashMap<Integer, List<Pair<BlockPos, BlockPos>>> map = new HashMap<>();
             for (Map.Entry<DimWithPos, DimWithPos> s : mappedPositions.entrySet()) {
-                int dim = s.getKey().dim;
+                int dim = s.getKey().getDim();
                 if (!map.containsKey(dim)) map.put(dim, Lists.newArrayList());
 
-                map.get(dim).add(new Pair<>(s.getValue().blockPos, s.getKey().blockPos));
+                map.get(dim).add(new Pair<>(s.getValue().getPos(), s.getKey().getPos()));
             }
 
             for (Integer dim : map.keySet()) {
@@ -291,7 +290,7 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
         Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
         DimWithPos key = new DimWithPos(dim, pos);
         if (mappedPositions.containsKey(key)) {
-            BlockPos mapPos = mappedPositions.get(key).blockPos;
+            BlockPos mapPos = mappedPositions.get(key).getPos();
             beam.createSimilarBeam(new Vec3d(mapPos).addVector(0.5, 0.5, 0.5), beam.slope).setColor(c).spawn();
         }
     }

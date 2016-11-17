@@ -3,7 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.refraction.api.DimWithPos;
+import com.teamwizardry.librarianlib.common.util.DimWithPos;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.PosUtils;

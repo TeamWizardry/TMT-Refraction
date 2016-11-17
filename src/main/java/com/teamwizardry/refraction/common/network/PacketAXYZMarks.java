@@ -4,10 +4,10 @@ import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.common.network.PacketBase;
+import com.teamwizardry.librarianlib.common.util.DimWithPos;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.position.InterpBezier3D;
 import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.DimWithPos;
 import io.netty.buffer.ByteBuf;
 import kotlin.Pair;
 import net.minecraft.client.Minecraft;
@@ -103,43 +103,39 @@ public class PacketAXYZMarks extends PacketBase {
 				generatorHalo.setScale((float) ThreadLocalRandom.current().nextDouble(1, 2));
 			});
 
-			for (DimWithPos dimWithPos : controlPoints.keySet()) {
-				if (dimWithPos.blockPos.toLong() == origin.toLong()) {
-					if (ThreadLocalRandom.current().nextInt(5) == 0) {
+			controlPoints.keySet().stream().filter(dimWithPos -> dimWithPos.getPos().toLong() == origin.toLong()).filter(dimWithPos -> ThreadLocalRandom.current().nextInt(5) == 0).forEachOrdered(dimWithPos -> {
 
-						Pair<Vec3d, Vec3d> pair = controlPoints.get(dimWithPos);
-						double shift = ThreadLocalRandom.current().nextDouble(0.1, 0.5);
+				Pair<Vec3d, Vec3d> pair = controlPoints.get(dimWithPos);
+				double shift = ThreadLocalRandom.current().nextDouble(0.1, 0.5);
 
-						double p1r1 = pair.getFirst().xCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
-						double p1r2 = pair.getFirst().yCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
-						double p1r3 = pair.getFirst().zCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
-						Vec3d p1 = new Vec3d(
-								p1r1 <= 2 ? p1r1 : pair.getFirst().xCoord,
-								p1r2 <= 2 ? p1r2 : pair.getFirst().yCoord,
-								p1r3 <= 2 ? p1r3 : pair.getFirst().zCoord
-						);
-						double p2r1 = pair.getSecond().xCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
-						double p2r2 = pair.getSecond().yCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
-						double p2r3 = pair.getSecond().zCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
-						Vec3d p2 = new Vec3d(
-								p2r1 <= 2 ? p2r1 : pair.getSecond().xCoord,
-								p2r2 <= 2 ? p2r2 : pair.getSecond().yCoord,
-								p2r3 <= 2 ? p2r3 : pair.getSecond().zCoord
-						);
-						controlPoints.put(dimWithPos, new Pair<>(p1, p2));
+				double p1r1 = pair.getFirst().xCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				double p1r2 = pair.getFirst().yCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				double p1r3 = pair.getFirst().zCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				Vec3d p1 = new Vec3d(
+						p1r1 <= 2 ? p1r1 : pair.getFirst().xCoord,
+						p1r2 <= 2 ? p1r2 : pair.getFirst().yCoord,
+						p1r3 <= 2 ? p1r3 : pair.getFirst().zCoord
+				);
+				double p2r1 = pair.getSecond().xCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				double p2r2 = pair.getSecond().yCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				double p2r3 = pair.getSecond().zCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				Vec3d p2 = new Vec3d(
+						p2r1 <= 2 ? p2r1 : pair.getSecond().xCoord,
+						p2r2 <= 2 ? p2r2 : pair.getSecond().yCoord,
+						p2r3 <= 2 ? p2r3 : pair.getSecond().zCoord
+				);
+				controlPoints.put(dimWithPos, new Pair<>(p1, p2));
 
-						ParticleBuilder connection = new ParticleBuilder(30);
-						ParticleSpawner.spawn(connection, world, new StaticInterp<>(new Vec3d(origin).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(1, 5), 0, (aFloat, particleBuilder) -> {
-							connection.setAlphaFunction(new InterpFadeInOut(0.2f, 0.2f));
-							connection.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
-							Vec3d sub = new Vec3d(pos.subtract(origin));
-							connection.setPositionFunction(new InterpBezier3D(Vec3d.ZERO, sub, controlPoints.get(dimWithPos).getFirst(), controlPoints.get(dimWithPos).getSecond()));
-							connection.setColor(new Color(72, 119, 122));
-							connection.setScale((float) ThreadLocalRandom.current().nextDouble(1, 2));
-						});
-					}
-				}
-			}
+				ParticleBuilder connection = new ParticleBuilder(30);
+				ParticleSpawner.spawn(connection, world, new StaticInterp<>(new Vec3d(origin).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(1, 5), 0, (aFloat, particleBuilder) -> {
+					connection.setAlphaFunction(new InterpFadeInOut(0.2f, 0.2f));
+					connection.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+					Vec3d sub = new Vec3d(pos.subtract(origin));
+					connection.setPositionFunction(new InterpBezier3D(Vec3d.ZERO, sub, controlPoints.get(dimWithPos).getFirst(), controlPoints.get(dimWithPos).getSecond()));
+					connection.setColor(new Color(72, 119, 122));
+					connection.setScale((float) ThreadLocalRandom.current().nextDouble(1, 2));
+				});
+			});
 		}
 	}
 

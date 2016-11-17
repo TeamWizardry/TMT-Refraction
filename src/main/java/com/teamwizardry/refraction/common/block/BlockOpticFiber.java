@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.librarianlib.common.util.EnumBiFacing;
 import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.common.light.Beam;
@@ -18,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -29,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import static net.minecraft.util.EnumFacing.*;
@@ -79,10 +78,9 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 		if (facing == null)
 			return;
 
-		EnumBiFacing primary = getBiFacing(world, pos.offset(facing.primary));
-		EnumBiFacing secondary = getBiFacing(world, pos.offset(facing.secondary));
-		if (primary != null && secondary != null && primary.contains(facing.primary.getOpposite()) && secondary.contains(facing.secondary.getOpposite()))
-		{
+		EnumBiFacing primary = getBiFacing(world, pos.offset(facing.getPrimary()));
+		EnumBiFacing secondary = getBiFacing(world, pos.offset(facing.getSecondary()));
+		if (primary != null && secondary != null && primary.contains(facing.getPrimary().getOpposite()) && secondary.contains(facing.getSecondary().getOpposite())) {
 			for (Beam beam : beams)
 				beam.createSimilarBeam(beam.slope).spawn();
 			return;
@@ -90,33 +88,28 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 
 		boolean primaryOpen = true;
 		boolean secondaryOpen = true;
-		if (primary != null && primary.contains(facing.primary.getOpposite()))
+		if (primary != null && primary.contains(facing.getPrimary().getOpposite()))
 			primaryOpen = false;
-		if (secondary != null && secondary.contains(facing.secondary.getOpposite()))
+		if (secondary != null && secondary.contains(facing.getSecondary().getOpposite()))
 			secondaryOpen = false;
 
 		BlockPos curPos = null;
 		EnumFacing curFacing = null;
 		EnumBiFacing curBiFacing = null;
-		if (primaryOpen && secondaryOpen)
-		{}
-		else if (primaryOpen)
-		{
-			curPos = pos.offset(facing.secondary);
-			curFacing = secondary.getOther(facing.secondary.getOpposite());
+		if (primaryOpen && secondaryOpen) {
+		} else if (primaryOpen) {
+			curPos = pos.offset(facing.getSecondary());
+			curFacing = secondary.getOther(facing.getSecondary().getOpposite());
 			curBiFacing = secondary;
-		}
-		else if (secondaryOpen)
-		{
-			curPos = pos.offset(facing.primary);
-			curFacing = primary.getOther(facing.primary.getOpposite());
+		} else if (secondaryOpen) {
+			curPos = pos.offset(facing.getPrimary());
+			curFacing = primary.getOther(facing.getPrimary().getOpposite());
 			curBiFacing = primary;
 		}
 
 		BlockPos nextPos = curPos;
 		EnumBiFacing nextBiFacing = curBiFacing;
-		while (nextBiFacing != null)
-		{
+		while (nextBiFacing != null) {
 			nextPos = curPos.offset(curFacing);
 			nextBiFacing = getBiFacing(world, nextPos);
 			if (nextBiFacing == null)
@@ -128,18 +121,14 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 			curBiFacing = nextBiFacing;
 		}
 
-		for (Beam beam : beams)
-		{
+		for (Beam beam : beams) {
 			EnumFacing beamDir = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
 
 			IBlockState state = world.getBlockState(pos);
 			AxisAlignedBB axis = state.getBoundingBox(null, null);
-			if (primaryOpen && secondaryOpen)
-			{
-				if (facing.contains(beamDir.getOpposite()))
-				{
-					if (beamDir.getOpposite() == getCollisionSide(axis, beam))
-					{
+			if (primaryOpen && secondaryOpen) {
+				if (facing.contains(beamDir.getOpposite())) {
+					if (beamDir.getOpposite() == getCollisionSide(axis, beam)) {
 						EnumFacing opposite = beamDir.getOpposite();
 						EnumFacing other = facing.getOther(opposite);
 						spawnBeam(world, beam, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), other);
@@ -147,23 +136,17 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 					}
 				}
 			}
-			if (primaryOpen)
-			{
-				if (facing.primary == beamDir.getOpposite())
-				{
-					if (beamDir.getOpposite() == getCollisionSide(axis, beam))
-					{
+			if (primaryOpen) {
+				if (facing.getPrimary() == beamDir.getOpposite()) {
+					if (beamDir.getOpposite() == getCollisionSide(axis, beam)) {
 						spawnBeam(world, beam, new Vec3d(curPos.getX() + 0.5, curPos.getY() + 0.5, curPos.getZ() + 0.5), curFacing);
 						continue;
 					}
 				}
 			}
-			if (secondaryOpen)
-			{
-				if (facing.secondary == beamDir.getOpposite())
-				{
-					if (beamDir.getOpposite() == getCollisionSide(axis, beam))
-					{
+			if (secondaryOpen) {
+				if (facing.getSecondary() == beamDir.getOpposite()) {
+					if (beamDir.getOpposite() == getCollisionSide(axis, beam)) {
 						spawnBeam(world, beam, new Vec3d(curPos.getX() + 0.5, curPos.getY() + 0.5, curPos.getZ() + 0.5), curFacing);
 						continue;
 					}
@@ -258,7 +241,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 		EnumBiFacing facings = state.getValue(FACING);
 		List<EnumFacing> ret = Lists.newArrayList();
 
-		EnumFacing facing = facings.primary;
+		EnumFacing facing = facings.getPrimary();
 		IBlockState offsetState = source.getBlockState(pos.offset(facing));
 		if (offsetState.getBlock() instanceof BlockOpticFiber) {
 			EnumBiFacing offsetFacings = offsetState.getValue(FACING);
@@ -271,7 +254,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 		} else
 			ret.add(facing);
 
-		facing = facings.secondary;
+		facing = facings.getSecondary();
 		offsetState = source.getBlockState(pos.offset(facing));
 		if (offsetState.getBlock() instanceof BlockOpticFiber) {
 			EnumBiFacing offsetFacings = offsetState.getValue(FACING);
@@ -330,8 +313,8 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		if (!worldIn.isRemote) {
-			EnumFacing a = state.getValue(FACING).primary;
-			EnumFacing b = state.getValue(FACING).secondary;
+			EnumFacing a = state.getValue(FACING).getPrimary();
+			EnumFacing b = state.getValue(FACING).getSecondary();
 
 			updateBlockState(worldIn, pos, a);
 			updateBlockState(worldIn, pos, b);
@@ -413,51 +396,5 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
-	}
-
-	public enum EnumBiFacing implements IStringSerializable {
-		UP_NORTH(UP, NORTH),
-		UP_SOUTH(UP, SOUTH),
-		UP_WEST(UP, WEST),
-		UP_EAST(UP, EAST),
-		UP_DOWN(UP, DOWN),
-		DOWN_NORTH(DOWN, NORTH),
-		DOWN_SOUTH(DOWN, SOUTH),
-		DOWN_WEST(DOWN, WEST),
-		DOWN_EAST(DOWN, EAST),
-		WEST_NORTH(WEST, NORTH),
-		WEST_SOUTH(WEST, SOUTH),
-		WEST_EAST(WEST, EAST),
-		EAST_NORTH(EAST, NORTH),
-		EAST_SOUTH(EAST, SOUTH),
-		NORTH_SOUTH(NORTH, SOUTH);
-
-		public final EnumFacing primary, secondary;
-
-		EnumBiFacing(EnumFacing a, EnumFacing b) {
-			primary = a;
-			secondary = b;
-		}
-
-		public static EnumBiFacing getBiForFacings(EnumFacing a, EnumFacing b) {
-			for (EnumBiFacing facing : values())
-				if ((facing.primary == a && facing.secondary == b) || (facing.secondary == a && facing.primary == b))
-					return facing;
-			throw new IllegalArgumentException("Someone tried to make a bifacing out of " + a.name() + " and " + b.name());
-		}
-
-		@Override
-		public String getName() {
-			return name().toLowerCase(Locale.ROOT);
-		}
-
-		public boolean contains(EnumFacing f) {
-			return primary == f || secondary == f;
-		}
-
-		public EnumFacing getOther(EnumFacing f) {
-			if (primary == f) return secondary;
-			return primary;
-		}
 	}
 }
