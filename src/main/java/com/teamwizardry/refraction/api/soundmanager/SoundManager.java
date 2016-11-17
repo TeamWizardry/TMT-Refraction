@@ -2,7 +2,6 @@ package com.teamwizardry.refraction.api.soundmanager;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -12,9 +11,10 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,31 +27,18 @@ public class SoundManager {
 	public static SoundManager INSTANCE = new SoundManager();
 	public static int soundRange = 8;
 
-	public static HashMap<BlockPos, SpeakerNode> speakerNodes = new HashMap<>();
 	public static Set<Speaker> speakers = new HashSet<>();
+	public static Set<SpeakerNode> speakerNodes = new HashSet<>();
 
 	private SoundManager() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	public void addSpeakerNode(Speaker speaker, World world, BlockPos pos) {
-		if (speakerNodes.isEmpty()) {
-			speakerNodes.put(pos, new SpeakerNode(speaker, pos, world));
-			return;
-		}
-		IBlockState state = world.getBlockState(pos);
-		if (speaker.block.hasTileEntity(state))
-			if (world.getTileEntity(pos) instanceof IConditionalSoundEmitter) {
-				speakerNodes.put(pos, new SpeakerNode(speaker, pos, world));
-				return;
-			}
-
-		for (BlockPos nodePos : speakerNodes.keySet()) {
-			SpeakerNode node = speakerNodes.get(nodePos);
+		for (SpeakerNode node : speakerNodes) {
 			if (node.world.provider.getDimension() == world.provider.getDimension())
-				if (node.pos.compareTo(pos) <= 20) continue;
-			speakerNodes.put(pos, new SpeakerNode(speaker, pos, world));
-			break;
+				if (node.pos.compareTo(pos) <= soundRange) return;
+				else speakerNodes.add(new SpeakerNode(speaker, pos, world));
 		}
 		WorldSavedDataSound.markDirty();
 	}
@@ -63,110 +50,103 @@ public class SoundManager {
 	}
 
 	@SubscribeEvent
-	public void tick(TickEvent.ClientTickEvent event) {
-		HashMap<BlockPos, SpeakerNode> tempNodes = new HashMap<>();
-		tempNodes.putAll(speakerNodes);
-		tempNodes.keySet().removeIf(nodePos -> {
-			SpeakerNode node = tempNodes.get(nodePos);
+	public void tick(TickEvent.WorldTickEvent event) {
+		speakerNodes.removeIf(node -> {
 			IBlockState state = node.world.getBlockState(node.pos);
+			if (event.world.provider.getDimension() != node.world.provider.getDimension()) return false;
 			if (state.getBlock() == node.speaker.block) {
 
-				if (node.speaker.block.hasTileEntity(state)) {
-					TileEntity tileEntity = node.world.getTileEntity(node.pos);
-					if (tileEntity instanceof IConditionalSoundEmitter) {
-						IConditionalSoundEmitter soundEmitter = (IConditionalSoundEmitter) tileEntity;
-						if (soundEmitter.shouldEmit()) {
-							BlockPos pos = searchForAnotherBlock(node.speaker.block, node.pos, node.world);
-							if (pos != null) {
-								SpeakerNode secondaryNode = tempNodes.get(pos);
-								if (secondaryNode.active) {
-									node.active = false;
-									WorldSavedDataSound.markDirty();
-									return false;
-								}
+				if (!node.active) {
+					if (state.getBlock() instanceof IConditionalSoundEmitter) {
+						IConditionalSoundEmitter soundEmitter = (IConditionalSoundEmitter) state.getBlock();
+						if (soundEmitter.shouldEmit(node.world, node.pos)) {
+							SpeakerNode activeNode = searchForActiveNode(node.world, node.speaker.block, node.pos);
+							if (activeNode == null) {
+								node.active = true;
+								WorldSavedDataSound.markDirty();
 							}
-						} else return false;
-					}
-				}
-				node.active = true;
-				WorldSavedDataSound.markDirty();
-
-				if (node.tick >= node.speaker.interval) {
-					node.tick = 0;
-					WorldSavedDataSound.markDirty();
-
-					node.world.playSound(null, node.pos, node.speaker.sounds.get(node.queue), SoundCategory.BLOCKS, node.speaker.volume, node.speaker.pitch);
-
-					if (node.queue >= node.speaker.sounds.size() - 1) {
-						if (!node.speaker.loopOnce) {
-							node.queue = 0;
+						}
+					} else {
+						SpeakerNode activeNode = searchForActiveNode(node.world, node.speaker.block, node.pos);
+						if (activeNode == null) {
+							node.active = true;
 							WorldSavedDataSound.markDirty();
 						}
-						else return true;
+					}
+				}
+
+				if (node.active) {
+					if (node.tick >= node.speaker.interval) {
+						node.tick = 0;
+						WorldSavedDataSound.markDirty();
+
+						node.world.playSound(null, node.pos, node.speaker.sounds.get(node.queue), SoundCategory.BLOCKS, node.speaker.volume, node.speaker.pitch);
+
+						if (node.queue >= node.speaker.sounds.size() - 1) {
+							if (!node.speaker.loopOnce) {
+								node.queue = 0;
+								WorldSavedDataSound.markDirty();
+							} else return true;
+						} else {
+							node.queue++;
+							WorldSavedDataSound.markDirty();
+						}
 					} else {
-						node.queue++;
+						node.tick++;
 						WorldSavedDataSound.markDirty();
 					}
-				} else {
-					node.tick++;
-					WorldSavedDataSound.markDirty();
 				}
 				return false;
 			} else {
-				BlockPos pos = searchForAnotherBlock(node.speaker.block, node.pos, node.world);
-				if (pos != null) {
-					addSpeakerNode(node.speaker, node.world, pos);
-				}
+				activateNearbyNode(node.world, node.speaker.block, node.pos);
 				return true;
 			}
 		});
-		speakerNodes.clear();
-		speakerNodes.putAll(tempNodes);
 		WorldSavedDataSound.markDirty();
 	}
 
-	public BlockPos searchForAnotherBlock(Block block, BlockPos pos, World world) {
-		for (int i = -soundRange; i < soundRange; i++)
-			for (int j = -soundRange; j < soundRange; j++)
-				for (int k = -soundRange; k < soundRange; k++) {
-					BlockPos newPos = new BlockPos(pos.getX() + i, pos.getY() + j, pos.getZ() + k);
-					IBlockState state = world.getBlockState(newPos);
-					if (state.getBlock() == block) {
-						if (newPos.compareTo(pos) != 0) {
-							if (block.hasTileEntity(state)) {
-								TileEntity tileEntity = world.getTileEntity(newPos);
-								if (tileEntity instanceof IConditionalSoundEmitter) {
-									IConditionalSoundEmitter soundEmitter = (IConditionalSoundEmitter) tileEntity;
-									if (soundEmitter.shouldEmit()) return newPos;
-								} else return newPos;
-							} else return newPos;
-						}
-					}
-				}
+	public boolean activateNearbyNode(@NotNull World world, @NotNull Block block, @NotNull BlockPos pos) {
+		if (searchForActiveNode(world, block, pos) == null) {
+			SpeakerNode node = searchForInertNode(world, block, pos);
+			if (node != null) {
+				node.active = true;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Nullable
+	public SpeakerNode searchForInertNode(@NotNull World world, @NotNull Block block, @NotNull BlockPos pos) {
+		for (SpeakerNode node : speakerNodes) {
+			if (node.world.provider.getDimension() == world.provider.getDimension() && node.speaker.block == block)
+				if (!node.active &&
+						node.pos.compareTo(pos) < soundRange &&
+						node.pos.compareTo(pos) > 0) return node;
+		}
+		return null;
+	}
+
+	@Nullable
+	public SpeakerNode searchForActiveNode(@NotNull World world, @NotNull Block block, @NotNull BlockPos pos) {
+		for (SpeakerNode node : speakerNodes) {
+			if (node.world.provider.getDimension() == world.provider.getDimension() && node.speaker.block == block)
+				if (node.active &&
+						node.pos.compareTo(pos) < soundRange &&
+						node.pos.compareTo(pos) > 0) return node;
+		}
 		return null;
 	}
 
 	@SubscribeEvent
 	public void blockBreak(BlockEvent.BreakEvent event) {
-		final Speaker[] nodeSpeaker = new Speaker[1];
-		final World[] nodeWorld = new World[1];
-		final BlockPos[] nodePos = new BlockPos[1];
-		speakerNodes.keySet().removeIf(nodePos1 -> {
-			SpeakerNode node = speakerNodes.get(nodePos1);
+		speakerNodes.removeIf(node -> {
 			if (node.world.provider.getDimension() != event.getWorld().provider.getDimension()) return false;
-			if (node.pos.compareTo(event.getPos()) == 0) {
-				BlockPos pos = searchForAnotherBlock(node.speaker.block, node.pos, node.world);
-				if (pos != null) {
-					nodeSpeaker[0] = node.speaker;
-					nodeWorld[0] = node.world;
-					nodePos[0] = pos;
-				}
+			if (node.pos.toLong() == event.getPos().toLong()) {
+				activateNearbyNode(node.world, node.speaker.block, node.pos);
 				return true;
-			}
-			return false;
+			} else return false;
 		});
-		if (nodeSpeaker[0] != null && nodeWorld[0] != null && nodePos[0] != null)
-			addSpeakerNode(nodeSpeaker[0], nodeWorld[0], nodePos[0]);
 	}
 
 	@SubscribeEvent

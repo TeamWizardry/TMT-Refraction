@@ -6,6 +6,7 @@ import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.librarianlib.common.base.block.ItemModBlock;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.DimWithPos;
 import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.common.light.Beam;
@@ -372,37 +373,4 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
 			return nbttagcompound;
 		}
 	}
-
-	public static class DimWithPos {
-		public final int dim;
-		public final BlockPos blockPos;
-
-		public DimWithPos(int dim, BlockPos pos) {
-			this.dim = dim;
-			blockPos = pos;
-		}
-
-		public static DimWithPos fromString(String s) {
-			String[] split = s.split(":");
-			return new DimWithPos(Integer.parseInt(split[0]), new BlockPos(Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3])));
-		}
-
-		@Override
-		public int hashCode() {
-			return 31 * dim ^ blockPos.hashCode();
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			return o instanceof DimWithPos
-					&& dim == ((DimWithPos) o).dim
-					&& blockPos.equals(((DimWithPos) o).blockPos);
-		}
-
-		@Override
-		public String toString() {
-			return dim + ":" + blockPos.getX() + ":" + blockPos.getY() + ":" + blockPos.getZ();
-		}
-
-    }
 }

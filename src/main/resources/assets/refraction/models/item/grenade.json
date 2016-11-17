@@ -1,6 +1,7 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "refraction:items/laser_pointer"
+    "layer0": "refraction:items/grenade_case",
+    "layer1": "refraction:items/grenade_streak"
   }
 }

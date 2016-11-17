@@ -7,7 +7,7 @@ import com.teamwizardry.librarianlib.common.network.PacketBase;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.position.InterpBezier3D;
 import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.common.block.BlockAXYZ;
+import com.teamwizardry.refraction.api.DimWithPos;
 import io.netty.buffer.ByteBuf;
 import kotlin.Pair;
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PacketAXYZMarks extends PacketBase {
 
-	public static final Map<BlockAXYZ.DimWithPos, Pair<Vec3d, Vec3d>> controlPoints = new HashMap<>();
+	public static final Map<DimWithPos, Pair<Vec3d, Vec3d>> controlPoints = new HashMap<>();
 
 	private BlockPos[] positions, originPositions;
 	private int dimension;
@@ -50,7 +50,7 @@ public class PacketAXYZMarks extends PacketBase {
 		for (int i = 0; i < positions.length; i++) {
 			BlockPos pos = positions[i], origin = originPositions[i];
 			double range = 5;
-			controlPoints.putIfAbsent(new BlockAXYZ.DimWithPos(world.provider.getDimension(), origin),
+			controlPoints.putIfAbsent(new DimWithPos(world.provider.getDimension(), origin),
 					new Pair<>(
 							new Vec3d(ThreadLocalRandom.current().nextDouble(-range, range),
 									ThreadLocalRandom.current().nextDouble(-range, range),
@@ -103,7 +103,7 @@ public class PacketAXYZMarks extends PacketBase {
 				generatorHalo.setScale((float) ThreadLocalRandom.current().nextDouble(1, 2));
 			});
 
-			for (BlockAXYZ.DimWithPos dimWithPos : controlPoints.keySet()) {
+			for (DimWithPos dimWithPos : controlPoints.keySet()) {
 				if (dimWithPos.blockPos.toLong() == origin.toLong()) {
 					if (ThreadLocalRandom.current().nextInt(5) == 0) {
 

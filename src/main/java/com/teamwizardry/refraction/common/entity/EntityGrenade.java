@@ -88,7 +88,7 @@ public class EntityGrenade extends EntityThrowable {
 					double z = r * MathHelper.sin((float) theta);
 
 					Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
-					Color c = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (color.getAlpha() / ThreadLocalRandom.current().nextDouble(1, 4)));
+					Color c = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (color.getAlpha() / ThreadLocalRandom.current().nextDouble(1, 3)));
 					new Beam(worldObj, pos, dest, c).spawn();
 				}
 			} else setDead();

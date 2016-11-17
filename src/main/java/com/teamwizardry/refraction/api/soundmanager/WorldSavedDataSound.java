@@ -3,13 +3,11 @@ package com.teamwizardry.refraction.api.soundmanager;
 import com.teamwizardry.librarianlib.common.util.NBTTypes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
 
 public final class WorldSavedDataSound {
 	private static final String SOUND = "refraction-sound";
@@ -48,8 +46,8 @@ public final class WorldSavedDataSound {
 		@Nonnull
 		public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound compound) {
 			NBTTagCompound speakerNodesTag = new NBTTagCompound();
-			for (Map.Entry<BlockPos, SpeakerNode> entry : SoundManager.speakerNodes.entrySet())
-				speakerNodesTag.setTag(entry.getKey().toLong() + "", entry.getValue().serializeNBT());
+			for (SpeakerNode node : SoundManager.speakerNodes)
+				speakerNodesTag.setTag(node.pos.toLong() + "", node.serializeNBT());
 			compound.setTag("speakerNodes", speakerNodesTag);
 
 			NBTTagList list = new NBTTagList();
@@ -64,7 +62,7 @@ public final class WorldSavedDataSound {
 			for (String key : compound.getCompoundTag("speakerNodes").getKeySet()) {
 				SpeakerNode speaker = new SpeakerNode();
 				speaker.deserializeNBT(compound.getCompoundTag("speakerNodes").getCompoundTag(key));
-				SoundManager.speakerNodes.put(BlockPos.fromLong(Long.parseLong(key)), speaker);
+				SoundManager.speakerNodes.add(speaker);
 			}
 
 			NBTTagList list = compound.getTagList("speakers", NBTTypes.COMPOUND);

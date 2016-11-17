@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.block;
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.refraction.api.DimWithPos;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.PosUtils;
@@ -151,10 +152,10 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
             IBlockState axyz = world.getBlockState(pos.offset(dir));
             IBlockState check2 = world.getBlockState(pos.offset(dir, 2));
             if (axyz.getBlock() == ModBlocks.AXYZ && check2.getBlock().isAir(check2, world, pos.offset(dir, 2))) {
-                BlockAXYZ.DimWithPos key = new BlockAXYZ.DimWithPos(world.provider.getDimension(), pos.offset(dir));
+                DimWithPos key = new DimWithPos(world.provider.getDimension(), pos.offset(dir));
                 if (ModBlocks.AXYZ.mappedPositions.containsKey(key)) {
-                    BlockAXYZ.DimWithPos mapped = ModBlocks.AXYZ.mappedPositions.get(key);
-                    BlockAXYZ.DimWithPos newKey = new BlockAXYZ.DimWithPos(world.provider.getDimension(), pos.offset(dir, 2));
+                    DimWithPos mapped = ModBlocks.AXYZ.mappedPositions.get(key);
+                    DimWithPos newKey = new DimWithPos(world.provider.getDimension(), pos.offset(dir, 2));
                     ModBlocks.AXYZ.mappedPositions.remove(key);
                     ModBlocks.AXYZ.mappedPositions.put(newKey, mapped);
 
