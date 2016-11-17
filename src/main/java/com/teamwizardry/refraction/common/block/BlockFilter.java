@@ -1,7 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.google.common.collect.Lists;
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.librarianlib.common.base.block.IBlockColorProvider;
 import com.teamwizardry.refraction.api.IBeamHandler;
@@ -14,8 +13,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -115,11 +112,6 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 	public void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		IBlockState state = world.getBlockState(pos);
 		beam.createSimilarBeam(new Vec3d(pos).addVector(0.5, 0.5, 0.5), beam.slope, new Color(state.getValue(TYPE).color)).spawn();
-	}
-
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath() + "." + stack.getItemDamage());
 	}
 
 	@Override
