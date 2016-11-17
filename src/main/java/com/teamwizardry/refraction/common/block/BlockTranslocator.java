@@ -165,7 +165,8 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
                     world.setBlockState(pos.offset(dir, 2), axyz);
 
                     return;
-                }
+                } else
+                    ModBlocks.AXYZ.mappedPositions.put(new DimWithPos(world.provider.getDimension(), pos.offset(dir, 2)), key);
             } else if (check2.getBlock() == ModBlocks.AXYZ) return;
         }
 
