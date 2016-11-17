@@ -35,11 +35,7 @@ public class SoundManager {
 	}
 
 	public void addSpeakerNode(Speaker speaker, World world, BlockPos pos) {
-		for (SpeakerNode node : speakerNodes) {
-			if (node.world.provider.getDimension() == world.provider.getDimension())
-				if (node.pos.compareTo(pos) <= soundRange) return;
-				else speakerNodes.add(new SpeakerNode(speaker, pos, world));
-		}
+		speakerNodes.add(new SpeakerNode(speaker, pos, world));
 		WorldSavedDataSound.markDirty();
 	}
 
@@ -71,6 +67,14 @@ public class SoundManager {
 						if (activeNode == null) {
 							node.active = true;
 							WorldSavedDataSound.markDirty();
+						}
+					}
+				} else {
+					if (state.getBlock() instanceof IConditionalSoundEmitter) {
+						IConditionalSoundEmitter soundEmitter = (IConditionalSoundEmitter) state.getBlock();
+						if (!soundEmitter.shouldEmit(node.world, node.pos)) {
+							activateNearbyNode(node.world, node.speaker.block, node.pos);
+							return true;
 						}
 					}
 				}
