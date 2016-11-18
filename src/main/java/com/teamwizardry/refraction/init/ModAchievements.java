@@ -25,7 +25,7 @@ public class ModAchievements {
 		LIGHT_BRIDGE = new ModAchievement("light_bridge", -1, 0, ModBlocks.ELECTRON_EXCITER, null);
 		LASER_PEN = new ModAchievement("laser_pen", 1, 2, ModItems.LASER_PEN, null);
 		GRENADE = new ModAchievement("grenade", -1, 2, ModItems.GRENADE, null);
-		AXYZ = new ModAchievement("axyz", -1, 0, ModBlocks.AXYZ, TRANSLOCATOR);
+		AXYZ = new ModAchievement("axyz", -1, 2, ModBlocks.AXYZ, TRANSLOCATOR);
 
 		PAGE = new AchievementPage(Refraction.MOD_NAME, ModAchievement.achievements.toArray(new Achievement[ModAchievement.achievements.size()]));
 		AchievementPage.registerAchievementPage(PAGE);
