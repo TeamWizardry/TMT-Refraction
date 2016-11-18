@@ -71,10 +71,10 @@ public class BridgeTracker {
 		exciterArrays.remove(array);
 		Set<BlockPos> bridgePositions = bridges.remove(array);
 		if (bridgePositions != null) {
-			bridgePositions.forEach(bridgePos ->
+			bridgePositions.removeIf(bridgePos ->
 			{
-				bridgePositions.remove(bridgePos);
 				getWorld().setBlockToAir(bridgePos);
+				return true;
 			});
 		}
 		array.getPositions().forEach(arrayPos -> exciterPositions.remove(arrayPos));
