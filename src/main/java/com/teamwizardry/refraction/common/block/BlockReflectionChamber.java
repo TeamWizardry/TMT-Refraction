@@ -87,8 +87,8 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 		int effectCount = 0;
 		int aestheticCount = 0;
 
-		List<Vec3d> angles1 = new ArrayList<>(beams.length - 1);
-		List<Vec3d> angles2 = new ArrayList<>(beams.length - 1);
+		List<Vec3d> angles1 = new ArrayList<>();
+		List<Vec3d> angles2 = new ArrayList<>();
 
 		int aRed = 0, eRed = 0;
 		int aGreen = 0, eGreen = 0;
@@ -103,7 +103,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 				aAlpha += color.getAlpha();
 				aestheticCount++;
 
-				angles1.add(beam.finalLoc.subtract(beam.initLoc));
+				angles1.add(beam.slope);
 			} else {
 				eRed += color.getRed() * (color.getAlpha() / 255f);
 				eGreen += color.getGreen() * (color.getAlpha() / 255f);
@@ -111,7 +111,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 				eAlpha += color.getAlpha();
 				effectCount++;
 
-				angles2.add(beam.finalLoc.subtract(beam.initLoc));
+				angles2.add(beam.slope);
 			}
 		}
 		if (aestheticCount > 0) {

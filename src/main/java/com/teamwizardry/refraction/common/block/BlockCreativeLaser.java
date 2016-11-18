@@ -49,13 +49,11 @@ public class BlockCreativeLaser extends BlockModContainer implements ILightSourc
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
-		worldIn.scheduleUpdate(pos, this, 20);
 	}
 
 	@Override
 	public void updateTick(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random random) {
 		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
-		worldIn.scheduleUpdate(pos, this, 20);
 	}
 
 	@Override
