@@ -35,6 +35,7 @@ public class CommonProxy {
 		ModItems.init();
 		ModEntities.init();
 		ModEffects.init();
+		ModAchievements.init();
 
 		SoundManager.INSTANCE.getClass();
 

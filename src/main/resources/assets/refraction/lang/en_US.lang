@@ -67,16 +67,22 @@ simple_name.refraction:translocator=&7Beam Translocator
 simple_name.refraction:reflective_alloy_block=&7Reflective Alloy Block
 simple_name.refraction:axyz=&7Piston-Based Beam Relocator
 
-achievement.refraction.light_bridge=Don't rub your cheek on it
+achievement.refraction.light_bridge=Cheek Hazard
 achievement.refraction.light_bridge.desc=Create light bridges
+<<<<<<< Updated upstream
 achievement.refraction.translocator=Thinking With Portals
+=======
+achievement.refraction.translocator=Works as Intended
+>>>>>>> Stashed changes
 achievement.refraction.translocator.desc=Craft a translocator block
-achievement.refraction.prism=Taste The Rainbow
+achievement.refraction.prism=Taste the Rainbow
 achievement.refraction.prism.desc=Craft a prism block
-achievement.refraction.laser=TEH KITTEH LAZOR
-achievement.refraction.laser.desc=Make a laser pen and make cats go nuts
+achievement.refraction.laser_pen=Kitten Magnet
+achievement.refraction.laser_pen.desc=Make a laser pen and make cats go nuts
 achievement.refraction.grenade=Combustible Lemons
 achievement.refraction.grenade.desc=Craft a photon grenade
+achievement.refraction.axyz=Thinking with Portals
+achievement.refraction.axyz.desc=Create a wormhole generator with an unstable nomenclature
 
 gui.screw_driver.angle.0=1/8°
 gui.screw_driver.angle.1=1/4°
