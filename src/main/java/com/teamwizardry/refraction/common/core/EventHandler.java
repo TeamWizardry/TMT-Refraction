@@ -4,7 +4,6 @@ import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.init.ModAchievements;
 import com.teamwizardry.refraction.init.ModBlocks;
-import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.BlockPos;
@@ -38,15 +37,15 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void craft(EventAssemblyTableCraft event) {
-		if (event.getOutput().getItem() == ModBlocks.AXYZ.getItemForm())
+		if (event.getOutput().getItem() == ModBlocks.TRANSLOCATOR.getItemForm())
 			for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
 				player.addStat(ModAchievements.TRANSLOCATOR);
 		else if (event.getOutput().getItem() == ModBlocks.PRISM.getItemForm())
 			for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
 				player.addStat(ModAchievements.PRISM);
-		else if (event.getOutput().getItem() == ModItems.GRENADE)
+		else if (event.getOutput().getItem() == ModBlocks.AXYZ.getItemForm())
 			for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
-				player.addStat(ModAchievements.GRENADE);
+				player.addStat(ModAchievements.AXYZ);
 	}
 
 	public List<EntityPlayer> getPlayersWithinRange(World world, BlockPos pos, double range) {

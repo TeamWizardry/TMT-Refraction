@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.common.entity.EntityGrenade;
+import com.teamwizardry.refraction.init.ModAchievements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -105,6 +106,11 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 				(float) Math.max(comps[1] - 0.12, 0),
 				(float) Math.max(comps[2] - 0.12, 0));
 		return ColorUtils.pulseColor(c);
+	}
+
+	@Override
+	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+		playerIn.addStat(ModAchievements.GRENADE);
 	}
 
 	@Nullable
