@@ -6,6 +6,7 @@ import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOu
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.init.ModSounds;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -90,6 +91,7 @@ public class EntityGrenade extends EntityThrowable {
 					Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
 					Color c = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (color.getAlpha() / ThreadLocalRandom.current().nextDouble(1, 3)));
 					new Beam(worldObj, pos, dest, c).spawn();
+					playSound(ModSounds.CRACKLE, 1f, ThreadLocalRandom.current().nextFloat());
 				}
 			} else setDead();
 		}

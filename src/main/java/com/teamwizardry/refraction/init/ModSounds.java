@@ -51,8 +51,11 @@ public class ModSounds {
 	public static SoundEvent ELECTRICAL_HUM_14;
 	public static SoundEvent ELECTRICAL_HUM_15;
 	public static SoundEvent ELECTRICAL_HUM_16;
+	public static SoundEvent CRACKLE;
 
 	public static void init() {
+		CRACKLE = registerSound("crackle");
+
 		LIGHT_BRIDGE_01 = registerSound("light_bridge_01");
 		LIGHT_BRIDGE_02 = registerSound("light_bridge_02");
 		LIGHT_BRIDGE_03 = registerSound("light_bridge_03");
