@@ -3,10 +3,8 @@ package com.teamwizardry.refraction.init;
 import com.teamwizardry.refraction.common.effect.*;
 import com.teamwizardry.refraction.common.light.EffectTracker;
 
-public class ModEffects
-{
-	public static void init()
-	{
+public class ModEffects {
+	public static void init() {
 		EffectTracker.registerEffect(new EffectFreeze());
 		EffectTracker.registerEffect(new EffectAttract());
 		EffectTracker.registerEffect(new EffectBonemeal());

@@ -26,8 +26,11 @@ public interface IPrecision {
 	}
 
 	float getRotX(World worldIn, BlockPos pos);
+
 	void setRotX(World worldIn, BlockPos pos, float x);
+
 	float getRotY(World worldIn, BlockPos pos);
+
 	void setRotY(World worldIn, BlockPos pos, float y);
 
 }

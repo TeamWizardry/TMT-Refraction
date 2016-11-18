@@ -11,11 +11,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class EventHandlerClient {
 	public static final EventHandlerClient INSTANCE = new EventHandlerClient();
-	
+
 	private EventHandlerClient() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
-	
+
 	@SubscribeEvent
 	public void stitch(TextureStitchEvent.Pre event) {
 		event.getMap().registerSprite(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));

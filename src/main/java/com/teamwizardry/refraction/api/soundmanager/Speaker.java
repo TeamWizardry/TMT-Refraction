@@ -32,14 +32,16 @@ public class Speaker implements INBTSerializable<NBTTagCompound> {
 		this.volume = volume;
 		this.pitch = pitch;
 	}
-	Speaker() {}
+
+	Speaker() {
+	}
 
 	@Override
 	public NBTTagCompound serializeNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("block", block.getRegistryName().toString());
 		NBTTagList soundEvents = new NBTTagList();
-		for(SoundEvent event : sounds)
+		for (SoundEvent event : sounds)
 			soundEvents.appendTag(new NBTTagString(event.getRegistryName().toString()));
 		tag.setTag("soundEvents", soundEvents);
 		tag.setDouble("interval", interval);
@@ -54,7 +56,8 @@ public class Speaker implements INBTSerializable<NBTTagCompound> {
 		block = Block.getBlockFromName(nbt.getString("block"));
 		NBTTagList soundEvents = nbt.getTagList("soundEvents", NBTTypes.STRING);
 		List<SoundEvent> sounds = Lists.newArrayList();
-		for(int i = 0; i < soundEvents.tagCount(); i++) sounds.add(SoundEvent.REGISTRY.getObject(new ResourceLocation(soundEvents.getStringTagAt(i))));
+		for (int i = 0; i < soundEvents.tagCount(); i++)
+			sounds.add(SoundEvent.REGISTRY.getObject(new ResourceLocation(soundEvents.getStringTagAt(i))));
 		this.sounds = sounds;
 		interval = nbt.getDouble("interval");
 		loopOnce = nbt.getBoolean("loopOnce");

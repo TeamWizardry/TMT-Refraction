@@ -5,7 +5,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
-public interface ILightSource
-{
+public interface ILightSource {
 	void generateBeam(@Nonnull World world, @Nonnull BlockPos pos);
 }

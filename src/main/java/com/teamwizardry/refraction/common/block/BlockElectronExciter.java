@@ -1,7 +1,11 @@
 package com.teamwizardry.refraction.common.block;
 
-import java.awt.Color;
-import java.util.List;
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.bridge.BridgeTracker;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -18,12 +22,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.api.IBeamHandler;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.bridge.BridgeTracker;
+
+import java.awt.*;
+import java.util.List;
 
 /**
  * Created by Saad on 8/16/2016.
@@ -32,9 +33,9 @@ public class BlockElectronExciter extends BlockMod implements IBeamHandler {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	private static final PropertyBool UP = PropertyBool.create("up");
-    private static final PropertyBool DOWN = PropertyBool.create("down");
-    private static final PropertyBool LEFT = PropertyBool.create("left"); // Left when looking at front
-    private static final PropertyBool RIGHT = PropertyBool.create("right"); // Right when looking at front
+	private static final PropertyBool DOWN = PropertyBool.create("down");
+	private static final PropertyBool LEFT = PropertyBool.create("left"); // Left when looking at front
+	private static final PropertyBool RIGHT = PropertyBool.create("right"); // Right when looking at front
 
 	public BlockElectronExciter() {
 		super("electron_exciter", Material.IRON);
@@ -59,39 +60,34 @@ public class BlockElectronExciter extends BlockMod implements IBeamHandler {
 
 	@Override
 	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
-		if (BridgeTracker.getInstance(world).getExciterArray(pos) == null)
-		{
+		if (BridgeTracker.getInstance(world).getExciterArray(pos) == null) {
 			BridgeTracker.getInstance(world).addExciter(pos, world.getBlockState(pos).getValue(FACING));
 			return;
 		}
-		for (Beam beam : beams)
-		{
+		for (Beam beam : beams) {
 			EnumFacing block = world.getBlockState(pos).getValue(FACING);
 			Effect effect = beam.effect;
 			if (effect == null)
 				continue;
-			if (effect.getColor().equals(Color.CYAN))
-			{
-				if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999)
-				{
+			if (effect.getColor().equals(Color.CYAN)) {
+				if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
 					BridgeTracker.getInstance(world).power(pos);
 					return;
 				}
 			}
 		}
 	}
-	
+
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		BridgeTracker.getInstance(world).addExciter(pos, state.getValue(FACING));
 	}
 
 	@NotNull
-    @Override
-    public IBlockState getActualState(@NotNull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        EnumFacing facing = state.getValue(FACING);
-        boolean up, down, left, right;
+	@Override
+	public IBlockState getActualState(@NotNull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		EnumFacing facing = state.getValue(FACING);
+		boolean up, down, left, right;
 		switch (facing) {
 			case DOWN:
 				up = checkState(worldIn, pos.offset(EnumFacing.NORTH), facing);
@@ -137,11 +133,11 @@ public class BlockElectronExciter extends BlockMod implements IBeamHandler {
 				break;
 		}
 
-        return state.withProperty(UP, up).withProperty(DOWN, down).withProperty(LEFT, left).withProperty(RIGHT, right);
-    }
+		return state.withProperty(UP, up).withProperty(DOWN, down).withProperty(LEFT, left).withProperty(RIGHT, right);
+	}
 
-    private boolean checkState(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-    	IBlockState state = world.getBlockState(pos);
+	private boolean checkState(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+		IBlockState state = world.getBlockState(pos);
 		return state.getBlock() == this && state.getValue(FACING) == facing;
 	}
 

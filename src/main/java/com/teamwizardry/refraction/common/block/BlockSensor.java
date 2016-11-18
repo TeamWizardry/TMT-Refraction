@@ -188,7 +188,7 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 	@Nullable
 	@Override
 	public IProperty<?>[] getIgnoredProperties() {
-		return new IProperty[] {ON};
+		return new IProperty[]{ON};
 	}
 
 	@Override

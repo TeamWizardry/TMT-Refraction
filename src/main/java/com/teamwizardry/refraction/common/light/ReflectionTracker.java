@@ -20,10 +20,8 @@ import java.util.*;
 public class ReflectionTracker {
 
 	private static final TickTracker INSTANCE = new TickTracker();
-
-	private transient World world;
-
 	private static Map<World, ReflectionTracker> instances = new HashMap<>();
+	private transient World world;
 	private Set<SourcePair> sources;
 	private Map<BeamPair, Integer> delayBuffers;
 	private Multimap<BeamPair, Beam> sinkBlocks;
@@ -41,6 +39,10 @@ public class ReflectionTracker {
 		return instances.get(world);
 	}
 
+	public static boolean addInstance(World world) {
+		return instances.putIfAbsent(world, new ReflectionTracker().setWorld(world)) == null;
+	}
+
 	private World getWorld() {
 		return world;
 	}
@@ -48,10 +50,6 @@ public class ReflectionTracker {
 	private ReflectionTracker setWorld(World world) {
 		this.world = world;
 		return this;
-	}
-
-	public static boolean addInstance(World world) {
-		return instances.putIfAbsent(world, new ReflectionTracker().setWorld(world)) == null;
 	}
 
 	@SubscribeEvent

@@ -1,9 +1,14 @@
 package com.teamwizardry.refraction.common.light;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.librarianlib.common.util.bitsaving.IllegalValueSetException;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.api.Effect.EffectType;
+import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.client.render.RenderLaserUtil;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
+import com.teamwizardry.refraction.common.raytrace.EntityTrace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -15,15 +20,11 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
-import com.teamwizardry.librarianlib.common.util.bitsaving.IllegalValueSetException;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.api.Effect.EffectType;
-import com.teamwizardry.refraction.api.IBeamHandler;
-import com.teamwizardry.refraction.client.render.RenderLaserUtil;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
-import com.teamwizardry.refraction.common.raytrace.EntityTrace;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Beam implements INBTSerializable<NBTTagCompound> {
 

@@ -20,7 +20,7 @@ public class ModEntities {
 		EntityRegistry.registerModEntity(EntityLaserPointer.class, "laserPointer", ++id, Refraction.instance, 32, Integer.MAX_VALUE, false);
 		EntityRegistry.registerModEntity(EntityGrenade.class, "grenade", ++id, Refraction.instance, 32, Integer.MAX_VALUE, false);
 	}
-	
+
 	public static void initRender() {
 		RenderingRegistry.registerEntityRenderingHandler(EntityLaserPointer.class, RenderLaserPoint::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, manager -> new RenderSnowball<>(manager, ModItems.GRENADE, Minecraft.getMinecraft().getRenderItem()));

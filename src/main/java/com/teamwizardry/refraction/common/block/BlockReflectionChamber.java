@@ -65,7 +65,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.SOLID;
 	}
-	
+
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;

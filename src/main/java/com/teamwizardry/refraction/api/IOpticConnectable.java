@@ -13,12 +13,17 @@ import java.util.List;
 /**
  * @author WireSegal
  *         Created at 10:51 PM on 10/31/16.
- * 
- * Attach this to blocks that should attach to adjacent Fiber Optic Cables.
+ *         <p>
+ *         Attach this to blocks that should attach to adjacent Fiber Optic Cables.
  */
 public interface IOpticConnectable {
-    @Nonnull
-    List<EnumFacing> getAvailableFacings(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos, @Nonnull EnumFacing facing);
+	@Nonnull
+	List<EnumFacing> getAvailableFacings(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos, @Nonnull EnumFacing facing);
 
-    void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam);
+	@Nonnull
+	default List<EnumFacing> getAllFacings(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos, @Nonnull EnumFacing facing) {
+		return getAvailableFacings(state, source, pos, facing);
+	}
+
+	void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam);
 }

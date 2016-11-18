@@ -8,10 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-public class CraftingRecipes
-{
-	public static void init()
-	{
+public class CraftingRecipes {
+	public static void init() {
 		GameRegistry.addRecipe(new RecipeScrewDriver());
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.LENS), "AAA", 'A', "blockGlass"));

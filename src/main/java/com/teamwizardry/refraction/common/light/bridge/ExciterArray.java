@@ -1,43 +1,28 @@
 package com.teamwizardry.refraction.common.light.bridge;
 
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.common.block.BlockLightBridge;
+import com.teamwizardry.refraction.init.ModBlocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.common.block.BlockLightBridge;
-import com.teamwizardry.refraction.init.ModBlocks;
 
-public class ExciterArray
-{
+public class ExciterArray {
 	private EnumFacing facing;
 	private Map<BlockPos, Integer> positions;
 
-	public ExciterArray(BlockPos pos, EnumFacing facing)
-	{
+	public ExciterArray(BlockPos pos, EnumFacing facing) {
 		this.facing = facing;
 		this.positions = new HashMap<>();
 		positions.put(pos, 0);
 	}
 
-	public ExciterArray add(BlockPos pos, EnumFacing facing)
-	{
-		if (this.facing == facing)
-			positions.put(pos, 0);
-		return this;
-	}
-	
-	public ExciterArray remove(BlockPos pos)
-	{
-		positions.remove(pos);
-		return this;
-	}
-	
-	public static ExciterArray combine(ExciterArray first, ExciterArray second)
-	{
+	public static ExciterArray combine(ExciterArray first, ExciterArray second) {
 		if (first == null && second == null)
 			return null;
 		if (first == null)
@@ -50,35 +35,40 @@ public class ExciterArray
 			first.getPositionData().putAll(second.getPositionData());
 		return first;
 	}
-	
-	public EnumFacing getFacing()
-	{
+
+	public ExciterArray add(BlockPos pos, EnumFacing facing) {
+		if (this.facing == facing)
+			positions.put(pos, 0);
+		return this;
+	}
+
+	public ExciterArray remove(BlockPos pos) {
+		positions.remove(pos);
+		return this;
+	}
+
+	public EnumFacing getFacing() {
 		return facing;
 	}
-	
-	public Set<BlockPos> getPositions()
-	{
+
+	public Set<BlockPos> getPositions() {
 		return positions.keySet();
 	}
-	
-	private Map<BlockPos, Integer> getPositionData()
-	{
+
+	private Map<BlockPos, Integer> getPositionData() {
 		return positions;
 	}
-	
-	public int getSize()
-	{
+
+	public int getSize() {
 		return positions.size();
 	}
-	
-	public void power(BlockPos pos)
-	{
+
+	public void power(BlockPos pos) {
 		if (positions.containsKey(pos))
 			positions.put(pos, Constants.SOURCE_TIMER);
 	}
-	
-	public boolean isPowered()
-	{
+
+	public boolean isPowered() {
 		if (positions.size() < 2)
 			return false;
 		boolean powered = true;
@@ -87,31 +77,25 @@ public class ExciterArray
 				powered = false;
 		return powered;
 	}
-	
-	public void decrementPoweredTimer()
-	{
+
+	public void decrementPoweredTimer() {
 		for (BlockPos pos : positions.keySet())
 			positions.put(pos, Math.max(positions.get(pos) - 1, 0));
 	}
-	
-	public Set<BlockPos> generateBridge(World world)
-	{
+
+	public Set<BlockPos> generateBridge(World world) {
 		Set<BlockPos> area = new HashSet<>();
 		Set<BlockPos> set = this.positions.keySet();
 		BlockPos[] positions = set.toArray(new BlockPos[set.size()]);
-		while (true)
-		{
+		while (true) {
 			boolean shouldStop = false;
-			for (int i = 0; i < positions.length; i++)
-			{
+			for (int i = 0; i < positions.length; i++) {
 				positions[i] = positions[i].offset(facing);
-				if (positions[i].getY() > world.getActualHeight() || positions[i].getY() < 0)
-				{
+				if (positions[i].getY() > world.getActualHeight() || positions[i].getY() < 0) {
 					shouldStop = true;
 					break;
 				}
-				if (!(world.isAirBlock(positions[i]) || world.getBlockState(positions[i]).getBlock() == ModBlocks.LIGHT_BRIDGE))
-				{
+				if (!(world.isAirBlock(positions[i]) || world.getBlockState(positions[i]).getBlock() == ModBlocks.LIGHT_BRIDGE)) {
 					shouldStop = true;
 					break;
 				}

@@ -51,7 +51,7 @@ public class BlockLens extends BlockMod {
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
-	
+
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;

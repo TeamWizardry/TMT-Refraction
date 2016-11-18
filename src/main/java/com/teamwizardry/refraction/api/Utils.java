@@ -73,16 +73,15 @@ public class Utils {
 		double alphaPart = color1.getAlpha() * percent + color2.getAlpha() * inverse_percent;
 		return new Color((int) redPart, (int) greenPart, (int) bluePart, (int) alphaPart);
 	}
-	
+
 	/**
 	 * Returns whatever side of a block that the given {@code Beam} is hitting.
+	 *
 	 * @param trace The RaytraceResult to be checked
 	 * @return The {@link EnumFacing} of the {@code Beam} - {@link BlockPos} collision
 	 */
-	public static EnumFacing getCollisionSide(RayTraceResult trace)
-	{
-		if (trace != null && trace.typeOfHit == RayTraceResult.Type.BLOCK)
-		{
+	public static EnumFacing getCollisionSide(RayTraceResult trace) {
+		if (trace != null && trace.typeOfHit == RayTraceResult.Type.BLOCK) {
 			BlockPos pos = trace.getBlockPos();
 			Vec3d hitPos = trace.hitVec;
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);

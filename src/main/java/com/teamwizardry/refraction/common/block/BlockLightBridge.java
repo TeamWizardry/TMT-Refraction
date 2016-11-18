@@ -1,7 +1,11 @@
 package com.teamwizardry.refraction.common.block;
 
-import java.awt.Color;
-import java.util.List;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.common.light.bridge.BridgeTracker;
+import com.teamwizardry.refraction.common.light.bridge.ExciterArray;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -20,18 +24,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
-import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.api.IBeamHandler;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.bridge.BridgeTracker;
-import com.teamwizardry.refraction.common.light.bridge.ExciterArray;
+
+import java.awt.*;
+import java.util.List;
 
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockLightBridge extends BlockMod implements IBeamHandler
-{
+public class BlockLightBridge extends BlockMod implements IBeamHandler {
 
 	public static final PropertyEnum<EnumFacing.Axis> FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
 	public static final PropertyBool UP = PropertyBool.create("up");
@@ -39,7 +39,7 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler
 	public static final PropertyBool LEFT = PropertyBool.create("left");
 	public static final PropertyBool RIGHT = PropertyBool.create("right");
 
-	private static final EnumFacing[][] SPINS = new EnumFacing[][] { { EnumFacing.UP, EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.SOUTH }, { EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST }, { EnumFacing.UP, EnumFacing.DOWN, EnumFacing.EAST, EnumFacing.WEST } };
+	private static final EnumFacing[][] SPINS = new EnumFacing[][]{{EnumFacing.UP, EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.SOUTH}, {EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST}, {EnumFacing.UP, EnumFacing.DOWN, EnumFacing.EAST, EnumFacing.WEST}};
 
 	private static final AxisAlignedBB AABB_X = new AxisAlignedBB(0, 7.5 / 16, 7.5 / 16, 1, 8.5 / 16, 8.5 / 16);
 	private static final AxisAlignedBB AABB_Y = new AxisAlignedBB(7.5 / 16, 0, 7.5 / 16, 8.5 / 16, 1, 8.5 / 16);
@@ -60,8 +60,7 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler
 	private static final AxisAlignedBB AABB_Z_LEFT = new AxisAlignedBB(8.5 / 16, 7.5 / 16, 0, 1, 8.5 / 16, 1);
 	private static final AxisAlignedBB AABB_Z_RIGHT = new AxisAlignedBB(0, 7.5 / 16, 0, 7.5 / 16, 8.5 / 16, 1);
 
-	public BlockLightBridge()
-	{
+	public BlockLightBridge() {
 		super("light_bridge", Material.GLASS);
 		setBlockUnbreakable();
 		setResistance(6000000F);
@@ -73,8 +72,7 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
-	{
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		EnumFacing.Axis axis = state.getValue(FACING);
 		EnumFacing[] facings = SPINS[axis.ordinal()];
 		IBlockState upState = worldIn.getBlockState(pos.offset(facings[0]));
@@ -94,14 +92,12 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler
 
 	@Nullable
 	@Override
-	public ItemBlock createItemForm()
-	{
+	public ItemBlock createItemForm() {
 		return null;
 	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn)
-	{
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
 		EnumFacing.Axis enumfacing = state.getValue(FACING);
 		EnumFacing[] facings = SPINS[enumfacing.ordinal()];
 
@@ -117,8 +113,7 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler
 		IBlockState rightState = worldIn.getBlockState(pos.offset(facings[3]));
 		boolean right = rightState.getBlock() == this && rightState.getValue(FACING) == enumfacing;
 
-		switch (enumfacing)
-		{
+		switch (enumfacing) {
 			case X:
 				addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_X);
 				if (up)
@@ -156,8 +151,7 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing.Axis enumfacing = state.getValue(FACING);
 		EnumFacing[] facings = SPINS[enumfacing.ordinal()];
 
@@ -174,8 +168,7 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler
 		boolean right = rightState.getBlock() == this && rightState.getValue(FACING) == enumfacing;
 
 		AxisAlignedBB box;
-		switch (enumfacing)
-		{
+		switch (enumfacing) {
 			case X:
 				box = AABB_X;
 				if (up)
@@ -216,74 +209,61 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		meta = meta % 3;
 		return getDefaultState().withProperty(FACING, EnumFacing.Axis.values()[meta]);
 
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(FACING).ordinal();
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, UP, DOWN, LEFT, RIGHT);
 	}
 
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer()
-	{
+	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState blockState)
-	{
+	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}
 
 	@Override
-	public void handleBeams(World world, BlockPos pos, Beam... beams)
-	{
-		for (Beam beam : beams)
-		{
+	public void handleBeams(World world, BlockPos pos, Beam... beams) {
+		for (Beam beam : beams) {
 			EnumFacing.Axis block = world.getBlockState(pos).getValue(FACING);
 			Effect effect = beam.effect;
 			if (effect == null)
 				continue;
-			if (effect.getColor().equals(Color.CYAN))
-			{
+			if (effect.getColor().equals(Color.CYAN)) {
 				EnumFacing positive = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.POSITIVE, block);
 				EnumFacing negative = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.NEGATIVE, block);
 				Vec3d slope = beam.slope.normalize();
-				if (slope.dotProduct(new Vec3d(positive.getDirectionVec())) > 0.999 || slope.dotProduct(new Vec3d(negative.getDirectionVec())) > 0.999)
-				{
+				if (slope.dotProduct(new Vec3d(positive.getDirectionVec())) > 0.999 || slope.dotProduct(new Vec3d(negative.getDirectionVec())) > 0.999) {
 					BridgeTracker tracker = BridgeTracker.getInstance(world);
 					ExciterArray array = tracker.getBridgeArray(pos);
-					if (array == null)
-					{
+					if (array == null) {
 						world.setBlockToAir(pos);
 						return;
 					}
 					BlockPos[] positions = array.getPositions().toArray(new BlockPos[array.getPositions().size()]);
-					if (positions.length == 0)
-					{
+					if (positions.length == 0) {
 						world.setBlockToAir(pos);
 						return;
 					}
-					switch (array.getFacing())
-					{
+					switch (array.getFacing()) {
 						case UP:
 						case DOWN:
 							tracker.power(new BlockPos(pos.getX(), positions[0].getY(), pos.getZ()));

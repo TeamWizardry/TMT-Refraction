@@ -11,13 +11,15 @@ public class ModTab extends ModCreativeTab {
 
 	private static boolean isInitialized = false;
 
+	private ModTab() {
+		super();
+	}
+
 	public static void init() {
 		if (isInitialized) return;
 		new ModTab().registerDefaultTab();
 		isInitialized = true;
 	}
-
-	private ModTab() { super(); }
 
 	@NotNull
 	@Override

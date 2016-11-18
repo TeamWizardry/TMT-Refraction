@@ -47,9 +47,8 @@ public class AssemblyRecipe {
 			}
 		}
 	}
-	
-	public AssemblyRecipe(ItemStack result, Color one, Color two, Object... items)
-	{
+
+	public AssemblyRecipe(ItemStack result, Color one, Color two, Object... items) {
 		int redOne = one.getRed();
 		int greenOne = one.getGreen();
 		int blueOne = one.getBlue();
@@ -90,34 +89,28 @@ public class AssemblyRecipe {
 	public ArrayList<ItemStack> getItems() {
 		return items;
 	}
-	
-	public int getMaxRed()
-	{
+
+	public int getMaxRed() {
 		return maxRed;
 	}
-	
-	public int getMinRed()
-	{
+
+	public int getMinRed() {
 		return minRed;
 	}
-	
-	public int getMaxGreen()
-	{
+
+	public int getMaxGreen() {
 		return maxGreen;
 	}
-	
-	public int getMinGreen()
-	{
+
+	public int getMinGreen() {
 		return minGreen;
 	}
-	
-	public int getMaxBlue()
-	{
+
+	public int getMaxBlue() {
 		return maxBlue;
 	}
-	
-	public int getMinBlue()
-	{
+
+	public int getMinBlue() {
 		return minBlue;
 	}
 

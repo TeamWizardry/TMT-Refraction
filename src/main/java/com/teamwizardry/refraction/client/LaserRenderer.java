@@ -29,7 +29,7 @@ public class LaserRenderer {
 	private LaserRenderer() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
-	
+
 	public static void add(Vec3d start, Vec3d end, Color color) {
 		INSTANCE.lasers.put(new LaserRenderInfo(start, end, color), Constants.BEAM_PARTICLE_LIFE);
 	}
@@ -58,9 +58,9 @@ public class LaserRenderer {
 		// vvv actual rendering stuff vvv
 
 		GlStateManager.enableBlend();
-		GlStateManager.alphaFunc(GL11.GL_GEQUAL, 1f/255f);
+		GlStateManager.alphaFunc(GL11.GL_GEQUAL, 1f / 255f);
 		ReflectionTracker tracker = ReflectionTracker.getInstance(Minecraft.getMinecraft().theWorld);
-		if(tracker != null) {
+		if (tracker != null) {
 			RenderLaserUtil.startRenderingLasers();
 			for (LaserRenderInfo info : lasers.keySet()) {
 				RenderLaserUtil.renderLaser(info.color, info.start, info.end);

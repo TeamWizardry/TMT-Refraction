@@ -23,7 +23,9 @@ public class SpeakerNode implements INBTSerializable<NBTTagCompound> {
 		this.pos = pos;
 		this.world = world;
 	}
-	SpeakerNode() {}
+
+	SpeakerNode() {
+	}
 
 	@Override
 	public NBTTagCompound serializeNBT() {

@@ -29,7 +29,7 @@ public class ItemScrewDriver extends ItemMod {
 	public static final String MODE_TAG = "mode";
 	protected static final float[] multipliers = {
 			0.125f, 0.25f, 0.5f, 1,
-			5,      22.5f, 45,   90
+			5, 22.5f, 45, 90
 	};
 	protected static final int DEFAULT_MULTIPLIER = 4;
 

@@ -9,25 +9,21 @@ import net.minecraft.world.World;
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
 
-public class BlockTracker
-{
+public class BlockTracker {
 	public HashMultimap<BlockPos, Beam> locations;
 	public WeakReference<World> world;
 
-	public BlockTracker(World world)
-	{
+	public BlockTracker(World world) {
 		this.world = new WeakReference<>(world);
 		locations = HashMultimap.create();
 	}
 
-	public void addBeam(Beam beam)
-	{
+	public void addBeam(Beam beam) {
 		HashSet<BlockPos> possible = new HashSet<>();
 		Vec3d slope = beam.slope;
 		Vec3d curPos = beam.initLoc;
 		boolean finished = false;
-		while (!finished)
-		{
+		while (!finished) {
 			Vec3d nextPos = curPos.add(slope);
 			for (BlockPos pos : BlockPos.getAllInBox(new BlockPos(curPos), new BlockPos(nextPos)))
 				possible.add(pos);
@@ -38,15 +34,13 @@ public class BlockTracker
 
 		Vec3d invSlope = new Vec3d(1 / slope.xCoord, 1 / slope.yCoord, 1 / slope.zCoord);
 
-		for (BlockPos pos : possible)
-		{
+		for (BlockPos pos : possible) {
 			if (collides(beam, pos, invSlope))
 				locations.put(pos, beam);
 		}
 	}
 
-	private boolean collides(Beam beam, BlockPos pos, Vec3d invSlope)
-	{
+	private boolean collides(Beam beam, BlockPos pos, Vec3d invSlope) {
 		boolean signX = invSlope.xCoord < 0;
 		boolean signY = invSlope.yCoord < 0;
 		boolean signZ = invSlope.zCoord < 0;
@@ -77,14 +71,10 @@ public class BlockTracker
 		return true;
 	}
 
-	public void generateEffects()
-	{
-		if (world.get() != null)
-		{
-			for (BlockPos pos : locations.keySet())
-			{
-				for (Beam beam : locations.get(pos))
-				{
+	public void generateEffects() {
+		if (world.get() != null) {
+			for (BlockPos pos : locations.keySet()) {
+				for (Beam beam : locations.get(pos)) {
 					EffectTracker.addEffect(world.get(), new Vec3d(pos), EffectTracker.getEffect(beam));
 				}
 			}
