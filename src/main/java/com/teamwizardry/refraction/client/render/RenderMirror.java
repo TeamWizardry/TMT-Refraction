@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.client.render;
 
+import com.teamwizardry.librarianlib.client.event.ResourceReloadEvent;
 import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -32,7 +32,7 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 	}
 
 	@SubscribeEvent
-	public void reload(ClientProxy.ResourceReloadEvent event) {
+	public void reload(ResourceReloadEvent event) {
 		modelArms = null;
 		modelMirror = null;
 	}

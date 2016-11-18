@@ -14,6 +14,7 @@ import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import com.teamwizardry.refraction.init.recipies.CraftingRecipes;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -52,6 +53,10 @@ public class CommonProxy {
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.SCREW_DRIVER, new DispenserScrewDriverBehavior());
 		SoundManager.INSTANCE.addSpeaker(ModBlocks.LASER, 40, ModSounds.electrical_hums, 0.035f, 1f, false);
 		SoundManager.INSTANCE.addSpeaker(ModBlocks.LIGHT_BRIDGE, 67, ModSounds.light_bridges, 0.05f, 1f, false);
+	}
+
+	public World getWorld() {
+		return getServer().getEntityWorld();
 	}
 
 	public boolean isClient() {

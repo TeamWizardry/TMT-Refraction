@@ -10,7 +10,6 @@ import com.teamwizardry.librarianlib.common.util.math.interpolate.position.Inter
 import com.teamwizardry.refraction.Refraction;
 import io.netty.buffer.ByteBuf;
 import kotlin.Pair;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -44,7 +43,7 @@ public class PacketAXYZMarks extends PacketBase {
 	public void handle(MessageContext ctx) {
 		if (ctx.side.isServer()) return;
 
-		World world = Minecraft.getMinecraft().theWorld;
+		World world = Refraction.proxy.getWorld();
 		if (world.provider.getDimension() != dimension) return;
 
 		for (int i = 0; i < positions.length; i++) {
