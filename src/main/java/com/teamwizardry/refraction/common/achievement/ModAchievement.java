@@ -16,7 +16,7 @@ public class ModAchievement extends Achievement {
 	public static List<Achievement> achievements = new ArrayList<>();
 
 	public ModAchievement(String unlocalizedName, int column, int row, ItemStack stack, Achievement parent) {
-		super("achievement.wizardry." + unlocalizedName, "wizardry." + unlocalizedName, column, row, stack, parent);
+		super("achievement.refraction." + unlocalizedName, "refraction." + unlocalizedName, column, row, stack, parent);
 		registerStat();
 		achievements.add(this);
 	}
