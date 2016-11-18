@@ -262,10 +262,7 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
 			EnumFacing.Axis block = world.getBlockState(pos).getValue(FACING);
 			Effect effect = beam.effect;
 			if (effect == null)
-			{
-				world.setBlockToAir(pos);
-				return;
-			}
+				continue;
 			if (effect.getColor().equals(Color.CYAN)) {
 				EnumFacing positive = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.POSITIVE, block);
 				EnumFacing negative = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.NEGATIVE, block);
@@ -297,11 +294,6 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
 							return;
 					}
 				}
-			}
-			else
-			{
-				world.setBlockToAir(pos);
-				return;
 			}
 		}
 	}
