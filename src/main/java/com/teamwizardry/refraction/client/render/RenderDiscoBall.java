@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.client.render;
 
-import com.teamwizardry.librarianlib.client.event.ResourceReloadEvent;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
 import com.teamwizardry.refraction.common.tile.TileDiscoBall;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -32,7 +32,7 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
 	}
 
 	@SubscribeEvent
-	public void reload(ResourceReloadEvent event) {
+	public void reload(ClientProxy.ResourceReloadEvent event) {
 		ball = null;
 		getBakedModels();
 	}
