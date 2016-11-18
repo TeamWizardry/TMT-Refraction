@@ -41,7 +41,7 @@ public class RenderSplitter extends TileEntitySpecialRenderer<TileSplitter> {
 		IModel model = null;
 		if (modelArms == null) {
 			try {
-				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_arms")); //MODEL: TODO
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_arms"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -50,7 +50,7 @@ public class RenderSplitter extends TileEntitySpecialRenderer<TileSplitter> {
 		}
 		if (modelMirror == null || modelMirrorSplitter == null) {
 			try {
-				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_head")); //MODEL: TODO
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_head"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -37,7 +37,7 @@ public class RenderReflectionChamber extends TileEntitySpecialRenderer<TileRefle
 		IModel model = null;
 		if (this.model == null) {
 			try {
-				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/reflection_chamber_inside.obj")); //MODEL: TODO
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/reflection_chamber_inside.obj"));
 				this.model = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 						location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 			} catch (Exception e) {

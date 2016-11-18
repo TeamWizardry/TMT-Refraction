@@ -1,10 +1,18 @@
 package com.teamwizardry.refraction.api.soundmanager;
 
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
+import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpColorFade;
+import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
+import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
+import com.teamwizardry.refraction.Refraction;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
@@ -14,9 +22,11 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad.
@@ -25,7 +35,7 @@ import java.util.Set;
 public class SoundManager {
 
 	public static SoundManager INSTANCE = new SoundManager();
-	public static int soundRange = 8;
+	public static int soundRange = 20;
 
 	public static Set<Speaker> speakers = new HashSet<>();
 	public static Set<SpeakerNode> speakerNodes = new HashSet<>();
@@ -73,8 +83,9 @@ public class SoundManager {
 					if (state.getBlock() instanceof IConditionalSoundEmitter) {
 						IConditionalSoundEmitter soundEmitter = (IConditionalSoundEmitter) state.getBlock();
 						if (!soundEmitter.shouldEmit(node.world, node.pos)) {
+							node.active = false;
 							activateNearbyNode(node.world, node.speaker.block, node.pos);
-							return true;
+							WorldSavedDataSound.markDirty();
 						}
 					}
 				}
@@ -83,6 +94,24 @@ public class SoundManager {
 					if (node.tick >= node.speaker.interval) {
 						node.tick = 0;
 						WorldSavedDataSound.markDirty();
+
+						ParticleBuilder builder = new ParticleBuilder(1);
+						builder.setAlphaFunction(new InterpFadeInOut(0.1f, 0.3f));
+						builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
+						builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+						ParticleSpawner.spawn(builder, node.world, new StaticInterp<>(new Vec3d(node.pos).addVector(0.5, 1.5, 0.5)), ThreadLocalRandom.current().nextInt(200, 300), 0, (aFloat, particleBuilder) -> {
+							double radius = 0.1;
+							double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
+							double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
+							double r = (u > 1) ? 2 - u : u;
+							double x = r * Math.cos(t), z = r * Math.sin(t);
+							builder.setPositionOffset(new Vec3d(x, ThreadLocalRandom.current().nextDouble(-0.1, 0.1), z));
+							builder.setScale(ThreadLocalRandom.current().nextFloat());
+							builder.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
+									ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
+									ThreadLocalRandom.current().nextDouble(-0.01, 0.01)));
+							builder.setLifetime(ThreadLocalRandom.current().nextInt(20, 80));
+						});
 
 						node.world.playSound(null, node.pos, node.speaker.sounds.get(node.queue), SoundCategory.BLOCKS, node.speaker.volume, node.speaker.pitch);
 
@@ -103,10 +132,10 @@ public class SoundManager {
 				return false;
 			} else {
 				activateNearbyNode(node.world, node.speaker.block, node.pos);
+				WorldSavedDataSound.markDirty();
 				return true;
 			}
 		});
-		WorldSavedDataSound.markDirty();
 	}
 
 	public boolean activateNearbyNode(@NotNull World world, @NotNull Block block, @NotNull BlockPos pos) {
@@ -125,8 +154,8 @@ public class SoundManager {
 		for (SpeakerNode node : speakerNodes) {
 			if (node.world.provider.getDimension() == world.provider.getDimension() && node.speaker.block == block)
 				if (!node.active &&
-						node.pos.compareTo(pos) < soundRange &&
-						node.pos.compareTo(pos) > 0) return node;
+						Math.abs(node.pos.compareTo(pos)) < soundRange &&
+						Math.abs(node.pos.compareTo(pos)) > 0) return node;
 		}
 		return null;
 	}
@@ -136,8 +165,8 @@ public class SoundManager {
 		for (SpeakerNode node : speakerNodes) {
 			if (node.world.provider.getDimension() == world.provider.getDimension() && node.speaker.block == block)
 				if (node.active &&
-						node.pos.compareTo(pos) < soundRange &&
-						node.pos.compareTo(pos) > 0) return node;
+						Math.abs(node.pos.compareTo(pos)) < soundRange &&
+						Math.abs(node.pos.compareTo(pos)) > 0) return node;
 		}
 		return null;
 	}
