@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -32,6 +33,7 @@ public class TileLaser extends TileMod {
 
 	@Override
 	public void onLoad() {
+		ReflectionTracker.getInstance(worldObj).addSource(pos, ModBlocks.CREATIVE_LASER);
 		worldObj.scheduleUpdate(pos, ModBlocks.LASER, 1);
 	}
 

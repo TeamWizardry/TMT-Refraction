@@ -2,7 +2,7 @@
 tile.refraction:mirror.name=Light Beam Reflection Pad
 tile.refraction:splitter.name=Light Beam Incurvation Pad
 tile.refraction:lens.name=Light Beam Diverging Cell
-tile.refraction:magnifier.name=Light Beam Dilation Creativeice
+tile.refraction:magnifier.name=Light Beam Dilation Device
 tile.refraction:assembly_table.name=Laser Assembly Table
 tile.refraction:laser.name=Light Amplification By Stimulated Emissions of Radiation Output Creativeice
 tile.refraction:prism.name=Triangular Light Trifurcation Prism

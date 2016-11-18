@@ -12,7 +12,6 @@ import com.teamwizardry.refraction.api.ILightSource;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.tile.TileLaser;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
@@ -38,7 +37,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -55,16 +53,6 @@ public class BlockLaser extends BlockModContainer implements ILightSource, ISoun
 		setTickRandomly(true);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
-
-	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
-	}
-
-	@Override
-	public void updateTick(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random random) {
-		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
 	}
 
 	@Override

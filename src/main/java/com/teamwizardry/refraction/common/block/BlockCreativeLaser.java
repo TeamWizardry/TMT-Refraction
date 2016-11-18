@@ -5,7 +5,6 @@ import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.ILightSource;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.tile.TileCreativeLaser;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
@@ -28,7 +27,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Saad on 10/6/2016.
@@ -44,16 +42,6 @@ public class BlockCreativeLaser extends BlockModContainer implements ILightSourc
 		setTickRandomly(true);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
-
-	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
-	}
-
-	@Override
-	public void updateTick(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull Random random) {
-		ReflectionTracker.getInstance(worldIn).addSource(pos, this);
 	}
 
 	@Override
