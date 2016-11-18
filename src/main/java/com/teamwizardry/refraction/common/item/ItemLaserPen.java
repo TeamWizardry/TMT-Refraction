@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.item;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.init.ModAchievements;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -25,6 +26,11 @@ public class ItemLaserPen extends ItemMod {
 	public ItemLaserPen() {
 		super("laser_pen");
 		setMaxStackSize(1);
+	}
+
+	@Override
+	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+		playerIn.addStat(ModAchievements.LASER_PEN);
 	}
 
 	@Override

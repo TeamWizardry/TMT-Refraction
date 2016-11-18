@@ -157,7 +157,7 @@ public class TileAssemblyTable extends TileMod {
 					compound.setInteger("color_alpha", Math.min(alpha, 255));
 					stack.setTagCompound(compound);
 					//MARKER: GRENADE CRAFTING
-					EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(stack);
+					EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(worldObj, pos, stack);
 					MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);
 					output.setStackInSlot(0, eventAssemblyTableCraft.getOutput());
 				}
@@ -191,7 +191,7 @@ public class TileAssemblyTable extends TileMod {
 
 			if (Utils.matchItemStackLists(recipe.getItems(), Utils.getListOfObjects(getListOfItems()))) {
 				//MARKER: REGULAR CRAFTING
-				EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(recipe.getResult().copy());
+				EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(worldObj, pos, recipe.getResult().copy());
 				MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);
 				output.setStackInSlot(0, eventAssemblyTableCraft.getOutput());
 				isCrafting = true;
