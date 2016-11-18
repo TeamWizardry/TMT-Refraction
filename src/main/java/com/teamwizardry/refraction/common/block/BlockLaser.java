@@ -10,7 +10,7 @@ import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.ILightSource;
 import com.teamwizardry.refraction.api.PosUtils;
-import com.teamwizardry.refraction.api.soundmanager.IConditionalSoundEmitter;
+import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.ReflectionTracker;
 import com.teamwizardry.refraction.common.tile.TileLaser;
@@ -44,7 +44,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by LordSaad44
  */
-public class BlockLaser extends BlockModContainer implements ILightSource, IConditionalSoundEmitter {
+public class BlockLaser extends BlockModContainer implements ILightSource, ISoundEmitter {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 

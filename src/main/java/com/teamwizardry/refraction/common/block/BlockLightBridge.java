@@ -3,6 +3,8 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.IBeamHandler;
+import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
+import com.teamwizardry.refraction.api.soundmanager.SoundManager;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.bridge.BridgeTracker;
 import com.teamwizardry.refraction.common.light.bridge.ExciterArray;
@@ -31,7 +33,7 @@ import java.util.List;
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockLightBridge extends BlockMod implements IBeamHandler {
+public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEmitter {
 
 	public static final PropertyEnum<EnumFacing.Axis> FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
 	public static final PropertyBool UP = PropertyBool.create("up");
@@ -69,6 +71,11 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler {
 		setLightLevel(1f);
 
 		setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.Axis.Y).withProperty(UP, false).withProperty(DOWN, false).withProperty(LEFT, false).withProperty(RIGHT, false));
+	}
+
+	@Override
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+		SoundManager.INSTANCE.addSpeakerNode(worldIn, pos, this);
 	}
 
 	@Override
@@ -280,5 +287,10 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler {
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean shouldEmit(World world, BlockPos pos) {
+		return true;
 	}
 }

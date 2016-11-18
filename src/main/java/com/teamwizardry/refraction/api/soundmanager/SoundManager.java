@@ -1,18 +1,10 @@
 package com.teamwizardry.refraction.api.soundmanager;
 
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpColorFade;
-import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
-import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
-import com.teamwizardry.refraction.Refraction;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
@@ -22,26 +14,45 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad.
  */
-// TODO: Find an event or other way of detecting when a block is placed or broken regardless if it's the player who did it
 public class SoundManager {
 
 	public static SoundManager INSTANCE = new SoundManager();
-	public static int soundRange = 20;
+	public static int soundRange = 15;
 
 	public static Set<Speaker> speakers = new HashSet<>();
 	public static Set<SpeakerNode> speakerNodes = new HashSet<>();
 
 	private SoundManager() {
 		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	/**
+	 * If the block you want is usually placed by world.setBlockstate rather than a player, then use this when the
+	 * block is added to the world in your block class.
+	 *
+	 * @param world The world obj the block is spawned in.
+	 * @param pos   The blockpos the block spawned in.
+	 * @param block The Block class
+	 */
+	public void addSpeakerNode(World world, BlockPos pos, Block block) {
+		for (Speaker speaker : speakers) {
+			if (speaker.block == block) {
+
+				boolean match = true;
+				for (SpeakerNode node : speakerNodes) {
+					if (node.pos == pos && node.world.provider.getDimension() == world.provider.getDimension())
+						match = false;
+				}
+				if (match) addSpeakerNode(speaker, world, pos);
+			}
+		}
 	}
 
 	public void addSpeakerNode(Speaker speaker, World world, BlockPos pos) {
@@ -62,56 +73,55 @@ public class SoundManager {
 			if (event.world.provider.getDimension() != node.world.provider.getDimension()) return false;
 			if (state.getBlock() == node.speaker.block) {
 
-				if (!node.active) {
-					if (state.getBlock() instanceof IConditionalSoundEmitter) {
-						IConditionalSoundEmitter soundEmitter = (IConditionalSoundEmitter) state.getBlock();
-						if (soundEmitter.shouldEmit(node.world, node.pos)) {
-							SpeakerNode activeNode = searchForActiveNode(node.world, node.speaker.block, node.pos);
-							if (activeNode == null) {
-								node.active = true;
-								WorldSavedDataSound.markDirty();
-							}
-						}
-					} else {
-						SpeakerNode activeNode = searchForActiveNode(node.world, node.speaker.block, node.pos);
-						if (activeNode == null) {
-							node.active = true;
-							WorldSavedDataSound.markDirty();
-						}
-					}
+				// DEBUG //
+				/*if (!node.active) {
+					ParticleBuilder builder = new ParticleBuilder(1);
+					builder.setAlphaFunction(new InterpFadeInOut(0.1f, 0.3f));
+					builder.setColorFunction(new InterpColorFade(Color.RED, 1, 255, 1));
+					builder.setRenderNormalLayer(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+					ParticleSpawner.spawn(builder, node.world, new StaticInterp<>(new Vec3d(node.pos).addVector(0.5, 1.5, 0.5)), 4, 0, (aFloat, particleBuilder) -> {
+
+						builder.setPositionOffset(new Vec3d(0, ThreadLocalRandom.current().nextDouble(-0.1, 0.1), 0));
+						builder.setScale(ThreadLocalRandom.current().nextFloat());
+						builder.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
+								ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
+								ThreadLocalRandom.current().nextDouble(-0.01, 0.01)));
+						builder.setLifetime(ThreadLocalRandom.current().nextInt(20, 30));
+					});
 				} else {
-					if (state.getBlock() instanceof IConditionalSoundEmitter) {
-						IConditionalSoundEmitter soundEmitter = (IConditionalSoundEmitter) state.getBlock();
-						if (!soundEmitter.shouldEmit(node.world, node.pos)) {
-							node.active = false;
-							activateNearbyNode(node.world, node.speaker.block, node.pos);
-							WorldSavedDataSound.markDirty();
-						}
+					ParticleBuilder builder = new ParticleBuilder(1);
+					builder.setAlphaFunction(new InterpFadeInOut(0.1f, 0.3f));
+					builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
+					builder.setRenderNormalLayer(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+					ParticleSpawner.spawn(builder, node.world, new StaticInterp<>(new Vec3d(node.pos).addVector(0.5, 1.5, 0.5)), 4, 0, (aFloat, particleBuilder) -> {
+
+						builder.setPositionOffset(new Vec3d(0, ThreadLocalRandom.current().nextDouble(-0.1, 0.1), 0));
+						builder.setScale(ThreadLocalRandom.current().nextFloat());
+						builder.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
+								ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
+								ThreadLocalRandom.current().nextDouble(-0.01, 0.01)));
+						builder.setLifetime(ThreadLocalRandom.current().nextInt(20, 30));
+					});
+				}*/
+				// DEBUG //
+
+				boolean shouldEmit = shouldEmit(node.world, node.pos);
+				if (shouldEmit && !node.active) {
+					SpeakerNode activeNode = searchForActiveNode(node.world, node.speaker.block, node.pos);
+					if (activeNode == null) {
+						node.active = true;
+						WorldSavedDataSound.markDirty();
 					}
+				} else if (!shouldEmit && node.active) {
+					node.active = false;
+					activateNearbyNode(node.world, node.speaker.block, node.pos);
+					WorldSavedDataSound.markDirty();
 				}
 
 				if (node.active) {
 					if (node.tick >= node.speaker.interval) {
 						node.tick = 0;
 						WorldSavedDataSound.markDirty();
-
-						ParticleBuilder builder = new ParticleBuilder(1);
-						builder.setAlphaFunction(new InterpFadeInOut(0.1f, 0.3f));
-						builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
-						builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
-						ParticleSpawner.spawn(builder, node.world, new StaticInterp<>(new Vec3d(node.pos).addVector(0.5, 1.5, 0.5)), ThreadLocalRandom.current().nextInt(200, 300), 0, (aFloat, particleBuilder) -> {
-							double radius = 0.1;
-							double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
-							double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
-							double r = (u > 1) ? 2 - u : u;
-							double x = r * Math.cos(t), z = r * Math.sin(t);
-							builder.setPositionOffset(new Vec3d(x, ThreadLocalRandom.current().nextDouble(-0.1, 0.1), z));
-							builder.setScale(ThreadLocalRandom.current().nextFloat());
-							builder.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
-									ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
-									ThreadLocalRandom.current().nextDouble(-0.01, 0.01)));
-							builder.setLifetime(ThreadLocalRandom.current().nextInt(20, 80));
-						});
 
 						node.world.playSound(null, node.pos, node.speaker.sounds.get(node.queue), SoundCategory.BLOCKS, node.speaker.volume, node.speaker.pitch);
 
@@ -138,11 +148,21 @@ public class SoundManager {
 		});
 	}
 
+	public boolean shouldEmit(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		if (state.getBlock() instanceof ISoundEmitter) {
+			ISoundEmitter soundEmitter = (ISoundEmitter) state.getBlock();
+			if (soundEmitter.shouldEmit(world, pos)) return true;
+		}
+		return false;
+	}
+
 	public boolean activateNearbyNode(@NotNull World world, @NotNull Block block, @NotNull BlockPos pos) {
 		if (searchForActiveNode(world, block, pos) == null) {
 			SpeakerNode node = searchForInertNode(world, block, pos);
-			if (node != null) {
+			if (node != null && shouldEmit(world, node.pos)) {
 				node.active = true;
+				WorldSavedDataSound.markDirty();
 				return true;
 			}
 		}
@@ -152,9 +172,10 @@ public class SoundManager {
 	@Nullable
 	public SpeakerNode searchForInertNode(@NotNull World world, @NotNull Block block, @NotNull BlockPos pos) {
 		for (SpeakerNode node : speakerNodes) {
-			if (node.world.provider.getDimension() == world.provider.getDimension() && node.speaker.block == block)
-				if (!node.active &&
-						Math.abs(node.pos.compareTo(pos)) < soundRange &&
+			if (!node.active
+					&& node.world.provider.getDimension() == world.provider.getDimension()
+					&& node.speaker.block == block)
+				if (Math.abs(node.pos.compareTo(pos)) < soundRange &&
 						Math.abs(node.pos.compareTo(pos)) > 0) return node;
 		}
 		return null;
@@ -163,9 +184,10 @@ public class SoundManager {
 	@Nullable
 	public SpeakerNode searchForActiveNode(@NotNull World world, @NotNull Block block, @NotNull BlockPos pos) {
 		for (SpeakerNode node : speakerNodes) {
-			if (node.world.provider.getDimension() == world.provider.getDimension() && node.speaker.block == block)
-				if (node.active &&
-						Math.abs(node.pos.compareTo(pos)) < soundRange &&
+			if (node.active
+					&& node.world.provider.getDimension() == world.provider.getDimension()
+					&& node.speaker.block == block)
+				if (Math.abs(node.pos.compareTo(pos)) < soundRange &&
 						Math.abs(node.pos.compareTo(pos)) > 0) return node;
 		}
 		return null;

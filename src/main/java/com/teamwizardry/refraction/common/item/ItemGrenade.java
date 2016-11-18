@@ -38,6 +38,7 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
+		if (ItemNBTHelper.getInt(stack, "color", -1) == -1) return;
 		if (entityLiving instanceof EntityPlayer) {
 			EntityPlayer entityplayer = (EntityPlayer) entityLiving;
 			boolean shouldRemoveStack = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
@@ -87,6 +88,7 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 
 	@Override
 	public EnumAction getItemUseAction(ItemStack stack) {
+		if (ItemNBTHelper.getInt(stack, "color", -1) == -1) return EnumAction.NONE;
 		return EnumAction.BOW;
 	}
 
