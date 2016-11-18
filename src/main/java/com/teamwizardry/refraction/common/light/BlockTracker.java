@@ -38,6 +38,9 @@ public class BlockTracker {
 			if (collides(beam, pos, invSlope))
 				locations.put(pos, beam);
 		}
+		
+		locations.remove(new BlockPos(beam.initLoc), beam);
+		locations.remove(beam.trace.getBlockPos(), beam);
 	}
 
 	private boolean collides(Beam beam, BlockPos pos, Vec3d invSlope) {

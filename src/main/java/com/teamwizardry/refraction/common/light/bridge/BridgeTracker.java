@@ -1,7 +1,10 @@
 package com.teamwizardry.refraction.common.light.bridge;
 
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.init.ModBlocks;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -9,8 +12,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-
-import java.util.*;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.init.ModBlocks;
 
 public class BridgeTracker {
 	private static Map<World, BridgeTracker> instances = new HashMap<>();
@@ -71,10 +74,10 @@ public class BridgeTracker {
 		exciterArrays.remove(array);
 		Set<BlockPos> bridgePositions = bridges.remove(array);
 		if (bridgePositions != null) {
-			bridgePositions.removeIf(bridgePos ->
+			bridgePositions.forEach(bridgePos ->
 			{
+				this.bridgePositions.remove(bridgePos);
 				getWorld().setBlockToAir(bridgePos);
-				return true;
 			});
 		}
 		array.getPositions().forEach(arrayPos -> exciterPositions.remove(arrayPos));
