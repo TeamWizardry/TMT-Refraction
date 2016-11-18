@@ -359,8 +359,10 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
 				NBTBase tag = nbttagcompound.getTag(key);
 				if (tag instanceof NBTTagString) {
 					String value = ((NBTTagString) tag).getString();
-
-					ModBlocks.AXYZ.mappedPositions.put(DimWithPos.fromString(key), DimWithPos.fromString(value));
+					DimWithPos dimWithPos = DimWithPos.fromString(key);
+					World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimWithPos.getDim());
+					if (world.getBlockState(dimWithPos.getPos()).getBlock() == ModBlocks.AXYZ)
+						ModBlocks.AXYZ.mappedPositions.put(DimWithPos.fromString(key), DimWithPos.fromString(value));
 				}
 			}
 		}
