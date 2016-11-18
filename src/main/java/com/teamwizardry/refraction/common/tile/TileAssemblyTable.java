@@ -11,6 +11,7 @@ import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.AssemblyRecipe;
 import com.teamwizardry.refraction.api.CapsUtils;
+import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.init.ModItems;
@@ -20,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -154,7 +156,10 @@ public class TileAssemblyTable extends TileMod {
 					compound.setInteger("color", new Color(red, green, blue).getRGB());
 					compound.setInteger("color_alpha", Math.min(alpha, 255));
 					stack.setTagCompound(compound);
-					output.setStackInSlot(0, stack);
+					//MARKER: GRENADE CRAFTING
+					EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(stack);
+					MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);
+					output.setStackInSlot(0, eventAssemblyTableCraft.getOutput());
 				}
 				markDirty();
 			}
@@ -185,7 +190,10 @@ public class TileAssemblyTable extends TileMod {
 			if (color.getAlpha() < recipe.getMinStrength()) continue;
 
 			if (Utils.matchItemStackLists(recipe.getItems(), Utils.getListOfObjects(getListOfItems()))) {
-				output.setStackInSlot(0, recipe.getResult().copy());
+				//MARKER: REGULAR CRAFTING
+				EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(recipe.getResult().copy());
+				MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);
+				output.setStackInSlot(0, eventAssemblyTableCraft.getOutput());
 				isCrafting = true;
 				craftingTime = 0;
 				for (int i = 0; i < inventory.getSlots(); i++) inventory.setStackInSlot(i, null);
