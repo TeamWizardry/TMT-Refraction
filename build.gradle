@@ -51,6 +51,9 @@ repositories {
         name 'tterag maven'
         url "http://maven.tterrag.com/"
     }
+    maven {
+        url "http://mobiusstrip.eu/maven"
+    }
 }
 
 dependencies {
@@ -58,6 +61,8 @@ dependencies {
     deobfCompile "mezz.jei:jei_1.10.2:3.10.0.261:api"
     runtime "mezz.jei:jei_1.10.2:3.10.0.261"
     compileOnly "mcjty.theoneprobe:TheOneProbe:1.9.4-1.0.6-17"
+    compileOnly "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
+
 }
 
 processResources {
