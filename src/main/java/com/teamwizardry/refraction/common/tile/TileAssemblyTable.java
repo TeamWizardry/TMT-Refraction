@@ -159,7 +159,7 @@ public class TileAssemblyTable extends TileMod {
 					//MARKER: GRENADE CRAFTING
 					EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(stack);
 					MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);
-					output.setStackInSlot(0, eventAssemblyTableCraft.getOutput());
+					output.setStackInSlot(0, eventAssemblyTableCraft.getOutput()); //
 				}
 				markDirty();
 			}
