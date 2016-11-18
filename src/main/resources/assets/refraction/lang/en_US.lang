@@ -47,6 +47,7 @@ item.refraction:screw_driver.6.name=Screwdriver (45°)
 item.refraction:screw_driver.7.name=Screwdriver (90°)
 item.refraction:reflective_alloy.name=Reflective Alloy
 item.refraction:book_creator.name=Book
+item.refraction:grenade.name=Photon Grenade
 
 simple_name.refraction:mirror=&7Mirror
 simple_name.refraction:splitter=&7Splitter

@@ -19,6 +19,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -93,9 +95,22 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 		return 72000;
 	}
 
+	private Color getColor(ItemStack stack) {
+		Color c = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF));
+		float[] comps = c.getRGBComponents(null);
+		c = new Color(
+				(float) Math.max(comps[0] - 0.12, 0),
+				(float) Math.max(comps[1] - 0.12, 0),
+				(float) Math.max(comps[2] - 0.12, 0));
+		return ColorUtils.pulseColor(c);
+	}
+
 	@Nullable
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IItemColor getItemColor() {
-		return (stack, tintIndex) -> (tintIndex == 1 ? ColorUtils.pulseColor(new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF))).getRGB() : 0xFFFFFF);
+		return (stack, tintIndex) -> (tintIndex == 1 ?
+				getColor(stack).getRGB()
+				: 0xFFFFFF);
 	}
 }
