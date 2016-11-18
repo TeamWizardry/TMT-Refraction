@@ -8,6 +8,7 @@ import com.teamwizardry.refraction.api.soundmanager.SoundManager;
 import com.teamwizardry.refraction.common.light.Beam;
 import com.teamwizardry.refraction.common.light.bridge.BridgeTracker;
 import com.teamwizardry.refraction.common.light.bridge.ExciterArray;
+import com.teamwizardry.refraction.init.ModAchievements;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -15,6 +16,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -101,6 +103,13 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
 	@Override
 	public ItemBlock createItemForm() {
 		return null;
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+		if (entityIn instanceof EntityPlayer) {
+			((EntityPlayer) entityIn).addStat(ModAchievements.LIGHT_BRIDGE, 1);
+		}
 	}
 
 	@Override
