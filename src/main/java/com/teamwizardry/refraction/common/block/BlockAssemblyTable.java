@@ -79,8 +79,8 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 				playerIn.setHeldItem(hand, table.inventory.extractItem(table.getLastOccupiedSlot(), 1, false));
 				playerIn.openContainer.detectAndSendChanges();
 			}
+			table.markDirty();
 		}
-		worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
 		return true;
 	}
 
