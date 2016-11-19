@@ -121,11 +121,11 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 			curBiFacing = nextBiFacing;
 		}
 
+		IBlockState state = world.getBlockState(pos);
+		AxisAlignedBB axis = state.getBoundingBox(world, pos);
 		for (Beam beam : beams) {
 			EnumFacing beamDir = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
 
-			IBlockState state = world.getBlockState(pos);
-			AxisAlignedBB axis = state.getBoundingBox(null, null);
 			if (primaryOpen && secondaryOpen) {
 				if (facing.contains(beamDir.getOpposite())) {
 					if (beamDir.getOpposite() == getCollisionSide(axis, beam)) {
@@ -337,10 +337,12 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 		IBlockState offset = worldIn.getBlockState(pos.offset(f));
 		if (offset.getBlock() instanceof BlockOpticFiber) {
 			EnumFacing facing = getConnectible(worldIn, pos, f);
-			EnumFacing other = offset.getValue(FACING).getOther(facing);
-			if (facing != null && f.getOpposite() != other) {
-				EnumBiFacing biFacing = EnumBiFacing.getBiForFacings(other, f.getOpposite());
-				worldIn.setBlockState(pos.offset(f), offset.withProperty(FACING, biFacing));
+			if (facing != null) {
+				EnumFacing other = offset.getValue(FACING).getOther(facing);
+				if (f.getOpposite() != other) {
+					EnumBiFacing biFacing = EnumBiFacing.getBiForFacings(other, f.getOpposite());
+					worldIn.setBlockState(pos.offset(f), offset.withProperty(FACING, biFacing));
+				}
 			}
 		}
 	}
