@@ -69,11 +69,7 @@ simple_name.refraction:axyz=&7Piston-Based Beam Relocator
 
 achievement.refraction.light_bridge=Cheek Hazard
 achievement.refraction.light_bridge.desc=Create light bridges
-<<<<<<< Updated upstream
-achievement.refraction.translocator=Thinking With Portals
-=======
 achievement.refraction.translocator=Works as Intended
->>>>>>> Stashed changes
 achievement.refraction.translocator.desc=Craft a translocator block
 achievement.refraction.prism=Taste the Rainbow
 achievement.refraction.prism.desc=Craft a prism block
