@@ -3,7 +3,7 @@ package com.teamwizardry.refraction.common.effect;
 import com.teamwizardry.refraction.api.Effect;
 import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.api.ILightSource;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -23,9 +23,9 @@ public class EffectBreak extends Effect {
 	public void run(World world, Set<BlockPos> locations) {
 		if (beam.trace.typeOfHit != RayTraceResult.Type.BLOCK) return;
 
-		TileEntity tile = world.getTileEntity(beam.trace.getBlockPos());
-		if (tile != null)
-			if (tile instanceof IBeamHandler || tile instanceof ILightSource) return;
+		IBlockState block = world.getBlockState(beam.trace.getBlockPos());
+		if (block.getBlock() instanceof IBeamHandler || block.getBlock() instanceof ILightSource) return;
+
 		float hardness = world.getBlockState(beam.trace.getBlockPos()).getBlockHardness(world, beam.trace.getBlockPos());
 		if (hardness >= 0 && hardness * 32 * 2 / 3 < potency)
 			world.destroyBlock(beam.trace.getBlockPos(), true);
