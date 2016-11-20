@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -84,14 +83,22 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	 * The range of the raytrace. Will default to Beam_RANGE unless otherwise specified.
 	 */
 	public double range = Constants.BEAM_RANGE;
+
 	/**
 	 * A unique identifier for a beam. Used for uniqueness checks.
 	 */
 	@NotNull
-	private UUID uuid = UUID.randomUUID();
-	private ArrayList<BlockPos> lastTouchedBlocks = new ArrayList<>();
-	@Nullable
-	private BlockPos lastTouchedBlock = null;
+	public UUID uuid = UUID.randomUUID();
+
+	/**
+	 * The number of times this beam has bounced or been reflected.
+	 */
+	public int bouncedTimes = 0;
+
+	/**
+	 * The amount of times this beam is allowed to bounce or reflect.
+	 */
+	public int allowedBounceTimes = Constants.BEAM_BOUNCE_LIMIT;
 
 	public Beam(@NotNull World world, @NotNull Vec3d initLoc, @NotNull Vec3d slope, @NotNull Color color) {
 		this.world = world;
@@ -164,7 +171,35 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	 * @return The new beam created. Can be modified as needed.
 	 */
 	public Beam createSimilarBeam(Vec3d init, Vec3d dir, Color color) {
-		return new Beam(world, init, dir, color).setIgnoreEntities(ignoreEntities).setEnableEffect(enableEffect).setLastTouchedBlocks(lastTouchedBlocks).setLastTouchedBlock(lastTouchedBlock).setUUID(uuid);
+		return new Beam(world, init, dir, color)
+				.setIgnoreEntities(ignoreEntities)
+				.setEnableEffect(enableEffect)
+				.setUUID(uuid)
+				.setAllowedBounceTimes(allowedBounceTimes)
+				.setBouncedTimes(bouncedTimes)
+				.incrementBouncedTimes();
+	}
+
+	/**
+	 * Will set the amount of times this beam has already bounced or been reflected
+	 *
+	 * @param bouncedTimes The amount of times this beam has bounced or been reflected
+	 * @return This beam itself for the convenience of editing a beam in one line/chain.
+	 */
+	public Beam setBouncedTimes(int bouncedTimes) {
+		this.bouncedTimes = bouncedTimes;
+		return this;
+	}
+
+	/**
+	 * Will set the amount of times this beam will be allowed to bounce or reflect.
+	 *
+	 * @param allowedBounceTimes The amount of times this beam is allowed to bounce or reflect
+	 * @return This beam itself for the convenience of editing a beam in one line/chain.
+	 */
+	public Beam setAllowedBounceTimes(int allowedBounceTimes) {
+		this.allowedBounceTimes = allowedBounceTimes;
+		return this;
 	}
 
 	/**
@@ -180,13 +215,12 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	}
 
 	/**
-	 * Will change the last known block it touched to prevent infinite recursion
+	 * Will increment the amount of times this beam has bounced or reflected
 	 *
-	 * @param lastTouchedBlock The new most recent block touched's pos
 	 * @return This beam itself for the convenience of editing a beam in one line/chain.
 	 */
-	public Beam setLastTouchedBlock(BlockPos lastTouchedBlock) {
-		this.lastTouchedBlock = lastTouchedBlock;
+	public Beam incrementBouncedTimes() {
+		bouncedTimes++;
 		return this;
 	}
 
@@ -258,17 +292,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		return this;
 	}
 
-	/**
-	 * Set the list of blocks that the beam interacted/bounced off of with.
-	 *
-	 * @param lastTouchedBlocks The list of blockposes interacted with the beam.
-	 * @return This beam itself for the convenience of editing a beam in one line/chain.
-	 */
-	public Beam setLastTouchedBlocks(ArrayList<BlockPos> lastTouchedBlocks) {
-		this.lastTouchedBlocks = lastTouchedBlocks;
-		return this;
-	}
-
 	public UUID getUUID() {
 		return this.uuid;
 	}
@@ -278,7 +301,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		return this;
 	}
 
-	public Beam initializeVariables() {
+	private Beam initializeVariables() {
 		// EFFECT CHECKING //
 		if (effect == null && enableEffect) {
 			Effect tempEffect = EffectTracker.getEffect(this);
@@ -294,8 +317,8 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 			trace = EntityTrace.cast(world, initLoc, slope, range, true);
 		else trace = EntityTrace.cast(world, initLoc, slope, range, false);
 		// BEAM PHASING CHECKS //
-		if (trace != null && trace.hitVec != null)
-			this.finalLoc = trace.hitVec;
+
+		if (trace != null && trace.hitVec != null) this.finalLoc = trace.hitVec;
 		return this;
 	}
 
@@ -305,6 +328,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	public void spawn() {
 		if (world.isRemote) return;
 		if (color.getAlpha() <= 1) return;
+		if (bouncedTimes > allowedBounceTimes) return;
 
 		initializeVariables();
 

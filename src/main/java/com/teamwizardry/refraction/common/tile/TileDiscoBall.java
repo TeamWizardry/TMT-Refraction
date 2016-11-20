@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
 import com.teamwizardry.refraction.common.light.Beam;
 import net.minecraft.block.state.IBlockState;
@@ -57,7 +58,9 @@ public class TileDiscoBall extends TileMod implements ITickable {
 
 			Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(new Vec3d(state.getValue(BlockDiscoBall.FACING).getDirectionVec()).scale(0.2));
 
-			Beam beam = biggest.createSimilarBeam(center, dest).setColor(new Color(biggest.color.getRed(), biggest.color.getGreen(), biggest.color.getBlue(), biggest.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8)));
+			Beam beam = biggest.createSimilarBeam(center, dest)
+					.setColor(new Color(biggest.color.getRed(), biggest.color.getGreen(), biggest.color.getBlue(), biggest.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8)))
+					.setAllowedBounceTimes(Constants.DISCO_BALL_BEAM_BOUNCE_LIMIT);
 			handlers.add(new BeamHandler(beam, rotX, rotZ));
 		}
 

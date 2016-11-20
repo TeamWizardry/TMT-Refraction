@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IBeamHandler;
 import com.teamwizardry.refraction.api.ILaserTrace;
 import com.teamwizardry.refraction.common.light.Beam;
@@ -42,7 +43,6 @@ import java.util.UUID;
 public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
-	public static double airIOR = 1, glassIOR = 1.2, redIOR = 0.6, greenIOR = 0.4, blueIOR = 0.2;
 
 	public BlockPrism() {
 		super("prism", Material.GLASS);
@@ -63,11 +63,11 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 			Vec3d hitPos = beam.finalLoc;
 
 			if (beam.color.getRed() != 0)
-				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), Constants.redIOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
 			if (beam.color.getGreen() != 0)
-				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), Constants.greenIOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
 			if (beam.color.getBlue() != 0)
-				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), Constants.blueIOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
 		}
 	}
 
@@ -75,7 +75,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, worldObj, pos, hitPos.subtract(ref), hitPos.add(ref));
 		assert r != null;
 		Vec3d normal = r.data;
-		ref = refracted(airIOR + IORMod, glassIOR + IORMod, ref, normal).normalize();
+		ref = refracted(Constants.airIOR + IORMod, Constants.glassIOR + IORMod, ref, normal).normalize();
 		hitPos = r.hitVec;
 
 		for (int i = 0; i < 5; i++) {
@@ -86,7 +86,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 			assert r != null;
 			normal = r.data.scale(-1);
 			Vec3d oldRef = ref;
-			ref = refracted(glassIOR + IORMod, airIOR + IORMod, ref, normal).normalize();
+			ref = refracted(Constants.glassIOR + IORMod, Constants.airIOR + IORMod, ref, normal).normalize();
 			if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
 				ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
 				break;
