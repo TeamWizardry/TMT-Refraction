@@ -6,8 +6,7 @@ import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
-import com.teamwizardry.refraction.Refraction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 
 import java.awt.*;
 
@@ -17,55 +16,82 @@ import java.awt.*;
  */
 public class SidebarItem {
 
-	Sprite normal = new Sprite(new ResourceLocation(Refraction.MOD_ID, "textures/gui/sidebar_item_normal.png"));
-	Sprite select = new Sprite(new ResourceLocation(Refraction.MOD_ID, "textures/gui/sidebar_item_select.png"));
+	private final int id;
+	private Sprite icon;
+	private String info;
+	private String text;
 
-	public SidebarItem() {
+	public SidebarItem(int id, Sprite icon, String info, String text) {
+		this.id = id;
+		this.icon = icon;
+		this.info = info;
+		this.text = text;
 	}
 
-	public ComponentRect get(int sidebarWidth, int column, String text, int id) {
-		ComponentRect background = new ComponentRect(0, 16 * column, sidebarWidth, 16);
+	public ComponentRect get() {
+		ComponentRect background = new ComponentRect(0, 16 * id, 128, 16);
+		background.addTag(id);
 
-		ComponentSprite icon = new ComponentSprite(normal, 0, 0);
-		background.add(icon);
+		ComponentSprite sprite = new ComponentSprite(icon, 0, 0, 16, 16);
+		background.add(sprite);
 
-		ComponentText text_comp = new ComponentText(icon.getSize().getXi() + 5, 8, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
-		text_comp.getText().setValue(text);
-		background.add(text_comp);
+		ComponentText infoComp = new ComponentText(sprite.getSize().getXi() + 5, 8, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
+		background.add(infoComp);
 
 		new ButtonMixin<>(background, () -> {
 		});
 
 		background.BUS.hook(ButtonMixin.ButtonStateChangeEvent.class, (event) -> {
-			switch (event.getNewState()) {
-				case NORMAL:
-					if (GuiBook.selectedGrid != event.getComponent()) {
-						icon.setSprite(normal);
-						background.getColor().setValue(new Color(0x0080B4));
-					} else {
-						icon.setSprite(select);
-						background.getColor().setValue(new Color(0x00C0DC));
-					}
-					break;
-				case HOVER:
-					icon.setSprite(select);
-					background.getColor().setValue(new Color(0x00C0DC));
-					break;
-				case DISABLED:
-					icon.setSprite(normal);
-					background.getColor().setValue(new Color(0x4A0004));
-					break;
-			}
+			if (GuiBook.selected == id) {
+				infoComp.getText().setValue(TextFormatting.ITALIC + info);
+			} else infoComp.getText().setValue(info);
+
+			if (event.getNewState() == ButtonMixin.EnumButtonState.NORMAL) {
+				if (GuiBook.selected == id)
+					background.getColor().setValue(new Color(0x80005657, true));
+				else background.getColor().setValue(new Color(0x80242424, true));
+
+			} else if (event.getNewState() == ButtonMixin.EnumButtonState.HOVER)
+				background.getColor().setValue(new Color(0x8000A3A4, true));
+
+			else background.getColor().setValue(new Color(0x4A0004));
 		});
 
 		background.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
 			if (event.getButton() == EnumMouseButton.LEFT) {
-				if (GuiBook.selectedGrid == event.getComponent()) GuiBook.selectedGrid = null;
-				else GuiBook.selectedGrid = (ComponentRect) event.getComponent();
+				GuiBook.textComponent.getText().setValue(text);
+				GuiBook.selected = id;
 			}
 		}));
 
-		background.addTag(id);
 		return background;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public Sprite getIcon() {
+		return icon;
+	}
+
+	public void setIcon(Sprite icon) {
+		this.icon = icon;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 }
