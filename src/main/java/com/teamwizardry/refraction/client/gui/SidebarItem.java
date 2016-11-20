@@ -23,12 +23,20 @@ public class SidebarItem {
 	private Sprite icon;
 	private String info;
 
-	public SidebarItem(int id, Sprite icon, String info, ArrayList<SubPageItem> pages) {
+	public SidebarItem(int id, Sprite icon, String info) {
 		this.id = id;
 		this.icon = icon;
 		this.info = info;
+	}
+
+	public ArrayList<SubPageItem> getPages() {
+		return pages;
+	}
+
+	public void setPages(ArrayList<SubPageItem> pages) {
 		this.pages = pages;
 	}
+
 
 	public ComponentRect get() {
 		ComponentRect background = new ComponentRect(-100, 16 * id, 100, 16);
@@ -39,6 +47,8 @@ public class SidebarItem {
 
 		ComponentText infoComp = new ComponentText(sprite.getSize().getXi() + 5, 8, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
 		background.add(infoComp);
+
+		pages.forEach(page -> background.add(page.get()));
 
 		new ButtonMixin<>(background, () -> {
 		});

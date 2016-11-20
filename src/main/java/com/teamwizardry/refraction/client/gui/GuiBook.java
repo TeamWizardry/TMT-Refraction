@@ -63,8 +63,11 @@ public class GuiBook extends GuiBase {
 								String info = object.get("info").getAsString();
 								ResourceLocation icon = new ResourceLocation(Refraction.MOD_ID, object.get("icon").getAsString());
 
+								SidebarItem item = new SidebarItem(id++, new Sprite(icon), info);
+
 								ArrayList<SubPageItem> subPages = new ArrayList<>();
 								JsonArray pages = object.get("pages").getAsJsonArray();
+								int subID = 0;
 								if (pages.isJsonArray()) {
 									for (JsonElement element : pages) {
 										if (element.isJsonObject() && element.getAsJsonObject().has("info") && element.getAsJsonObject().has("text")) {
@@ -78,11 +81,11 @@ public class GuiBook extends GuiBase {
 													if (line.isJsonPrimitive())
 														string += "\n" + line.getAsString();
 												}
-												subPages.add(new SubPageItem(pageInfo, string));
+												subPages.add(new SubPageItem(item, subID++, pageInfo, string));
 											}
 										}
 									}
-									SidebarItem item = new SidebarItem(id++, new Sprite(icon), info, subPages);
+									item.setPages(subPages);
 									categories.add(item);
 									getMainComponents().add(item.get());
 								}
@@ -92,7 +95,7 @@ public class GuiBook extends GuiBase {
 				}
 			}
 		}
-		textComponent.getText().setValue(categories.get(0).getText());
+		textComponent.getText().setValue(categories.get(0).getPages().get(categories.get(0).currentPage).getText());
 		getMainComponents().add(textComponent);
 	}
 
