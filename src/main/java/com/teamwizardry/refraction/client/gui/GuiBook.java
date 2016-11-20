@@ -32,6 +32,7 @@ public class GuiBook extends GuiBase {
 	public static int selected = 0;
 	public static ComponentText textComponent;
 	private int currentPage = 0;
+	private ArrayList<SidebarItem> categories = new ArrayList<>();
 
 	public GuiBook() {
 		super(256, 256);
@@ -58,21 +59,31 @@ public class GuiBook extends GuiBase {
 					for (int i = 0; i < array.size(); i++) {
 						if (array.get(i).isJsonObject()) {
 							JsonObject object = array.get(i).getAsJsonObject();
-							if (object.has("info") && object.has("text") && object.has("icon")) {
+							if (object.has("info") && object.has("pages") && object.has("icon")) {
 								String info = object.get("info").getAsString();
 								ResourceLocation icon = new ResourceLocation(Refraction.MOD_ID, object.get("icon").getAsString());
 
-								JsonArray text = object.get("text").getAsJsonArray();
-								if (text.isJsonArray()) {
-									ArrayList<String> textList = new ArrayList<>();
-									for (int j = 0; j < text.size() - 1; j++)
-										textList.add(text.get(j).getAsString());
+								ArrayList<SubPageItem> subPages = new ArrayList<>();
+								JsonArray pages = object.get("pages").getAsJsonArray();
+								if (pages.isJsonArray()) {
+									for (JsonElement element : pages) {
+										if (element.isJsonObject() && element.getAsJsonObject().has("info") && element.getAsJsonObject().has("text")) {
+											JsonObject page = element.getAsJsonObject();
+											if (page.get("info").isJsonPrimitive() && page.get("text").isJsonArray()) {
+												String pageInfo = page.get("info").getAsString();
+												JsonArray pageArray = page.getAsJsonArray("text");
 
-									String string = "";
-									for (String line : textList) string += line;
-
-									textComponent.getText().setValue(string);
-									SidebarItem item = new SidebarItem(id++, new Sprite(icon), info, string);
+												String string = "";
+												for (JsonElement line : pageArray) {
+													if (line.isJsonPrimitive())
+														string += "\n" + line.getAsString();
+												}
+												subPages.add(new SubPageItem(pageInfo, string));
+											}
+										}
+									}
+									SidebarItem item = new SidebarItem(id++, new Sprite(icon), info, subPages);
+									categories.add(item);
 									getMainComponents().add(item.get());
 								}
 							}
@@ -81,6 +92,7 @@ public class GuiBook extends GuiBase {
 				}
 			}
 		}
+		textComponent.getText().setValue(categories.get(0).getText());
 		getMainComponents().add(textComponent);
 	}
 
