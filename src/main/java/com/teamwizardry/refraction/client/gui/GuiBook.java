@@ -17,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import java.awt.*;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by Saad on 10/7/2016.
@@ -43,10 +44,6 @@ public class GuiBook extends GuiBase {
 
 		textComponent = new ComponentText(16, 16, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 		textComponent.getWrap().setValue(230);
-		Sprite bookSprite = new Sprite(new ResourceLocation(Refraction.MOD_ID, "textures/items/book.png"));
-		Sprite laserPointerSprite = new Sprite(new ResourceLocation(Refraction.MOD_ID, "textures/items/laser_pointer.png"));
-		Sprite mirrorSprite = new Sprite(new ResourceLocation(Refraction.MOD_ID, "textures/items/mirror.png"));
-		Sprite reflectiveAlloySprite = new Sprite(new ResourceLocation(Refraction.MOD_ID, "textures/items/reflective_alloy.png"));
 
 		int id = 0;
 
@@ -57,46 +54,28 @@ public class GuiBook extends GuiBase {
 			if (json.isJsonObject() && json.getAsJsonObject().has("pages")) {
 				JsonArray array = json.getAsJsonObject().getAsJsonArray("pages");
 
-				if (array.isJsonArray() && array.getAsJsonArray().size() >= 4) {
-					if (array.get(0).isJsonObject()) {
-						JsonObject object = array.get(0).getAsJsonObject();
-						if (object.has("info") && object.has("text")) {
-							String info = object.get("info").getAsString();
-							String text = object.get("text").getAsString();
+				if (array.isJsonArray()) {
+					for (int i = 0; i < array.size(); i++) {
+						if (array.get(i).isJsonObject()) {
+							JsonObject object = array.get(i).getAsJsonObject();
+							if (object.has("info") && object.has("text") && object.has("icon")) {
+								String info = object.get("info").getAsString();
+								ResourceLocation icon = new ResourceLocation(Refraction.MOD_ID, object.get("icon").getAsString());
 
-							textComponent.getText().setValue(text);
-							SidebarItem book = new SidebarItem(id++, bookSprite, info, text);
-							getMainComponents().add(book.get());
-						}
-					}
-					if (array.get(1).isJsonObject()) {
-						JsonObject object = array.get(1).getAsJsonObject();
-						if (object.has("info") && object.has("text")) {
-							String info = object.get("info").getAsString();
-							String text = object.get("text").getAsString();
+								JsonArray text = object.get("text").getAsJsonArray();
+								if (text.isJsonArray()) {
+									ArrayList<String> textList = new ArrayList<>();
+									for (int j = 0; j < text.size() - 1; j++)
+										textList.add(text.get(j).getAsString());
 
-							SidebarItem laserPointer = new SidebarItem(id++, laserPointerSprite, info, text);
-							getMainComponents().add(laserPointer.get());
-						}
-					}
-					if (array.get(2).isJsonObject()) {
-						JsonObject object = array.get(2).getAsJsonObject();
-						if (object.has("info") && object.has("text")) {
-							String info = object.get("info").getAsString();
-							String text = object.get("text").getAsString();
+									String string = "";
+									for (String line : textList) string += line;
 
-							SidebarItem mirror = new SidebarItem(id++, mirrorSprite, info, text);
-							getMainComponents().add(mirror.get());
-						}
-					}
-					if (array.get(3).isJsonObject()) {
-						JsonObject object = array.get(3).getAsJsonObject();
-						if (object.has("info") && object.has("text")) {
-							String info = object.get("info").getAsString();
-							String text = object.get("text").getAsString();
-
-							SidebarItem refAlloy = new SidebarItem(id++, reflectiveAlloySprite, info, text);
-							getMainComponents().add(refAlloy.get());
+									textComponent.getText().setValue(string);
+									SidebarItem item = new SidebarItem(id++, new Sprite(icon), info, string);
+									getMainComponents().add(item.get());
+								}
+							}
 						}
 					}
 				}
