@@ -59,16 +59,17 @@ public class GuiBook extends GuiBase {
 					for (int i = 0; i < array.size(); i++) {
 						if (array.get(i).isJsonObject()) {
 							JsonObject object = array.get(i).getAsJsonObject();
-							if (object.has("info") && object.has("pages") && object.has("icon")) {
+							if (object.has("info") && object.has("subpages") && object.has("icon")) {
 								String info = object.get("info").getAsString();
 								ResourceLocation icon = new ResourceLocation(Refraction.MOD_ID, object.get("icon").getAsString());
 
 								SidebarItem item = new SidebarItem(id++, new Sprite(icon), info);
 
-								ArrayList<SubPageItem> subPages = new ArrayList<>();
-								JsonArray pages = object.get("pages").getAsJsonArray();
-								int subID = 0;
+								JsonArray pages = object.get("subpages").getAsJsonArray();
 								if (pages.isJsonArray()) {
+									ArrayList<SubPageItem> subPages = new ArrayList<>();
+
+									int subID = 0;
 									for (JsonElement element : pages) {
 										if (element.isJsonObject() && element.getAsJsonObject().has("info") && element.getAsJsonObject().has("text")) {
 											JsonObject page = element.getAsJsonObject();
@@ -85,6 +86,7 @@ public class GuiBook extends GuiBase {
 											}
 										}
 									}
+
 									item.setPages(subPages);
 									categories.add(item);
 									getMainComponents().add(item.get());
@@ -95,7 +97,7 @@ public class GuiBook extends GuiBase {
 				}
 			}
 		}
-		textComponent.getText().setValue(categories.get(0).getPages().get(categories.get(0).currentPage).getText());
+		textComponent.getText().setValue(".");
 		getMainComponents().add(textComponent);
 	}
 

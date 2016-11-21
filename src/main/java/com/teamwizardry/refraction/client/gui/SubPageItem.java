@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.client.gui;
 
 import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
+import com.teamwizardry.librarianlib.client.gui.GuiComponent;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentRect;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
@@ -26,7 +27,7 @@ public class SubPageItem {
 	}
 
 	public ComponentRect get() {
-		ComponentRect background = new ComponentRect(0, 16 * id, 100, 16);
+		ComponentRect background = new ComponentRect(380, 16 * id - 16 * sidebarItem.getId(), 100, 16);
 		background.addTag(id);
 
 		ComponentText infoComp = new ComponentText(0, 8, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
@@ -35,17 +36,23 @@ public class SubPageItem {
 		new ButtonMixin<>(background, () -> {
 		});
 
-		background.BUS.hook(ButtonMixin.ButtonStateChangeEvent.class, (event) -> {
-			if (sidebarItem.currentPage == id) {
-				//background.setSize(new Vec2d(-120, 16));
-				//background.setPos(new Vec2d(-120, 16 * id));
-				infoComp.getText().setValue(TextFormatting.ITALIC + info);
+		background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
+			if (GuiBook.selected == sidebarItem.getId()) {
+				background.setVisible(true);
+				background.setEnabled(true);
+				if (sidebarItem.currentPage == id) {
+					infoComp.getText().setValue(TextFormatting.ITALIC + info);
+					GuiBook.textComponent.getText().setValue(text);
+				} else {
+					infoComp.getText().setValue(info);
+				}
 			} else {
-				//background.setSize(new Vec2d(-100, 16));
-				//background.setPos(new Vec2d(-100, 16 * id));
-				infoComp.getText().setValue(info);
+				background.setVisible(false);
+				background.setEnabled(false);
 			}
+		});
 
+		background.BUS.hook(ButtonMixin.ButtonStateChangeEvent.class, (event) -> {
 			if (event.getNewState() == ButtonMixin.EnumButtonState.NORMAL) {
 				if (sidebarItem.currentPage == id)
 					background.getColor().setValue(new Color(0xCC005657, true));
@@ -60,8 +67,6 @@ public class SubPageItem {
 
 		background.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
 			if (event.getButton() == EnumMouseButton.LEFT) {
-				if (GuiBook.selected == sidebarItem.getId())
-					GuiBook.textComponent.getText().setValue(getText());
 				sidebarItem.currentPage = id;
 			}
 		}));
