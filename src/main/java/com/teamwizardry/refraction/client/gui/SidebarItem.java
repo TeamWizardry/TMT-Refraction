@@ -2,15 +2,14 @@ package com.teamwizardry.refraction.client.gui;
 
 import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.client.gui.GuiComponent;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentRect;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
-import com.teamwizardry.librarianlib.common.util.math.Vec2d;
+import com.teamwizardry.refraction.Refraction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -40,15 +39,15 @@ public class SidebarItem {
 	}
 
 
-	public ComponentRect get() {
-		ComponentRect background = new ComponentRect(-100, 16 * id, 100, 16);
-		background.getColor().setValue(new Color(0x80003A3D, true));
+	public ComponentSprite get() {
+		ResourceLocation sliderTexture = new ResourceLocation(Refraction.MOD_ID, "textures/gui/slider.png");
+		ComponentSprite background = new ComponentSprite(new Sprite(sliderTexture), -110, 17 * id, 110, 16);
 		background.addTag(id);
 
-		ComponentSprite sprite = new ComponentSprite(icon, 0, 0, 16, 16);
+		ComponentSprite sprite = new ComponentSprite(icon, 5, 0, 16, 16);
 		background.add(sprite);
 
-		ComponentText infoComp = new ComponentText(sprite.getSize().getXi() + 5, 8, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
+		ComponentText infoComp = new ComponentText(sprite.getSize().getXi() + 10, 8, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
 		background.add(infoComp);
 
 		pages.forEach(page -> background.add(page.get()));
@@ -57,21 +56,13 @@ public class SidebarItem {
 		});
 
 		background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
-			if (event.getComponent().getMouseOver()) {
-				if (GuiBook.selected != id)
-					background.getColor().setValue(new Color(0xCC00A3A4, true));
-			} else {
-				if (GuiBook.selected == id)
-					background.getColor().setValue(new Color(0xCC005657, true));
-				else background.getColor().setValue(new Color(0x80003A3D, true));
-			}
 			if (GuiBook.selected == id) {
-				background.setSize(new Vec2d(-120, 16));
-				background.setPos(new Vec2d(-120, 16 * id));
+				//background.setSize(new Vec2d(-120, 16));
+				//background.setPos(new Vec2d(-120, 16 * id));
 				infoComp.getText().setValue(TextFormatting.ITALIC + info);
 			} else {
-				background.setSize(new Vec2d(-100, 16));
-				background.setPos(new Vec2d(-100, 16 * id));
+				//background.setSize(new Vec2d(-100, 16));
+				//background.setPos(new Vec2d(-100, 16 * id));
 				infoComp.getText().setValue(info);
 			}
 		});

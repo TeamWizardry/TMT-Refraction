@@ -3,7 +3,7 @@
 		"textureWidth":256,
 		"textureHeight":256,
 		"sprites":{
-			"bg":[0, 0, 256, 256]
+			"bg":[10, 0, 245, 244]
 		}
 	}
 }

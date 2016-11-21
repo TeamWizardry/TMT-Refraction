@@ -2,12 +2,13 @@ package com.teamwizardry.refraction.client.gui;
 
 import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.client.gui.GuiComponent;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentRect;
+import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
+import com.teamwizardry.librarianlib.client.sprite.Sprite;
+import com.teamwizardry.refraction.Refraction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-
-import java.awt.*;
 
 /**
  * Created by LordSaad.
@@ -26,11 +27,12 @@ public class SubPageItem {
 		this.text = text;
 	}
 
-	public ComponentRect get() {
-		ComponentRect background = new ComponentRect(380, 16 * id - 16 * sidebarItem.getId(), 100, 16);
+	public ComponentSprite get() {
+		ResourceLocation sliderTexture = new ResourceLocation(Refraction.MOD_ID, "textures/gui/slider_2.png");
+		ComponentSprite background = new ComponentSprite(new Sprite(sliderTexture), 356, 17 * id - 17 * sidebarItem.getId(), 100, 16);
 		background.addTag(id);
 
-		ComponentText infoComp = new ComponentText(0, 8, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
+		ComponentText infoComp = new ComponentText(95, 8, ComponentText.TextAlignH.RIGHT, ComponentText.TextAlignV.MIDDLE);
 		background.add(infoComp);
 
 		new ButtonMixin<>(background, () -> {
@@ -43,32 +45,18 @@ public class SubPageItem {
 				if (sidebarItem.currentPage == id) {
 					infoComp.getText().setValue(TextFormatting.ITALIC + info);
 					GuiBook.textComponent.getText().setValue(text);
-				} else {
-					infoComp.getText().setValue(info);
-				}
+				} else infoComp.getText().setValue(info);
 			} else {
-				background.setVisible(false);
 				background.setEnabled(false);
+				background.setVisible(false);
 			}
-		});
-
-		background.BUS.hook(ButtonMixin.ButtonStateChangeEvent.class, (event) -> {
-			if (event.getNewState() == ButtonMixin.EnumButtonState.NORMAL) {
-				if (sidebarItem.currentPage == id)
-					background.getColor().setValue(new Color(0xCC005657, true));
-				else background.getColor().setValue(new Color(0x80003A3D, true));
-
-			} else if (event.getNewState() == ButtonMixin.EnumButtonState.HOVER) {
-				if (sidebarItem.currentPage != id)
-					background.getColor().setValue(new Color(0xCC00A3A4, true));
-
-			} else background.getColor().setValue(new Color(0x4A0004));
 		});
 
 		background.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
-			if (event.getButton() == EnumMouseButton.LEFT) {
-				sidebarItem.currentPage = id;
-			}
+			if (GuiBook.selected == sidebarItem.getId())
+				if (background.getEnabled() && event.getButton() == EnumMouseButton.LEFT)
+					if (sidebarItem.currentPage != id)
+						sidebarItem.currentPage = id;
 		}));
 
 		return background;

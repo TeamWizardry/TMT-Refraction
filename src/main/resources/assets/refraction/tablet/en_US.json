@@ -13,7 +13,7 @@
           ]
         },
         {
-          "info": "The Assembly Table",
+          "info": "Assembly Tables",
           "text": [
             "Let's see here... Ah, yes. Ok so you'll first want to make an [[assembly_table]]. This simple block will help you craft everything you need. I will guide you through the steps of its usage when we get to that.",
             "For now, craft one. It requires 7 iron ingots and 1 [[lens]] block.",
@@ -21,6 +21,24 @@
             "Next, you'll want to craft a [[magnifier]] block. When provided with a 3x3 of lense blocks above it - provided that they have a line of sight to the sky - it will converge the sunlight into a focused beam of light directly below it.",
             "",
             "I should note that you should place the magnifier (with the lense blocks above it) anywhere above the assembly table. This will be a one time setup to get you the basic items and can be altered after we're done with the second step."
+          ]
+        },
+        {
+          "info": "Reflective Alloys",
+          "text": [
+            "Neither gold nor iron have the reflective properties you'd want to be able to play around with light, but they both are a step in the right direction. The Assembly table will allow you to make such materials, by using Magnifiers to focus beams inside.",
+            "",
+            "To get something very reflective, using a beam to fuse three iron and three gold in the table should be sufficient. The table requires redstone power to function, to get the components running.",
+            "It'll give you a highly reflective alloy, very useful for light manipulation."
+          ]
+        },
+        {
+          "info": "Mirrors",
+          "text": [
+            "Now that you have more reflective resources, you can dispense with the annoyance of placing the magnifier exactly above the table. By creating a [[mirror]] with reflective alloy and rotating it using a [[screwdriver]], you can redirect beams to any direction.",
+            "Using the screwdriver on the air will decrease its precision, and sneak-using it will increase its precision. Using it on a mirror's top will rotate it horizontally, and on a mirror's side it'll rotate it vertically.",
+            "",
+            "If you focus multiple beams into an Assembly Table, it'll be able to do more intense recipes, granting you more components to play with."
           ]
         }
       ]
