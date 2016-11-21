@@ -76,39 +76,7 @@ public final class TextAdapter {
 			return null;
 		String text = object.get("text").getAsString();
 
-		TextFormatting color = object.has("color") && object.get("color").isJsonPrimitive() && object.getAsJsonPrimitive("color").isString() ?
-				TextFormatting.getValueByName(object.get("color").getAsString()) : null;
-
-		boolean bold = object.has("bold") &&
-				object.get("bold").isJsonPrimitive() &&
-				object.getAsJsonPrimitive("bold").isBoolean() &&
-				object.getAsJsonPrimitive("bold").getAsBoolean(),
-		italic = object.has("italic") &&
-				object.get("italic").isJsonPrimitive() &&
-				object.getAsJsonPrimitive("italic").isBoolean() &&
-				object.getAsJsonPrimitive("italic").getAsBoolean(),
-		underline = object.has("underlined") &&
-				object.get("underlined").isJsonPrimitive() &&
-				object.getAsJsonPrimitive("underlined").isBoolean() &&
-				object.getAsJsonPrimitive("underlined").getAsBoolean(),
-		obfuscated = object.has("obfuscated") &&
-				object.get("obfuscated").isJsonPrimitive() &&
-				object.getAsJsonPrimitive("obfuscated").isBoolean() &&
-				object.getAsJsonPrimitive("obfuscated").getAsBoolean(),
-		strikethrough = object.has("strikethrough") &&
-				object.get("strikethrough").isJsonPrimitive() &&
-				object.getAsJsonPrimitive("strikethrough").isBoolean() &&
-				object.getAsJsonPrimitive("strikethrough").getAsBoolean();
-
-		TextStyle style = new TextStyle()
-				.setColor(color)
-				.setBold(bold)
-				.setItalic(italic)
-				.setUnderlined(underline)
-				.setObfuscated(obfuscated)
-				.setStrikethrough(strikethrough);
-
-		return new StringTextHolder(text).setStyle(style);
+		return new StringTextHolder(text);
 	};
 
 	@NotNull
@@ -125,17 +93,50 @@ public final class TextAdapter {
 			return new CombinedTextHolder(l.toArray(new ITextHolder[l.size()]));
 		} else if (object.isJsonObject()) {
 			JsonObject comp = object.getAsJsonObject();
+
+			TextFormatting color = comp.has("color") && comp.get("color").isJsonPrimitive() && comp.getAsJsonPrimitive("color").isString() ?
+					TextFormatting.getValueByName(comp.get("color").getAsString()) : null;
+
+			boolean bold = comp.has("bold") &&
+					comp.get("bold").isJsonPrimitive() &&
+					comp.getAsJsonPrimitive("bold").isBoolean() &&
+					comp.getAsJsonPrimitive("bold").getAsBoolean(),
+			italic = comp.has("italic") &&
+					comp.get("italic").isJsonPrimitive() &&
+					comp.getAsJsonPrimitive("italic").isBoolean() &&
+					comp.getAsJsonPrimitive("italic").getAsBoolean(),
+			underline = comp.has("underlined") &&
+					comp.get("underlined").isJsonPrimitive() &&
+					comp.getAsJsonPrimitive("underlined").isBoolean() &&
+					comp.getAsJsonPrimitive("underlined").getAsBoolean(),
+			obfuscated = comp.has("obfuscated") &&
+					comp.get("obfuscated").isJsonPrimitive() &&
+					comp.getAsJsonPrimitive("obfuscated").isBoolean() &&
+					comp.getAsJsonPrimitive("obfuscated").getAsBoolean(),
+			strikethrough = comp.has("strikethrough") &&
+					comp.get("strikethrough").isJsonPrimitive() &&
+					comp.getAsJsonPrimitive("strikethrough").isBoolean() &&
+					comp.getAsJsonPrimitive("strikethrough").getAsBoolean();
+
+			TextStyle style = new TextStyle()
+					.setColor(color)
+					.setBold(bold)
+					.setItalic(italic)
+					.setUnderlined(underline)
+					.setObfuscated(obfuscated)
+					.setStrikethrough(strikethrough);
+
 			if (comp.has("type") && comp.get("type").isJsonPrimitive()) {
 				String type = comp.get("type").getAsString();
 				Collection<Parser> parsers = registry.get(type);
 				for (Parser parser : parsers) {
 					ITextHolder parsed = parser.parse(comp);
-					if (parsed != null) return parsed;
+					if (parsed != null) return parsed.setStyle(style);
 				}
 			}
 
 			ITextHolder parsed = BASE_PARSER.parse(comp);
-			if (parsed != null) return parsed;
+			if (parsed != null) return parsed.setStyle(style);
 		}
 
 		return new StringTextHolder("UNKNOWN DATA TYPE");
