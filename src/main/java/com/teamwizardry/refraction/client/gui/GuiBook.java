@@ -11,6 +11,7 @@ import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.refraction.Refraction;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.InputStream;
@@ -50,7 +51,9 @@ public class GuiBook extends GuiBase {
 
 		int id = 0;
 
-		InputStream stream = LibrarianLib.getPROXY().getResource(Refraction.MOD_ID, "tablet/en_US.json");
+		String langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
+
+		InputStream stream = LibrarianLib.PROXY.getResource(Refraction.MOD_ID, "tablet/" + langname + ".json");
 		if (stream != null) {
 			InputStreamReader reader = new InputStreamReader(stream);
 			JsonElement json = new JsonParser().parse(reader);
