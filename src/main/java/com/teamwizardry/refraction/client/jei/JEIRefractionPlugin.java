@@ -11,7 +11,9 @@ import javax.annotation.Nonnull;
  * Created by Saad on 10/12/2016.
  */
 @JEIPlugin
-public class JEIRefractionPlugin implements IModPlugin {
+public class JEIRefractionPlugin extends BlankModPlugin {
+
+	public static IJeiRuntime jeiRuntime;
 
 	@Override
 	public void register(@Nonnull IModRegistry registry) {
@@ -27,7 +29,8 @@ public class JEIRefractionPlugin implements IModPlugin {
 	}
 
 	@Override
-	public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime) {
+	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+		super.onRuntimeAvailable(jeiRuntime);
+		JEIRefractionPlugin.jeiRuntime = jeiRuntime;
 	}
-
 }

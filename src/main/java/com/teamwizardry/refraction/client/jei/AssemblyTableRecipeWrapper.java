@@ -7,6 +7,7 @@ import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.AssemblyRecipe;
 import com.teamwizardry.refraction.api.Utils;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -47,6 +48,11 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 		currentColor = recipe.getMinColor();
 		cycleSwitch = true;
 		transition = true;
+	}
+
+	@Override
+	public void getIngredients(IIngredients ingredients) {
+
 	}
 
 	@Override

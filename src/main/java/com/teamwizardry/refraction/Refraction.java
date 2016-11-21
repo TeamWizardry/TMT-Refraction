@@ -20,7 +20,7 @@ public class Refraction {
 	public static final String VERSION = "1.1";
 	public static final String CLIENT = "com.teamwizardry.refraction.client.proxy.ClientProxy";
 	public static final String SERVER = "com.teamwizardry.refraction.common.proxy.CommonProxy";
-	public static final String DEPENDENCIES = "required-after:librarianlib";
+	public static final String DEPENDENCIES = "required-after:librarianlib;required-after:JEI@[3.13.3,)";
 
 	@SidedProxy(clientSide = CLIENT, serverSide = SERVER)
 	public static CommonProxy proxy;

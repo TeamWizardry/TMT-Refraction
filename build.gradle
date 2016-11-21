@@ -56,8 +56,8 @@ repositories {
 
 dependencies {
     compile 'com.github.TeamWizardry:LibrarianLib:-SNAPSHOT'
-    deobfCompile "mezz.jei:jei_1.10.2:3.10.0.261:api"
-    runtime "mezz.jei:jei_1.10.2:3.10.0.261"
+    deobfCompile "mezz.jei:jei_1.10.2:3.13.3.382:api"
+    runtime "mezz.jei:jei_1.10.2:3.13.3.382"
 }
 
 processResources {
