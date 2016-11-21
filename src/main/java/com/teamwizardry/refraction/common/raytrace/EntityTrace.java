@@ -6,6 +6,8 @@ import com.teamwizardry.refraction.common.light.BeamPulsar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -41,6 +43,14 @@ public class EntityTrace {
 		while (j < list.size()) {
 			Entity current = list.get(j);
 			AxisAlignedBB axis = current.getEntityBoundingBox().expandXyz(current.getCollisionBorderSize());
+
+			if ((current instanceof EntityLivingBase &&
+					((EntityLivingBase) current).getActivePotionEffect(MobEffects.INVISIBILITY) != null) ||
+					(current instanceof EntityPlayer && ((EntityPlayer) current).isSpectator())) {
+				j++;
+				continue;
+			}
+
 			if (current instanceof EntityItem)
 				axis = axis.expand(0, 0.25, 0);
 			RayTraceResult result = axis.calculateIntercept(pos, cast);
