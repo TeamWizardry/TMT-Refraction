@@ -21,12 +21,12 @@ import java.util.ArrayList;
  */
 public class SidebarItem {
 
+	private static long prevMillis;
 	private final int id;
 	public int currentPage = 0;
 	public ArrayList<SubPageItem> pages = new ArrayList<>();
 	private Sprite icon;
 	private String info;
-	private long prevMillis;
 	private float prevX, destX;
 
 	private ResourceLocation sliderLoc = new ResourceLocation(Refraction.MOD_ID, "textures/gui/slider_1.png");
@@ -69,8 +69,8 @@ public class SidebarItem {
 
 				double millisTransition = (System.currentTimeMillis() - prevMillis) / 1000.0;
 				double x = 0;
-				if (Math.round(millisTransition) < 0.5) {
-					x = -MathHelper.cos((float) (millisTransition * Math.PI / 0.5) / 2) * (destX - prevX) - prevX;
+				if (Math.round(millisTransition) < 0.25) {
+					x = -MathHelper.cos((float) (millisTransition * Math.PI / 0.25) / 2) * (destX - prevX) - prevX;
 				} else {
 					x = -5;
 					destX = 5;
