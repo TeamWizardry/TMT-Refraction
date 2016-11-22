@@ -52,8 +52,12 @@ public class GuiBook extends GuiBase {
 		int id = 0;
 
 		String langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
-
-		InputStream stream = LibrarianLib.PROXY.getResource(Refraction.MOD_ID, "tablet/" + langname + ".json");
+		InputStream stream;
+		try {
+			stream = LibrarianLib.PROXY.getResource(Refraction.MOD_ID, "tablet/" + langname + ".json");
+		} catch (Throwable e) {
+			stream = LibrarianLib.PROXY.getResource(Refraction.MOD_ID, "tablet/en_US.json");
+		}
 		if (stream != null) {
 			InputStreamReader reader = new InputStreamReader(stream);
 			JsonElement json = new JsonParser().parse(reader);
