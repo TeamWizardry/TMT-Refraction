@@ -6,8 +6,11 @@ import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
+import com.teamwizardry.librarianlib.client.sprite.Texture;
+import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.Refraction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
@@ -23,6 +26,12 @@ public class SidebarItem {
 	public ArrayList<SubPageItem> pages = new ArrayList<>();
 	private Sprite icon;
 	private String info;
+	private long prevMillis;
+	private float prevX, destX;
+
+	private ResourceLocation sliderLoc = new ResourceLocation(Refraction.MOD_ID, "textures/gui/slider_1.png");
+	private Texture sliderTexture = new Texture(sliderLoc);
+	private Sprite sliderSprite = sliderTexture.getSprite("slider", 130, 18);
 
 	public SidebarItem(int id, Sprite icon, String info) {
 		this.id = id;
@@ -38,10 +47,8 @@ public class SidebarItem {
 		this.pages = pages;
 	}
 
-
 	public ComponentSprite get() {
-		ResourceLocation sliderTexture = new ResourceLocation(Refraction.MOD_ID, "textures/gui/slider.png");
-		ComponentSprite background = new ComponentSprite(new Sprite(sliderTexture), -110, 17 * id, 110, 16);
+		ComponentSprite background = new ComponentSprite(sliderSprite, -110, 20 * id, 110, 18);
 		background.addTag(id);
 
 		ComponentSprite sprite = new ComponentSprite(icon, 5, 0, 16, 16);
@@ -56,20 +63,38 @@ public class SidebarItem {
 		});
 
 		background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
-			if (GuiBook.selected == id) {
-				//background.setSize(new Vec2d(-120, 16));
-				//background.setPos(new Vec2d(-120, 16 * id));
+			if (GuiBook.selectedSiderbar.getId() == id) {
+
 				infoComp.getText().setValue(TextFormatting.ITALIC + info);
+
+				double millisTransition = (System.currentTimeMillis() - prevMillis) / 1000.0;
+				double x = 0;
+				if (Math.round(millisTransition) < 0.5) {
+					x = -MathHelper.cos((float) (millisTransition * Math.PI / 0.5) / 2) * (destX - prevX) - prevX;
+				} else {
+					x = -5;
+					destX = 5;
+				}
+
+				background.setSize(new Vec2d(120 - x, 18));
+				background.setPos(new Vec2d(-120 + x, 20 * id));
 			} else {
-				//background.setSize(new Vec2d(-100, 16));
-				//background.setPos(new Vec2d(-100, 16 * id));
+				if (GuiBook.selectedSiderbar.getId() > id) {
+					background.setSize(new Vec2d(110, 18));
+					background.setPos(new Vec2d(-110, 20 * id));
+				} else {
+					background.setSize(new Vec2d(110, 18));
+					background.setPos(new Vec2d(-110, 20 * id + GuiBook.selectedSiderbar.pages.size() * 20));
+				}
 				infoComp.getText().setValue(info);
 			}
 		});
 
 		background.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
-			if (event.getButton() == EnumMouseButton.LEFT) {
-				GuiBook.selected = id;
+			if (GuiBook.selectedSiderbar.getId() != id && event.getButton() == EnumMouseButton.LEFT) {
+				GuiBook.selectedSiderbar = GuiBook.categories.get(id);
+				prevMillis = System.currentTimeMillis();
+				destX = -5;
 			}
 		}));
 

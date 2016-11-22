@@ -1,0 +1,9 @@
+{
+	"spritesheet":{
+		"textureWidth":130,
+		"textureHeight":18,
+		"sprites":{
+			"slider":[0, 0, 130, 18]
+		}
+	}
+}
