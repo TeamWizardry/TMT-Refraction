@@ -74,9 +74,7 @@ public final class TextAdapter {
 	private static final Parser BASE_PARSER = object -> {
 		if (!object.has("text") || !object.get("text").isJsonPrimitive())
 			return null;
-		String text = object.get("text").getAsString();
-
-		return new StringTextHolder(text);
+		return new StringTextHolder(object.get("text").getAsString());
 	};
 
 	private static TextStyle getStyleFromObject(JsonObject object) {
