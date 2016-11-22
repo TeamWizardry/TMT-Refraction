@@ -21,13 +21,14 @@ import java.util.ArrayList;
  */
 public class SidebarItem {
 
-	private static long prevMillis;
 	private final int id;
 	public int currentPage = 0;
 	public ArrayList<SubPageItem> pages = new ArrayList<>();
+	private long prevMillis;
 	private Sprite icon;
 	private String info;
-	private float prevX, destX;
+	private float prevX, destX, currentX;
+	private float prevY, destY, currentY;
 
 	private ResourceLocation sliderLoc = new ResourceLocation(Refraction.MOD_ID, "textures/gui/slider_1.png");
 	private Texture sliderTexture = new Texture(sliderLoc);
@@ -68,23 +69,28 @@ public class SidebarItem {
 				infoComp.getText().setValue(TextFormatting.ITALIC + info);
 
 				double millisTransition = (System.currentTimeMillis() - prevMillis) / 1000.0;
-				double x = 0;
-				if (Math.round(millisTransition) < 0.25) {
-					x = -MathHelper.cos((float) (millisTransition * Math.PI / 0.25) / 2) * (destX - prevX) - prevX;
-				} else {
-					x = -5;
-					destX = 5;
-				}
+				if (Math.round(millisTransition) < 0.25)
+					currentX = -MathHelper.cos((float) (millisTransition * Math.PI / 0.25) / 2) * (destX - prevX) - prevX;
 
-				background.setSize(new Vec2d(120 - x, 18));
-				background.setPos(new Vec2d(-120 + x, 20 * id));
+				background.setSize(new Vec2d(120 - currentX, 18));
+				background.setPos(new Vec2d(-120 + currentX, 20 * id));
 			} else {
 				if (GuiBook.selectedSiderbar.getId() > id) {
-					background.setSize(new Vec2d(110, 18));
-					background.setPos(new Vec2d(-110, 20 * id));
+
+					double millisTransition = (System.currentTimeMillis() - prevMillis) / 1000.0;
+					if (Math.round(millisTransition) < 0.25)
+						currentX = MathHelper.cos((float) (millisTransition * Math.PI / 0.25) / 2) * (destX - prevX) - prevX;
+
+					background.setSize(new Vec2d(110 - currentX, 18));
+					background.setPos(new Vec2d(-110 + currentX, 20 * id));
 				} else {
 					background.setSize(new Vec2d(110, 18));
-					background.setPos(new Vec2d(-110, 20 * id + GuiBook.selectedSiderbar.pages.size() * 20));
+
+					double millisTransition = (System.currentTimeMillis() - prevMillis) / 1000.0;
+					if (Math.round(millisTransition) < 0.25)
+						currentY = MathHelper.cos((float) (millisTransition * Math.PI / 0.25) / 2) * (destY - prevY) - prevY;
+
+					background.setPos(new Vec2d(-110, 20 * id + GuiBook.selectedSiderbar.pages.size() * 20 /* + currentY*/));
 				}
 				infoComp.getText().setValue(info);
 			}
@@ -92,9 +98,23 @@ public class SidebarItem {
 
 		background.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
 			if (GuiBook.selectedSiderbar.getId() != id && event.getButton() == EnumMouseButton.LEFT) {
+
+				GuiBook.selectedSiderbar.prevX = GuiBook.selectedSiderbar.currentX;
+				GuiBook.selectedSiderbar.destX = 0;
 				GuiBook.selectedSiderbar = GuiBook.categories.get(id);
+				GuiBook.selectedSiderbar.prevMillis = System.currentTimeMillis();
+
 				prevMillis = System.currentTimeMillis();
+				prevX = currentX = 0;
 				destX = -5;
+
+				/*for (SidebarItem item : GuiBook.categories) {
+					if (item.id < id) {
+						item.prevY = item.currentY = 0;
+						item.destY = pages.size() * 20;
+						item.prevMillis = System.currentTimeMillis();
+					}
+				}*/
 			}
 		}));
 
