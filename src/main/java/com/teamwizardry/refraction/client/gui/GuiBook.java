@@ -62,9 +62,10 @@ public class GuiBook extends GuiBase {
 							JsonObject object = array.get(i).getAsJsonObject();
 							if (object.has("info") && object.has("subpages") && object.has("icon")) {
 								String info = object.get("info").getAsString();
-								ResourceLocation icon = new ResourceLocation(Refraction.MOD_ID, object.get("icon").getAsString());
+								ResourceLocation icon = new ResourceLocation(object.get("icon").getAsString());
+								ResourceLocation iconQualified = new ResourceLocation(icon.getResourceDomain(), "textures/"+icon.getResourcePath()+".png");
 
-								SidebarItem item = new SidebarItem(id++, new Sprite(icon), info);
+								SidebarItem item = new SidebarItem(id++, new Sprite(iconQualified), info);
 
 								JsonArray pages = object.get("subpages").getAsJsonArray();
 								if (pages.isJsonArray()) {

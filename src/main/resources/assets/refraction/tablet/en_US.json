@@ -1,7 +1,7 @@
 {
   "pages": [
     {
-      "icon": "textures/items/book.png",
+      "icon": "refraction:items/book",
       "info": "Getting Started",
       "subpages": [
         {
@@ -55,7 +55,7 @@
       ]
     },
     {
-      "icon": "textures/items/reflective_alloy.png",
+      "icon": "refraction:items/reflective_alloy",
       "info": "Second Page",
       "subpages": [
         {
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "icon": "textures/items/mirror.png",
+      "icon": "refraction:items/mirror",
       "info": "Third Page",
       "subpages": [
         {
@@ -105,7 +105,7 @@
       ]
     },
     {
-      "icon": "textures/items/laser_pointer.png",
+      "icon": "refraction:items/laser_pointer",
       "info": "Fourth Page",
       "subpages": [
         {
