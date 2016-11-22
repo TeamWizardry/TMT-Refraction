@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
@@ -115,9 +116,11 @@ public final class TextAdapter {
 	public static ITextHolder adapt(@NotNull JsonElement object) {
 		if (object.isJsonNull())
 			return new StringTextHolder("NULL");
-		else if (object.isJsonPrimitive())
+		else if (object.isJsonPrimitive()) {
+			if (I18n.hasKey(object.getAsString()))
+				return new TranslationTextHolder(object.getAsString());
 			return new StringTextHolder(object.getAsString());
-		else if (object.isJsonArray()) {
+		} else if (object.isJsonArray()) {
 			List<ITextHolder> l = StreamSupport.stream(object.getAsJsonArray().spliterator(), false)
 					.map(TextAdapter::adapt)
 					.collect(Collectors.toList());
