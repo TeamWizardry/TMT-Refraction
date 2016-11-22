@@ -87,15 +87,17 @@ public class GuiBook extends GuiBase {
 											if (page.get("info").isJsonPrimitive() && page.get("text").isJsonArray()) {
 												String pageInfo = page.get("info").getAsString();
 												JsonArray pageArray = page.getAsJsonArray("text");
-												subPages.add(new SubPageItem(item, subID++, pageInfo, pageArray));
+												SubPageItem pageItem = new SubPageItem(item, subID++, pageInfo, pageArray);
+												subPages.add(pageItem);
 											}
 										}
 									}
 
 									item.setPages(subPages);
+									item.prevMillis = System.currentTimeMillis();
 									categories.add(item);
-									getMainComponents().add(item.get());
 									if (i == 0) selectedSiderbar = item;
+									getMainComponents().add(item.get());
 								}
 							}
 						}
