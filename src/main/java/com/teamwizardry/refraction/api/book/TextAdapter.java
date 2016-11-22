@@ -2,8 +2,11 @@ package com.teamwizardry.refraction.api.book;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.teamwizardry.librarianlib.LibrarianLog;
 import com.teamwizardry.refraction.client.jei.JEIRefractionPlugin;
 import mezz.jei.api.IRecipeRegistry;
 import mezz.jei.api.gui.IRecipeLayoutDrawable;
@@ -15,9 +18,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTException;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -27,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -61,12 +63,8 @@ public final class TextAdapter {
 
 		registerAdapter("stack", object -> {
 			ItemStack stack;
-			try {
-				NBTTagCompound nbt = JsonToNBT.getTagFromJson(object.toString());
-				stack = ItemStack.loadItemStackFromNBT(nbt);
-			} catch (NBTException e) {
-				return null;
-			}
+			NBTTagCompound nbt = (NBTTagCompound) parseJsonToNBT(object);
+			stack = ItemStack.loadItemStackFromNBT(nbt);
 
 			return new StackTextHolder(stack);
 		});
@@ -79,6 +77,48 @@ public final class TextAdapter {
 	}
 
 	private TextAdapter() {
+		// PRIVATE CONSTRUCTOR
+	}
+
+	public static NBTBase parseJsonToNBT(JsonElement element) {
+		if (element.isJsonPrimitive()) {
+			JsonPrimitive prim = element.getAsJsonPrimitive();
+			if (prim.isBoolean())
+				return new NBTTagByte((byte) (prim.getAsBoolean() ? 1 : 0));
+			else if (prim.isString())
+				return new NBTTagString(prim.getAsString());
+			else {
+				Number num = prim.getAsNumber();
+				if (num instanceof Long)
+					return new NBTTagLong(num.longValue());
+				return new NBTTagInt(num.intValue());
+			}
+		} else if (element.isJsonNull())
+			return new NBTTagString("<NULL>");
+		else if (element.isJsonArray()) {
+			NBTTagList ret = new NBTTagList();
+			JsonArray arr = element.getAsJsonArray();
+			byte type = 0;
+			for (JsonElement el : arr) {
+				NBTBase nbt = parseJsonToNBT(el);
+				if (type == 0)
+					type = nbt.getId();
+				else if (type != nbt.getId()) {
+					LibrarianLog.INSTANCE.warn("Json uses multiple types in an nbt block!");
+					continue;
+				}
+				ret.appendTag(nbt);
+			}
+			return ret;
+		} else if (element.isJsonObject()) {
+			NBTTagCompound comp = new NBTTagCompound();
+			JsonObject obj = element.getAsJsonObject();
+			for (Map.Entry<String, JsonElement> keypair : obj.entrySet())
+				comp.setTag(keypair.getKey(), parseJsonToNBT(keypair.getValue()));
+			return comp;
+		}
+
+		return new NBTTagString("UNKNOWN DATA TYPE");
 	}
 
 	public static void registerAdapter(@NotNull String key, @NotNull Parser parser) {

@@ -7,15 +7,21 @@
         {
           "info": "Hello",
           "text": [
-            "Hello there! I'm Eve, your personal assistant!",
-            "I'm here to help you <study phys-ERR> use reflection and refraction to manipulate light beams!",
+            "Hello there, ",
+            {"type": "player"},
+            "! I'm Eve, your personal assistant!",
+            "",
+            "I'm here to help you <study phys",
+            {"text": "ERR", "obfuscated": true},
+            "> use reflection and refraction to manipulate light beams!",
+            "",
             "Let's get started, shall we?"
           ]
         },
         {
           "info": "Assembly Tables",
           "text": [
-            "Let's see here... Ah, yes. Ok so you'll first want to make an ",
+            "Let's see here... Ah, yes. Ok so you'll first want to make a ",
             {
               "type": "stack",
               "id": "refraction:assembly_table"
@@ -23,9 +29,9 @@
             ". This simple block will help you craft everything you need. I will guide you through the steps of its usage when we get to that.",
             "For now, craft one. It requires 7 iron ingots and 1 [[lens]] block.",
             "",
-            "Next, you'll want to craft a [[magnifier]] block. When provided with a 3x3 of lense blocks above it - provided that they have a line of sight to the sky - it will converge the sunlight into a focused beam of light directly below it.",
+            "Next, you'll want to craft a [[magnifier]] block. When provided with a 3x3 of lens blocks above it - provided that they have a line of sight to the sky - it will converge the sunlight into a focused beam of light directly below it.",
             "",
-            "I should note that you should place the magnifier (with the lense blocks above it) anywhere above the assembly table. This will be a one time setup to get you the basic items and can be altered after we're done with the second step."
+            "I should note that you should place the magnifier (with the lens blocks above it) anywhere above the assembly table. This will be a one time setup to get you the basic items and can be altered after we're done with the second step."
           ]
         },
         {

@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.api.book;
 
-import com.google.common.collect.Lists;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
@@ -22,14 +23,15 @@ public interface ITextHolder {
 
 	@NotNull String getFormattedText();
 
-	@NotNull
+	@Nullable
 	@SideOnly(Side.CLIENT)
 	default List<String> getTooltip() {
-		return Lists.newArrayList();
+		return null;
 	}
 
 	@SideOnly(Side.CLIENT)
-	default void onClick() {
-		// NO-OP
-	}
+	void onClick(@NotNull Gui gui, @NotNull ScaledResolution res, int x, int y);
+
+	@SideOnly(Side.CLIENT)
+	void renderTooltip(@NotNull Gui gui, @NotNull ScaledResolution res, int x, int y);
 }
