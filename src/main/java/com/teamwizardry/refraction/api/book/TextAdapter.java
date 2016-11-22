@@ -65,17 +65,17 @@ public final class TextAdapter {
 
 			return new StackTextHolder(stack);
 		});
+
+		registerAdapter("text", object -> {
+			if (!object.has("text") || !object.get("text").isJsonPrimitive())
+				return null;
+			return new StringTextHolder(object.get("text").getAsString());
+		});
 	}
 
 	public static void registerAdapter(@NotNull String key, @NotNull Parser parser) {
 		registry.put(key, parser);
 	}
-
-	private static final Parser BASE_PARSER = object -> {
-		if (!object.has("text") || !object.get("text").isJsonPrimitive())
-			return null;
-		return new StringTextHolder(object.get("text").getAsString());
-	};
 
 	private static TextStyle getStyleFromObject(JsonObject object) {
 		TextFormatting color = object.has("color") && object.get("color").isJsonPrimitive() && object.getAsJsonPrimitive("color").isString() ?
@@ -127,17 +127,13 @@ public final class TextAdapter {
 			JsonObject comp = object.getAsJsonObject();
 			TextStyle style = getStyleFromObject(comp);
 
-			if (comp.has("type") && comp.get("type").isJsonPrimitive()) {
-				String type = comp.get("type").getAsString();
-				Collection<Parser> parsers = registry.get(type);
-				for (Parser parser : parsers) {
-					ITextHolder parsed = parser.parse(comp);
-					if (parsed != null) return parsed.setStyle(style);
-				}
+			String type = comp.has("type") && comp.get("type").isJsonPrimitive() ?
+					comp.get("type").getAsString() : "text";
+			Collection<Parser> parsers = registry.get(type);
+			for (Parser parser : parsers) {
+				ITextHolder parsed = parser.parse(comp);
+				if (parsed != null) return parsed.setStyle(style);
 			}
-
-			ITextHolder parsed = BASE_PARSER.parse(comp);
-			if (parsed != null) return parsed.setStyle(style);
 		}
 
 		return new StringTextHolder("UNKNOWN DATA TYPE");
