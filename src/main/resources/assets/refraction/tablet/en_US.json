@@ -17,7 +17,8 @@
           "text": [
             "Let's see here... Ah, yes. Ok so you'll first want to make an ",
             {
-              "recipe": "assembly_table"
+              "type": "stack",
+              "id": "refraction:assembly_table"
             },
             ". This simple block will help you craft everything you need. I will guide you through the steps of its usage when we get to that.",
             "For now, craft one. It requires 7 iron ingots and 1 [[lens]] block.",

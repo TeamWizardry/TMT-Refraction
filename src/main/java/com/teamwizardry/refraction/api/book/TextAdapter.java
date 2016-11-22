@@ -15,6 +15,9 @@ import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -57,9 +60,15 @@ public final class TextAdapter {
 		registerAdapter("player", object -> new PlayerTextHolder());
 
 		registerAdapter("stack", object -> {
-			ItemStack stack = getStackFromString(object.getAsString());
-			if (stack != null) return new StackTextHolder(stack);
-			return null;
+			ItemStack stack;
+			try {
+				NBTTagCompound nbt = JsonToNBT.getTagFromJson(object.toString());
+				stack = ItemStack.loadItemStackFromNBT(nbt);
+			} catch (NBTException e) {
+				return null;
+			}
+
+			return new StackTextHolder(stack);
 		});
 
 		registerAdapter("text", object -> {
