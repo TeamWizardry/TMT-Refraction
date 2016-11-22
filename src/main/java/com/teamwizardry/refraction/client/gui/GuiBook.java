@@ -13,6 +13,7 @@ import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.refraction.Refraction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,23 +29,14 @@ public class GuiBook extends GuiBase {
 	public static final Texture BACKGROUND_HANDLE_TEXTURE = new Texture(new ResourceLocation(Refraction.MOD_ID, "textures/gui/book_background_handle.png"));
 	public static final Sprite BACKGROUND_HANDLE_SPRITE = BACKGROUND_HANDLE_TEXTURE.getSprite("bg", 256, 256);
 	static final int iconSize = 12;
-	public static int selected = 0;
+	@NotNull
+	public static SidebarItem selectedSiderbar;
 	public static ComponentText textComponent;
+	public static ArrayList<SidebarItem> categories = new ArrayList<>();
 	private int currentPage = 0;
-	private ArrayList<SidebarItem> categories = new ArrayList<>();
 
 	public GuiBook() {
 		super(256, 256);
-
-		ComponentSprite background = new ComponentSprite(BACKGROUND_SPRITE,
-				(getGuiWidth() / 2) - (BACKGROUND_SPRITE.getWidth() / 2),
-				(getGuiHeight() / 2) - (BACKGROUND_SPRITE.getHeight() / 2));
-		getMainComponents().add(background);
-
-		ComponentSprite background_handle = new ComponentSprite(BACKGROUND_HANDLE_SPRITE,
-				(getGuiWidth() / 2) - (BACKGROUND_HANDLE_SPRITE.getWidth() / 2),
-				(getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
-		getMainComponents().add(background_handle);
 
 		textComponent = new ComponentText(16, 16, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 		textComponent.getWrap().setValue(230);
@@ -85,19 +77,16 @@ public class GuiBook extends GuiBase {
 											if (page.get("info").isJsonPrimitive() && page.get("text").isJsonArray()) {
 												String pageInfo = page.get("info").getAsString();
 												JsonArray pageArray = page.getAsJsonArray("text");
-
-												String string = "";
-												for (JsonElement line : pageArray) {
-													if (line.isJsonPrimitive())
-														string += "\n" + line.getAsString();
-												}
-												subPages.add(new SubPageItem(item, subID++, pageInfo, string));
+												SubPageItem pageItem = new SubPageItem(item, subID++, pageInfo, pageArray);
+												subPages.add(pageItem);
 											}
 										}
 									}
 
 									item.setPages(subPages);
+									item.prevMillis = System.currentTimeMillis();
 									categories.add(item);
+									if (i == 0) selectedSiderbar = item;
 									getMainComponents().add(item.get());
 								}
 							}
@@ -106,6 +95,17 @@ public class GuiBook extends GuiBase {
 				}
 			}
 		}
+
+		ComponentSprite background = new ComponentSprite(BACKGROUND_SPRITE,
+				(getGuiWidth() / 2) - (BACKGROUND_SPRITE.getWidth() / 2),
+				(getGuiHeight() / 2) - (BACKGROUND_SPRITE.getHeight() / 2));
+		getMainComponents().add(background);
+
+		ComponentSprite background_handle = new ComponentSprite(BACKGROUND_HANDLE_SPRITE,
+				(getGuiWidth() / 2) - (BACKGROUND_HANDLE_SPRITE.getWidth() / 2),
+				(getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
+		getMainComponents().add(background_handle);
+
 		textComponent.getText().setValue(".");
 		getMainComponents().add(textComponent);
 	}

@@ -23,7 +23,7 @@ public final class StackTextHolder extends BaseTextHolder {
 	public StackTextHolder(@Nullable ItemStack stack) {
 		this.stack = stack;
 		if (stack == null)
-			core = new StringTextHolder("NULL");
+			core = new StringTextHolder("<NULL>");
 		else {
 			StringTextHolder name = new StringTextHolder(stack.getDisplayName());
 			if (stack.hasDisplayName())
