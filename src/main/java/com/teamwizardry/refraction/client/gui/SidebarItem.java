@@ -29,6 +29,7 @@ public class SidebarItem {
 	private String info;
 	private float prevX, destX, currentX;
 	private float prevY, destY, currentY;
+	private static final double TRANSITION_TIME = 1.5;
 
 	private ResourceLocation sliderLoc = new ResourceLocation(Refraction.MOD_ID, "textures/gui/slider_1.png");
 	private Texture sliderTexture = new Texture(sliderLoc);
@@ -69,8 +70,9 @@ public class SidebarItem {
 				infoComp.getText().setValue(TextFormatting.ITALIC + info);
 
 				double millisTransition = (System.currentTimeMillis() - prevMillis) / 1000.0;
-				if (Math.round(millisTransition) < 0.25)
-					currentX = -MathHelper.cos((float) (millisTransition * Math.PI / 0.25) / 2) * (destX - prevX) - prevX;
+				if (millisTransition < TRANSITION_TIME)
+					currentX = MathHelper.sin((float) (millisTransition * Math.PI / (TRANSITION_TIME * 2))) * (destX - prevX) - prevX;
+//					currentX = MathHelper.sin((float) (millisTransition * Math.PI / 0.25) / 2) * (destX - prevX) - prevX;
 
 				background.setSize(new Vec2d(120 - currentX, 18));
 				background.setPos(new Vec2d(-120 + currentX, 20 * id));
@@ -78,8 +80,9 @@ public class SidebarItem {
 				if (GuiBook.selectedSiderbar.getId() > id) {
 
 					double millisTransition = (System.currentTimeMillis() - prevMillis) / 1000.0;
-					if (Math.round(millisTransition) < 0.25)
-						currentX = MathHelper.cos((float) (millisTransition * Math.PI / 0.25) / 2) * (destX - prevX) - prevX;
+					if (millisTransition < TRANSITION_TIME)
+						currentX = MathHelper.sin((float) (millisTransition * Math.PI / (TRANSITION_TIME * 2))) * (destX - prevX) - prevX;
+
 
 					background.setSize(new Vec2d(110 - currentX, 18));
 					background.setPos(new Vec2d(-110 + currentX, 20 * id));
@@ -87,8 +90,9 @@ public class SidebarItem {
 					background.setSize(new Vec2d(110, 18));
 
 					double millisTransition = (System.currentTimeMillis() - prevMillis) / 1000.0;
-					if (Math.round(millisTransition) < 0.25)
-						currentY = MathHelper.cos((float) (millisTransition * Math.PI / 0.25) / 2) * (destY - prevY) - prevY;
+					if (millisTransition < TRANSITION_TIME)
+						currentX = MathHelper.sin((float) (millisTransition * Math.PI / (TRANSITION_TIME * 2))) * (destX - prevX) - prevX;
+
 
 					background.setPos(new Vec2d(-110, 20 * id + GuiBook.selectedSiderbar.pages.size() * 20 /* + currentY*/));
 				}
