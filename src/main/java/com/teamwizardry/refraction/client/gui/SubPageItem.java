@@ -40,7 +40,7 @@ public class SubPageItem {
 	}
 
 	public ComponentSprite get() {
-		ComponentSprite background = new ComponentSprite(sliderSprite, -20, 20 + 20 * id, 0, 18);
+		ComponentSprite background = new ComponentSprite(sliderSprite, 20, 20 + 20 * id, 105, 18);
 		background.addTag(id);
 
 		ComponentText infoComp = new ComponentText(10, 8, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
@@ -62,22 +62,21 @@ public class SubPageItem {
 					currentX = -MathHelper.sin((float) (millisTransition * Math.PI / (TRANSITION_TIME_X * 2))) * (destX - prevX) - prevX;
 
 				if (sidebarItem.currentPage == id) {
-					background.setPos(new Vec2d(currentX - 5 - sidebarItem.currentX, 20 + 20 * id));
-					background.setSize(new Vec2d(105, 18));
+					background.setPos(new Vec2d(15, 20 + 20 * id));
 
 					infoComp.getText().setValue(TextFormatting.ITALIC + info);
 
 					ITextHolder holder = TextAdapter.adapt(text);
 					GuiBook.textComponent.getText().setValue(holder.getFormattedText());
 				} else {
-					background.setPos(new Vec2d(currentX - sidebarItem.currentX, 20 + 20 * id));
-					background.setSize(new Vec2d(100, 18));
+					background.setPos(new Vec2d(20, 20 + 20 * id));
+					//background.setSize(new Vec2d(100, 18));
 
 					infoComp.getText().setValue(info);
 				}
 			} else {
-				background.setPos(new Vec2d(-40, 20 + 20 * id));
-				background.setSize(new Vec2d(100, 18));
+				//background.setPos(new Vec2d(-40, 20 + 20 * id));
+				//background.setSize(new Vec2d(100, 18));
 				background.setVisible(false);
 				background.setEnabled(false);
 			}

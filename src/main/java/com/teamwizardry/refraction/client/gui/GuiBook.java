@@ -38,16 +38,6 @@ public class GuiBook extends GuiBase {
 	public GuiBook() {
 		super(256, 256);
 
-		ComponentSprite background = new ComponentSprite(BACKGROUND_SPRITE,
-				(getGuiWidth() / 2) - (BACKGROUND_SPRITE.getWidth() / 2),
-				(getGuiHeight() / 2) - (BACKGROUND_SPRITE.getHeight() / 2));
-		getMainComponents().add(background);
-
-		ComponentSprite background_handle = new ComponentSprite(BACKGROUND_HANDLE_SPRITE,
-				(getGuiWidth() / 2) - (BACKGROUND_HANDLE_SPRITE.getWidth() / 2),
-				(getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
-		getMainComponents().add(background_handle);
-
 		textComponent = new ComponentText(16, 16, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
 		textComponent.getWrap().setValue(230);
 
@@ -105,6 +95,16 @@ public class GuiBook extends GuiBase {
 				}
 			}
 		}
+
+		ComponentSprite background = new ComponentSprite(BACKGROUND_SPRITE,
+				(getGuiWidth() / 2) - (BACKGROUND_SPRITE.getWidth() / 2),
+				(getGuiHeight() / 2) - (BACKGROUND_SPRITE.getHeight() / 2));
+		getMainComponents().add(background);
+
+		ComponentSprite background_handle = new ComponentSprite(BACKGROUND_HANDLE_SPRITE,
+				(getGuiWidth() / 2) - (BACKGROUND_HANDLE_SPRITE.getWidth() / 2),
+				(getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
+		getMainComponents().add(background_handle);
 
 		textComponent.getText().setValue(".");
 		getMainComponents().add(textComponent);

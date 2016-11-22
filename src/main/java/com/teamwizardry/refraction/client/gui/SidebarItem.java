@@ -112,8 +112,10 @@ public class SidebarItem {
 
 				if (!animatingX && !animatingY) isAnimating = false;
 
-				background.setSize(new Vec2d(Math.abs(currentX), 18));
-				background.setPos(new Vec2d(currentX, currentY));
+				// background.setSize(new Vec2d(Math.abs(currentX), 18));
+				// background.setPos(new Vec2d(currentX, currentY));
+				background.setSize(new Vec2d(Math.abs(destX), 18));
+				background.setPos(new Vec2d(destX, destY));
 			}
 		});
 
