@@ -274,24 +274,19 @@ public final class TextAdapter {
 
 		boolean bold = object.has("bold") &&
 				object.get("bold").isJsonPrimitive() &&
-				object.getAsJsonPrimitive("bold").isBoolean() &&
-				object.getAsJsonPrimitive("bold").getAsBoolean(),
-				italic = object.has("italic") &&
-						object.get("italic").isJsonPrimitive() &&
-						object.getAsJsonPrimitive("italic").isBoolean() &&
-						object.getAsJsonPrimitive("italic").getAsBoolean(),
-				underline = object.has("underlined") &&
-						object.get("underlined").isJsonPrimitive() &&
-						object.getAsJsonPrimitive("underlined").isBoolean() &&
-						object.getAsJsonPrimitive("underlined").getAsBoolean(),
-				obfuscated = object.has("obfuscated") &&
-						object.get("obfuscated").isJsonPrimitive() &&
-						object.getAsJsonPrimitive("obfuscated").isBoolean() &&
-						object.getAsJsonPrimitive("obfuscated").getAsBoolean(),
-				strikethrough = object.has("strikethrough") &&
-						object.get("strikethrough").isJsonPrimitive() &&
-						object.getAsJsonPrimitive("strikethrough").isBoolean() &&
-						object.getAsJsonPrimitive("strikethrough").getAsBoolean();
+				object.getAsJsonPrimitive("bold").getAsBoolean();
+		boolean italic = object.has("italic") &&
+				object.get("italic").isJsonPrimitive() &&
+				object.getAsJsonPrimitive("italic").getAsBoolean();
+		boolean underline = object.has("underlined") &&
+				object.get("underlined").isJsonPrimitive() &&
+				object.getAsJsonPrimitive("underlined").getAsBoolean();
+		boolean obfuscated = object.has("obfuscated") &&
+				object.get("obfuscated").isJsonPrimitive() &&
+				object.getAsJsonPrimitive("obfuscated").getAsBoolean();
+		boolean strikethrough = object.has("strikethrough") &&
+				object.get("strikethrough").isJsonPrimitive() &&
+				object.getAsJsonPrimitive("strikethrough").getAsBoolean();
 
 		return new TextStyle()
 				.setColor(color)
