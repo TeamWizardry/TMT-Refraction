@@ -195,6 +195,7 @@ public class TileAssemblyTable extends TileMod {
 				MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);
 				output.setStackInSlot(0, eventAssemblyTableCraft.getOutput());
 				isCrafting = true;
+				isGrenadeRecipe = false;
 				craftingTime = 0;
 				for (int i = 0; i < inventory.getSlots(); i++) inventory.setStackInSlot(i, null);
 				markDirty();

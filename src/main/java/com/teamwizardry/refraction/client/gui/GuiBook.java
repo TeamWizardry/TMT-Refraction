@@ -107,6 +107,7 @@ public class GuiBook extends GuiBase {
 				(getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
 		getMainComponents().add(background_handle);
 
+		textComponent.getUnicode().setValue(true);
 		textComponent.getText().setValue(".");
 		getMainComponents().add(textComponent);
 	}

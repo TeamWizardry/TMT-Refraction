@@ -51,8 +51,8 @@ public class SubPageItem {
 
 		background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
 			if (GuiBook.selectedSiderbar.getId() == sidebarItem.getId()) {
-				destX = 20;
-			} else destX = 15;
+				destX = 15;
+			} else destX = 10;
 			if (GuiBook.selectedSiderbar.getId() == sidebarItem.getId()) {
 				background.setVisible(true);
 				background.setEnabled(true);
@@ -62,14 +62,14 @@ public class SubPageItem {
 					currentX = -MathHelper.sin((float) (millisTransition * Math.PI / (TRANSITION_TIME_X * 2))) * (destX - prevX) - prevX;
 
 				if (sidebarItem.currentPage == id) {
-					background.setPos(new Vec2d(15, 20 + 20 * id));
+					background.setPos(new Vec2d(10, 20 + 20 * id));
 
 					infoComp.getText().setValue(TextFormatting.ITALIC + info);
 
 					ITextHolder holder = TextAdapter.adapt(text);
 					GuiBook.textComponent.getText().setValue(holder.getFormattedText());
 				} else {
-					background.setPos(new Vec2d(20, 20 + 20 * id));
+					background.setPos(new Vec2d(15, 20 + 20 * id));
 					//background.setSize(new Vec2d(100, 18));
 
 					infoComp.getText().setValue(info);
