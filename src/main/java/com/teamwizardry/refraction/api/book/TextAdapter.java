@@ -40,6 +40,10 @@ import java.util.stream.StreamSupport;
  */
 public final class TextAdapter {
 
+	private TextAdapter() {
+		// PRIVATE CONSTRUCTOR
+	}
+
 	private static final Multimap<String, Parser> registry = HashMultimap.create();
 
 	static {
@@ -76,10 +80,6 @@ public final class TextAdapter {
 				return null;
 			return new StringTextHolder(object.get("text").getAsString());
 		});
-	}
-
-	private TextAdapter() {
-		// PRIVATE CONSTRUCTOR
 	}
 
 	public static NBTBase parseJsonToNBT(JsonElement element) {
