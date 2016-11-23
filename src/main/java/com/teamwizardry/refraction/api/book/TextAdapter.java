@@ -6,7 +6,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.internal.LazilyParsedNumber;
 import com.teamwizardry.librarianlib.LibrarianLog;
+import com.teamwizardry.librarianlib.common.util.NBTTypes;
 import com.teamwizardry.refraction.client.jei.JEIRefractionPlugin;
 import mezz.jei.api.IRecipeRegistry;
 import mezz.jei.api.gui.IRecipeLayoutDrawable;
@@ -81,36 +83,68 @@ public final class TextAdapter {
 	}
 
 	public static NBTBase parseJsonToNBT(JsonElement element) {
+		return parseJsonToNBT(element, 0);
+	}
+
+	private static NBTBase parseJsonToNBT(JsonElement element, int forceType) {
 		if (element.isJsonPrimitive()) {
 			JsonPrimitive prim = element.getAsJsonPrimitive();
 			if (prim.isBoolean())
 				return new NBTTagByte((byte) (prim.getAsBoolean() ? 1 : 0));
-			else if (prim.isString())
-				return new NBTTagString(prim.getAsString());
-			else {
-				Number num = prim.getAsNumber();
-				if (num instanceof Long)
-					return new NBTTagLong(num.longValue());
-				return new NBTTagInt(num.intValue());
+			else if (prim.isString()) {
+				switch (forceType) {
+					case 0:
+					case 8:
+						return new NBTTagString(prim.getAsString());
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+					case 5:
+					case 6:
+						return parseNumber(new LazilyParsedNumber(prim.getAsString()), forceType);
+					default:
+						throw new IllegalArgumentException("NBT forced type doesn't conform! Expected: {8}u[0,6] Found: " + forceType);
+				}
+			} else {
+				return parseNumber(prim.getAsNumber(), forceType);
 			}
 		} else if (element.isJsonNull())
-			return new NBTTagString("<NULL>");
-		else if (element.isJsonArray()) {
-			NBTTagList ret = new NBTTagList();
-			JsonArray arr = element.getAsJsonArray();
-			byte type = 0;
-			for (JsonElement el : arr) {
-				NBTBase nbt = parseJsonToNBT(el);
-				if (type == 0)
-					type = nbt.getId();
-				else if (type != nbt.getId()) {
-					LibrarianLog.INSTANCE.warn("Json uses multiple types in an nbt block!");
-					continue;
-				}
-				ret.appendTag(nbt);
+			switch (forceType) {
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+					return parseNumber(0, forceType);
+				case 7:
+					return new NBTTagByteArray(new byte[0]);
+				case 9:
+					return new NBTTagList();
+				case 10:
+					return new NBTTagCompound();
+				case 11:
+					return new NBTTagIntArray(new int[0]);
+				default:
+					return new NBTTagString("");
 			}
-			return ret;
+		else if (element.isJsonArray()) {
+			switch (forceType) {
+				case 7:
+					return parseByteArr(element.getAsJsonArray());
+				case 0:
+				case 9:
+					return parseList(element.getAsJsonArray());
+				case 11:
+					return parseIntArr(element.getAsJsonArray());
+				default:
+					throw new IllegalArgumentException("NBT forced type doesn't conform! Expected: {0,7,9,11} Found: " + forceType);
+			}
 		} else if (element.isJsonObject()) {
+			if (forceType != 0 && forceType != 10)
+				throw new IllegalArgumentException("NBT forced type doesn't conform! Expected: {0,10} Found: " + forceType);
+
 			NBTTagCompound comp = new NBTTagCompound();
 			JsonObject obj = element.getAsJsonObject();
 			for (Map.Entry<String, JsonElement> keypair : obj.entrySet())
@@ -119,6 +153,115 @@ public final class TextAdapter {
 		}
 
 		return new NBTTagString("UNKNOWN DATA TYPE");
+	}
+
+	private static NBTBase parseNumber(Number num, int forceType) {
+		switch (forceType) {
+			case 1:
+				return new NBTTagByte(num.byteValue());
+			case 2:
+				return new NBTTagShort(num.shortValue());
+			case 3:
+				return new NBTTagInt(num.intValue());
+			case 4:
+				return new NBTTagLong(num.longValue());
+			case 5:
+				return new NBTTagFloat(num.floatValue());
+			case 6:
+				return new NBTTagDouble(num.doubleValue());
+			case 0:
+				break;
+			default:
+				throw new IllegalArgumentException("NBT forced type doesn't conform! Expected: [0,6] Found: " + forceType);
+		}
+
+		if (num instanceof Long)
+			return new NBTTagLong(num.longValue());
+		else if (num instanceof Short)
+			return new NBTTagShort(num.shortValue());
+		else if (num instanceof Byte)
+			return new NBTTagByte(num.byteValue());
+		else if (num instanceof Float)
+			return new NBTTagFloat(num.floatValue());
+		else if (num instanceof Double)
+			return new NBTTagDouble(num.doubleValue());
+
+		return new NBTTagInt(num.intValue());
+	}
+
+	private static NBTBase parseList(JsonArray arr) {
+		NBTTagList ret = new NBTTagList();
+		byte type = 0;
+		for (JsonElement el : arr) {
+			if (type == 0 && el.isJsonObject() && el.getAsJsonObject().has("type-force") && el.getAsJsonObject().get("type-force").isJsonPrimitive()) {
+				String forceName = el.getAsJsonObject().get("type-force").getAsString();
+				if (el.getAsJsonObject().entrySet().size() == 1) {
+					switch (forceName) {
+						case "long":
+							type = NBTTypes.LONG;
+							break;
+						case "int":
+							type = NBTTypes.INT;
+							break;
+						case "int-arr":
+							return parseIntArr(arr);
+						case "short":
+							type = NBTTypes.SHORT;
+							break;
+						case "byte":
+							type = NBTTypes.BYTE;
+							break;
+						case "byte-arr":
+							return parseByteArr(arr);
+						case "float":
+							type = NBTTypes.FLOAT;
+							break;
+						case "double":
+							type = NBTTypes.DOUBLE;
+							break;
+					}
+				}
+				continue;
+			}
+
+			NBTBase nbt = parseJsonToNBT(el, type);
+			if (type == 0)
+				type = nbt.getId();
+			else if (type != nbt.getId()) {
+				LibrarianLog.INSTANCE.warn("Json uses multiple types in an nbt block!");
+				continue;
+			}
+			ret.appendTag(nbt);
+		}
+		return ret;
+	}
+
+	private static NBTTagIntArray parseIntArr(JsonArray arr) {
+		List<Integer> l = new ArrayList<>();
+		for (JsonElement el : arr) {
+			if (el.isJsonPrimitive() && el.getAsJsonPrimitive().isNumber())
+				l.add(el.getAsInt());
+		}
+
+		int[] ret = new int[l.size()];
+		int i = 0;
+		for (Integer integer : l) ret[i++] = integer;
+
+		return new NBTTagIntArray(ret);
+	}
+
+	private static NBTTagByteArray parseByteArr(JsonArray arr) {
+		List<Byte> l = new ArrayList<>();
+		for (JsonElement el : arr) {
+			if (el.isJsonPrimitive() && el.getAsJsonPrimitive().isNumber())
+				l.add(el.getAsByte());
+		}
+
+		byte[] ret = new byte[l.size()];
+		int i = 0;
+		for (Byte b : l) ret[i++] = b;
+
+		return new NBTTagByteArray(ret);
 	}
 
 	public static void registerAdapter(@NotNull String key, @NotNull Parser parser) {

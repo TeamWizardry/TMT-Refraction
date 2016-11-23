@@ -15,13 +15,17 @@ import java.util.List;
  */
 public interface ITextHolder {
 
-	@NotNull ITextHolder setStyle(@Nullable TextStyle style);
+	@Nullable
+	TextStyle getStyle();
 
-	@Nullable TextStyle getStyle();
+	@NotNull
+	ITextHolder setStyle(@Nullable TextStyle style);
 
-	@NotNull String getUnformattedText();
+	@NotNull
+	String getUnformattedText();
 
-	@NotNull String getFormattedText();
+	@NotNull
+	String getFormattedText();
 
 	@Nullable
 	@SideOnly(Side.CLIENT)

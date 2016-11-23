@@ -15,7 +15,7 @@ public final class TextStyle {
 	private boolean bold, italic, underlined, strikethrough, obfuscated;
 
 	/**
-	 * Gets the effective color of this ChatStyle.
+	 * Gets the effective color of this TextStyle.
 	 */
 	@Nullable
 	public TextFormatting getColor() {
@@ -23,42 +23,7 @@ public final class TextStyle {
 	}
 
 	/**
-	 * Whether or not text of this ChatStyle should be in bold.
-	 */
-	public boolean getBold() {
-		return this.bold;
-	}
-
-	/**
-	 * Whether or not text of this ChatStyle should be italicized.
-	 */
-	public boolean getItalic() {
-		return this.italic;
-	}
-
-	/**
-	 * Whether or not to format text of this ChatStyle using strikethrough.
-	 */
-	public boolean getStrikethrough() {
-		return this.strikethrough;
-	}
-
-	/**
-	 * Whether or not text of this ChatStyle should be underlined.
-	 */
-	public boolean getUnderlined() {
-		return this.underlined;
-	}
-
-	/**
-	 * Whether or not text of this ChatStyle should be obfuscated.
-	 */
-	public boolean getObfuscated() {
-		return this.obfuscated;
-	}
-
-	/**
-	 * Sets the color for this ChatStyle to the given value.  Only use color values for this; set other values using the
+	 * Sets the color for this TextStyle to the given value.  Only use color values for this; set other values using the
 	 * specific methods.
 	 */
 	public TextStyle setColor(@Nullable TextFormatting color) {
@@ -67,7 +32,14 @@ public final class TextStyle {
 	}
 
 	/**
-	 * Sets whether or not text of this ChatStyle should be in bold.  Set to false if, e.g., the parent style is bold
+	 * Whether or not text of this TextStyle should be in bold.
+	 */
+	public boolean getBold() {
+		return this.bold;
+	}
+
+	/**
+	 * Sets whether or not text of this TextStyle should be in bold.  Set to false if, e.g., the parent style is bold
 	 * and you want text of this style to be unbolded.
 	 */
 	public TextStyle setBold(boolean boldIn) {
@@ -76,7 +48,14 @@ public final class TextStyle {
 	}
 
 	/**
-	 * Sets whether or not text of this ChatStyle should be italicized.  Set to false if, e.g., the parent style is
+	 * Whether or not text of this TextStyle should be italicized.
+	 */
+	public boolean getItalic() {
+		return this.italic;
+	}
+
+	/**
+	 * Sets whether or not text of this TextStyle should be italicized.  Set to false if, e.g., the parent style is
 	 * italicized and you want to override that for this style.
 	 */
 	public TextStyle setItalic(boolean italic) {
@@ -85,7 +64,14 @@ public final class TextStyle {
 	}
 
 	/**
-	 * Sets whether or not to format text of this ChatStyle using strikethrough.  Set to false if, e.g., the parent
+	 * Whether or not to format text of this TextStyle using strikethrough.
+	 */
+	public boolean getStrikethrough() {
+		return this.strikethrough;
+	}
+
+	/**
+	 * Sets whether or not to format text of this TextStyle using strikethrough.  Set to false if, e.g., the parent
 	 * style uses strikethrough and you want to override that for this style.
 	 */
 	public TextStyle setStrikethrough(boolean strikethrough) {
@@ -94,7 +80,14 @@ public final class TextStyle {
 	}
 
 	/**
-	 * Sets whether or not text of this ChatStyle should be underlined.  Set to false if, e.g., the parent style is
+	 * Whether or not text of this TextStyle should be underlined.
+	 */
+	public boolean getUnderlined() {
+		return this.underlined;
+	}
+
+	/**
+	 * Sets whether or not text of this TextStyle should be underlined.  Set to false if, e.g., the parent style is
 	 * underlined and you want to override that for this style.
 	 */
 	public TextStyle setUnderlined(boolean underlined) {
@@ -103,7 +96,14 @@ public final class TextStyle {
 	}
 
 	/**
-	 * Sets whether or not text of this ChatStyle should be obfuscated.  Set to false if, e.g., the parent style is
+	 * Whether or not text of this TextStyle should be obfuscated.
+	 */
+	public boolean getObfuscated() {
+		return this.obfuscated;
+	}
+
+	/**
+	 * Sets whether or not text of this TextStyle should be obfuscated.  Set to false if, e.g., the parent style is
 	 * obfuscated and you want to override that for this style.
 	 */
 	public TextStyle setObfuscated(boolean obfuscated) {
