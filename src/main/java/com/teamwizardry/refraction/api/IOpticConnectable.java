@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.api;
 
-import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.api.beam.Beam;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

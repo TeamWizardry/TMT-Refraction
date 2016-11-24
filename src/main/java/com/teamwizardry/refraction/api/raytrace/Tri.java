@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.common.raytrace;
+package com.teamwizardry.refraction.api.raytrace;
 
 import net.minecraft.util.math.Vec3d;
 

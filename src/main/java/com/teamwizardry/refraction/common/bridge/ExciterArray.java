@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.common.light.bridge;
+package com.teamwizardry.refraction.common.bridge;
 
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.common.block.BlockLightBridge;

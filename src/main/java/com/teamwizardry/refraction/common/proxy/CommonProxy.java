@@ -8,7 +8,7 @@ import com.teamwizardry.refraction.client.gui.GuiHandler;
 import com.teamwizardry.refraction.common.core.CatChaseHandler;
 import com.teamwizardry.refraction.common.core.DispenserScrewDriverBehavior;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
+import com.teamwizardry.refraction.api.internal.PacketLaserFX;
 import com.teamwizardry.refraction.init.*;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import com.teamwizardry.refraction.init.recipies.CraftingRecipes;

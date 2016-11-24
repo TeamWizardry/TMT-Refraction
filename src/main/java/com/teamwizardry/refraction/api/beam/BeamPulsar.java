@@ -1,7 +1,7 @@
-package com.teamwizardry.refraction.common.light;
+package com.teamwizardry.refraction.api.beam;
 
 import com.google.common.collect.ImmutableList;
-import com.teamwizardry.refraction.api.ILaserTrace;
+import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

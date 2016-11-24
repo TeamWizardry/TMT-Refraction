@@ -1,14 +1,11 @@
-package com.teamwizardry.refraction.common.light;
+package com.teamwizardry.refraction.api.beam;
 
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.bitsaving.IllegalValueSetException;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.api.Effect.EffectType;
-import com.teamwizardry.refraction.api.IBeamHandler;
-import com.teamwizardry.refraction.client.render.RenderLaserUtil;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
-import com.teamwizardry.refraction.common.raytrace.EntityTrace;
+import com.teamwizardry.refraction.api.beam.Effect.EffectType;
+import com.teamwizardry.refraction.api.internal.PacketLaserFX;
+import com.teamwizardry.refraction.api.raytrace.EntityTrace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -30,14 +27,12 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	/**
 	 * The initial position the beams comes from.
 	 */
-	@NotNull
 	public Vec3d initLoc;
 
 	/**
 	 * The vector that specifies the inclination of the beam.
 	 * Set it to your final location and it'll work.
 	 */
-	@NotNull
 	public Vec3d slope;
 
 	/**
@@ -284,7 +279,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	/**
 	 * Will set the range the raytrace will attempt.
 	 *
-	 * @param range The new range of the beam. Default: Constants.BEAM_RANGE
+	 * @param range The new range of the beam. Default: Helper.BEAM_RANGE
 	 * @return This beam itself for the convenience of editing a beam in one line/chain.
 	 */
 	public Beam setRange(double range) {
@@ -379,10 +374,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	@Override
 	public int hashCode() {
 		return uuid.hashCode();
-	}
-
-	public void drawBeam() {
-		RenderLaserUtil.renderLaser(color, initLoc, finalLoc);
 	}
 
 	@Override

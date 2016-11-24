@@ -2,9 +2,9 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.api.ILightSource;
+import com.teamwizardry.refraction.api.beam.ILightSource;
 import com.teamwizardry.refraction.api.PosUtils;
-import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.common.tile.TileCreativeLaser;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;

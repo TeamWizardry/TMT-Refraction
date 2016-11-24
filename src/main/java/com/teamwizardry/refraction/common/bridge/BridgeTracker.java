@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.common.light.bridge;
+package com.teamwizardry.refraction.common.bridge;
 
 import java.util.ArrayList;
 import java.util.HashMap;

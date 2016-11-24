@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.common.light.EffectTracker;
+import com.teamwizardry.refraction.api.beam.Effect;
+import com.teamwizardry.refraction.api.beam.EffectTracker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.teamwizardry.refraction.common.light.EffectTracker.gravityReset;
+import static com.teamwizardry.refraction.api.beam.EffectTracker.gravityReset;
 
 /**
  * Created by LordSaad44

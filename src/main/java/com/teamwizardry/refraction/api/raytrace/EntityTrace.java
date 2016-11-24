@@ -1,8 +1,8 @@
-package com.teamwizardry.refraction.common.raytrace;
+package com.teamwizardry.refraction.api.raytrace;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
-import com.teamwizardry.refraction.common.light.BeamPulsar;
+import com.teamwizardry.refraction.api.beam.BeamPulsar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;

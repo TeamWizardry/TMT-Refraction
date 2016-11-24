@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.api;
+package com.teamwizardry.refraction.api.raytrace;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;

@@ -1,8 +1,7 @@
-package com.teamwizardry.refraction.common.light;
+package com.teamwizardry.refraction.api.beam;
 
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.Effect;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;

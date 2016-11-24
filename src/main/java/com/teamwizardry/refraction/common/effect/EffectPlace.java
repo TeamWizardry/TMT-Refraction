@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.common.effect;
 
 import com.mojang.authlib.GameProfile;
-import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.api.beam.Effect;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;

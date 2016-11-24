@@ -13,7 +13,7 @@ import com.teamwizardry.refraction.api.AssemblyRecipe;
 import com.teamwizardry.refraction.api.CapsUtils;
 import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
 import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.init.ModItems;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import net.minecraft.item.ItemStack;

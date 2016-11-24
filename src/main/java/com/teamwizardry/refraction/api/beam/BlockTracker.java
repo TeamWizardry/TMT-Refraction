@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.common.light;
+package com.teamwizardry.refraction.api.beam;
 
 import com.google.common.collect.HashMultimap;
 import net.minecraft.util.math.AxisAlignedBB;
