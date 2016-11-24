@@ -21,17 +21,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static com.teamwizardry.refraction.api.IPrecision.Helper.*;
+
 /**
  * Created by LordSaad44
  */
 public class ItemScrewDriver extends ItemMod {
 
-	public static final String MODE_TAG = "mode";
-	protected static final float[] multipliers = {
-			0.125f, 0.25f, 0.5f, 1,
-			5, 22.5f, 45, 90
-	};
-	protected static final int DEFAULT_MULTIPLIER = 4;
 
 	@SideOnly(Side.CLIENT)
 	private static Function2<GuiIngame, Object, Unit> remainingHighlightTicksSetter;
@@ -90,14 +86,5 @@ public class ItemScrewDriver extends ItemMod {
 	public String getUnlocalizedName(ItemStack stack) {
 		int i = getRotationIndex(stack);
 		return super.getUnlocalizedName(stack) + "." + i;
-	}
-
-	public float getRotationMultiplier(ItemStack stack) {
-		return multipliers[getRotationIndex(stack)];
-	}
-
-	public int getRotationIndex(ItemStack stack) {
-		int i = ItemNBTHelper.getInt(stack, MODE_TAG, DEFAULT_MULTIPLIER);
-		return MathHelper.clamp_int(i, 0, multipliers.length - 1);
 	}
 }

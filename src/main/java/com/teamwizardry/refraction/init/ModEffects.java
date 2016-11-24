@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.init;
 
 import com.teamwizardry.refraction.common.effect.*;
-import com.teamwizardry.refraction.common.light.EffectTracker;
+import com.teamwizardry.refraction.api.beam.EffectTracker;
 
 public class ModEffects {
 	public static void init() {

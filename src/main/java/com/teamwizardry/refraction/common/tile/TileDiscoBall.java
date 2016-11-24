@@ -4,7 +4,7 @@ import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
-import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.api.beam.Beam;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;

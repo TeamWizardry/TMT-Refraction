@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.common.light.EffectTracker;
+import com.teamwizardry.refraction.api.beam.EffectTracker;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;

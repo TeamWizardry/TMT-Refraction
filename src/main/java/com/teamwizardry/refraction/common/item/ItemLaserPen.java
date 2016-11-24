@@ -2,7 +2,7 @@ package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
-import com.teamwizardry.refraction.common.light.Beam;
+import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.init.ModAchievements;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

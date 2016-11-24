@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.api;
+package com.teamwizardry.refraction.api.beam;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

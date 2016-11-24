@@ -2,10 +2,10 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.refraction.api.Effect;
-import com.teamwizardry.refraction.api.IBeamHandler;
-import com.teamwizardry.refraction.common.light.Beam;
-import com.teamwizardry.refraction.common.light.bridge.BridgeTracker;
+import com.teamwizardry.refraction.api.beam.Effect;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.common.bridge.BridgeTracker;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;

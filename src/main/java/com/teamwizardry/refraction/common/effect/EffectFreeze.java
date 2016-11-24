@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.api.beam.Effect;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;

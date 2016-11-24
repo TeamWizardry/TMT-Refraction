@@ -1,10 +1,8 @@
-package com.teamwizardry.refraction.common.light;
+package com.teamwizardry.refraction.api.beam;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import com.teamwizardry.refraction.api.IBeamHandler;
-import com.teamwizardry.refraction.api.ILightSource;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

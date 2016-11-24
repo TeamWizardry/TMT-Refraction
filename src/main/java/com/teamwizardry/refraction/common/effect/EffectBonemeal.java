@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.Effect;
+import com.teamwizardry.refraction.api.beam.Effect;
 import net.minecraft.block.IGrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemDye;
