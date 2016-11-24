@@ -22,6 +22,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
+import static com.teamwizardry.refraction.api.IPrecision.Helper.getRotationIndex;
+import static com.teamwizardry.refraction.api.IPrecision.Helper.getRotationMultiplier;
+
 /**
  * Created by TheCodeWarrior
  */
@@ -44,8 +47,8 @@ public class ScrewdriverOverlay {
 
 			double SQRT2 = Math.sqrt(0.5);
 
-			double angle = ModItems.SCREW_DRIVER.getRotationMultiplier(stack);
-			int textIndex = ModItems.SCREW_DRIVER.getRotationIndex(stack);
+			double angle = getRotationMultiplier(stack);
+			int textIndex = getRotationIndex(stack);
 			double anglePer = 5.0;
 			String text = I18n.format("gui.screw_driver.angle." + textIndex);
 
