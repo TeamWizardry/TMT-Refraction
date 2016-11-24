@@ -300,11 +300,11 @@ public final class TextAdapter {
 	@NotNull
 	public static ITextHolder adapt(@NotNull JsonElement object) {
 		if (object.isJsonNull())
-            return new StringTextHolder("\n\n");
-        else if (object.isJsonPrimitive()) {
+			return new StringTextHolder("\n");
+		else if (object.isJsonPrimitive()) {
 			if (object.getAsString().isEmpty())
-                return new StringTextHolder("\n\n");
-            if (I18n.hasKey(object.getAsString()))
+				return new StringTextHolder("\n");
+			if (I18n.hasKey(object.getAsString()))
 				return new TranslationTextHolder(object.getAsString());
 			return new StringTextHolder(object.getAsString());
 		} else if (object.isJsonArray()) {

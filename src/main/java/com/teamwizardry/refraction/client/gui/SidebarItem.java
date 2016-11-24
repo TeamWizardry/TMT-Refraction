@@ -53,7 +53,7 @@ public class SidebarItem {
 		ComponentSprite background = new ComponentSprite(sliderSprite, -120, 20 * id, 110, 18);
 		background.addTag(id);
 
-		ComponentSprite sprite = new ComponentSprite(icon, 5, 0, 16, 16);
+		ComponentSprite sprite = new ComponentSprite(icon, 5, 1, 16, 16);
 		background.add(sprite);
 
 		ComponentText infoComp = new ComponentText(sprite.getSize().getXi() + 10, 8, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);

@@ -27,6 +27,7 @@
             },
             "learn how to manipulate light using reflection and refraction!",
             "",
+            "",
             "Ever wanted to suck items and entities with a single beam of light? Ever wanted to create a disco ball based quarry? How about creating a laser defense system? Or, heck, maybe you just wanted to make an epic laser show?",
             "",
             "Well, then, ",
@@ -39,6 +40,7 @@
               "strikethrough": true
             },
             "the world of reflection and refraction! You will not be disappointed at the results of mirror arrays and rainbows.",
+            "",
             "",
             "Let's get started, shall we?"
           ]
@@ -55,7 +57,9 @@
             "",
             "For now, craft one. It requires 7 iron ingots and 1 [[lens]] block.",
             "",
+            "",
             "Next, you'll want to craft a [[magnifier]] block. When provided with a 3x3 of lens blocks above it - provided that they have a line of sight to the sky - it will converge the sunlight into a focused beam of light directly below it.",
+            "",
             "",
             "I should note that you should place the magnifier (with the lens blocks above it) anywhere above the assembly table. This will be a one time setup to get you the basic items and can be altered after we're done with the second step."
           ]
@@ -65,7 +69,9 @@
           "text": [
             "Neither gold nor iron have the reflective properties you'd want to be able to play around with light, but they both are a step in the right direction. The Assembly table will allow you to make such materials, by using Magnifiers to focus beams inside.",
             "",
+            "",
             "To get something very reflective, using a beam to fuse three iron and three gold in the table should be sufficient. The table requires redstone power to function, to get the components running.",
+            "",
             "",
             "It'll give you a highly reflective alloy, very useful for light manipulation."
           ]
@@ -75,7 +81,9 @@
           "text": [
             "Now that you have more reflective resources, you can dispense with the annoyance of placing the magnifier exactly above the table. By creating a [[mirror]] with reflective alloys and rotating it using a [[screwdriver]], you can redirect beams to any direction.",
             "",
+            "",
             "Using the screwdriver on the air will decrease its precision, and sneak-using it will increase its precision. Using it on a mirror's top will rotate it horizontally, and on a mirror's side it'll rotate it vertically.",
+            "",
             "",
             "If you focus multiple beams into an Assembly Table, it'll be able to do more intense recipes, granting you more components to play with."
           ]
@@ -85,10 +93,13 @@
           "text": [
             "So far, you've only witnessed thin white beams, let's change it up a bit!",
             "",
+            "",
             "Different colors of beams can produce some effects. These effects can be highly beneficial to your needs, or just plain fun. I'll get to these effects later on, but to acquire them, you'll want to craft yourself a prism.",
             "",
             "This particular block will split a light beam into it's three basic colors: red, green, and blue. We'll get to the effects of these colors later on, as I've already said, but to acquire this block, you'll want a minimum of 5 mirrors all pointing into the assembly table with beams from magnifiers on each of them.",
+            "",
             "Next, right click the assembly table with 6 lens blocks to input the items and provide a redstone signal to the table and it will craft you your first prism.",
+            "",
             "",
             {
               "text": "[!] WARNING [!]",
@@ -99,48 +110,161 @@
           ]
         },
         {
-          "info": "Effects",
+          "info": "RGB",
           "text": [
             "Now, I know what you might be thinking: Eve, what the crap are the effects, what do they look like, and how do I use them already?!",
+            "",
             "",
             "Ok, so first off: I'm just doing my job calm down. I NEED to give you the precautions and warnings beforehand. Anyways, I'll stop babbling and start:",
             "",
             "As I've said above, a prism will split light beams into 3 separate colors: red, green, and blue. All three have separate effects which are the following: ",
             "",
+            "",
             "The blue beam is a freeze effect. It will slow you down when it's at low strength. Higher strengths include blindness, nausea, weakenss, etc..",
             "",
+            "",
             "The green beam is a bonemeal beam. If pointed at a bonemealable block, it has a chance based on it's strength to bonemeal the block",
+            "",
             "",
             "And now comes the most dangerous part... The red beam is a burn beam. It has a chance based on it's strength to set any block it touches on fire and any entity it touches aflame. This beam is EXTREMELY dangerous",
             " if not created with caution because it can and WILL burn down your surroundings easily if you are not careful. This is especially true because of the green beam, because if an area gets bonemealed and burnt, it will cause",
             "tons of fire based damage to your area.",
             "",
-            "The moment you place down the prism, all 3 of these beams will be split and refraction outwards. Be VERY careful that you are in a safe, burn free zone."
+            "",
+            "The moment you place down the prism, all 3 of these beams will be split and refracted outwards. Be VERY careful that you are in a safe, burn free zone."
+          ]
+        },
+        {
+          "info": "Effects",
+          "text": [
+            "So, if you haven't burnt down your area already, let's get to the more notable effects. You can get the rest of the effects from the mod using a",
+            {
+              "type": "stack",
+              "id": "refraction:reflection_chamber"
+            },
+            ".",
+            "",
+            "This block will merge any two or more beams that intersect with it and produce a final beam based on the weighted average of all the colors that went into it, taking into account color strength as well as outputting the beam in an averaged angle between them all.",
+            "",
+            "This block is extremely useful as it is able to produce the entire color spectrum if used right. You'll want it to use the rest of the effects in the mod, which are:",
+            "",
+            "",
+            "Cyan: Attract entities (items). If the beam is strong enough, it will attract any living entity.",
+            "",
+            "Magenta: Disperse entities (items). If the beam is strong enough, it will disperse any living entity.",
+            "",
+            "Yellow: Has a chance, based on strength, to break blocks it touches.",
+            "",
+            "Pink: Has a chance, based on strength, to place a block that it intersects with in item form."
           ]
         }
       ]
     },
     {
-      "icon": "refraction:items/reflective_alloy",
-      "info": "Second Page",
+      "icon": "refraction:items/disco_ball",
+      "info": "Items & Blocks",
       "subpages": [
         {
-          "info": "Hello2",
+          "info": "Laser",
           "text": [
-            "Hello there! I'm Eve, your personal assistant!",
-            "I'm here to help you <study phys-ERR> use reflection and refraction to manipulate light beams!",
-            "Let's get started, shall we?"
+            "The laser block, when fed with glowstone, will produce a light beam that lasts for 25 seconds.",
+            "",
+            "",
+            "This block is different from a magnifier in that it's beam is 4x more powerful in strength than a magnifier.",
+            "",
+            "",
+            "You can insert glowstone into it by either right clicking on it or pointing a hopper into it.",
+            "",
+            "",
+            "If you want to continually power it automatically, consider a witch farm or a mob farm that filters witches."
           ]
         },
         {
-          "info": "POTATO1",
+          "info": "Splitter",
           "text": [
-            "1Let's see here... Ah, yes. Ok so you'll first want to make an [[assembly_table]]. This simple block will help you craft everything you need. I will guide you through the steps of its usage when we get to that.",
-            "For now, craft one. It requires 7 iron ingots and 1 [[lens]] block.",
+            "This block is a half-mirror. It has the same properties as a mirror, but instead of reflecting a beam directly",
+            ", the beam will be split into 2 halves. One is reflected like that of a normal mirror, and the other half phases",
+            " right through the beam."
+          ]
+        },
+        {
+          "info": "Reflective Alloy",
+          "text": [
+            "You've already seen the reflective alloy ingots, but what you didn't know is that it has a block variation.",
             "",
-            "Next, you'll want to craft a [[magnifier]] block. When provided with a 3x3 of lense blocks above it - provided that they have a line of sight to the sky - it will converge the sunlight into a focused beam of light directly below it.",
+            "The block form of this alloy will reflect/bounce all beams that intersect with it in the cardinal direction hit.",
             "",
-            "I should note that you should place the magnifier (with the lense blocks above it) anywhere above the assembly table. This will be a one time setup to get you the basic items and can be altered after we're done with the second step."
+            "",
+            "In a way, it's sort of a cheap precisionless mirror. This block is considered as great protection against volatile or dangerous beams."
+          ]
+        },
+        {
+          "info": "Disco Ball",
+          "text": [
+            "The disco ball is one of the most interesting blocks in the mod.",
+            "",
+            "When this block receives a redstone signal, it will start spinning (it's a disco ball after all).",
+            "",
+            "When a beam hits this block while it's active, it will spread the beam in all directions. This results in",
+            " some very very interesting behavior. This can also be considered to be one of the most powerful and most dangerous",
+            " blocks in the mod. You can point any beam into it and it will produce smaller beams of that color in every single direction.",
+            "",
+            "",
+            "You could point a burn beam at it and it'll burn everything surrounding it, or point a yellow beam and have it become a circular quarry.",
+            "",
+            "",
+            {
+              "text": "[!] WARNING [!]",
+              "color": "red",
+              "bold": "true"
+            },
+            " It is HIGHLY recommended you surround the block with reflective alloy blocks to avoid potential disasters from occuring."
+          ]
+        },
+        {
+          "info": "Sensor",
+          "text": [
+            "This little dongle of a block will produce a flashing redstone signal against the block it's placed against.",
+            "",
+            "You can get a full continuous signal with 1 repeater from it but it's a good compact clock block otherwise when a beam intersects with it.",
+            "",
+            "",
+            "Moreover, beams will phase directly through it for convenience."
+          ]
+        },
+        {
+          "info": "Optic Fiber",
+          "text": [
+            "Optic fiber cables are very important cabling here. Any beam pointed at one end of an optic fiber cable will output the beam",
+            " at the other end of the cable whilst also adjusting it to the cardinal direction it's facing with absolutely no loss.",
+            "",
+            "One of the 2 cable facings will always face the direction you place it against for convenience. No more than 2 connections can be made per",
+            " fiber optic cable, so it cannot split beams.",
+            "",
+            "These cables are also useful when working with reflection chambers. If you place a cable against the face of a reflection chamber",
+            " - provided that the angle of the output beam from the reflection chamber is from the face the cable is against - it will output the beam",
+            " straight to the cable, directly adjusting it to a cardinal direction."
+          ]
+        },
+        {
+          "info": "Spectrometer",
+          "text": [
+            "The spectrometer is a block that can show you the strength of each individual array of color from a beam intersecting with the block.",
+            "",
+            "It will show you red, green, blue, and white bars on its face indicating the rgb values of the beams hitting it as well as white acting as beam strength."
+          ]
+        },
+        {
+          "info": "Laser Pen",
+          "text": [
+            "KAT LAZORS."
+          ]
+        },
+        {
+          "info": "Photon Grenades",
+          "text": [
+            "When placed into an assembly table with any beam hitting it, it will infuse the grenade with that color.",
+            "When thrown, the grenade will explode violently with the color (taking into account the original strength as well)"
           ]
         }
       ]
