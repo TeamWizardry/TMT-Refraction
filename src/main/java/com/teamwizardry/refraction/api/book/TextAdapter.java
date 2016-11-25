@@ -71,12 +71,6 @@ public final class TextAdapter {
                 y = text.y;
             }
 
-        } else if (object.isJsonArray()) {
-          /*  JsonArray array = object.getAsJsonArray();
-            GuiComponent secondaryParent = parseLine(parent, array.get(0));
-            secondaryParent
-
-            parent.add();*/
-        }
+        } else if (object.isJsonArray()) for (JsonElement element2 : object.getAsJsonArray()) parseLine(element2);
     }
 }
