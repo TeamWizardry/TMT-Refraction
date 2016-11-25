@@ -279,7 +279,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	/**
 	 * Will set the range the raytrace will attempt.
 	 *
-	 * @param range The new range of the beam. Default: Helper.BEAM_RANGE
+	 * @param range The new range of the beam. Default: Constants.BEAM_RANGE
 	 * @return This beam itself for the convenience of editing a beam in one line/chain.
 	 */
 	public Beam setRange(double range) {
