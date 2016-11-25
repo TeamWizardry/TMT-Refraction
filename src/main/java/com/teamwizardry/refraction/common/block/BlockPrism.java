@@ -95,8 +95,8 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 			hitPos = r.hitVec;
 		}
 
-		new Beam(worldObj, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).setUUID(uuid).spawn();
-	}
+        new Beam(worldObj, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).setUUID(uuid).spawnParticle().spawn();
+    }
 
 	private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {
 		double r = from / to, c = -normal.dotProduct(vec);

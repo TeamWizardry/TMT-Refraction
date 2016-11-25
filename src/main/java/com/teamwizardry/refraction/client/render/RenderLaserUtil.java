@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,59 +14,67 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+import static org.lwjgl.opengl.GL11.GL_ONE;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+
 /**
  * Created by TheCodeWarrior
  */
 public class RenderLaserUtil {
 
-	static ResourceLocation texture = new ResourceLocation(Refraction.MOD_ID, "textures/laser.png");
+    static ResourceLocation texture = new ResourceLocation(Refraction.MOD_ID, "textures/laser.png");
 
-	static boolean drawingLasers = false;
+    static boolean drawingLasers = false;
 
-	public static void startRenderingLasers() {
-		drawingLasers = true;
-		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vb = tessellator.getBuffer();
-		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-	}
+    public static void startRenderingLasers() {
+        drawingLasers = true;
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vb = tessellator.getBuffer();
+        vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+    }
 
-	public static void finishRenderingLasers() {
-		drawingLasers = false;
-		Tessellator.getInstance().draw();
-	}
+    public static void finishRenderingLasers() {
+        drawingLasers = false;
+        Tessellator.getInstance().draw();
+    }
 
-	public static void renderLaser(Color color, Vec3d start, Vec3d end) {
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+    public static void renderLaser(Color color, Vec3d start, Vec3d end) {
+        Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 
-		GlStateManager.disableCull();
+        color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(50, color.getAlpha()));
 
-		Vec3d playerEyes = Minecraft.getMinecraft().thePlayer.getPositionEyes(ClientTickHandler.getPartialTicks());
-		Vec3d normal = (end.subtract(start)).crossProduct(playerEyes.subtract(start)).normalize(); //(b.subtract(a)).crossProduct(c.subtract(a));
-		if (normal.yCoord < 0)
-			normal = normal.scale(-1);
+        GlStateManager.disableCull();
+        if (Constants.ADDITIVE_BLENDING) {
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE);
+        }
 
-		Vec3d d = normal.scale((0.25 * color.getAlpha() / 255f) / 2.);
+        Vec3d playerEyes = Minecraft.getMinecraft().thePlayer.getPositionEyes(ClientTickHandler.getPartialTicks());
+        Vec3d normal = (end.subtract(start)).crossProduct(playerEyes.subtract(start)).normalize(); //(b.subtract(a)).crossProduct(c.subtract(a));
+        if (normal.yCoord < 0)
+            normal = normal.scale(-1);
 
-		double vMin = 0, vMax = 1;
-		double uMin = 0, uMax = 1;
+        Vec3d d = normal.scale((0.25 * color.getAlpha() / 255f) / 2.);
 
-		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vb = tessellator.getBuffer();
+        double vMin = 0, vMax = 1;
+        double uMin = 0, uMax = 1;
 
-		if (!drawingLasers)
-			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vb = tessellator.getBuffer();
 
-		pos(vb, start.add(d)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, end.subtract(d)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, end.add(d)).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+        if (!drawingLasers)
+            vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+        pos(vb, start.add(d)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+        pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+        pos(vb, end.subtract(d)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+        pos(vb, end.add(d)).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
 
-		if (!drawingLasers)
-			tessellator.draw();
-	}
+        if (!drawingLasers)
+            tessellator.draw();
+    }
 
-	private static VertexBuffer pos(VertexBuffer vb, Vec3d pos) {
-		return vb.pos(pos.xCoord, pos.yCoord, pos.zCoord);
-	}
+    private static VertexBuffer pos(VertexBuffer vb, Vec3d pos) {
+        return vb.pos(pos.xCoord, pos.yCoord, pos.zCoord);
+    }
 
 }

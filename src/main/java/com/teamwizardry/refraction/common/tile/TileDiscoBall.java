@@ -3,8 +3,8 @@ package com.teamwizardry.refraction.common.tile;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.common.block.BlockDiscoBall;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.common.block.BlockDiscoBall;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
@@ -87,8 +87,8 @@ public class TileDiscoBall extends TileMod implements ITickable {
 			int x = (int) (radius * MathHelper.cos((float) Math.toRadians(handler.rotX)));
 			int z = (int) (radius * MathHelper.sin((float) Math.toRadians(handler.rotZ)));
 			handler.beam = handler.beam.createSimilarBeam().setColor(c).setSlope(handler.beam.slope.addVector(x, 0, z));
-			handler.beam.spawn();
-			return handler.life <= 0;
+            handler.beam.spawnParticle().spawn();
+            return handler.life <= 0;
 		});
 	}
 

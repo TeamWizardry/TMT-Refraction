@@ -3,10 +3,10 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import com.teamwizardry.refraction.api.beam.ILightSource;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSource;
 import com.teamwizardry.refraction.common.tile.TileMagnifier;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockStainedGlass;
@@ -76,7 +76,7 @@ public class BlockMagnifier extends BlockModContainer implements IBeamHandler, I
 			}
 
 			if (hasLens) {
-				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);
 				Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), Constants.SOLAR_ALPHA);
 
@@ -87,8 +87,8 @@ public class BlockMagnifier extends BlockModContainer implements IBeamHandler, I
 		}
 
 		Color[] colors = new Color[5];
-		for (int y = 1; y < 5; y++) {
-			BlockPos glassPos = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
+		for (int y = 0; y < 4; y++) {
+			BlockPos glassPos = new BlockPos(pos.getX(), pos.getY() + 1 + y, pos.getZ());
 			IBlockState glass = world.getBlockState(glassPos);
 
 			if (glass.getBlock() == Blocks.GLASS) colors[y] = new Color(255, 255, 255, 63);
@@ -120,7 +120,7 @@ public class BlockMagnifier extends BlockModContainer implements IBeamHandler, I
 				Color color = new Color(Color.HSBtoRGB(hsvVals[0], hsvVals[1], 1));
 				color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
 
-				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);
 
 				new Beam(world, center, dir, color).setEnableEffect(false).spawn();

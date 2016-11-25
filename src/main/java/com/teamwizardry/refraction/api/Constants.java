@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.api;
 
+import com.teamwizardry.librarianlib.common.util.ConfigPropertyBoolean;
 import com.teamwizardry.librarianlib.common.util.ConfigPropertyDouble;
 import com.teamwizardry.librarianlib.common.util.ConfigPropertyInt;
 
@@ -28,6 +29,8 @@ public class Constants {
 	public static int BEAM_BOUNCE_LIMIT = 50;
 	@ConfigPropertyDouble(modid = "refraction", category = "general", id = "player_beam_reflect_strength_division", comment = "When a player wearing full reflective alloy armor stands infront of a beam, it will reflect the beam but divide it's strength by this amount.", defaultValue = 1.4)
 	public static double PLAYER_BEAM_REFLECT_STRENGTH_DIVSION = 1.4;
+	@ConfigPropertyBoolean(modid = "refraction", category = "general", id = "disable_additive_blending", comment = "If disabled, will make beams opaque and not blend visually.", defaultValue = true)
+	public static boolean ADDITIVE_BLENDING = true;
 	@ConfigPropertyDouble(modid = "refraction", category = "index_of_refraction", id = "air_ior", comment = "IOR of air", defaultValue = 1)
 	public static double AIR_IOR = 1;
 	@ConfigPropertyDouble(modid = "refraction", category = "index_of_refraction", id = "glass_ior", comment = "IOR of glass", defaultValue = 1.2)

@@ -1,7 +1,12 @@
 package com.teamwizardry.refraction.api.beam;
 
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
+import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.bitsaving.IllegalValueSetException;
+import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
+import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Effect.EffectType;
 import com.teamwizardry.refraction.api.internal.PacketLaserFX;
@@ -10,6 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -97,6 +103,11 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      */
     public int allowedBounceTimes = Constants.BEAM_BOUNCE_LIMIT;
 
+    /**
+     * Will spawn a particle at the beginning of the beam for pretties.
+     */
+    private boolean spawnSparkle = false;
+
     public Beam(@NotNull World world, @NotNull Vec3d initLoc, @NotNull Vec3d slope, @NotNull Color color) {
         this.world = world;
         this.initLoc = initLoc;
@@ -175,6 +186,16 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
                 .setAllowedBounceTimes(allowedBounceTimes)
                 .setBouncedTimes(bouncedTimes)
                 .incrementBouncedTimes();
+    }
+
+    /**
+     * Will create a tiny particle at it's end for pretties.
+     *
+     * @return The new beam created. Can be modified as needed.
+     */
+    public Beam spawnParticle() {
+        this.spawnSparkle = true;
+        return this;
     }
 
     /**
@@ -375,6 +396,19 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
                 createSimilarBeam(player.getLook(1)).setIgnoreEntities(true).spawn();
         }
         // PLAYER REFLECTING
+
+        // PARTICLES
+        if (spawnSparkle) {
+            ParticleBuilder reflectionSparkle = new ParticleBuilder(2);
+            reflectionSparkle.setAlphaFunction(new InterpFadeInOut(0.1f, 0.1f));
+            reflectionSparkle.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+            reflectionSparkle.disableRandom();
+            reflectionSparkle.disableMotionCalculation();
+            reflectionSparkle.setScale((float) (ThreadLocalRandom.current().nextDouble(0.8, 1) / color.getAlpha()));
+            reflectionSparkle.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ThreadLocalRandom.current().nextInt(10, 15)));
+            ParticleSpawner.spawn(reflectionSparkle, world, new StaticInterp<>(initLoc), 1);
+        }
+        // PARTICLES
 
         // Particle packet sender
         PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));

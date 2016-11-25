@@ -2,9 +2,9 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,7 +74,7 @@ public class BlockReflectiveAlloyBlock extends BlockMod implements IBeamHandler 
 					outgoingDir = incomingDir;
 			}
 			Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
-			beam.createSimilarBeam(outgoingLoc, outgoingDir, c).setUUID(UUID.randomUUID()).spawn();
-		}
+            beam.createSimilarBeam(outgoingLoc, outgoingDir, c).setUUID(UUID.randomUUID()).spawnParticle().spawn();
+        }
 	}
 }
