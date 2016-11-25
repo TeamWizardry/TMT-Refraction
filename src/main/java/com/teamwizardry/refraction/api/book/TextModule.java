@@ -50,16 +50,19 @@ public class TextModule implements IParsedModule {
     }
 
     public String[] clipString(String string) {
-        if (x + fr.getStringWidth(string) > TextAdapter.wrapLength) {
+        if (x + fr.getStringWidth(string) >= TextAdapter.wrapLength) {
             List<String> lines = fr.listFormattedStringToWidth(string, TextAdapter.wrapLength - x);
             if (!lines.isEmpty()) {
                 String[] parts = new String[2];
-                if (x + fr.getStringWidth(lines.get(0)) > TextAdapter.wrapLength) parts[0] = "";
+                if (x + fr.getStringWidth(lines.get(0)) > TextAdapter.wrapLength) {
+                    parts[0] = "";
+                    parts[1] = string;
+                }
                 else {
                     String line = lines.get(0);
                     parts[0] = line;
+                    parts[1] = string.substring(parts[0].length());
                 }
-                parts[1] = string.substring(parts[0].length()).trim();
                 return parts;
             }
         }

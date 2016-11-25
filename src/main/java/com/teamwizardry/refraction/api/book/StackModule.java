@@ -6,6 +6,8 @@ import net.minecraft.util.text.TextFormatting;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+
 /**
  * @author LordSaad
  */
@@ -36,6 +38,10 @@ public class StackModule implements IParsedModule {
             String displayName = " [" + TextFormatting.UNDERLINE + "" + TextFormatting.BLUE + stack.getDisplayName() + TextFormatting.RESET + "]";
             component.getText().setValue(displayName);
             this.x += fr.getStringWidth(displayName);
+
+            ArrayList<String> tooltip = new ArrayList<>();
+            tooltip.add(displayName);
+            component.setTooltip(tooltip);
         } else {
             component.getText().setValue("<NULL>");
             this.x += fr.getStringWidth("<NULL>");
