@@ -7,6 +7,7 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.CapsUtils;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
@@ -22,6 +23,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -159,5 +161,14 @@ public class BlockLaser extends BlockModContainer implements ILightSource, ISoun
 	public boolean shouldEmit(World world, BlockPos pos) {
 		TileLaser laser = (TileLaser) world.getTileEntity(pos);
 		return !(world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) && laser != null && laser.inventory.getStackInSlot(0) != null && laser.inventory.getStackInSlot(0).stackSize > 0;
+	}
+
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		TileLaser laser = (TileLaser) worldIn.getTileEntity(pos);
+		if (laser != null)
+			for (ItemStack stack : CapsUtils.getListOfItems(laser.inventory))
+				InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
+		super.breakBlock(worldIn, pos, state);
 	}
 }

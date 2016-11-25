@@ -18,11 +18,6 @@ public class TileLaser extends TileMod {
 
 	public ItemStackHandler inventory = new ItemStackHandler(1) {
 		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			return null;
-		}
-
-		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			if (stack.getItem() == Items.GLOWSTONE_DUST) return super.insertItem(slot, stack, simulate);
 			else return stack;
