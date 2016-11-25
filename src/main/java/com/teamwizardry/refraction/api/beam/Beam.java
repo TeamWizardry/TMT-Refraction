@@ -310,9 +310,10 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // EFFECT CHECKING //
 
         // BEAM PHASING CHECKS //
+        EntityTrace entityTrace = new EntityTrace(world, initLoc, slope).setRange(range);
         if (ignoreEntities || (effect != null && effect.getType() == EffectType.BEAM)) // If anyone of these are true, phase beam
-            trace = EntityTrace.cast(world, initLoc, slope, range, true);
-        else trace = EntityTrace.cast(world, initLoc, slope, range, false);
+            trace = entityTrace.setIgnoreEntities(true).cast();
+        else trace = entityTrace.setIgnoreEntities(false).cast();
         // BEAM PHASING CHECKS //
 
         if (trace != null && trace.hitVec != null) this.finalLoc = trace.hitVec;
@@ -364,14 +365,16 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         }
         // EFFECT HANDLING
 
+        // PLAYER REFLECTING
         if (trace.typeOfHit == RayTraceResult.Type.ENTITY && trace.entityHit instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) trace.entityHit;
             if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null
                     && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null
                     && player.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null
                     && player.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null)
-                createSimilarBeam(player.getLook(1));
+                createSimilarBeam(player.getLook(1)).setIgnoreEntities(true).spawn();
         }
+        // PLAYER REFLECTING
 
         // Particle packet sender
         PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
