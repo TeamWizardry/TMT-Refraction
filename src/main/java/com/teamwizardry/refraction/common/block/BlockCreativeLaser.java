@@ -2,9 +2,9 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.api.beam.ILightSource;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.ILightSource;
 import com.teamwizardry.refraction.common.tile.TileCreativeLaser;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
@@ -96,6 +96,7 @@ public class BlockCreativeLaser extends BlockModContainer implements ILightSourc
 	@Override
 	public void generateBeam(@NotNull World world, @Nonnull BlockPos pos) {
 		if (world.isRemote) return;
+		if (world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) return;
 		Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 		EnumFacing face = world.getBlockState(pos).getValue(BlockDirectional.FACING);
 		Vec3d vec = PosUtils.getVecFromFacing(face);

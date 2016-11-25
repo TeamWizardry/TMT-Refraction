@@ -8,10 +8,10 @@ import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.beam.ILightSource;
 import com.teamwizardry.refraction.api.PosUtils;
-import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.ILightSource;
+import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
 import com.teamwizardry.refraction.common.tile.TileLaser;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
@@ -57,6 +57,7 @@ public class BlockLaser extends BlockModContainer implements ILightSource, ISoun
 
 	@Override
 	public void generateBeam(@NotNull World world, @Nonnull BlockPos pos) {
+		if (world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) return;
 		TileLaser laser = (TileLaser) world.getTileEntity(pos);
 		if (laser == null) return;
 		if (laser.inventory.getStackInSlot(0) != null && laser.inventory.getStackInSlot(0).stackSize > 0) {
@@ -157,6 +158,6 @@ public class BlockLaser extends BlockModContainer implements ILightSource, ISoun
 	@Override
 	public boolean shouldEmit(World world, BlockPos pos) {
 		TileLaser laser = (TileLaser) world.getTileEntity(pos);
-		return laser != null && laser.inventory.getStackInSlot(0) != null && laser.inventory.getStackInSlot(0).stackSize > 0;
+		return !(world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) && laser != null && laser.inventory.getStackInSlot(0) != null && laser.inventory.getStackInSlot(0).stackSize > 0;
 	}
 }

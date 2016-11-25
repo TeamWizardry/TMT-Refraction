@@ -33,7 +33,7 @@ public class TileLaser extends TileMod {
 
 	@Override
 	public void onLoad() {
-		ReflectionTracker.getInstance(worldObj).addSource(pos, ModBlocks.CREATIVE_LASER);
+		ReflectionTracker.getInstance(worldObj).addSource(pos, ModBlocks.LASER);
 		worldObj.scheduleUpdate(pos, ModBlocks.LASER, 1);
 	}
 
