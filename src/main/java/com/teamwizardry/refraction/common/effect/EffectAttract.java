@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.effect;
 
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
+import com.teamwizardry.refraction.common.item.armor.ReflectiveAlloyArmor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,7 +34,7 @@ public class EffectAttract extends Effect {
 		return EffectType.BEAM;
 	}
 
-	private void setEntityMotion(Entity entity) {
+	private void setEntityMotion(Entity entity, double potency) {
 		Vec3d pullDir;
 		if (beam.finalLoc != null) {
 			pullDir = beam.initLoc.subtract(beam.finalLoc).normalize();
@@ -87,7 +88,16 @@ public class EffectAttract extends Effect {
 		}
 
 		for (Entity entity : toPull) {
-			setEntityMotion(entity);
+			double potency = this.potency;
+			if (entity instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) entity;
+				for (ItemStack armor : player.getArmorInventoryList()) {
+					if (armor != null)
+						if (armor.getItem() instanceof ReflectiveAlloyArmor)
+							potency /= 1.15;
+				}
+			}
+			setEntityMotion(entity, potency);
 			gravityReset.put(entity, 30);
 			if (entity instanceof EntityPlayer)
 				((EntityPlayer) entity).velocityChanged = true;

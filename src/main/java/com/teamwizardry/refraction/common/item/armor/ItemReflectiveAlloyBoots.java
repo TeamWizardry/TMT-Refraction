@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 /**
  * Created by LordSaad.
  */
-public class ItemReflectiveAlloyBoots extends ItemModArmor {
+public class ItemReflectiveAlloyBoots extends ItemModArmor implements ReflectiveAlloyArmor {
 
     public ItemReflectiveAlloyBoots() {
         super("ref_alloy_boots", ArmorMaterial.GOLD, EntityEquipmentSlot.FEET);

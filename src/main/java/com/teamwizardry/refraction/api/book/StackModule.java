@@ -1,12 +1,15 @@
 package com.teamwizardry.refraction.api.book;
 
+import com.teamwizardry.librarianlib.client.gui.GuiComponent;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
+import com.teamwizardry.librarianlib.common.util.math.Vec2d;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LordSaad
@@ -39,13 +42,17 @@ public class StackModule implements IParsedModule {
             component.getText().setValue(displayName);
             this.x += fr.getStringWidth(displayName);
 
-            ArrayList<String> tooltip = new ArrayList<>();
-            tooltip.add(displayName);
-            component.setTooltip(tooltip);
+            List<String> tooltip = stack.getTooltip(Minecraft.getMinecraft().thePlayer, false);
+            component.BUS.hook(GuiComponent.PostDrawEvent.class, postDrawEvent -> {
+                if (component.getMouseOver())
+                    component.setTooltip(tooltip);
+            });
         } else {
             component.getText().setValue("<NULL>");
             this.x += fr.getStringWidth("<NULL>");
         }
+        component.setSize(new Vec2d(fr.getStringWidth(component.getText().getValue(component)), fr.FONT_HEIGHT));
+
         fr.setBidiFlag(false);
         fr.setUnicodeFlag(false);
     }

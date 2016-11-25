@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 /**
  * Created by LordSaad.
  */
-public class ItemReflectiveAlloyHelmet extends ItemModArmor {
+public class ItemReflectiveAlloyHelmet extends ItemModArmor implements ReflectiveAlloyArmor {
 
     public ItemReflectiveAlloyHelmet() {
         super("ref_alloy_helmet", ArmorMaterial.GOLD, EntityEquipmentSlot.HEAD);

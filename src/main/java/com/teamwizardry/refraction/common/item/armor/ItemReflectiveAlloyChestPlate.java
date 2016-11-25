@@ -15,20 +15,20 @@ import net.minecraft.world.World;
 /**
  * Created by LordSaad.
  */
-public class ItemReflectiveAlloyChestPlate extends ItemModArmor {
+public class ItemReflectiveAlloyChestPlate extends ItemModArmor implements ReflectiveAlloyArmor {
 
     public ItemReflectiveAlloyChestPlate() {
-        super("ref_alloy_chestplate", ArmorMaterial.GOLD, EntityEquipmentSlot.HEAD);
+        super("ref_alloy_chestplate", ArmorMaterial.GOLD, EntityEquipmentSlot.CHEST);
         setMaxStackSize(1);
         setMaxDamage(0);
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        ItemStack itemstack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+        ItemStack itemstack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 
         if (itemstack == null) {
-            playerIn.setItemStackToSlot(EntityEquipmentSlot.HEAD, itemStackIn.copy());
+            playerIn.setItemStackToSlot(EntityEquipmentSlot.CHEST, itemStackIn.copy());
             itemStackIn.stackSize = 0;
             return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
         } else {

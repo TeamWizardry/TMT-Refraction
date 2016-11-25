@@ -1,9 +1,13 @@
 package com.teamwizardry.refraction.common.effect;
 
 import com.teamwizardry.refraction.api.beam.Effect;
+import com.teamwizardry.refraction.common.item.armor.ReflectiveAlloyArmor;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -21,66 +25,69 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class EffectFreeze extends Effect {
 
-	@Override
-	public EffectType getType() {
-		return EffectType.BEAM;
-	}
+    @Override
+    public EffectType getType() {
+        return EffectType.BEAM;
+    }
 
-	@Override
-	public void run(World world, Set<BlockPos> locations) {
-		if (world.isRemote) return;
+    @Override
+    public void run(World world, Set<BlockPos> locations) {
+        if (beam.trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+            if (potency >= 10 && potency <= 50 && ThreadLocalRandom.current().nextInt(0, 10) == 0) {
+                IBlockState state = world.getBlockState(beam.trace.getBlockPos());
+                if (state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.FIRE)
+                    world.setBlockState(beam.trace.getBlockPos(), Blocks.FIRE.getDefaultState());
+            }
+        }
 
-		if (beam.trace.typeOfHit == RayTraceResult.Type.BLOCK) {
-			if (potency >= 10 && potency <= 50 && ThreadLocalRandom.current().nextInt(0, 10) == 0) {
-				IBlockState state = world.getBlockState(beam.trace.getBlockPos());
-				if (state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.FIRE)
-					world.setBlockState(beam.trace.getBlockPos(), Blocks.FIRE.getDefaultState());
-			}
-		}
+        Set<Entity> toApply = new HashSet<>();
+        for (BlockPos pos : locations)
+            toApply.addAll(world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos)));
 
-		Set<EntityLivingBase> toApply = new HashSet<>();
-		for (BlockPos pos : locations)
-			toApply.addAll(world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos)));
+        for (Entity entities : toApply) {
+            double potency = this.potency;
+            if (entities instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) entities;
+                for (ItemStack armor : player.getArmorInventoryList())
+                    if (armor != null)
+                        if (armor.getItem() instanceof ReflectiveAlloyArmor)
+                            potency /= 1.15;
+            }
+            if (entities instanceof EntityLivingBase) {
+                EntityLivingBase entity = (EntityLivingBase) entities;
+                entity.setFire(0);
+                int effectDuration = 50;
 
-		for (EntityLivingBase entity : toApply) {
+                entity.motionX *= 10.0 * potency / 255.0;
+                entity.motionZ *= 10.0 * potency / 255.0;
+                entity.velocityChanged = true;
 
-			entity.setFire(0);
-			int effectDuration = 50;
+                if (potency >= 100) {
+                    Potion weakness = Potion.getPotionById(18);
+                    if (weakness != null)
+                        entity.addPotionEffect(new PotionEffect(weakness, effectDuration, (int) (5 * potency / 255), true, false));
+                    Potion blindness = Potion.getPotionById(15);
+                    if (blindness != null)
+                        entity.addPotionEffect(new PotionEffect(blindness, effectDuration, (int) (5 * potency / 255), true, false));
+                }
 
-			Potion slowness = Potion.getPotionById(2);
-			if (slowness != null)
-				entity.addPotionEffect(new PotionEffect(slowness, effectDuration, 5 * potency / 255, true, false));
+                if (potency >= 150) {
+                    Potion nausea = Potion.getPotionById(9);
+                    if (nausea != null)
+                        entity.addPotionEffect(new PotionEffect(nausea, effectDuration, (int) (5 * potency / 255), true, false));
+                }
 
-			if (potency >= 50) {
-				entity.motionX *= 10.0 * potency / 255.0;
-				entity.motionZ *= 10.0 * potency / 255.0;
-			}
+                if (potency >= 200) {
+                    Potion nightVision = Potion.getPotionById(16);
+                    if (nightVision != null)
+                        entity.addPotionEffect(new PotionEffect(nightVision, effectDuration, (int) (potency / 25), true, false));
+                }
+            }
+        }
+    }
 
-			if (potency >= 100) {
-				Potion weakness = Potion.getPotionById(18);
-				if (weakness != null)
-					entity.addPotionEffect(new PotionEffect(weakness, effectDuration, 5 * potency / 255, true, false));
-				Potion blindness = Potion.getPotionById(15);
-				if (blindness != null)
-					entity.addPotionEffect(new PotionEffect(blindness, effectDuration, 5 * potency / 255, true, false));
-			}
-
-			if (potency >= 150) {
-				Potion nausea = Potion.getPotionById(9);
-				if (nausea != null)
-					entity.addPotionEffect(new PotionEffect(nausea, effectDuration, 5 * potency / 255, true, false));
-			}
-
-			if (potency >= 200) {
-				Potion nightVision = Potion.getPotionById(16);
-				if (nightVision != null)
-					entity.addPotionEffect(new PotionEffect(nightVision, effectDuration, potency / 25, true, false));
-			}
-		}
-	}
-
-	@Override
-	public Color getColor() {
-		return Color.BLUE;
-	}
+    @Override
+    public Color getColor() {
+        return Color.BLUE;
+    }
 }
