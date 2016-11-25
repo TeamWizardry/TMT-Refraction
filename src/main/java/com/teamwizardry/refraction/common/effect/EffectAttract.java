@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.effect;
 
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
 import com.teamwizardry.refraction.common.item.armor.ReflectiveAlloyArmor;
@@ -94,7 +95,7 @@ public class EffectAttract extends Effect {
 				for (ItemStack armor : player.getArmorInventoryList()) {
 					if (armor != null)
 						if (armor.getItem() instanceof ReflectiveAlloyArmor)
-							potency /= 1.15;
+							potency /= Constants.PLAYER_BEAM_REFLECT_STRENGTH_DIVSION;
 				}
 			}
 			setEntityMotion(entity, potency);

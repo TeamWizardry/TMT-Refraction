@@ -26,16 +26,18 @@ public class Constants {
 	public static int DISCO_BALL_BEAM_BOUNCE_LIMIT = 4;
 	@ConfigPropertyInt(modid = "refraction", category = "general", id = "beam_bounce_limit", comment = "The amount of times a beam is allowed to bounce or reflect MAXIMUM. If this number is decreased, beams will stop after reflecting or bouncing for that amount of times. This is mainly a safety check against trapped infinitely bouncing beams.", defaultValue = 50)
 	public static int BEAM_BOUNCE_LIMIT = 50;
+	@ConfigPropertyDouble(modid = "refraction", category = "general", id = "player_beam_reflect_strength_division", comment = "When a player wearing full reflective alloy armor stands infront of a beam, it will reflect the beam but divide it's strength by this amount.", defaultValue = 1.4)
+	public static double PLAYER_BEAM_REFLECT_STRENGTH_DIVSION = 1.4;
 	@ConfigPropertyDouble(modid = "refraction", category = "index_of_refraction", id = "air_ior", comment = "IOR of air", defaultValue = 1)
-	public static double airIOR = 1;
+	public static double AIR_IOR = 1;
 	@ConfigPropertyDouble(modid = "refraction", category = "index_of_refraction", id = "glass_ior", comment = "IOR of glass", defaultValue = 1.2)
-	public static double glassIOR = 1.2;
+	public static double GLASS_IOR = 1.2;
 	@ConfigPropertyDouble(modid = "refraction", category = "index_of_refraction", id = "red_ior", comment = "IOR of red", defaultValue = 0.6)
-	public static double redIOR = 0.6;
+	public static double RED_IOR = 0.6;
 	@ConfigPropertyDouble(modid = "refraction", category = "index_of_refraction", id = "green_ior", comment = "IOR of green", defaultValue = 0.4)
-	public static double greenIOR = 0.4;
+	public static double GREEN_IOR = 0.4;
 	@ConfigPropertyDouble(modid = "refraction", category = "index_of_refraction", id = "blue_ior", comment = "IOR of blue", defaultValue = 0.2)
-	public static double blueIOR = 0.2;
+	public static double BLUE_IOR = 0.2;
 
 	public static int NIGHT_START = 12600;
 	public static int NIGHT_END = 23400;
