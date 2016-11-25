@@ -11,6 +11,7 @@ import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.book.TextAdapter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +39,7 @@ public class GuiBook extends GuiBase {
     static final int iconSize = 12;
     @NotNull
     public static SidebarItem selectedSiderbar;
-    public static ComponentText textComponent;
+    public static ComponentVoid componnetPlate;
     public static ArrayList<SidebarItem> categories = new ArrayList<>();
     private int currentPage = 0;
 
@@ -59,9 +60,8 @@ public class GuiBook extends GuiBase {
         scrollSlider.getPercentageChange().add((p) -> scrolledView.scrollToPercent(new Vec2d(0, p)));
         scrollGrooves.add(scrollSlider);
 
-        textComponent = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
-        textComponent.getWrap().setValue(width - 5);
-        scrolledView.add(textComponent);
+        componnetPlate = new ComponentVoid(20, 10);
+        //scrolledView.add(componnetPlate);
 
         int id = 0;
 
@@ -100,7 +100,9 @@ public class GuiBook extends GuiBase {
                                             if (page.get("info").isJsonPrimitive() && page.get("text").isJsonArray()) {
                                                 String pageInfo = page.get("info").getAsString();
                                                 JsonArray pageArray = page.getAsJsonArray("text");
-                                                SubPageItem pageItem = new SubPageItem(item, subID++, pageInfo, pageArray);
+                                                TextAdapter adapter = new TextAdapter(0, 0);
+                                                for (JsonElement element2 : pageArray) adapter.parseLine(element2);
+                                                SubPageItem pageItem = new SubPageItem(item, subID++, pageInfo, adapter.getParent());
                                                 subPages.add(pageItem);
                                             }
                                         }
@@ -128,10 +130,7 @@ public class GuiBook extends GuiBase {
                 (getGuiWidth() / 2) - (BACKGROUND_HANDLE_SPRITE.getWidth() / 2),
                 (getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
         getMainComponents().add(background_handle);
-
-        textComponent.getUnicode().setValue(true);
-        textComponent.getText().setValue("potato");
-        getMainComponents().add(parent);
+        getMainComponents().add(componnetPlate);
     }
 
     @Override

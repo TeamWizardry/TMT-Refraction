@@ -26,6 +26,22 @@ public class JEIRefractionPlugin extends BlankModPlugin {
 
 	public static IJeiRuntime jeiRuntime;
 
+    public static ItemStack getStackFromString(String itemId) {
+        ResourceLocation location = new ResourceLocation(itemId);
+        ItemStack stack = null;
+
+        if (ForgeRegistries.ITEMS.containsKey(location)) {
+            Item item = ForgeRegistries.ITEMS.getValue(location);
+            if (item != null) stack = new ItemStack(item);
+
+        } else if (ForgeRegistries.BLOCKS.containsKey(location)) {
+            Block block = ForgeRegistries.BLOCKS.getValue(location);
+            if (block != null) stack = new ItemStack(block);
+
+        }
+        return stack;
+    }
+
 	@Override
 	public void register(@Nonnull IModRegistry registry) {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
@@ -43,22 +59,6 @@ public class JEIRefractionPlugin extends BlankModPlugin {
 	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 		super.onRuntimeAvailable(jeiRuntime);
 		JEIRefractionPlugin.jeiRuntime = jeiRuntime;
-	}
-
-	private static ItemStack getStackFromString(String itemId) {
-		ResourceLocation location = new ResourceLocation(itemId);
-		ItemStack stack = null;
-
-		if (ForgeRegistries.ITEMS.containsKey(location)) {
-			Item item = ForgeRegistries.ITEMS.getValue(location);
-			if (item != null) stack = new ItemStack(item);
-
-		} else if (ForgeRegistries.BLOCKS.containsKey(location)) {
-			Block block = ForgeRegistries.BLOCKS.getValue(location);
-			if (block != null) stack = new ItemStack(block);
-
-		}
-		return stack;
 	}
 
 	private IRecipeLayoutDrawable getDrawableFromItem(String itemId) {

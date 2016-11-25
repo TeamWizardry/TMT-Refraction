@@ -1,17 +1,15 @@
 package com.teamwizardry.refraction.client.gui;
 
-import com.google.gson.JsonArray;
 import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.client.gui.GuiComponent;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
+import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.book.ITextHolder;
-import com.teamwizardry.refraction.api.book.TextAdapter;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
@@ -23,7 +21,7 @@ public class SubPageItem {
 
     private static final double TRANSITION_TIME_X = 0.75;
     private final String info;
-    private final JsonArray text;
+    private final ComponentVoid text;
     public float prevX = 0, destX, currentX;
     public boolean isAnimating = false;
     private SidebarItem sidebarItem;
@@ -32,7 +30,7 @@ public class SubPageItem {
     private Texture sliderTexture = new Texture(sliderLoc);
     private Sprite sliderSprite = sliderTexture.getSprite("slider", 130, 18);
 
-    public SubPageItem(SidebarItem sidebarItem, int id, String info, JsonArray text) {
+    public SubPageItem(SidebarItem sidebarItem, int id, String info, ComponentVoid text) {
         this.sidebarItem = sidebarItem;
         this.id = id;
         this.info = info;
@@ -66,8 +64,8 @@ public class SubPageItem {
 
                     infoComp.getText().setValue(TextFormatting.ITALIC + info);
 
-                    ITextHolder holder = TextAdapter.adapt(text);
-                    GuiBook.textComponent.getText().setValue(holder.getFormattedText());
+                    GuiBook.componnetPlate.removeByTag("text");
+                    GuiBook.componnetPlate.add(text);
                 } else {
                     background.setPos(new Vec2d(15, 20 + 20 * id));
                     //background.setSize(new Vec2d(100, 18));

@@ -17,7 +17,7 @@
               "strikethrough": true
             },
             {
-              "text": "ERR",
+              "text": "ICS",
               "obfuscated": true,
               "strikethrough": true
             },
@@ -30,7 +30,7 @@
             "",
             "Ever wanted to suck items and entities with a single beam of light? Ever wanted to create a disco ball based quarry? How about creating a laser defense system? Or, heck, maybe you just wanted to make an epic laser show?",
             "",
-            "Well, then, ",
+            "Well then, ",
             {
               "type": "player"
             },
