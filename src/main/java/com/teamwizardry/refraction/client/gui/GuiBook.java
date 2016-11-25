@@ -101,7 +101,7 @@ public class GuiBook extends GuiBase {
                                                 String pageInfo = page.get("info").getAsString();
                                                 JsonArray pageArray = page.getAsJsonArray("text");
                                                 TextAdapter adapter = new TextAdapter(0, 0);
-                                                for (JsonElement element2 : pageArray) adapter.parseLine(element2);
+                                                adapter.parseLine(pageArray);
                                                 SubPageItem pageItem = new SubPageItem(item, subID++, pageInfo, adapter.getParent());
                                                 subPages.add(pageItem);
                                             }

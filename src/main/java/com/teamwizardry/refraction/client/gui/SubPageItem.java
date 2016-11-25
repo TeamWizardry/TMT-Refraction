@@ -63,7 +63,6 @@ public class SubPageItem {
                     background.setPos(new Vec2d(10, 20 + 20 * id));
 
                     infoComp.getText().setValue(TextFormatting.ITALIC + info);
-
                     GuiBook.componnetPlate.removeByTag("text");
                     GuiBook.componnetPlate.add(text);
                 } else {

@@ -71,7 +71,7 @@ public final class TextAdapter {
                 y = text.y;
             }
 
-        } //else if (object.isJsonArray()) for (JsonElement element2 : object.getAsJsonArray()) parseLine(element2);
+        } else if (object.isJsonArray()) for (JsonElement element : object.getAsJsonArray()) parseLine(element);
 
         fr.setBidiFlag(false);
         fr.setUnicodeFlag(false);

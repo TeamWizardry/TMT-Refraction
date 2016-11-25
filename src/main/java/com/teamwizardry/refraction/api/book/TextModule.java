@@ -61,7 +61,7 @@ public class TextModule implements IParsedModule {
                 else {
                     String line = lines.get(0);
                     parts[0] = line;
-                    parts[1] = string.substring(parts[0].length());
+                    parts[1] = string.substring(parts[0].length()).trim();
                 }
                 return parts;
             }

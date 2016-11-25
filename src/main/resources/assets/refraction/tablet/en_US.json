@@ -32,6 +32,7 @@
             "",
             "Ever wanted to suck items and entities with a single beam of light? Ever wanted to create a disco ball based quarry? How about creating a laser defense system? Or, heck, maybe you just wanted to make an epic laser show?",
             "",
+            "",
             "Well then, ",
             {
               "type": "player"
@@ -101,28 +102,23 @@
               "type": "stack",
               "id": "refraction:magnifier"
             },
-            " exactly above the table. By creating a ",
+            " exactly above the table. By creating a",
             {
               "type": "stack",
               "id": "refraction:mirror"
             },
-            "with reflective alloys and rotating it using a",
+            " with reflective alloys and rotating it using a",
             {
               "type": "stack",
               "id": "refraction:screwdriver"
             },
-            "you can redirect beams to any direction.",
+            " you can redirect beams to any direction.",
             "",
             "",
             "Using the screwdriver on the air will decrease its precision, and sneak-using it will increase its precision. Using it on a mirror's top will rotate it horizontally, and on a mirror's side it'll rotate it vertically.",
             "",
             "",
-            "If you focus multiple beams into an",
-            {
-              "type": "stack",
-              "id": "refraction:assembly_table"
-            },
-            ", it'll be able to do more intense recipes, granting you more components to play with."
+            "If you focus multiple beams into an assembly table, it'll be able to do more intense recipes, granting you more components to play with."
           ]
         },
         {
@@ -188,9 +184,12 @@
             "",
             "Cyan: Attract entities (items). If the beam is strong enough, it will attract any living entity.",
             "",
+            "",
             "Magenta: Disperse entities (items). If the beam is strong enough, it will disperse any living entity.",
             "",
+            "",
             "Yellow: Has a chance, based on strength, to break blocks it touches.",
+            "",
             "",
             "Pink: Has a chance, based on strength, to place a block that it intersects with in item form."
           ]
