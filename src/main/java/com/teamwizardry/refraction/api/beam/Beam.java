@@ -30,6 +30,7 @@ import java.awt.*;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+// TODO: make sparkles configurable + whether to spawn them at the end or beginning of a beam.
 public class Beam implements INBTSerializable<NBTTagCompound> {
 
     /**
@@ -393,7 +394,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
                     && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null
                     && player.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null
                     && player.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null)
-                createSimilarBeam(player.getLook(1)).setIgnoreEntities(true).spawn();
+                createSimilarBeam(player.getLook(1)).setIgnoreEntities(true).spawnParticle().spawn();
         }
         // PLAYER REFLECTING
 
@@ -404,8 +405,8 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
             reflectionSparkle.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
             reflectionSparkle.disableRandom();
             reflectionSparkle.disableMotionCalculation();
-            reflectionSparkle.setScale((float) (ThreadLocalRandom.current().nextDouble(0.8, 1) / color.getAlpha()));
-            reflectionSparkle.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ThreadLocalRandom.current().nextInt(10, 15)));
+            reflectionSparkle.setScale((float) (ThreadLocalRandom.current().nextDouble(1, 1.3)));
+            reflectionSparkle.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ThreadLocalRandom.current().nextInt(18, 20)));
             ParticleSpawner.spawn(reflectionSparkle, world, new StaticInterp<>(initLoc), 1);
         }
         // PARTICLES
