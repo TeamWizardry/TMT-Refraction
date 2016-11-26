@@ -22,7 +22,8 @@ import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
  */
 public class RenderLaserUtil {
 
-    static ResourceLocation texture = new ResourceLocation(Refraction.MOD_ID, "textures/laser.png");
+    static ResourceLocation textLaser = new ResourceLocation(Refraction.MOD_ID, "textures/laser.png");
+    static ResourceLocation textLaserFlat = new ResourceLocation(Refraction.MOD_ID, "textures/laser_flat.png");
 
     static boolean drawingLasers = false;
 
@@ -39,7 +40,8 @@ public class RenderLaserUtil {
     }
 
     public static void renderLaser(Color color, Vec3d start, Vec3d end) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+        if (Constants.USE_FLAT_BEAM_TEXTURE) Minecraft.getMinecraft().getTextureManager().bindTexture(textLaserFlat);
+        else Minecraft.getMinecraft().getTextureManager().bindTexture(textLaser);
 
         color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(50, color.getAlpha()));
 
@@ -62,8 +64,7 @@ public class RenderLaserUtil {
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer vb = tessellator.getBuffer();
 
-        if (!drawingLasers)
-            vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+        if (!drawingLasers) vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         pos(vb, start.add(d)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
         pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
         pos(vb, end.subtract(d)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();

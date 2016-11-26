@@ -29,9 +29,11 @@ public class Constants {
 	public static int BEAM_BOUNCE_LIMIT = 50;
 	@ConfigPropertyDouble(modid = "refraction", category = "general", id = "player_beam_reflect_strength_division", comment = "When a player wearing full reflective alloy armor stands infront of a beam, it will reflect the beam but divide it's strength by this amount.", defaultValue = 1.4)
 	public static double PLAYER_BEAM_REFLECT_STRENGTH_DIVSION = 1.4;
-	@ConfigPropertyBoolean(modid = "refraction", category = "general", id = "disable_additive_blending", comment = "If disabled, will make beams opaque and not blend visually.", defaultValue = true)
-	public static boolean ADDITIVE_BLENDING = true;
-	@ConfigPropertyDouble(modid = "refraction", category = "index_of_refraction", id = "air_ior", comment = "IOR of air", defaultValue = 1)
+    @ConfigPropertyBoolean(modid = "refraction", category = "laser_rendering", id = "disable_additive_blending", comment = "If disabled, will make beams opaque and not blend visually.", defaultValue = true)
+    public static boolean ADDITIVE_BLENDING = true;
+    @ConfigPropertyBoolean(modid = "refraction", category = "laser_rendering", id = "use_flat_beam_texture", comment = "If enabled, will use a completely flat texture for beams. It's a nice minimalistic style.", defaultValue = false)
+    public static boolean USE_FLAT_BEAM_TEXTURE = false;
+    @ConfigPropertyDouble(modid = "refraction", category = "index_of_refraction", id = "air_ior", comment = "IOR of air", defaultValue = 1)
 	public static double AIR_IOR = 1;
 	@ConfigPropertyDouble(modid = "refraction", category = "index_of_refraction", id = "glass_ior", comment = "IOR of glass", defaultValue = 1.2)
 	public static double GLASS_IOR = 1.2;
