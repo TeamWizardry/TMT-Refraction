@@ -2,7 +2,7 @@ package com.teamwizardry.refraction.client.proxy;
 
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.client.EventHandlerClient;
-import com.teamwizardry.refraction.client.LaserRenderer;
+import com.teamwizardry.refraction.client.render.LaserRenderer;
 import com.teamwizardry.refraction.client.render.RenderLaserPoint;
 import com.teamwizardry.refraction.client.render.ScrewdriverOverlay;
 import com.teamwizardry.refraction.common.entity.EntityGrenade;

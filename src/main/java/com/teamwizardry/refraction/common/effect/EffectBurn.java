@@ -30,7 +30,7 @@ public class EffectBurn extends Effect {
 
     @Override
     public int getCooldown() {
-        return potency == 0 ? 0 : 255 / potency;
+        return potency == 0 ? 0 : 25500 / potency;
     }
 
     @Override

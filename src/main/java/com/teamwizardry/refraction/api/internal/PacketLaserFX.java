@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.api.internal;
 
 import com.teamwizardry.librarianlib.common.network.PacketBase;
-import com.teamwizardry.refraction.client.LaserRenderer;
+import com.teamwizardry.refraction.client.render.LaserRenderer;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;

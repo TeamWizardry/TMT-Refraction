@@ -1,7 +1,6 @@
-package com.teamwizardry.refraction.client;
+package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.client.render.RenderLaserUtil;
 import com.teamwizardry.refraction.api.beam.ReflectionTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
