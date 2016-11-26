@@ -120,7 +120,7 @@ public class TileSplitter extends TileMod implements ITickable {
 					Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
 					Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
-                    beam.createSimilarBeam(outgoingDir).setColor(c).spawnParticle().spawn();
+                    beam.createSimilarBeam(outgoingDir).setColor(c).enableParticleBeginning().spawn();
                 }
 			}
 		} else beams = null;
@@ -157,8 +157,8 @@ public class TileSplitter extends TileMod implements ITickable {
 			Vec3d incomingDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 			Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
-            beam.createSimilarBeam(beam.finalLoc, incomingDir).setColor(new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / 2)).spawnParticle().spawn();
-            beam.createSimilarBeam(beam.finalLoc, outgoingDir).setColor(new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / 2)).spawnParticle().spawn();
+            beam.createSimilarBeam(beam.finalLoc, incomingDir).setColor(new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / 2)).enableParticleBeginning().spawn();
+            beam.createSimilarBeam(beam.finalLoc, outgoingDir).setColor(new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / 2)).enableParticleBeginning().spawn();
         }
 	}
 }

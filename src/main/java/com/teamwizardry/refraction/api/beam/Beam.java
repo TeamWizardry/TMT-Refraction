@@ -2,7 +2,6 @@ package com.teamwizardry.refraction.api.beam;
 
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.bitsaving.IllegalValueSetException;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
@@ -105,9 +104,14 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     public int allowedBounceTimes = Constants.BEAM_BOUNCE_LIMIT;
 
     /**
-     * Will spawn a particle at the beginning of the beam for pretties.
+     * Will spawn a particle at either the beginning or at the end of the beam if any are enabled.
      */
-    private boolean spawnSparkle = false;
+    public boolean enableParticleBeginning = false, enableParticleEnd;
+
+    /**
+     * The physical particle that will spawn at the beginning or end
+     */
+    public ParticleBuilder particleBeginning, particleEnd;
 
     public Beam(@NotNull World world, @NotNull Vec3d initLoc, @NotNull Vec3d slope, @NotNull Color color) {
         this.world = world;
@@ -115,6 +119,12 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         this.slope = slope;
         this.finalLoc = slope.normalize().scale(128).add(initLoc);
         this.color = color;
+
+        particleEnd = particleBeginning = new ParticleBuilder(3);
+        particleBeginning.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+        particleBeginning.disableRandom();
+        particleBeginning.disableMotionCalculation();
+        particleBeginning.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 5));
     }
 
     public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color) {
@@ -190,12 +200,44 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     }
 
     /**
-     * Will create a tiny particle at it's end for pretties.
+     * Will change the physical particle to spawn in the beginning.
+     *
+     * @param particleBeginning The new particle to spawn
+     * @return The new beam created. Can be modified as needed.
+     */
+    public Beam setParticleBeginning(ParticleBuilder particleBeginning) {
+        this.particleBeginning = particleBeginning;
+        return this;
+    }
+
+    /**
+     * Will change the physical particle to spawn in the end.
+     *
+     * @param particleEnd The new particle to spawn
+     * @return The new beam created. Can be modified as needed.
+     */
+    public Beam setParticleEnd(ParticleBuilder particleEnd) {
+        this.particleEnd = particleEnd;
+        return this;
+    }
+
+    /**
+     * Will create a tiny particle at the initLoc of the beam
      *
      * @return The new beam created. Can be modified as needed.
      */
-    public Beam spawnParticle() {
-        this.spawnSparkle = true;
+    public Beam enableParticleBeginning() {
+        this.enableParticleBeginning = true;
+        return this;
+    }
+
+    /**
+     * Will create a tiny particle at the end of the beam
+     *
+     * @return The new beam created. Can be modified as needed.
+     */
+    public Beam enableParticleEnd() {
+        this.enableParticleEnd = true;
         return this;
     }
 
@@ -388,31 +430,27 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // EFFECT HANDLING
 
         // PLAYER REFLECTING
-        if (trace.typeOfHit == RayTraceResult.Type.ENTITY && trace.entityHit instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) trace.entityHit;
-            if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null
-                    && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null
-                    && player.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null
-                    && player.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null)
-                createSimilarBeam(player.getLook(1)).setIgnoreEntities(true).spawnParticle().spawn();
-        }
+        if (ThreadLocalRandom.current().nextInt(3) == 0)
+            if (trace.typeOfHit == RayTraceResult.Type.ENTITY && trace.entityHit instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) trace.entityHit;
+                if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null
+                        && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null
+                        && player.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null
+                        && player.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null)
+                    createSimilarBeam(player.getLook(1)).setIgnoreEntities(true).enableParticleBeginning().spawn();
+            }
         // PLAYER REFLECTING
-
-        // PARTICLES
-        if (spawnSparkle) {
-            ParticleBuilder reflectionSparkle = new ParticleBuilder(2);
-            reflectionSparkle.setAlphaFunction(new InterpFadeInOut(0.1f, 0.1f));
-            reflectionSparkle.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
-            reflectionSparkle.disableRandom();
-            reflectionSparkle.disableMotionCalculation();
-            reflectionSparkle.setScale((float) (ThreadLocalRandom.current().nextDouble(1, 1.3)));
-            reflectionSparkle.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ThreadLocalRandom.current().nextInt(18, 20)));
-            ParticleSpawner.spawn(reflectionSparkle, world, new StaticInterp<>(initLoc), 1);
-        }
-        // PARTICLES
 
         // Particle packet sender
         PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
+
+        // PARTICLES
+        if (enableParticleBeginning)
+            ParticleSpawner.spawn(particleBeginning, world, new StaticInterp<>(initLoc), 1);
+
+        if (trace.typeOfHit != RayTraceResult.Type.MISS && enableParticleEnd)
+            ParticleSpawner.spawn(particleEnd, world, new StaticInterp<>(trace.hitVec), 1);
+        // PARTICLES
     }
 
     @Override

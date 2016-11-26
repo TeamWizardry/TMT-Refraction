@@ -20,5 +20,6 @@ public class EventHandlerClient {
 	public void stitch(TextureStitchEvent.Pre event) {
 		event.getMap().registerSprite(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
 		event.getMap().registerSprite(new ResourceLocation(Refraction.MOD_ID, "particles/star"));
-	}
+        event.getMap().registerSprite(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle_blurred"));
+    }
 }

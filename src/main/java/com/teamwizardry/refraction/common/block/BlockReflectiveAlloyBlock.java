@@ -74,7 +74,7 @@ public class BlockReflectiveAlloyBlock extends BlockMod implements IBeamHandler 
 					outgoingDir = incomingDir;
 			}
 			Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
-            beam.createSimilarBeam(outgoingLoc, outgoingDir, c).setUUID(UUID.randomUUID()).spawnParticle().spawn();
-        }
+			beam.createSimilarBeam(outgoingLoc, outgoingDir, c).setUUID(UUID.randomUUID()).enableParticleBeginning().spawn();
+		}
 	}
 }

@@ -87,8 +87,8 @@ public class TileDiscoBall extends TileMod implements ITickable {
 			int x = (int) (radius * MathHelper.cos((float) Math.toRadians(handler.rotX)));
 			int z = (int) (radius * MathHelper.sin((float) Math.toRadians(handler.rotZ)));
 			handler.beam = handler.beam.createSimilarBeam().setColor(c).setSlope(handler.beam.slope.addVector(x, 0, z));
-            handler.beam.spawnParticle().spawn();
-            return handler.life <= 0;
+			handler.beam.enableParticleBeginning().spawn();
+			return handler.life <= 0;
 		});
 	}
 

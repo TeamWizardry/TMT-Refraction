@@ -1,7 +1,6 @@
 package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
-import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.init.ModAchievements;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,48 +20,49 @@ import java.awt.*;
  */
 public class ItemLaserPen extends ItemMod {
 
-	public static final double RANGE = 32;
+    public static final double RANGE = 32;
 
-	public ItemLaserPen() {
-		super("laser_pen");
-		setMaxStackSize(1);
-	}
+    public ItemLaserPen() {
+        super("laser_pen");
+        setMaxStackSize(1);
+    }
+
+    @Override
+    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+        playerIn.addStat(ModAchievements.LASER_PEN);
+    }
+
+    @Override
+    public EnumAction getItemUseAction(ItemStack stack) {
+        return EnumAction.BOW;
+    }
+
+    @Override
+    public int getMaxItemUseDuration(ItemStack stack) {
+        return 1000;
+    }
 
 	@Override
-	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
-		playerIn.addStat(ModAchievements.LASER_PEN);
-	}
-
-	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
-		return EnumAction.BOW;
-	}
-
-	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
-		return 1000;
-	}
-
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		playerIn.setActiveHand(hand);
-		if (!worldIn.isRemote) {
-			EntityLaserPointer e = new EntityLaserPointer(worldIn, playerIn, hand == EnumHand.MAIN_HAND);
-			e.updateRayPos();
-			worldIn.spawnEntityInWorld(e);
-		}
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+        playerIn.setActiveHand(hand);
 		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 	}
 
-	@Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
-		if (!player.getEntityWorld().isRemote) {
-			boolean handMod = player.getHeldItemMainhand() == stack;
+    // TODO: ignore first entity only
+    @Override
+    public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
+        if (!player.getEntityWorld().isRemote) {
+            boolean handMod = player.getHeldItemMainhand() == stack;
 
-			Vec3d cross = player.getLook(1).crossProduct(new Vec3d(0, player.getEyeHeight(), 0)).normalize().scale(player.width / 2);
-			if (!handMod) cross = cross.scale(-1);
-			Vec3d playerVec = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord, player.posZ + cross.zCoord);
-			new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0x26FF0000, true)).setIgnoreEntities(true).setEnableEffect(false).spawn();
-		}
-	}
+            Vec3d cross = player.getLook(1).crossProduct(new Vec3d(0, player.getEyeHeight(), 0)).normalize().scale(player.width / 2);
+            if (!handMod) cross = cross.scale(-1);
+            Vec3d playerVec = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord, player.posZ + cross.zCoord);
+
+            new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0x26FF0000, true))
+                    .setIgnoreEntities(true)
+                    .setEnableEffect(false)
+                    .enableParticleEnd()
+                    .spawn();
+        }
+    }
 }
