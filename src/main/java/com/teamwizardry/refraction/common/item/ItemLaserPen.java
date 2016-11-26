@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import com.teamwizardry.refraction.init.ModAchievements;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,7 +46,12 @@ public class ItemLaserPen extends ItemMod {
 	@Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
         playerIn.setActiveHand(hand);
-		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
+        if (!worldIn.isRemote) {
+            EntityLaserPointer e = new EntityLaserPointer(worldIn, playerIn, hand == EnumHand.MAIN_HAND);
+            e.updateRayPos();
+            worldIn.spawnEntityInWorld(e);
+        }
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 	}
 
     // TODO: ignore first entity only
