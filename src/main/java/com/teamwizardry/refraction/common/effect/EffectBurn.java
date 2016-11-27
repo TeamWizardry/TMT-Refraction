@@ -6,10 +6,12 @@ import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
 import com.teamwizardry.refraction.common.item.armor.ReflectiveAlloyArmor;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -30,7 +32,7 @@ public class EffectBurn extends Effect {
 
     @Override
     public int getCooldown() {
-        return potency == 0 ? 0 : 25500 / potency;
+        return potency == 0 ? 0 : 255 / potency;
     }
 
     @Override
@@ -62,6 +64,7 @@ public class EffectBurn extends Effect {
             }
         } else if (beam.trace.entityHit != null) {
             double potency = this.potency;
+            boolean pass = true;
             if (beam.trace.entityHit instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) beam.trace.entityHit;
                 for (ItemStack armor : player.getArmorInventoryList()) {
@@ -70,7 +73,21 @@ public class EffectBurn extends Effect {
                             potency /= Constants.PLAYER_BEAM_REFLECT_STRENGTH_DIVSION;
                 }
             }
-            beam.trace.entityHit.setFire((int) potency);
+            if (beam.trace.entityHit instanceof EntityItem) {
+                EntityItem item = (EntityItem) beam.trace.entityHit;
+                if (FurnaceRecipes.instance().getSmeltingResult(item.getEntityItem()) != null) {
+                    if (ThreadLocalRandom.current().nextInt(100) == 0) {
+                        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(item.getEntityItem());
+                        EntityItem cooked = new EntityItem(world, item.posX, item.posY, item.posZ);
+                        cooked.dropItem(result.getItem(), 1);
+                        cooked.isImmuneToFire();
+                        cooked.setNoPickupDelay();
+                        item.getEntityItem().stackSize--;
+                    }
+                    pass = false;
+                }
+            }
+            if (pass) beam.trace.entityHit.setFire((int) potency);
         }
     }
 

@@ -27,11 +27,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class EffectFreeze extends Effect {
 
     @Override
-    public EffectType getType() {
-        return EffectType.BEAM;
-    }
-
-    @Override
     public void run(World world, Set<BlockPos> locations) {
         if (beam.trace.typeOfHit == RayTraceResult.Type.BLOCK) {
             if (potency >= 10 && potency <= 50 && ThreadLocalRandom.current().nextInt(0, 10) == 0) {
