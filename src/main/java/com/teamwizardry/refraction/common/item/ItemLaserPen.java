@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -47,7 +48,7 @@ public class ItemLaserPen extends ItemMod {
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
         playerIn.setActiveHand(hand);
         if (!worldIn.isRemote) {
-            EntityLaserPointer e = new EntityLaserPointer(worldIn, playerIn, hand == EnumHand.MAIN_HAND);
+            EntityLaserPointer e = new EntityLaserPointer(worldIn, playerIn, hand == EnumHand.MAIN_HAND ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT);
             e.updateRayPos();
             worldIn.spawnEntityInWorld(e);
         }
@@ -58,7 +59,7 @@ public class ItemLaserPen extends ItemMod {
     @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
         if (!player.getEntityWorld().isRemote) {
-            boolean handMod = player.getHeldItemMainhand() == stack;
+            boolean handMod = player.getHeldItemMainhand() == stack ^ player.getPrimaryHand() == EnumHandSide.LEFT;
 
             Vec3d cross = player.getLook(1).crossProduct(new Vec3d(0, player.getEyeHeight(), 0)).normalize().scale(player.width / 2);
             if (!handMod) cross = cross.scale(-1);
