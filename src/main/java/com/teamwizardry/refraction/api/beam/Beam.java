@@ -321,7 +321,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     /**
      * Will set the beam's new starting position or origin and will continue on towards the slope still specified.
      *
-     * @param initLoc The new initial location to set the beam to start from.
+     * @param initLoc The new initial location to set the beam to exciterPos from.
      * @return This beam itself for the convenience of editing a beam in one line/chain.
      */
     public Beam setInitLoc(@NotNull Vec3d initLoc) {

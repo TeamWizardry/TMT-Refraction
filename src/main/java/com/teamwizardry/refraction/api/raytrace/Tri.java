@@ -44,7 +44,7 @@ public class Tri {
 		return start.add(dir.scale(t));
 
 //		// Bring points to their respective coordinate frame
-//		Vec3d pq = end.subtract(start);
+//		Vec3d pq = end.subtract(exciterPos);
 //		Vec3d pa = end.subtract(a);
 //		Vec3d pb = end.subtract(b);
 //		Vec3d pc = end.subtract(c);

@@ -21,8 +21,8 @@ public class Constants {
 	public static int GLOWSTONE_ALPHA = 64;
 	@ConfigPropertyInt(modid = "refraction", category = "general", id = "glowstone_fuel_expire_delay", comment = "Change this and it'll set how long glowstone fuel will last in blocks like the laser", defaultValue = 500)
 	public static int GLOWSTONE_FUEL_EXPIRE_DELAY = 500;
-	@ConfigPropertyInt(modid = "refraction", category = "general", id = "beam_particle_life", comment = "Change this and it'll set how long beams will stay. Higher numbers will make beams feel laggier but they just VISUALLY stay longer. This is useful if you have terrible TPS issues and/or beams start flickering for whatever reason.", defaultValue = 3)
-	public static int BEAM_PARTICLE_LIFE = 3;
+    @ConfigPropertyInt(modid = "refraction", category = "general", id = "beam_particle_life", comment = "Change this and it'll set how long beams will stay. Higher numbers will make beams feel laggier but they just VISUALLY stay longer. This is useful if you have terrible TPS issues and/or beams exciterPos flickering for whatever reason.", defaultValue = 3)
+    public static int BEAM_PARTICLE_LIFE = 3;
 	@ConfigPropertyInt(modid = "refraction", category = "general", id = "disco_ball_beam_bounce_limit", comment = "The disco ball's beams have a bounce/reflecting limit of 4 times. This is to prevent tps drops. This number is kind of a sweet spot in an enclosed cube of reflective alloy blocks. If you set it to a higher value, it will reflect a lot more beams but will drop your tps if you cannot handle it.", defaultValue = 4)
 	public static int DISCO_BALL_BEAM_BOUNCE_LIMIT = 4;
 	@ConfigPropertyInt(modid = "refraction", category = "general", id = "beam_bounce_limit", comment = "The amount of times a beam is allowed to bounce or reflect MAXIMUM. If this number is decreased, beams will stop after reflecting or bouncing for that amount of times. This is mainly a safety check against trapped infinitely bouncing beams.", defaultValue = 50)
