@@ -17,7 +17,7 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
-version = "1.2"
+version = "1.1"
 group = "com.teamwizardry"
 archivesBaseName = "refraction"
 
@@ -54,15 +54,15 @@ repositories {
     }
     maven {
 	name 'jared maven'
-	url "http://blamejared.com/maven"
+	url "http://maven.blamejared.com"
     }
 }
 
 dependencies {
     compile 'com.github.TeamWizardry:LibrarianLib:-SNAPSHOT'
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.3.382:api"
-    deobfCompile "MineTweaker3:MineTweaker3-API:3.0.15"
-    runtime "mezz.jei:jei_1.10.2:3.13.3.382"
+    deobfCompile "mezz.jei:jei_1.10.2:3.13.6.387:api"
+    deobfCompile "MineTweaker3:MineTweaker3-API:3.0.14.59"
+    runtime "mezz.jei:jei_1.10.2:3.13.6.387"
 }
 
 processResources {
