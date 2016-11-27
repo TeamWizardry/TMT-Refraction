@@ -52,11 +52,16 @@ repositories {
         name 'tterag maven'
         url "http://maven.tterrag.com/"
     }
+    maven {
+	name 'jared maven'
+	url "http://blamejared.com/maven"
+    }
 }
 
 dependencies {
     compile 'com.github.TeamWizardry:LibrarianLib:-SNAPSHOT'
     deobfCompile "mezz.jei:jei_1.10.2:3.13.3.382:api"
+    deobfCompile "MineTweaker3:MineTweaker3-API:3.0.15"
     runtime "mezz.jei:jei_1.10.2:3.13.3.382"
 }
 
