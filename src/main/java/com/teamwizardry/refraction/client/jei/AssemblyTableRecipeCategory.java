@@ -87,6 +87,22 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 
 	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {
+        if (!(recipeWrapper instanceof AssemblyTableRecipeWrapper)) return;
 
-	}
+        AssemblyTableRecipeWrapper wrapper = (AssemblyTableRecipeWrapper) recipeWrapper;
+        int index = 0;
+
+        double slice = 2 * Math.PI / wrapper.getInputs().size();
+        for (int i = 0; i < wrapper.getInputs().size(); i++) {
+            double angle = slice * i;
+            int newX = (int) (82 + 60 * Math.cos(angle));
+            int newY = (int) (100 + 60 * Math.sin(angle));
+            recipeLayout.getItemStacks().init(index, true, newX, newY);
+            recipeLayout.getItemStacks().set(index, (ItemStack) wrapper.getInputs().get(i));
+            index++;
+        }
+
+        recipeLayout.getItemStacks().init(index, true, 82, 100);
+        recipeLayout.getItemStacks().set(index, (ItemStack) wrapper.getOutputs().get(0));
+    }
 }

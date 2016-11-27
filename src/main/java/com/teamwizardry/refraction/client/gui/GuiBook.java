@@ -31,12 +31,13 @@ public class GuiBook extends GuiBase {
     public static final Sprite SCROLL_GROOVE_VERTICAL_MIDDLE = SPRITE_SHEET.getSprite("scroll_groove_v", 12, 12);
     public static final Sprite SCROLL_GROOVE_VERTICAL_TOP = SPRITE_SHEET.getSprite("scroll_groove_v_top", 12, 12);
     public static final Sprite SCROLL_GROOVE_VERTICAL_BOTTOM = SPRITE_SHEET.getSprite("scroll_groove_v_bottom", 12, 12);
-
-    public static final Texture BACKGROUND_TEXTURE = new Texture(new ResourceLocation(Refraction.MOD_ID, "textures/gui/book_background.png"));
-    public static final Sprite BACKGROUND_SPRITE = BACKGROUND_TEXTURE.getSprite("bg", 256, 256);
-    public static final Texture BACKGROUND_HANDLE_TEXTURE = new Texture(new ResourceLocation(Refraction.MOD_ID, "textures/gui/book_background_handle.png"));
-    public static final Sprite BACKGROUND_HANDLE_SPRITE = BACKGROUND_HANDLE_TEXTURE.getSprite("bg", 256, 256);
     static final int iconSize = 12;
+    public static Texture BACKGROUND_TEXTURE = new Texture(new ResourceLocation(Refraction.MOD_ID, "textures/gui/book_background.png"));
+    public static Sprite BACKGROUND_SPRITE = BACKGROUND_TEXTURE.getSprite("bg", 232, 323);
+    public static Texture BACKGROUND_HANDLE_TEXTURE = new Texture(new ResourceLocation(Refraction.MOD_ID, "textures/gui/book_background_handle.png"));
+    public static Sprite BACKGROUND_HANDLE_SPRITE = BACKGROUND_HANDLE_TEXTURE.getSprite("bg", 232, 323);
+    public static Texture BACKGROUND_BOOTUP_TEXTURE = new Texture(new ResourceLocation(Refraction.MOD_ID, "textures/gui/book_background_bootup.png"));
+    public static Sprite BACKGROUND_BOOTUP_SPRITE = BACKGROUND_BOOTUP_TEXTURE.getSprite("bg", 232, 323);
     @NotNull
     public static SidebarItem selectedSiderbar;
     public static ComponentVoid componnetPlate;
@@ -60,7 +61,7 @@ public class GuiBook extends GuiBase {
         scrollSlider.getPercentageChange().add((p) -> scrolledView.scrollToPercent(new Vec2d(0, p)));
         scrollGrooves.add(scrollSlider);
 
-        componnetPlate = new ComponentVoid(20, 10);
+        componnetPlate = new ComponentVoid(30, -20);
         //scrolledView.add(componnetPlate);
 
         int id = 0;
@@ -109,7 +110,6 @@ public class GuiBook extends GuiBase {
                                     }
 
                                     item.setPages(subPages);
-                                    item.prevMillis = System.currentTimeMillis();
                                     categories.add(item);
                                     if (i == 0) selectedSiderbar = item;
                                     getMainComponents().add(item.get());
@@ -131,6 +131,11 @@ public class GuiBook extends GuiBase {
                 (getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
         getMainComponents().add(background_handle);
         getMainComponents().add(componnetPlate);
+
+        ComponentSprite bootup = new ComponentSprite(BACKGROUND_BOOTUP_SPRITE,
+                (getGuiWidth() / 2) - (BACKGROUND_HANDLE_SPRITE.getWidth() / 2),
+                (getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
+        // getMainComponents().add(bootup);
     }
 
     @Override

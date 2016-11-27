@@ -17,9 +17,9 @@ public class Refraction {
 
 	public static final String MOD_ID = "refraction";
 	public static final String MOD_NAME = "Refraction";
-	public static final String VERSION = "1.1";
-	public static final String CLIENT = "com.teamwizardry.refraction.client.proxy.ClientProxy";
-	public static final String SERVER = "com.teamwizardry.refraction.common.proxy.CommonProxy";
+    public static final String VERSION = "1.2";
+    public static final String CLIENT = "com.teamwizardry.refraction.client.proxy.ClientProxy";
+    public static final String SERVER = "com.teamwizardry.refraction.common.proxy.CommonProxy";
 	public static final String DEPENDENCIES = "required-after:librarianlib;required-after:JEI@[3.13.3,)";
 
 	@SidedProxy(clientSide = CLIENT, serverSide = SERVER)

@@ -1,9 +1,9 @@
 {
 	"spritesheet":{
-		"textureWidth":256,
-		"textureHeight":256,
+		"textureWidth":166,
+		"textureHeight":231,
 		"sprites":{
-			"bg":[0, 0, 256, 256]
+			"bg":[0, 0, 166, 231]
 		}
 	}
 }

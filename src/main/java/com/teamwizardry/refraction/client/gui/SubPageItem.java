@@ -11,7 +11,6 @@ import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.Refraction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 
 /**
@@ -19,11 +18,9 @@ import net.minecraft.util.text.TextFormatting;
  */
 public class SubPageItem {
 
-    private static final double TRANSITION_TIME_X = 0.75;
     private final String info;
     private final ComponentVoid text;
-    public float prevX = 0, destX, currentX;
-    public boolean isAnimating = false;
+    public float destX;
     private SidebarItem sidebarItem;
     private int id;
     private ResourceLocation sliderLoc = new ResourceLocation(Refraction.MOD_ID, "textures/gui/slider_1.png");
@@ -48,16 +45,11 @@ public class SubPageItem {
         });
 
         background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
-            if (GuiBook.selectedSiderbar.getId() == sidebarItem.getId()) {
-                destX = 15;
-            } else destX = 10;
+            if (GuiBook.selectedSiderbar.getId() == sidebarItem.getId()) destX = 15;
+            else destX = 10;
             if (GuiBook.selectedSiderbar.getId() == sidebarItem.getId()) {
                 background.setVisible(true);
                 background.setEnabled(true);
-
-                double millisTransition = (System.currentTimeMillis() - sidebarItem.prevMillis) / 1000.0;
-                if (millisTransition < TRANSITION_TIME_X)
-                    currentX = -MathHelper.sin((float) (millisTransition * Math.PI / (TRANSITION_TIME_X * 2))) * (destX - prevX) - prevX;
 
                 if (sidebarItem.currentPage == id) {
                     background.setPos(new Vec2d(10, 20 + 20 * id));
@@ -67,13 +59,10 @@ public class SubPageItem {
                     GuiBook.componnetPlate.add(text);
                 } else {
                     background.setPos(new Vec2d(15, 20 + 20 * id));
-                    //background.setSize(new Vec2d(100, 18));
 
                     infoComp.getText().setValue(info);
                 }
             } else {
-                //background.setPos(new Vec2d(-40, 20 + 20 * id));
-                //background.setSize(new Vec2d(100, 18));
                 background.setVisible(false);
                 background.setEnabled(false);
             }

@@ -1,0 +1,12 @@
+{
+	"spritesheet":{
+		"textureWidth":166,
+		"textureHeight":4158,
+		"sprites":{
+			"bg":{
+				"pos":[10, 0, 155, 219],
+				"frames":[18]
+			}
+		}
+	}
+}

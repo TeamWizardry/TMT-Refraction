@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class TextAdapter {
 
-    public static int wrapLength = 220;
+    public static int wrapLength = 190;
     private int x, y;
     private ComponentVoid parent;
 
