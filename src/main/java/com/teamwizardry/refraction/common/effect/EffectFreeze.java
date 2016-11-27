@@ -50,13 +50,14 @@ public class EffectFreeze extends Effect {
                             potency /= Constants.PLAYER_BEAM_REFLECT_STRENGTH_DIVSION;
             }
             if (entities instanceof EntityLivingBase) {
+
                 EntityLivingBase entity = (EntityLivingBase) entities;
                 entity.setFire(0);
                 int effectDuration = 50;
 
-                entity.motionX *= 10.0 * potency / 255.0;
-                entity.motionZ *= 10.0 * potency / 255.0;
-                entity.velocityChanged = true;
+                Potion slowness = Potion.getPotionById(2);
+                if (slowness != null)
+                    entity.addPotionEffect(new PotionEffect(slowness, effectDuration, (int) (5 * potency / 255), true, false));
 
                 if (potency >= 100) {
                     Potion weakness = Potion.getPotionById(18);
@@ -65,6 +66,9 @@ public class EffectFreeze extends Effect {
                     Potion blindness = Potion.getPotionById(15);
                     if (blindness != null)
                         entity.addPotionEffect(new PotionEffect(blindness, effectDuration, (int) (5 * potency / 255), true, false));
+                    Potion jump = Potion.getPotionById(8);
+                    if (jump != null)
+                        entity.addPotionEffect(new PotionEffect(jump, effectDuration, 500, true, false));
                 }
 
                 if (potency >= 150) {
