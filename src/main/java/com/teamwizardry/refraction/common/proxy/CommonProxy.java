@@ -9,6 +9,7 @@ import com.teamwizardry.refraction.client.gui.GuiHandler;
 import com.teamwizardry.refraction.common.bridge.ExciterTracker;
 import com.teamwizardry.refraction.common.core.CatChaseHandler;
 import com.teamwizardry.refraction.common.core.DispenserScrewDriverBehavior;
+import com.teamwizardry.refraction.common.mt.MTRefractionPlugin;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.init.*;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
@@ -56,6 +57,7 @@ public class CommonProxy {
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.SCREW_DRIVER, new DispenserScrewDriverBehavior());
 		SoundManager.INSTANCE.addSpeaker(ModBlocks.LASER, 40, ModSounds.electrical_hums, 0.035f, 1f, false);
 		SoundManager.INSTANCE.addSpeaker(ModBlocks.LIGHT_BRIDGE, 67, ModSounds.light_bridges, 0.05f, 1f, false);
+		MTRefractionPlugin.init();
 	}
 
 	public World getWorld() {
