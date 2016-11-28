@@ -55,7 +55,6 @@ public class ItemLaserPen extends ItemMod {
         return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 	}
 
-    // TODO: ignore first entity only
     @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
         if (!player.getEntityWorld().isRemote) {
@@ -65,8 +64,8 @@ public class ItemLaserPen extends ItemMod {
             if (!handMod) cross = cross.scale(-1);
             Vec3d playerVec = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord, player.posZ + cross.zCoord);
 
-            new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0x26FF0000, true))
-                    .setIgnoreEntities(true)
+            new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0xFF0000))
+                    .setUUIDToSkip(player.getUniqueID())
                     .setEnableEffect(false)
                     .enableParticleEnd()
                     .spawn();

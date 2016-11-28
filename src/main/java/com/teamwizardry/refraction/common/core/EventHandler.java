@@ -19,46 +19,46 @@ import java.util.List;
  * Created by LordSaad44
  */
 public class EventHandler {
-	public static final EventHandler INSTANCE = new EventHandler();
+    public static final EventHandler INSTANCE = new EventHandler();
 
-	private EventHandler() {
-		MinecraftForge.EVENT_BUS.register(this);
-	}
+    private EventHandler() {
+        MinecraftForge.EVENT_BUS.register(this);
+    }
 
-	@SubscribeEvent
-	public void worldUnload(WorldEvent.Unload event) {
-		PacketAXYZMarks.controlPoints.clear();
-	}
+    @SubscribeEvent
+    public void worldUnload(WorldEvent.Unload event) {
+        PacketAXYZMarks.controlPoints.clear();
+    }
 
-	@SubscribeEvent
-	public void worldLoad(WorldEvent.Load event) {
-		PacketAXYZMarks.controlPoints.clear();
-	}
+    @SubscribeEvent
+    public void worldLoad(WorldEvent.Load event) {
+        PacketAXYZMarks.controlPoints.clear();
+    }
 
-	@SubscribeEvent
-	public void craft(EventAssemblyTableCraft event) {
-		if (event.getOutput().getItem() == ModBlocks.TRANSLOCATOR.getItemForm())
-			for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
-				player.addStat(ModAchievements.TRANSLOCATOR);
-		else if (event.getOutput().getItem() == ModBlocks.PRISM.getItemForm())
-			for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
-				player.addStat(ModAchievements.PRISM);
-		else if (event.getOutput().getItem() == ModBlocks.AXYZ.getItemForm())
-			for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
-				player.addStat(ModAchievements.AXYZ);
-	}
+    @SubscribeEvent
+    public void craft(EventAssemblyTableCraft event) {
+        if (event.getOutput().getItem() == ModBlocks.TRANSLOCATOR.getItemForm())
+            for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
+                player.addStat(ModAchievements.TRANSLOCATOR);
+        else if (event.getOutput().getItem() == ModBlocks.PRISM.getItemForm())
+            for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
+                player.addStat(ModAchievements.PRISM);
+        else if (event.getOutput().getItem() == ModBlocks.AXYZ.getItemForm())
+            for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
+                player.addStat(ModAchievements.AXYZ);
+    }
 
-	public List<EntityPlayer> getPlayersWithinRange(World world, BlockPos pos, double range) {
-		List<EntityPlayer> players = new ArrayList<>();
-		for (int i = 0; i < world.playerEntities.size(); ++i) {
-			EntityPlayer entityplayer = world.playerEntities.get(i);
+    public List<EntityPlayer> getPlayersWithinRange(World world, BlockPos pos, double range) {
+        List<EntityPlayer> players = new ArrayList<>();
+        for (int i = 0; i < world.playerEntities.size(); ++i) {
+            EntityPlayer entityplayer = world.playerEntities.get(i);
 
-			if (EntitySelectors.NOT_SPECTATING.apply(entityplayer)) {
-				double d0 = entityplayer.getDistanceSq(pos);
+            if (EntitySelectors.NOT_SPECTATING.apply(entityplayer)) {
+                double d0 = entityplayer.getDistanceSq(pos);
 
-				if (range < 0.0D || d0 < range * range) players.add(entityplayer);
-			}
-		}
-		return players;
-	}
+                if (range < 0.0D || d0 < range * range) players.add(entityplayer);
+            }
+        }
+        return players;
+    }
 }

@@ -9,7 +9,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -17,9 +16,11 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 public class EntityTrace {
 
@@ -32,6 +33,8 @@ public class EntityTrace {
     public double range = Constants.BEAM_RANGE;
     public boolean ignoreEntities;
     public boolean skippedRefAlloyPlayer;
+    @Nullable
+    public UUID uuidToSkip;
 
     public EntityTrace(World world, Vec3d pos, Vec3d slope) {
         this.world = world;
@@ -51,6 +54,11 @@ public class EntityTrace {
 
     public EntityTrace setIgnoreEntities(boolean ignoreEntities) {
         this.ignoreEntities = ignoreEntities;
+        return this;
+    }
+
+    public EntityTrace setUUIDToSkip(UUID uuidToSkip) {
+        this.uuidToSkip = uuidToSkip;
         return this;
     }
 
@@ -76,20 +84,14 @@ public class EntityTrace {
             Entity current = list.get(j);
             AxisAlignedBB axis = current.getEntityBoundingBox().expandXyz(current.getCollisionBorderSize());
 
+            if (uuidToSkip != null && current.getUniqueID().equals(uuidToSkip)) {
+                j++;
+                continue;
+            }
+
             if ((current instanceof EntityLivingBase &&
                     ((EntityLivingBase) current).getActivePotionEffect(MobEffects.INVISIBILITY) != null) ||
                     (current instanceof EntityPlayer && ((EntityPlayer) current).isSpectator())) {
-
-                if (!skippedRefAlloyPlayer && current instanceof EntityPlayer) {
-                    EntityPlayer player = (EntityPlayer) current;
-                    if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null
-                            && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null
-                            && player.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null
-                            && player.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null) {
-                        skippedRefAlloyPlayer = true;
-                        continue;
-                    }
-                }
                 j++;
                 continue;
             }

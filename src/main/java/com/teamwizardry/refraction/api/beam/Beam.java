@@ -113,6 +113,9 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      */
     public ParticleBuilder particleBeginning, particleEnd;
 
+    @Nullable
+    public UUID uuidToSkip;
+
     public Beam(@NotNull World world, @NotNull Vec3d initLoc, @NotNull Vec3d slope, @NotNull Color color) {
         this.world = world;
         this.initLoc = initLoc;
@@ -207,6 +210,17 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      */
     public Beam setParticleBeginning(ParticleBuilder particleBeginning) {
         this.particleBeginning = particleBeginning;
+        return this;
+    }
+
+    /**
+     * The RayTrace will skip the first time it hits an entity with this uuid
+     *
+     * @param uuidToSkip The uuid to skip the first time it's detected
+     * @return The new beam created. Can be modified as needed.
+     */
+    public Beam setUUIDToSkip(UUID uuidToSkip) {
+        this.uuidToSkip = uuidToSkip;
         return this;
     }
 
@@ -374,7 +388,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // EFFECT CHECKING //
 
         // BEAM PHASING CHECKS //
-        EntityTrace entityTrace = new EntityTrace(world, initLoc, slope).setRange(range);
+        EntityTrace entityTrace = new EntityTrace(world, initLoc, slope).setUUIDToSkip(uuidToSkip).setRange(range);
         if (ignoreEntities || (effect != null && effect.getType() == EffectType.BEAM)) // If anyone of these are true, phase beam
             trace = entityTrace.setIgnoreEntities(true).cast();
         else trace = entityTrace.setIgnoreEntities(false).cast();

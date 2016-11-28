@@ -2,7 +2,6 @@ package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.init.ModAchievements;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -27,18 +26,8 @@ public class ItemPhotonCannon extends ItemMod {
     }
 
     @Override
-    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
-        playerIn.addStat(ModAchievements.LASER_PEN);
-    }
-
-    @Override
     public EnumAction getItemUseAction(ItemStack stack) {
         return EnumAction.BOW;
-    }
-
-    @Override
-    public int getMaxItemUseDuration(ItemStack stack) {
-        return 1000;
     }
 
     @Override
@@ -48,15 +37,21 @@ public class ItemPhotonCannon extends ItemMod {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
-        if (!player.getEntityWorld().isRemote) {
-            boolean handMod = player.getHeldItemMainhand() == stack ^ player.getPrimaryHand() == EnumHandSide.LEFT;
-
-            Vec3d cross = player.getLook(1).crossProduct(new Vec3d(0, player.getEyeHeight(), 0)).normalize().scale(player.width / 2);
-            if (!handMod) cross = cross.scale(-1);
-            Vec3d playerVec = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord - 0.2, player.posZ + cross.zCoord);
-
-            new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0xFF0ADA)).setEnableEffect(false).setIgnoreEntities(true).enableParticleEnd().spawn();
-        }
+    public int getMaxItemUseDuration(ItemStack stack) {
+        return 1000;
     }
+
+    @Override
+    public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
+        boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
+        Vec3d cross = playerIn.getLook(1).crossProduct(new Vec3d(0, playerIn.getEyeHeight(), 0)).normalize().scale(playerIn.width / 2);
+        if (!handMod) cross = cross.scale(-1);
+        Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
+
+        new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), new Color(0xFF0ADA))
+                .setUUIDToSkip(playerIn.getUniqueID())
+                .enableParticleEnd()
+                .spawn();
+    }
+
 }

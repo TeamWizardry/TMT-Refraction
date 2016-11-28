@@ -1,7 +1,8 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "0": "refraction:blocks/mirror_normal"
+      "0": "refraction:blocks/mirror_normal",
+      "particle": "refraction:blocks/mirror_normal"
     },
     "elements": [
         {

@@ -9,6 +9,7 @@ import com.teamwizardry.refraction.client.gui.GuiHandler;
 import com.teamwizardry.refraction.common.bridge.ExciterTracker;
 import com.teamwizardry.refraction.common.core.CatChaseHandler;
 import com.teamwizardry.refraction.common.core.DispenserScrewDriverBehavior;
+import com.teamwizardry.refraction.common.core.EventHandler;
 import com.teamwizardry.refraction.common.mt.MTRefractionPlugin;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.init.*;
@@ -39,6 +40,7 @@ public class CommonProxy {
 		ModEffects.init();
 		ModAchievements.init();
 
+		EventHandler.INSTANCE.getClass();
 		SoundManager.INSTANCE.getClass();
 		ExciterTracker.INSTANCE.getClass();
 
