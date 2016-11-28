@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.mt;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
@@ -12,7 +13,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import com.teamwizardry.refraction.api.AssemblyRecipe;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 
-@ZenClass("mods.refraction.assembly_table")
+@ZenClass("mods.refraction.AssemblyTable")
 public class AssemblyTable
 {
 	protected static final String name = "Refraction Assembly Table";
@@ -78,7 +79,7 @@ public class AssemblyTable
 	private static class Remove implements IUndoableAction
 	{
 		private final ItemStack output;
-		List<AssemblyRecipe> toRemove;
+		List<AssemblyRecipe> toRemove = new ArrayList<>();
 		
 		public Remove(ItemStack output)
 		{
@@ -121,10 +122,9 @@ public class AssemblyTable
 		@Override
 		public void undo()
 		{
-			if (toRemove != null)
-				for (AssemblyRecipe recipe : toRemove)
-					if (recipe != null)
-						AssemblyRecipes.recipes.add(recipe);
+			for (AssemblyRecipe recipe : toRemove)
+				if (recipe != null)
+					AssemblyRecipes.recipes.add(recipe);
 		}
 	}
 }
