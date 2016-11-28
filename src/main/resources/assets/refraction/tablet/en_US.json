@@ -37,12 +37,7 @@
             {
               "type": "player"
             },
-            ", welcome to ",
-            {
-              "text": "<my>",
-              "strikethrough": true
-            },
-            "the world of reflection and refraction! You will not be disappointed at the results of mirror arrays and rainbows.",
+            ", welcome to my world of reflection and refraction! You will not be disappointed at the results of mirror arrays and rainbows.",
             "",
             "",
             "Let's get started, shall we?"
@@ -216,7 +211,35 @@
           ]
         },
         {
-          "info": "Splitter",
+          "info": "Screwdriver",
+          "text": [
+            "You've already supposedly read and used the screwdriver, but to recap:",
+            "",
+            "",
+            "Right click the air to increment it's angle. Shift right click to decrement.",
+            "",
+            "Right click the top or bottom of a mirror/splitter to rotate it around the y-axis. Shift right click to reverse the rotation",
+            "",
+            "",
+            "Right click the sides of a mirror/splitter to rotate it around the x-axis. Shift right click to reverse the rotation.",
+            "",
+            "Setting the angle and placing the screwdriver in a dispenser facing a mirror then powering it (INDIRECTLY - read warning) ",
+            "will change the mirror's angle as if you right clicked it on the face the dispenser is hitting.",
+            "",
+            "",
+            "To invert the dispenser as if it's shift right clicking the screw driver, put the screwdriver into a crafting gird.",
+            "the output of the recipe will be an 'inverted' screwdriver that will do what you want on dispensers and vice versa to reinvert it.",
+            {
+              "text": "[!] WARNING [!]",
+              "color": "red",
+              "bold": "true"
+            },
+            " Powering a dispenser with a screwdriver with a direct line of redstone power to adjust a mirror might seem glitchy. This is because",
+            "powering a mirror will set it's angle to it's 'powered' state and vice versa. To fix this, simply power the dispenser INDIRECTLY through a block."
+          ]
+        },
+        {
+          "info": "Mirrors / Splitter",
           "text": [
             "This block is a half-mirror. It has the same properties as a mirror, but instead of reflecting a beam directly",
             ", the beam will be split into 2 halves. One is reflected like that of a normal mirror, and the other half phases",

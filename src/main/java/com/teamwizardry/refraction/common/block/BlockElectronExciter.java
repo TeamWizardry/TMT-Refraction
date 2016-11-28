@@ -63,6 +63,7 @@ public class BlockElectronExciter extends BlockMod implements IBeamHandler {
     public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
         ExciterObject exciterObject = ExciterTracker.INSTANCE.addExciter(world, pos);
         for (Beam beam : beams) {
+            if (!beam.enableEffect) continue;
             EnumFacing block = world.getBlockState(pos).getValue(FACING);
             Effect effect = beam.effect;
             if (effect == null)

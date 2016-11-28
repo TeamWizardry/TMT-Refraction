@@ -16,6 +16,7 @@ public class ModItems {
 	public static ItemReflectiveAlloy REFLECTIVE_ALLOY;
 	public static ItemBook BOOK;
 	public static ItemGrenade GRENADE;
+	public static ItemPhotonCannon PHOTON_CANNON;
 	public static ItemReflectiveAlloyHelmet HELMET;
 	public static ItemReflectiveAlloyChestPlate CHESTPLATE;
 	public static ItemReflectiveAlloyLeggings LEGGINGS;
@@ -27,6 +28,7 @@ public class ModItems {
 		REFLECTIVE_ALLOY = new ItemReflectiveAlloy();
 		BOOK = new ItemBook();
 		GRENADE = new ItemGrenade();
+		PHOTON_CANNON = new ItemPhotonCannon();
 		HELMET = new ItemReflectiveAlloyHelmet();
 		CHESTPLATE = new ItemReflectiveAlloyChestPlate();
 		LEGGINGS = new ItemReflectiveAlloyLeggings();

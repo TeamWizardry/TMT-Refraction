@@ -25,24 +25,21 @@ public class TextModule implements IParsedModule {
 
         component = new ComponentText(x, y, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
         component.getUnicode().setValue(true);
+        component.setPos(new Vec2d(0, 0));
 
         if (this.x + fr.getStringWidth(text) > TextAdapter.wrapLength) {
-            component.setPos(new Vec2d(0, 0));
-            String[] strings = (String[]) fr.listFormattedStringToWidth(text, TextAdapter.wrapLength - x).toArray();
-
-            ComponentText string1 = new TextModule(strings[0], this.x, this.y).getComponent();
-            component.add(string1);
             this.x = 0;
             this.y += fr.FONT_HEIGHT;
-
-            TextModule string2 = new TextModule(text.substring(strings[0].length()).trim(), this.x, this.y);
-            component.add(string2.getComponent());
-            this.x = string2.x;
-            this.y = string2.y;
-        } else {
-            component.getText().setValue(this.text);
-            this.x += fr.getStringWidth(text);
         }
+
+        for (String string : fr.listFormattedStringToWidth(text, TextAdapter.wrapLength)) {
+            TextModule module = new TextModule(string, this.x, this.y);
+            ComponentText componentText = module.getComponent();
+            component.add(componentText);
+            this.x = module.x;
+            this.y += module.y;
+        }
+
         fr.setBidiFlag(false);
         fr.setUnicodeFlag(false);
     }
