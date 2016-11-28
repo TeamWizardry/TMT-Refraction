@@ -80,6 +80,7 @@ public class EffectDisperse extends Effect {
         }
 
         for (Entity entity : toPush) {
+            if (beam.uuidToSkip != null && beam.uuidToSkip.equals(entity.getUniqueID())) continue;
             if (!entity.isEntityAlive()) continue;
             double potency = this.potency;
             if (entity instanceof EntityPlayer) {

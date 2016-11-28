@@ -41,6 +41,7 @@ public class EffectFreeze extends Effect {
             toApply.addAll(world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos)));
 
         for (Entity entities : toApply) {
+            if (beam.uuidToSkip != null && beam.uuidToSkip.equals(entities.getUniqueID())) continue;
             double potency = this.potency;
             if (entities instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) entities;
