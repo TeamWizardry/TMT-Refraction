@@ -380,10 +380,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // EFFECT CHECKING //
         if (effect == null && enableEffect) {
             Effect tempEffect = EffectTracker.getEffect(this);
-            if (tempEffect != null) {
-                if (tempEffect.getCooldown() == 0) effect = tempEffect;
-                else if (ThreadLocalRandom.current().nextInt(0, tempEffect.getCooldown()) == 0) effect = tempEffect;
-            }
+            if (tempEffect != null) effect = tempEffect;
         } else if (effect != null && !enableEffect) effect = null;
         // EFFECT CHECKING //
 

@@ -49,7 +49,7 @@ public class ItemPhotonCannon extends ItemMod {
         Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
 
         Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), new Color(0xFF0ADA))
-                .setEnableEffect(false)
+                .setEnableEffect(true)
                 .setUUIDToSkip(playerIn.getUniqueID())
                 .enableParticleEnd();
         beam.spawn();
