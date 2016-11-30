@@ -1,11 +1,13 @@
 package com.teamwizardry.refraction.api;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import java.awt.*;
-import java.util.ArrayList;
+import net.minecraftforge.oredict.OreDictionary;
+import com.teamwizardry.librarianlib.LibrarianLog;
 
 /**
  * Created by LordSaad44
@@ -82,6 +84,14 @@ public class AssemblyRecipe {
 				this.items.add(new ItemStack((Item) obj));
 			} else if (obj instanceof Block) {
 				this.items.add(new ItemStack((Block) obj));
+			} else if (obj instanceof String) {
+				List<ItemStack> oreDicts = OreDictionary.getOres((String) obj);
+				if (oreDicts == null || oreDicts.size() <= 0)
+				{
+					LibrarianLog.INSTANCE.warn("Invalid OreDict entry " + obj + " in recipe for " + result.getDisplayName());
+					continue;
+				}
+				this.items.add(OreDictionary.getOres((String) obj).get(0));
 			}
 		}
 	}

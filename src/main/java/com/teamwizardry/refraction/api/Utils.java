@@ -92,7 +92,7 @@ public class Utils {
 	}
 
 	public static boolean matchItemStackLists(List<ItemStack> items, List<Object> required) {
-		java.util.List<Object> inputsMissing = new ArrayList<>(required);
+		List<Object> inputsMissing = new ArrayList<>(required);
 		for (ItemStack i : items) {
 			for (int j = 0; j < inputsMissing.size(); j++) {
 				Object inp = inputsMissing.get(j);
@@ -107,17 +107,37 @@ public class Utils {
 		return inputsMissing.isEmpty();
 	}
 
-	public static boolean itemEquals(ItemStack stack, Object stack2) {
-		if (stack2 instanceof String) {
-
-			for (ItemStack orestack : OreDictionary.getOres((String) stack2)) {
+	public static boolean itemEquals(ItemStack stack, Object stack2)
+	{
+		if (stack2 instanceof String)
+		{
+			for (ItemStack orestack : OreDictionary.getOres((String) stack2))
+			{
 				ItemStack cstack = orestack.copy();
 
-				if (cstack.getItemDamage() == 32767) cstack.setItemDamage(stack.getItemDamage());
-				if (stack.isItemEqual(cstack)) return true;
+				if (cstack.getItemDamage() == 32767)
+					cstack.setItemDamage(stack.getItemDamage());
+				if (stack.isItemEqual(cstack))
+					return true;
 			}
 
-		} else return stack2 instanceof ItemStack && simpleAreStacksEqual(stack, (ItemStack) stack2);
+		}
+		else if (stack2 instanceof ItemStack)
+		{
+			for (int oreID : OreDictionary.getOreIDs((ItemStack) stack2))
+			{
+				for (ItemStack orestack : OreDictionary.getOres(OreDictionary.getOreName(oreID)))
+				{
+					ItemStack cstack = orestack.copy();
+					
+					if (cstack.getItemDamage() == 32767)
+						cstack.setItemDamage(stack.getItemDamage());
+					if (stack.isItemEqual(cstack))
+						return true;
+				}
+			}
+			return simpleAreStacksEqual(stack, (ItemStack) stack2);
+		}
 		return false;
 	}
 

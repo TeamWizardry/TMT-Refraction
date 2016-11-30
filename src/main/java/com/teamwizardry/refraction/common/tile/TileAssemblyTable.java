@@ -199,7 +199,7 @@ public class TileAssemblyTable extends TileMod {
             if (color.getAlpha() > recipe.getMaxStrength()) continue;
             if (color.getAlpha() < recipe.getMinStrength()) continue;
 
-            if (Utils.matchItemStackLists(recipe.getItems(), Utils.getListOfObjects(getListOfItems()))) {
+            if (Utils.matchItemStackLists(getListOfItems(), Utils.getListOfObjects(recipe.getItems()))) {
                 //MARKER: REGULAR CRAFTING
                 EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(worldObj, pos, recipe.getResult().copy());
                 MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);

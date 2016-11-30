@@ -26,26 +26,23 @@ public class MTRefractionPlugin
 	{
 		if (iStack == null)
 			return null;
-		else
+		if (iStack instanceof IOreDictEntry)
+			return ((IOreDictEntry) iStack).getName();
+		if (iStack instanceof IItemStack)
+			return toStack((IItemStack) iStack);
+		if (iStack instanceof IngredientStack)
 		{
-			if (iStack instanceof IOreDictEntry)
-				return ((IOreDictEntry) iStack).getName();
-			if (iStack instanceof IItemStack)
-				return toStack((IItemStack) iStack);
-			if (iStack instanceof IngredientStack)
-			{
-				IIngredient ingr = ReflectionHelper.getPrivateValue(IngredientStack.class, (IngredientStack) iStack, "ingredient");
-				return toObject(ingr);
-			}
-			return null;
+			IIngredient ingr = ReflectionHelper.getPrivateValue(IngredientStack.class, (IngredientStack) iStack, "ingredient");
+			return toObject(ingr);
 		}
+		return null;
 	}
 	
 	public static Object[] toObjects(IIngredient[] iStacks)
 	{
-		Object[] oA = new Object[iStacks.length];
+		Object[] objects = new Object[iStacks.length];
 		for (int i = 0; i < iStacks.length; i++)
-			oA[i] = toObject(iStacks[i]);
-		return oA;
+			objects[i] = toObject(iStacks[i]);
+		return objects;
 	}
 }

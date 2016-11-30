@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -19,9 +20,13 @@ public class AssemblyTable
 	protected static final String name = "Refraction Assembly Table";
 	
 	@ZenMethod
-	public static void addRecipe(IItemStack output, int minColor, int maxColor, IItemStack[] input)
+	public static void addRecipe(IItemStack output, IIngredient[] input, int minAlpha, int maxAlpha, int minRed, int maxRed, int minGreen, int maxGreen, int minBlue, int maxBlue)
 	{
-		MineTweakerAPI.apply(new Add(new AssemblyRecipe(MTRefractionPlugin.toStack(output), new Color(minColor, true), new Color(maxColor, true), input)));
+		if (minAlpha < 0 || maxAlpha < 0 || minRed < 0 || maxRed < 0 || minGreen < 0 || maxGreen < 0 || minBlue < 0 || maxBlue < 0)
+			return;
+		if (minAlpha > 255 || maxAlpha > 255 || minRed > 255 || maxRed > 255 || minGreen > 255 || maxGreen > 255 || minBlue > 255 || maxBlue > 255)
+			return;
+		MineTweakerAPI.apply(new Add(new AssemblyRecipe(MTRefractionPlugin.toStack(output), new Color(minRed, minGreen, minBlue, minAlpha), new Color(maxRed, maxGreen, maxBlue, maxAlpha), MTRefractionPlugin.toObjects(input))));
 	}
 	
 	private static class Add implements IUndoableAction
