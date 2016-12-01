@@ -24,7 +24,7 @@ public class AssemblyTable
 	{
 		if (minAlpha < 0 || maxAlpha < 0 || minRed < 0 || maxRed < 0 || minGreen < 0 || maxGreen < 0 || minBlue < 0 || maxBlue < 0)
 			return;
-		if (minAlpha > 255 || maxAlpha > 255 || minRed > 255 || maxRed > 255 || minGreen > 255 || maxGreen > 255 || minBlue > 255 || maxBlue > 255)
+		if (minRed > 255 || maxRed > 255 || minGreen > 255 || maxGreen > 255 || minBlue > 255 || maxBlue > 255)
 			return;
 		MineTweakerAPI.apply(new Add(new AssemblyRecipe(MTRefractionPlugin.toStack(output), new Color(minRed, minGreen, minBlue, minAlpha), new Color(maxRed, maxGreen, maxBlue, maxAlpha), MTRefractionPlugin.toObjects(input))));
 	}
