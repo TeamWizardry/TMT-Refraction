@@ -61,7 +61,7 @@ public class GuiBook extends GuiBase {
         scrollSlider.getPercentageChange().add((p) -> scrolledView.scrollToPercent(new Vec2d(0, p)));
         scrollGrooves.add(scrollSlider);
 
-        componnetPlate = new ComponentVoid(30, -20);
+        componnetPlate = new ComponentVoid(30, -25);
         //scrolledView.add(componnetPlate);
 
         int id = 0;
@@ -101,9 +101,8 @@ public class GuiBook extends GuiBase {
                                             if (page.get("info").isJsonPrimitive() && page.get("text").isJsonArray()) {
                                                 String pageInfo = page.get("info").getAsString();
                                                 JsonArray pageArray = page.getAsJsonArray("text");
-                                                TextAdapter adapter = new TextAdapter(0, 0);
-                                                adapter.parseLine(pageArray);
-                                                SubPageItem pageItem = new SubPageItem(item, subID++, pageInfo, adapter.getParent());
+                                                TextAdapter adapter = new TextAdapter(pageArray);
+                                                SubPageItem pageItem = new SubPageItem(item, subID++, pageInfo, adapter.getComponent());
                                                 subPages.add(pageItem);
                                             }
                                         }

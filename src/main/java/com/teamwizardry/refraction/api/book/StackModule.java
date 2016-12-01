@@ -23,7 +23,7 @@ public class StackModule implements IParsedModule {
     @NotNull
     public ComponentText component;
 
-    public StackModule(@Nullable ItemStack stack, int x, int y) {
+    public StackModule(TextAdapter textAdapter, @Nullable ItemStack stack, int x, int y) {
         fr.setBidiFlag(true);
         fr.setUnicodeFlag(true);
         this.stack = stack;

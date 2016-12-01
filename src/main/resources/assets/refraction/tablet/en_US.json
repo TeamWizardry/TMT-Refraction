@@ -7,37 +7,15 @@
         {
           "info": "Hello",
           "text": [
-            "Hello there, ",
-            {
-              "type": "player"
-            },
-            "! I'm Eve, your personal assistant!",
+            "Hello there, %player%! I'm Eve, your personal assistant!",
             "",
-            "I'm here to help you ",
-            {
-              "text": "<study phys",
-              "strikethrough": true
-            },
-            {
-              "text": "ICS",
-              "obfuscated": true,
-              "strikethrough": true
-            },
-            {
-              "text": ">",
-              "strikethrough": true
-            },
-            "learn how to manipulate light using reflection and refraction!",
+            "I'm here to help you &m<study phys&kics&r&m>&rlearn how to manipulate light using reflection and refraction!",
             "",
             "",
             "Ever wanted to suck items and entities with a single beam of light? Ever wanted to create a disco ball based quarry? How about creating a laser defense system? Or, heck, maybe you just wanted to make an epic laser show?",
             "",
             "",
-            "Well then, ",
-            {
-              "type": "player"
-            },
-            ", welcome to my world of reflection and refraction! You will not be disappointed at the results of mirror arrays and rainbows.",
+            "Well then, %player%, welcome to my world of reflection and refraction! You will not be disappointed at the results of mirror arrays and rainbows.",
             "",
             "",
             "Let's get started, shall we?"
@@ -46,27 +24,12 @@
         {
           "info": "Baby Steps",
           "text": [
-            "Ok, let's see here... Ah, yes. So you'll first want to make a",
-            {
-              "type": "stack",
-              "id": "refraction:assembly_table"
-            },
-            ". This simple block will help you craft everything you need. I will guide you through the steps of its usage when we get to that.",
+            "Ok, let's see here... Ah, yes. So you'll first want to make an %recipe:refraction:assembly_table%. This simple block will help you craft everything you need. I will guide you through the steps of its usage when we get to that.",
             "",
-            "For now, craft one. It requires 7 iron ingots and 1",
-            {
-              "type": "stack",
-              "id": "refraction:lens"
-            },
-            ".",
+            "For now, craft one. It requires 7 iron ingots and 1 %recipe:refraction:lens%.",
             "",
             "",
-            "Next, you'll want to craft a",
-            {
-              "type": "stack",
-              "id": "refraction:magnifier"
-            },
-            ". When provided with a 3x3 of lens blocks above it - provided that they have a line of sight to the sky - it will converge the sunlight into a focused beam of light directly below it.",
+            "Next, you'll want to craft a %recipe:refraction:magnifier%. When provided with a 3x3 of lens blocks above it - provided that they have a line of sight to the sky - it will converge the sunlight into a focused beam of light directly below it.",
             "",
             "",
             "I should note that you should place the magnifier (with the lens blocks above it) anywhere above the assembly table. This will be a one time setup to get you the basic items and can be altered after we're done with the second step."
@@ -81,33 +44,13 @@
             "To get something very reflective, using a beam to fuse three iron and three gold in the table should be sufficient. The table requires redstone power to function, to get the components running.",
             "",
             "",
-            "It'll give you a highly",
-            {
-              "type": "stack",
-              "id": "refraction:reflective_alloy"
-            },
-            ", very useful for light manipulation."
+            "It'll give you a highly %recipe:refraction:reflective_alloy%, very useful for light manipulation."
           ]
         },
         {
           "info": "Reflection",
           "text": [
-            "Now that you have more reflective resources, you can dispense with the annoyance of placing the",
-            {
-              "type": "stack",
-              "id": "refraction:magnifier"
-            },
-            " exactly above the table. By creating a",
-            {
-              "type": "stack",
-              "id": "refraction:mirror"
-            },
-            " with reflective alloys and rotating it using a",
-            {
-              "type": "stack",
-              "id": "refraction:screwdriver"
-            },
-            " you can redirect beams to any direction.",
+            "Now that you have more reflective resources, you can dispense with the annoyance of placing the %recipe:refraction:magnifier% exactly above the table. By creating a %recipe:refraction:mirror% with reflective alloys and rotating it using a %recipe:refraction:screw_driver% you can redirect beams to any direction.",
             "",
             "",
             "Using the screwdriver on the air will decrease its precision, and sneak-using it will increase its precision. Using it on a mirror's top will rotate it horizontally, and on a mirror's side it'll rotate it vertically.",
@@ -126,15 +69,10 @@
             "",
             "This particular block will split a light beam into it's three basic colors: red, green, and blue. We'll get to the effects of these colors later on, as I've already said, but to acquire this block, you'll want a minimum of 5 mirrors all pointing into the assembly table with beams from magnifiers on each of them.",
             "",
-            "Next, right click the assembly table with 6 lens blocks to input the items and provide a redstone signal to the table and it will craft you your first prism.",
+            "Next, right click the %recipe:refraction:assembly_table% with 6 lens blocks to input the items and provide a redstone signal to the table and it will craft you your first prism.",
             "",
             "",
-            {
-              "text": "[!] WARNING [!]",
-              "color": "red",
-              "bold": "true"
-            },
-            " Do NOT place the prism in front of a beam just yet. Please read the next section before proceeding because the next part can be lethal to both your person and your surroundings if caution is not taken!"
+            "&c&l[!] WARNING [!]&r Do NOT place the prism in front of a beam just yet. Please read the next section before proceeding because the next part can be lethal to both your person and your surroundings if caution is not taken!"
           ]
         },
         {
@@ -165,12 +103,7 @@
         {
           "info": "Effects",
           "text": [
-            "So, if you haven't burnt down your area already, let's get to the more notable effects. You can get the rest of the effects from the mod using a",
-            {
-              "type": "stack",
-              "id": "refraction:reflection_chamber"
-            },
-            ".",
+            "So, if you haven't burnt down your area already, let's get to the more notable effects. You can get the rest of the effects from the mod using a %recipe:refraction:reflection_chamber%recipe:.",
             "",
             "This block will merge any two or more beams that intersect with it and produce a final beam based on the weighted average of all the colors that went into it, taking into account color strength as well as outputting the beam in an averaged angle between them all.",
             "",
@@ -229,12 +162,8 @@
             "",
             "To invert the dispenser as if it's shift right clicking the screw driver, put the screwdriver into a crafting gird.",
             "the output of the recipe will be an 'inverted' screwdriver that will do what you want on dispensers and vice versa to reinvert it.",
-            {
-              "text": "[!] WARNING [!]",
-              "color": "red",
-              "bold": "true"
-            },
-            " Powering a dispenser with a screwdriver with a direct line of redstone power to adjust a mirror might seem glitchy. This is because",
+            "",
+            "&c&l[!] WARNING [!]&r Powering a dispenser with a screwdriver with a direct line of redstone power to adjust a mirror might seem glitchy. This is because",
             "powering a mirror will set it's angle to it's 'powered' state and vice versa. To fix this, simply power the dispenser INDIRECTLY through a block."
           ]
         },
@@ -272,12 +201,7 @@
             "You could point a burn beam at it and it'll burn everything surrounding it, or point a yellow beam and have it become a circular quarry.",
             "",
             "",
-            {
-              "text": "[!] WARNING [!]",
-              "color": "red",
-              "bold": "true"
-            },
-            " It is HIGHLY recommended you surround the block with reflective alloy blocks to avoid potential disasters from occuring."
+            "&c&l[!] WARNING [!]&r It is HIGHLY recommended you surround the block with reflective alloy blocks to avoid potential disasters from occuring."
           ]
         },
         {

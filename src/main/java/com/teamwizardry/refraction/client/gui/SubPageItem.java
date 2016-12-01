@@ -4,7 +4,6 @@ import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.client.gui.GuiComponent;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
@@ -19,7 +18,7 @@ import net.minecraft.util.text.TextFormatting;
 public class SubPageItem {
 
     private final String info;
-    private final ComponentVoid text;
+    private final ComponentText text;
     public float destX;
     private SidebarItem sidebarItem;
     private int id;
@@ -27,7 +26,7 @@ public class SubPageItem {
     private Texture sliderTexture = new Texture(sliderLoc);
     private Sprite sliderSprite = sliderTexture.getSprite("slider", 130, 18);
 
-    public SubPageItem(SidebarItem sidebarItem, int id, String info, ComponentVoid text) {
+    public SubPageItem(SidebarItem sidebarItem, int id, String info, ComponentText text) {
         this.sidebarItem = sidebarItem;
         this.id = id;
         this.info = info;
@@ -38,7 +37,7 @@ public class SubPageItem {
         ComponentSprite background = new ComponentSprite(sliderSprite, 20, 20 + 20 * id, 105, 18);
         background.addTag(id);
 
-        ComponentText infoComp = new ComponentText(10, 8, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
+        ComponentText infoComp = new ComponentText(10, 9, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
         background.add(infoComp);
 
         new ButtonMixin<>(background, () -> {

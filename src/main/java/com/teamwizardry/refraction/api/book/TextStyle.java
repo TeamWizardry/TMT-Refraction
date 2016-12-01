@@ -15,7 +15,6 @@ public final class TextStyle {
 
     private boolean bold, italic, underlined, strikethrough, obfuscated;
 
-
     /**
      * Will provide you with the formatting codes ready to directly be added to a string to format it.
      *

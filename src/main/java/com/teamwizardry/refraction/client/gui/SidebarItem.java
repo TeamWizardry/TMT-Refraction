@@ -51,7 +51,7 @@ public class SidebarItem {
         ComponentSprite sprite = new ComponentSprite(icon, 5, 1, 16, 16);
         background.add(sprite);
 
-        ComponentText infoComp = new ComponentText(sprite.getSize().getXi() + 10, 8, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
+        ComponentText infoComp = new ComponentText(sprite.getSize().getXi() + 10, 9, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
         background.add(infoComp);
 
         pages.forEach(page -> background.add(page.get()));
