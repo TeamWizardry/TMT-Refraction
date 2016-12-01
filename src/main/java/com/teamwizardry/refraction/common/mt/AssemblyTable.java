@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.mt;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import minetweaker.IUndoableAction;
@@ -26,7 +25,7 @@ public class AssemblyTable
 			return;
 		if (minRed > 255 || maxRed > 255 || minGreen > 255 || maxGreen > 255 || minBlue > 255 || maxBlue > 255)
 			return;
-		MineTweakerAPI.apply(new Add(new AssemblyRecipe(MTRefractionPlugin.toStack(output), new Color(minRed, minGreen, minBlue, minAlpha), new Color(maxRed, maxGreen, maxBlue, maxAlpha), MTRefractionPlugin.toObjects(input))));
+		MineTweakerAPI.apply(new Add(new AssemblyRecipe(MTRefractionPlugin.toStack(output), minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, MTRefractionPlugin.toObjects(input))));
 	}
 	
 	private static class Add implements IUndoableAction

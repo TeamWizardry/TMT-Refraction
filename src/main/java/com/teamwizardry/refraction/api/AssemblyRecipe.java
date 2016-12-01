@@ -22,16 +22,16 @@ public class AssemblyRecipe {
 
 	public AssemblyRecipe(ItemStack result, int minRed, int minGreen, int minBlue, int minStrength, int maxRed, int maxGreen, int maxBlue, int maxStrength, Object... items) {
 		this.result = result;
-		this.minRed = minRed;
-		this.maxRed = maxRed;
-		this.minGreen = minGreen;
-		this.maxGreen = maxGreen;
-		this.minBlue = minBlue;
-		this.maxBlue = maxBlue;
-		this.minStrength = minStrength;
-		this.maxStrength = maxStrength;
-		this.minColor = new Color(minRed, minGreen, minBlue, minStrength);
-		this.maxColor = new Color(maxRed, maxGreen, maxBlue, maxStrength);
+		this.minRed = minRed < maxRed ? minRed : maxRed;
+		this.maxRed = maxRed < minRed ? minRed : maxRed;
+		this.minGreen = minGreen < maxGreen ? minGreen : maxGreen;
+		this.maxGreen = maxGreen < minGreen ? minGreen : maxGreen;
+		this.minBlue = minBlue < maxBlue ? minBlue : maxBlue;
+		this.maxBlue = maxBlue < minBlue ? minBlue : maxBlue;
+		this.minStrength = minStrength < maxStrength ? minStrength : maxStrength;
+		this.maxStrength = maxStrength < minStrength ? minStrength : maxStrength;
+		this.minColor = new Color(this.minRed, this.minGreen, this.minBlue, this.minStrength > 255 ? 255 : this.minStrength);
+		this.maxColor = new Color(this.maxRed, this.maxGreen, this.maxBlue, this.maxStrength > 255 ? 255 : this.maxStrength);
 
 		this.items = new ArrayList<>();
 		for (Object obj : items) {
@@ -46,6 +46,14 @@ public class AssemblyRecipe {
 				this.items.add(new ItemStack((Item) obj));
 			} else if (obj instanceof Block) {
 				this.items.add(new ItemStack((Block) obj));
+			}else if (obj instanceof String) {
+				List<ItemStack> oreDicts = OreDictionary.getOres((String) obj);
+				if (oreDicts == null || oreDicts.size() <= 0)
+				{
+					LibrarianLog.INSTANCE.warn("Invalid OreDict entry " + obj + " in recipe for " + result.getDisplayName());
+					continue;
+				}
+				this.items.add(OreDictionary.getOres((String) obj).get(0));
 			}
 		}
 	}
