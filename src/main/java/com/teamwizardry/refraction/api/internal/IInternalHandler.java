@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  *         Created at 11:55 PM on 12/7/16.
  */
 public interface IInternalHandler {
-	void fireLaserPacket(Beam beam);
+	void fireLaserPacket(@NotNull Beam beam);
 
 	@Nullable
 	ItemStack getStackFromString(@NotNull String string);

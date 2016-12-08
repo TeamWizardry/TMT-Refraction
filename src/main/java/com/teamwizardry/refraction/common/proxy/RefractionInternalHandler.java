@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class RefractionInternalHandler implements IInternalHandler {
 	@Override
-	public void fireLaserPacket(Beam beam) {
+	public void fireLaserPacket(@NotNull Beam beam) {
 		PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(beam.initLoc, beam.finalLoc, beam.color), new NetworkRegistry.TargetPoint(beam.world.provider.getDimension(), beam.initLoc.xCoord, beam.initLoc.yCoord, beam.initLoc.zCoord, 256));
 	}
 

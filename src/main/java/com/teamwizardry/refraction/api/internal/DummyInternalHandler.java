@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class DummyInternalHandler implements IInternalHandler {
 	@Override
-	public void fireLaserPacket(Beam beam) {
+	public void fireLaserPacket(@NotNull Beam beam) {
 		// NO-OP
 	}
 
