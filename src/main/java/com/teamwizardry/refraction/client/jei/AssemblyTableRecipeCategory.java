@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.client.jei;
 
+import com.teamwizardry.refraction.api.Constants;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -18,7 +19,7 @@ import javax.annotation.Nullable;
  */
 public class AssemblyTableRecipeCategory implements IRecipeCategory {
 
-	public static final String UID = "refraction.assembly_table";
+	public static final String UID = Constants.MOD_ID + ".assembly_table";
 	private final IDrawable background;
 	private final String localizedName;
 	private float hover = (float) (Math.random() * Math.PI * 2.0D);
@@ -28,7 +29,7 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 
 	public AssemblyTableRecipeCategory(IGuiHelper guiHelper) {
 		background = guiHelper.createBlankDrawable(180, 180);
-		localizedName = I18n.format("refraction.jei.assembly_table");
+		localizedName = I18n.format(Constants.MOD_ID + ".jei.assembly_table");
 	}
 
 	@Nonnull

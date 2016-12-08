@@ -3,11 +3,12 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.IPrecision;
+import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
-import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.client.render.RenderMirror;
-import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -79,7 +80,7 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 
 	@Override

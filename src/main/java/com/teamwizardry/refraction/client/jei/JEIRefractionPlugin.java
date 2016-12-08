@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.client.jei;
 
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import mezz.jei.api.*;
@@ -68,7 +69,7 @@ public class JEIRefractionPlugin extends BlankModPlugin {
 			IRecipeRegistry registry = JEIRefractionPlugin.jeiRuntime.getRecipeRegistry();
 			IFocus<ItemStack> focus = registry.createFocus(IFocus.Mode.OUTPUT, stack);
 			for (IRecipeCategory<?> category : registry.getRecipeCategories(focus)) {
-				if (category.getUid().equals("refraction.assembly_table")
+				if (category.getUid().equals(Constants.MOD_ID + ".assembly_table")
 						|| category.getUid().equals(VanillaRecipeCategoryUid.CRAFTING)) {
 					List<IRecipeLayoutDrawable> layouts = getLayouts(registry, category, focus);
 					if (!layouts.isEmpty())

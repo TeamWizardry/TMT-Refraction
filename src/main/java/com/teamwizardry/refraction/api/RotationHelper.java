@@ -4,7 +4,7 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
-public class RotationHelper {
+public final class RotationHelper {
 	public static Vec3d toVec3d(float pitch, float yaw) {
 		double sinPitch = Math.sin(pitch);
 		double cosPitch = Math.cos(pitch);

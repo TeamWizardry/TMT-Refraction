@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
-import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.AssemblyRecipe;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 
-	private static ResourceLocation loc = new ResourceLocation(Refraction.MOD_ID, "textures/gui/assembly_recipe_alpha_bar.png");
+	private static ResourceLocation loc = new ResourceLocation(Constants.MOD_ID, "textures/gui/assembly_recipe_alpha_bar.png");
 	private static Texture texture = new Texture(loc);
 	private static Sprite
 			BAR = texture.getSprite("bar", 64, 8),

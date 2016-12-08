@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client.render;
 
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
 import com.teamwizardry.refraction.common.tile.TileDiscoBall;
@@ -41,7 +41,7 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
 		IModel model;
 		if (ball == null) {
 			try {
-				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/disco_ball.obj"));
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID, "block/disco_ball.obj"));
 				ball = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 						location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 			} catch (Exception e) {

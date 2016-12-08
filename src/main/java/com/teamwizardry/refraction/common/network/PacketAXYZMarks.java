@@ -8,6 +8,7 @@ import com.teamwizardry.librarianlib.common.util.DimWithPos;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.position.InterpBezier3D;
 import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import io.netty.buffer.ByteBuf;
 import kotlin.Pair;
 import net.minecraft.util.ResourceLocation;
@@ -63,7 +64,7 @@ public class PacketAXYZMarks extends PacketBase {
 			ParticleBuilder wormholeVoid = new ParticleBuilder(10);
 			ParticleSpawner.spawn(wormholeVoid, world, new StaticInterp<>(new Vec3d(pos).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(isAir ? 5 : 10, isAir ? 10 : 20), 0, (aFloat, particleBuilder) -> {
 				wormholeVoid.setAlphaFunction(new InterpFadeInOut(0.2f, 0.2f));
-				wormholeVoid.setRenderNormalLayer(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+				wormholeVoid.setRenderNormalLayer(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 				double radius = 0.4;
 				double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
 				double r = radius * ThreadLocalRandom.current().nextFloat() + (isAir ? 0 : 0.5);
@@ -79,7 +80,7 @@ public class PacketAXYZMarks extends PacketBase {
 			ParticleBuilder wormholeHalo = new ParticleBuilder(15);
 			ParticleSpawner.spawn(wormholeHalo, world, new StaticInterp<>(new Vec3d(pos).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(isAir ? 5 : 20, isAir ? 10 : 30), 0, (aFloat, particleBuilder) -> {
 				wormholeHalo.setAlphaFunction(new InterpFadeInOut(0.2f, 0.2f));
-				wormholeHalo.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+				wormholeHalo.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 				double r = isAir ? 0.5 : 1;
 				double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
 				double x = r * MathHelper.cos((float) theta);
@@ -92,7 +93,7 @@ public class PacketAXYZMarks extends PacketBase {
 			ParticleBuilder generatorHalo = new ParticleBuilder(10);
 			ParticleSpawner.spawn(generatorHalo, world, new StaticInterp<>(new Vec3d(origin).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(5, 10), 0, (aFloat, particleBuilder) -> {
 				generatorHalo.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
-				generatorHalo.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+				generatorHalo.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 				double r = 0.5;
 				double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
 				double x = r * MathHelper.cos((float) theta);
@@ -128,7 +129,7 @@ public class PacketAXYZMarks extends PacketBase {
 				ParticleBuilder connection = new ParticleBuilder(30);
 				ParticleSpawner.spawn(connection, world, new StaticInterp<>(new Vec3d(origin).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(1, 5), 0, (aFloat, particleBuilder) -> {
 					connection.setAlphaFunction(new InterpFadeInOut(0.2f, 0.2f));
-					connection.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+					connection.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 					Vec3d sub = new Vec3d(pos.subtract(origin));
 					connection.setPositionFunction(new InterpBezier3D(Vec3d.ZERO, sub, controlPoints.get(dimWithPos).getFirst(), controlPoints.get(dimWithPos).getSecond()));
 					connection.setColor(new Color(72, 119, 122));

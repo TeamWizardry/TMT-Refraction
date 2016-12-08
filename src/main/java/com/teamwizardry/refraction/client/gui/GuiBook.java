@@ -10,7 +10,7 @@ import com.teamwizardry.librarianlib.client.gui.components.*;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.book.TextAdapter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
@@ -25,18 +25,18 @@ import java.util.ArrayList;
  */
 public class GuiBook extends GuiBase {
 
-    public static final Texture SPRITE_SHEET = new Texture(new ResourceLocation(Refraction.MOD_ID, "textures/gui/sprite_sheet.png"));
+    public static final Texture SPRITE_SHEET = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/sprite_sheet.png"));
     public static final Sprite SCROLL_SLIDER_VERTICAL = SPRITE_SHEET.getSprite("scroll_slider_v", 8, 16);
     public static final Sprite SCROLL_SLIDER_HORIZONTAL = SPRITE_SHEET.getSprite("scroll_slider_h", 16, 8);
     public static final Sprite SCROLL_GROOVE_VERTICAL_MIDDLE = SPRITE_SHEET.getSprite("scroll_groove_v", 12, 12);
     public static final Sprite SCROLL_GROOVE_VERTICAL_TOP = SPRITE_SHEET.getSprite("scroll_groove_v_top", 12, 12);
     public static final Sprite SCROLL_GROOVE_VERTICAL_BOTTOM = SPRITE_SHEET.getSprite("scroll_groove_v_bottom", 12, 12);
     static final int iconSize = 12;
-    public static Texture BACKGROUND_TEXTURE = new Texture(new ResourceLocation(Refraction.MOD_ID, "textures/gui/book_background.png"));
+    public static Texture BACKGROUND_TEXTURE = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/book_background.png"));
     public static Sprite BACKGROUND_SPRITE = BACKGROUND_TEXTURE.getSprite("bg", 232, 323);
-    public static Texture BACKGROUND_HANDLE_TEXTURE = new Texture(new ResourceLocation(Refraction.MOD_ID, "textures/gui/book_background_handle.png"));
+    public static Texture BACKGROUND_HANDLE_TEXTURE = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/book_background_handle.png"));
     public static Sprite BACKGROUND_HANDLE_SPRITE = BACKGROUND_HANDLE_TEXTURE.getSprite("bg", 232, 323);
-    public static Texture BACKGROUND_BOOTUP_TEXTURE = new Texture(new ResourceLocation(Refraction.MOD_ID, "textures/gui/book_background_bootup.png"));
+    public static Texture BACKGROUND_BOOTUP_TEXTURE = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/book_background_bootup.png"));
     public static Sprite BACKGROUND_BOOTUP_SPRITE = BACKGROUND_BOOTUP_TEXTURE.getSprite("bg", 232, 323);
     @NotNull
     public static SidebarItem selectedSiderbar;
@@ -69,9 +69,9 @@ public class GuiBook extends GuiBase {
         String langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
         InputStream stream;
         try {
-            stream = LibrarianLib.PROXY.getResource(Refraction.MOD_ID, "tablet/" + langname + ".json");
+            stream = LibrarianLib.PROXY.getResource(Constants.MOD_ID, "tablet/" + langname + ".json");
         } catch (Throwable e) {
-            stream = LibrarianLib.PROXY.getResource(Refraction.MOD_ID, "tablet/en_US.json");
+            stream = LibrarianLib.PROXY.getResource(Constants.MOD_ID, "tablet/en_US.json");
         }
         if (stream != null) {
             InputStreamReader reader = new InputStreamReader(stream);

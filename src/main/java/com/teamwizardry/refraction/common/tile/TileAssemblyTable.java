@@ -8,11 +8,7 @@ import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
-import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.AssemblyRecipe;
-import com.teamwizardry.refraction.api.CapsUtils;
-import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
-import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.api.*;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.init.ModItems;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
@@ -127,7 +123,7 @@ public class TileAssemblyTable extends TileMod {
                 ParticleBuilder builder = new ParticleBuilder(5);
                 builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
                 builder.setColorFunction(new InterpColorFade(Color.RED, 1, 255, 1));
-                builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+                builder.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
                 ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(20, 40), 0, (aFloat, particleBuilder) -> {
                     double radius = 0.3;
                     double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
@@ -146,7 +142,7 @@ public class TileAssemblyTable extends TileMod {
                 ParticleBuilder builder = new ParticleBuilder(1);
                 builder.setAlphaFunction(new InterpFadeInOut(0.1f, 0.3f));
                 builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
-                builder.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+                builder.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
                 ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1.25, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(200, 300), 0, (aFloat, particleBuilder) -> {
                     double radius = 0.1;
                     double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);

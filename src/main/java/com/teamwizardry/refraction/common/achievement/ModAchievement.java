@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.achievement;
 
+import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,7 @@ public class ModAchievement extends Achievement {
 	public static List<Achievement> achievements = new ArrayList<>();
 
 	public ModAchievement(String unlocalizedName, int column, int row, ItemStack stack, Achievement parent) {
-		super("achievement.refraction." + unlocalizedName, "refraction." + unlocalizedName, column, row, stack, parent);
+		super("achievement." + Constants.MOD_ID + "." + unlocalizedName, Constants.MOD_ID + "." + unlocalizedName, column, row, stack, parent);
 		registerStat();
 		achievements.add(this);
 	}

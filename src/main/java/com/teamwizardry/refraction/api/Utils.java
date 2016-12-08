@@ -1,6 +1,8 @@
 package com.teamwizardry.refraction.api;
 
 import com.google.common.collect.Lists;
+import com.teamwizardry.refraction.api.internal.DummyInternalHandler;
+import com.teamwizardry.refraction.api.internal.IInternalHandler;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -16,7 +18,10 @@ import java.util.List;
 /**
  * Created by Saad on 10/9/2016.
  */
-public class Utils {
+public final class Utils {
+
+	// DO NOT MODIFY
+	public static IInternalHandler HANDLER = new DummyInternalHandler();
 
 	public static Color getColorFromDyeEnum(EnumDyeColor dye) {
         switch (dye) {

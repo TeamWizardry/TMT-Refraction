@@ -2,13 +2,12 @@ package com.teamwizardry.refraction.api.beam;
 
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.bitsaving.IllegalValueSetException;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect.EffectType;
-import com.teamwizardry.refraction.api.internal.PacketLaserFX;
 import com.teamwizardry.refraction.api.raytrace.EntityTrace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +20,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,7 +83,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     /**
      * The range of the raytrace. Will default to Beam_RANGE unless otherwise specified.
      */
-    public double range = Constants.BEAM_RANGE;
+    public double range = ConfigValues.BEAM_RANGE;
 
     /**
      * A unique identifier for a beam. Used for uniqueness checks.
@@ -101,7 +99,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     /**
      * The amount of times this beam is allowed to bounce or reflect.
      */
-    public int allowedBounceTimes = Constants.BEAM_BOUNCE_LIMIT;
+    public int allowedBounceTimes = ConfigValues.BEAM_BOUNCE_LIMIT;
 
     /**
      * Will spawn a particle at either the beginning or at the end of the beam if any are enabled.
@@ -124,7 +122,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         this.color = color;
 
         particleEnd = particleBeginning = new ParticleBuilder(3);
-        particleBeginning.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+        particleBeginning.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
         particleBeginning.disableRandom();
         particleBeginning.disableMotionCalculation();
         particleBeginning.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 5));
@@ -453,7 +451,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // PLAYER REFLECTING
 
         // Particle packet sender
-        PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(initLoc, finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 256));
+        Utils.HANDLER.fireLaserPacket(this);
 
         // PARTICLES
         if (enableParticleBeginning)

@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client.render;
 
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
 import net.minecraft.client.Minecraft;
@@ -37,7 +37,7 @@ public class RenderReflectionChamber extends TileEntitySpecialRenderer<TileRefle
 		IModel model = null;
 		if (this.model == null) {
 			try {
-				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/reflection_chamber_inside.obj"));
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID, "block/reflection_chamber_inside.obj"));
 				this.model = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 						location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 			} catch (Exception e) {

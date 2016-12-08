@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client.render;
 
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class RenderLaserPoint extends Render<EntityLaserPointer> {
 
-    ResourceLocation loc = new ResourceLocation(Refraction.MOD_ID, "textures/laser_dot.png");
+    ResourceLocation loc = new ResourceLocation(Constants.MOD_ID, "textures/laser_dot.png");
 
 	public RenderLaserPoint(RenderManager renderManager) {
 		super(renderManager);

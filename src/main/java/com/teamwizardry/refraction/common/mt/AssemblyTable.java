@@ -1,7 +1,8 @@
 package com.teamwizardry.refraction.common.mt;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.teamwizardry.refraction.api.AssemblyRecipe;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
@@ -10,10 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import com.teamwizardry.refraction.api.AssemblyRecipe;
-import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 
-@ZenClass("mods.refraction.AssemblyTable")
+import java.util.ArrayList;
+import java.util.List;
+
+@ZenClass("mods." + Constants.MOD_ID + ".AssemblyTable")
 public class AssemblyTable
 {
 	protected static final String name = "Refraction Assembly Table";

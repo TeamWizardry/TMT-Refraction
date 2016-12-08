@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.bridge;
 
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.common.block.BlockElectronExciter;
 import com.teamwizardry.refraction.common.block.BlockLightBridge;
@@ -79,7 +80,7 @@ public class ExciterObject {
             }
 
             while (pass) {
-                if (size > Constants.BEAM_RANGE) break;
+                if (size > ConfigValues.BEAM_RANGE) break;
                 BlockPos pos = exciterPos.offset(facing).offset(facing, size);
                 if (world.isAirBlock(pos)) {
                     world.setBlockState(pos, ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, facing.getAxis()), 3);

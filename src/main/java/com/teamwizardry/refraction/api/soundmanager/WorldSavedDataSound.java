@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.api.soundmanager;
 
 import com.teamwizardry.librarianlib.common.util.NBTTypes;
+import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
@@ -10,7 +11,7 @@ import net.minecraftforge.common.DimensionManager;
 import javax.annotation.Nonnull;
 
 public final class WorldSavedDataSound {
-	private static final String SOUND = "refraction-sound";
+	private static final String SOUND = Constants.MOD_ID + "-sound";
 
 	public static void markDirty() {
 		getSaveData().markDirty();

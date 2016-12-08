@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client.render;
 
-import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.beam.ReflectionTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,7 +30,7 @@ public class LaserRenderer {
 	}
 
 	public static void add(Vec3d start, Vec3d end, Color color) {
-		INSTANCE.lasers.put(new LaserRenderInfo(start, end, color), Constants.BEAM_PARTICLE_LIFE);
+		INSTANCE.lasers.put(new LaserRenderInfo(start, end, color), ConfigValues.BEAM_PARTICLE_LIFE);
 	}
 
 	@SubscribeEvent

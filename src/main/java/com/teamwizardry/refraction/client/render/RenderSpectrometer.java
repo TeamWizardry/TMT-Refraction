@@ -3,7 +3,7 @@ package com.teamwizardry.refraction.client.render;
 import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.common.block.BlockSpectrometer;
 import com.teamwizardry.refraction.common.tile.TileSpectrometer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectrometer> {
 
-	private static ResourceLocation loc = new ResourceLocation(Refraction.MOD_ID, "textures/bar.png");
+	private static ResourceLocation loc = new ResourceLocation(Constants.MOD_ID, "textures/bar.png");
 	private static Texture texture = new Texture(loc);
 	private static Sprite BAR_SPRITE = texture.getSprite("bar", 1, 1);
 

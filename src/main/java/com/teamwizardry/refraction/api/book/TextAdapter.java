@@ -3,7 +3,7 @@ package com.teamwizardry.refraction.api.book;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
-import com.teamwizardry.refraction.client.jei.JEIRefractionPlugin;
+import com.teamwizardry.refraction.api.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -68,7 +68,7 @@ public class TextAdapter {
                             string = string.replace("%", "");
                             if (string.startsWith("recipe:")) {
                                 String stackString = string.split("recipe:")[1];
-                                ItemStack stack = JEIRefractionPlugin.getStackFromString(stackString);
+                                ItemStack stack = Utils.HANDLER.getStackFromString(stackString);
                                 if (stack == null) {
                                     words.add(string);
                                     continue;

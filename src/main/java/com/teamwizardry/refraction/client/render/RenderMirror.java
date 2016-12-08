@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client.render;
 
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import net.minecraft.client.Minecraft;
@@ -41,7 +41,7 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		IModel model = null;
 		if (modelArms == null) {
 			try {
-				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_arms"));
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID, "block/mirror_arms"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -50,7 +50,7 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		}
 		if (modelMirror == null || modelMirrorSplitter == null) {
 			try {
-				model = ModelLoaderRegistry.getModel(new ResourceLocation(Refraction.MOD_ID, "block/mirror_head"));
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID, "block/mirror_head"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -58,8 +58,8 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 					location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 			modelMirrorSplitter = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 					location -> {
-						if (location.toString().equals(Refraction.MOD_ID + ":blocks/mirror_normal"))
-							location = new ResourceLocation(Refraction.MOD_ID, "blocks/mirror_splitter");
+						if (location.toString().equals(Constants.MOD_ID + ":blocks/mirror_normal"))
+							location = new ResourceLocation(Constants.MOD_ID, "blocks/mirror_splitter");
 						return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
 					});
 		}

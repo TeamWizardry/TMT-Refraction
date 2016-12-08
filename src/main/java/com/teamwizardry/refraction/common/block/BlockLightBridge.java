@@ -288,7 +288,7 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
     }
 
     @Override
-    public boolean shouldEmit(World world, BlockPos pos) {
+    public boolean shouldEmit(@NotNull World world, @NotNull BlockPos pos) {
         return true;
     }
 }

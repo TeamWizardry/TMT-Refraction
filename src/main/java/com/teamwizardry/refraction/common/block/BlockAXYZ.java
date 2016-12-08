@@ -6,7 +6,7 @@ import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.librarianlib.common.base.block.ItemModBlock;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.DimWithPos;
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
@@ -107,7 +107,7 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 
 	@Override
@@ -330,7 +330,7 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
 
 	public static class WorldData extends WorldSavedData {
 
-		private static final String ID = Refraction.MOD_ID + "-LaserRelayPairs";
+		private static final String ID = Constants.MOD_ID + "-LaserRelayPairs";
 
 		public WorldData(String id) {
 			super(id);

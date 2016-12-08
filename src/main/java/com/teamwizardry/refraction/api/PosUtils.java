@@ -7,7 +7,7 @@ import net.minecraft.util.math.Vec3d;
 /**
  * Created by Saad on 9/9/2016.
  */
-public class PosUtils {
+public final class PosUtils {
 
 	public static EnumFacing getFacing(Vec3d p1, Vec3d p2) {
 		Vec3d sub = p2.subtract(p1);

@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -22,8 +22,8 @@ import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
  */
 public class RenderLaserUtil {
 
-    static ResourceLocation textLaser = new ResourceLocation(Refraction.MOD_ID, "textures/laser.png");
-    static ResourceLocation textLaserFlat = new ResourceLocation(Refraction.MOD_ID, "textures/laser_flat.png");
+    static ResourceLocation textLaser = new ResourceLocation(Constants.MOD_ID, "textures/laser.png");
+    static ResourceLocation textLaserFlat = new ResourceLocation(Constants.MOD_ID, "textures/laser_flat.png");
 
     static boolean drawingLasers = false;
 
@@ -40,13 +40,13 @@ public class RenderLaserUtil {
     }
 
     public static void renderLaser(Color color, Vec3d start, Vec3d end) {
-        if (Constants.USE_FLAT_BEAM_TEXTURE) Minecraft.getMinecraft().getTextureManager().bindTexture(textLaserFlat);
+        if (ConfigValues.USE_FLAT_BEAM_TEXTURE) Minecraft.getMinecraft().getTextureManager().bindTexture(textLaserFlat);
         else Minecraft.getMinecraft().getTextureManager().bindTexture(textLaser);
 
         color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(50, color.getAlpha()));
 
         GlStateManager.disableCull();
-        if (Constants.ADDITIVE_BLENDING) {
+        if (ConfigValues.ADDITIVE_BLENDING) {
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE);
         }

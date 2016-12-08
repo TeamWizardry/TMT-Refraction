@@ -1,7 +1,8 @@
 package com.teamwizardry.refraction.common.item.armor;
 
 import com.teamwizardry.librarianlib.common.base.item.ItemModArmor;
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.beam.IReflectiveArmor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -15,7 +16,7 @@ import net.minecraft.world.World;
 /**
  * Created by LordSaad.
  */
-public class ItemReflectiveAlloyBoots extends ItemModArmor implements ReflectiveAlloyArmor {
+public class ItemReflectiveAlloyBoots extends ItemModArmor implements IReflectiveArmor {
 
     public ItemReflectiveAlloyBoots() {
         super("ref_alloy_boots", ArmorMaterial.GOLD, EntityEquipmentSlot.FEET);
@@ -38,6 +39,6 @@ public class ItemReflectiveAlloyBoots extends ItemModArmor implements Reflective
 
     @Override
     public final String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        return new ResourceLocation(Refraction.MOD_ID, "textures/items/reflective_alloy_boots.png").toString();
+        return new ResourceLocation(Constants.MOD_ID, "textures/items/reflective_alloy_boots.png").toString();
     }
 }

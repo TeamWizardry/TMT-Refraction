@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.api.internal;
+package com.teamwizardry.refraction.common.network;
 
 import com.teamwizardry.librarianlib.common.network.PacketBase;
 import com.teamwizardry.refraction.client.render.LaserRenderer;

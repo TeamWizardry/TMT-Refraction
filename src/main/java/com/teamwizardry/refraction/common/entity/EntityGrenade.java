@@ -4,7 +4,7 @@ import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.init.ModSounds;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -50,7 +50,7 @@ public class EntityGrenade extends EntityThrowable {
 				Vec3d pos = new Vec3d(posX, posY, posZ);
 
 				ParticleBuilder glitter = new ParticleBuilder(ThreadLocalRandom.current().nextInt(10, 30));
-				glitter.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+				glitter.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 				glitter.setAlphaFunction(new InterpFadeInOut(0.0f, 1.0f));
 
 				ParticleSpawner.spawn(glitter, worldObj, new StaticInterp<>(pos), 15, 0, (i, build) -> {
@@ -67,7 +67,7 @@ public class EntityGrenade extends EntityThrowable {
 				});
 
 				ParticleBuilder glitterCore = new ParticleBuilder(ThreadLocalRandom.current().nextInt(10, 20));
-				glitterCore.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+				glitterCore.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 				glitterCore.setAlphaFunction(new InterpFadeInOut(0.0f, 1.0f));
 				ParticleSpawner.spawn(glitterCore, worldObj, new StaticInterp<>(pos), 5, 0, (i, build) -> {
 					double radius = 0.2;

@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client.proxy;
 
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.client.EventHandlerClient;
 import com.teamwizardry.refraction.client.render.LaserRenderer;
 import com.teamwizardry.refraction.client.render.RenderLaserPoint;
@@ -15,11 +15,9 @@ import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -34,7 +32,7 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
 
-		OBJLoader.INSTANCE.addDomain(Refraction.MOD_ID);
+		OBJLoader.INSTANCE.addDomain(Constants.MOD_ID);
 		LaserRenderer.INSTANCE.getClass();
 		ScrewdriverOverlay.INSTANCE.getClass();
 		EventHandlerClient.INSTANCE.getClass(); // ditto
@@ -55,11 +53,6 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 	@Override
 	public World getWorld() {
 		return Minecraft.getMinecraft().theWorld;
-	}
-
-	@Override
-	public MinecraftServer getServer() {
-		return FMLClientHandler.instance().getServer();
 	}
 
 	@Override

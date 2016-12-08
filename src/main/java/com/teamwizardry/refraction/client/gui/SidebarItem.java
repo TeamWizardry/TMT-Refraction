@@ -8,7 +8,7 @@ import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
@@ -26,7 +26,7 @@ public class SidebarItem {
     public float destX, destY;
     private Sprite icon;
     private String info;
-    private ResourceLocation sliderLoc = new ResourceLocation(Refraction.MOD_ID, "textures/gui/slider_1.png");
+    private ResourceLocation sliderLoc = new ResourceLocation(Constants.MOD_ID, "textures/gui/slider_1.png");
     private Texture sliderTexture = new Texture(sliderLoc);
     private Sprite sliderSprite = sliderTexture.getSprite("slider", 130, 18);
 

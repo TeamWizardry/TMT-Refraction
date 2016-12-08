@@ -2,7 +2,7 @@ package com.teamwizardry.refraction.api.raytrace;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
-import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.beam.BeamPulsar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,7 +30,7 @@ public class EntityTrace {
     public Vec3d pos;
     @NotNull
     public Vec3d slope;
-    public double range = Constants.BEAM_RANGE;
+    public double range = ConfigValues.BEAM_RANGE;
     public boolean ignoreEntities;
     public boolean skippedRefAlloyPlayer;
     @Nullable

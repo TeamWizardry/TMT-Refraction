@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client;
 
-import com.teamwizardry.refraction.Refraction;
+import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,8 +18,8 @@ public class EventHandlerClient {
 
 	@SubscribeEvent
 	public void stitch(TextureStitchEvent.Pre event) {
-		event.getMap().registerSprite(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
-		event.getMap().registerSprite(new ResourceLocation(Refraction.MOD_ID, "particles/star"));
-        event.getMap().registerSprite(new ResourceLocation(Refraction.MOD_ID, "particles/sparkle_blurred"));
+		event.getMap().registerSprite(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
+		event.getMap().registerSprite(new ResourceLocation(Constants.MOD_ID, "particles/star"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MOD_ID, "particles/sparkle_blurred"));
     }
 }

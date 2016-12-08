@@ -1,8 +1,7 @@
 package com.teamwizardry.refraction.api.beam;
 
 import com.google.common.collect.HashMultimap;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.common.item.armor.ReflectiveAlloyArmor;
+import com.teamwizardry.refraction.api.ConfigValues;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -88,16 +87,16 @@ public class Effect implements Cloneable {
     }
 
     private int calculateBlockPotency(BlockPos pos) {
-        int potency = Math.max(0, this.potency - getDistance(pos) * Constants.DISTANCE_LOSS);
+        int potency = Math.max(0, this.potency - getDistance(pos) * ConfigValues.DISTANCE_LOSS);
         blockPotencies.put(pos, potency);
         return potency;
     }
 
     private int calculateEntityPotency(Entity entity) {
-        int potency = Math.max(0, this.potency - getDistance(entity.getPosition()) * Constants.DISTANCE_LOSS);
+        int potency = Math.max(0, this.potency - getDistance(entity.getPosition()) * ConfigValues.DISTANCE_LOSS);
         for (ItemStack armor : entity.getArmorInventoryList())
-            if (armor != null && armor.getItem() instanceof ReflectiveAlloyArmor)
-                potency /= Constants.PLAYER_BEAM_REFLECT_STRENGTH_DIVSION;
+            if (armor != null && armor.getItem() instanceof IReflectiveArmor)
+                potency /= ((IReflectiveArmor) armor.getItem()).reflectionDampeningConstant(armor, this);
         entityPotencies.put(entity.getUniqueID(), potency);
         return potency;
     }

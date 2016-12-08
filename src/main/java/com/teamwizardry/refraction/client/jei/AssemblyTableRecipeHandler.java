@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.client.jei;
 
 import com.teamwizardry.refraction.api.AssemblyRecipe;
+import com.teamwizardry.refraction.api.Constants;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
@@ -20,7 +21,7 @@ public class AssemblyTableRecipeHandler implements IRecipeHandler<AssemblyRecipe
 	@Nonnull
 	@Override
 	public String getRecipeCategoryUid() {
-		return "refraction.assembly_table";
+		return Constants.MOD_ID + ".assembly_table";
 	}
 
 	@Nonnull

@@ -4,12 +4,13 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import com.teamwizardry.refraction.api.internal.PacketLaserFX;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
+import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -53,7 +54,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -86,7 +87,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
 		for (Beam beam : beams) {
 			Vec3d hitPos = beam.finalLoc;
 
-			fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), Constants.GLASS_IOR, beam.color, beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
+			fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, beam.color, beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
 		}
 	}
 
@@ -94,7 +95,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
 		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, worldObj, pos, hitPos.subtract(ref), hitPos.add(ref));
 		assert r != null;
 		Vec3d normal = r.data;
-		ref = refracted(Constants.AIR_IOR + IORMod, Constants.GLASS_IOR + IORMod, ref, normal).normalize();
+		ref = refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.GLASS_IOR + IORMod, ref, normal).normalize();
 		hitPos = r.hitVec;
 
 		for (int i = 0; i < 5; i++) {
@@ -105,7 +106,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
 			assert r != null;
 			normal = r.data.scale(-1);
 			Vec3d oldRef = ref;
-			ref = refracted(Constants.GLASS_IOR + IORMod, Constants.AIR_IOR + IORMod, ref, normal).normalize();
+			ref = refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
 			if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
 				ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
 				break;

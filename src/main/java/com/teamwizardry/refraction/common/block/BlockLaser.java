@@ -6,8 +6,8 @@ import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOu
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
-import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.CapsUtils;
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
@@ -71,15 +71,15 @@ public class BlockLaser extends BlockModContainer implements ILightSource, ISoun
 			ParticleBuilder glitter = new ParticleBuilder(ThreadLocalRandom.current().nextInt(20, 30));
 			glitter.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 1));
 			glitter.setAlpha((float) ThreadLocalRandom.current().nextDouble(0.3, 0.7));
-			glitter.setRender(new ResourceLocation(Refraction.MOD_ID, "particles/glow"));
+			glitter.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 			glitter.setAlphaFunction(new InterpFadeInOut(0.1f, 1.0f));
 			glitter.setMotion(facingVec.scale(1.0 / 50.0));
 			ParticleSpawner.spawn(glitter, world, new StaticInterp<>(center), 2);
 
-			Color color = new Color(255, 255, 255, Constants.GLOWSTONE_ALPHA);
+			Color color = new Color(255, 255, 255, ConfigValues.GLOWSTONE_ALPHA);
 			new Beam(world, center, vec, color).spawn();
 
-			if (laser.tick < Constants.GLOWSTONE_FUEL_EXPIRE_DELAY) laser.tick++;
+			if (laser.tick < ConfigValues.GLOWSTONE_FUEL_EXPIRE_DELAY) laser.tick++;
 			else {
 				laser.tick = 0;
 				laser.inventory.getStackInSlot(0).stackSize--;
@@ -94,7 +94,7 @@ public class BlockLaser extends BlockModContainer implements ILightSource, ISoun
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name.refraction:" + getRegistryName().getResourcePath());
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class BlockLaser extends BlockModContainer implements ILightSource, ISoun
 	}
 
 	@Override
-	public boolean shouldEmit(World world, BlockPos pos) {
+	public boolean shouldEmit(@NotNull World world, @NotNull BlockPos pos) {
 		TileLaser laser = (TileLaser) world.getTileEntity(pos);
 		return !(world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) && laser != null && laser.inventory.getStackInSlot(0) != null && laser.inventory.getStackInSlot(0).stackSize > 0;
 	}
