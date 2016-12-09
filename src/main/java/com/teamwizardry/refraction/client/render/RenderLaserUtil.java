@@ -22,10 +22,10 @@ import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
  */
 public class RenderLaserUtil {
 
-    static ResourceLocation textLaser = new ResourceLocation(Constants.MOD_ID, "textures/laser.png");
-    static ResourceLocation textLaserFlat = new ResourceLocation(Constants.MOD_ID, "textures/laser_flat.png");
+    private static ResourceLocation textLaser = new ResourceLocation(Constants.MOD_ID, "textures/laser.png");
+    private static ResourceLocation textLaserFlat = new ResourceLocation(Constants.MOD_ID, "textures/laser_flat.png");
 
-    static boolean drawingLasers = false;
+    private static boolean drawingLasers = false;
 
     public static void startRenderingLasers() {
         drawingLasers = true;
@@ -64,6 +64,8 @@ public class RenderLaserUtil {
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer vb = tessellator.getBuffer();
 
+        GlStateManager.depthMask(false);
+        
         if (!drawingLasers) vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         pos(vb, start.add(d)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
         pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
