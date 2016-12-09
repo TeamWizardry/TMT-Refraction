@@ -10,14 +10,18 @@
       "scale": [ 1.3, 1.3, 1.3 ]
     },
     "firstperson_righthand": {
-      "rotation": [ 5, 4.3, 8 ],
-      "translation": [ 0, 3.5, 4.8 ],
+      "rotation": [ 15, 4.3, 8 ],
+      "translation": [ 3, 1.5, -2 ],
       "scale": [ 1.3, 1.3, 1.3 ]
     },
     "firstperson_lefthand": {
-      "rotation": [ 5, 4.3, 8 ],
-      "translation": [ 0, 3.5, 4.8 ],
+      "rotation": [ -10, 4.3, 8 ],
+      "translation": [ 3, 3.5, 4.8 ],
       "scale": [ 1.3, 1.3, 1.3 ]
+    },
+    "gui": {
+      "rotation": [ 90, 45, -90 ],
+      "translation": [ 1.3, 1.6, 0 ]
     }
   }
 }
