@@ -1,8 +1,6 @@
 package com.teamwizardry.refraction.init;
 
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.common.achievement.ModAchievement;
-import net.minecraft.stats.Achievement;
+import com.teamwizardry.librarianlib.common.base.ModAchievement;
 import net.minecraftforge.common.AchievementPage;
 
 /**
@@ -26,8 +24,6 @@ public class ModAchievements {
 		LASER_PEN = new ModAchievement("laser_pen", 1, 2, ModItems.LASER_PEN, null);
 		GRENADE = new ModAchievement("grenade", -1, 2, ModItems.GRENADE, null);
 		AXYZ = new ModAchievement("axyz", -1, 2, ModBlocks.AXYZ, TRANSLOCATOR);
-
-		PAGE = new AchievementPage(Constants.MOD_NAME, ModAchievement.achievements.toArray(new Achievement[ModAchievement.achievements.size()]));
-		AchievementPage.registerAchievementPage(PAGE);
+		PAGE = ModAchievement.producePage();
 	}
 }
