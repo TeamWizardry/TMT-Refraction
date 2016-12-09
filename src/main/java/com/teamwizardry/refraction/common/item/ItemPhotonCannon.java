@@ -1,15 +1,13 @@
 package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -23,6 +21,8 @@ public class ItemPhotonCannon extends ItemMod {
     public ItemPhotonCannon() {
         super("photon_cannon");
         setMaxStackSize(1);
+        addPropertyOverride(new ResourceLocation(Constants.MOD_ID, "firing"),
+                (stack, worldIn, entityIn) -> entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F);
     }
 
     @Override
