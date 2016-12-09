@@ -47,7 +47,7 @@ public class CommonProxy {
 		SoundManager.INSTANCE.getClass();
 		ExciterTracker.INSTANCE.getClass();
 
-		EasyConfigHandler.init(event.getSuggestedConfigurationFile());
+		EasyConfigHandler.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
 		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
 		PacketHandler.register(PacketAXYZMarks.class, Side.CLIENT);

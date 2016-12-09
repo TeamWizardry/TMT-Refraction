@@ -20,7 +20,7 @@ public final class StarRenderHelper {
 	public static void renderStar(int color, float xScale, float yScale, float zScale, long seed, int ticksPerCycle) {
 		Tessellator tessellator = Tessellator.getInstance();
 
-		int ticks = ClientTickHandler.ticksInGame % ticksPerCycle;
+		int ticks = ClientTickHandler.getTicksInGame() % ticksPerCycle;
 		if (ticks >= 100)
 			ticks = 200 - ticks - 1;
 

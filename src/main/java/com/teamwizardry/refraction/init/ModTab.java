@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.init;
 
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +20,11 @@ public class ModTab extends ModCreativeTab {
 		if (isInitialized) return;
 		new ModTab().registerDefaultTab();
 		isInitialized = true;
+	}
+
+	@Override
+	public Item getTabIconItem() {
+		return ModItems.SCREW_DRIVER;
 	}
 
 	@NotNull
