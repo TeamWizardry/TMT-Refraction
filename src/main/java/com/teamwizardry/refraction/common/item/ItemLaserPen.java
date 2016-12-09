@@ -64,7 +64,7 @@ public class ItemLaserPen extends ItemMod {
             if (!handMod) cross = cross.scale(-1);
             Vec3d playerVec = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord, player.posZ + cross.zCoord);
 
-            new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0xFF0000))
+            new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0x20FF0000, true))
                     .setUUIDToSkip(player.getUniqueID())
                     .setEnableEffect(false)
                     .enableParticleEnd()
