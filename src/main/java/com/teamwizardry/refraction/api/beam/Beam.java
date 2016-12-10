@@ -414,7 +414,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
             IBlockState state = world.getBlockState(trace.getBlockPos());
             if (state.getBlock() instanceof IBeamHandler) {
-                ReflectionTracker.getInstance(world).recieveBeam(world, trace.getBlockPos(), (IBeamHandler) state.getBlock(), this);
+                ReflectionTracker.getInstance(world).recieveBeam(trace.getBlockPos(), (IBeamHandler) state.getBlock(), this);
                 pass = false;
             }
         }

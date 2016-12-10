@@ -1,20 +1,12 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.refraction.api.CapsUtils;
-import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.PosUtils;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.ILightSource;
+import com.teamwizardry.refraction.api.beam.IBeamImmune;
 import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
 import com.teamwizardry.refraction.common.tile.TileLaser;
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -29,22 +21,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import java.awt.*;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44
  */
-public class BlockLaser extends BlockModContainer implements ILightSource, ISoundEmitter {
+public class BlockLaser extends BlockModContainer implements IBeamImmune, ISoundEmitter {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
@@ -55,37 +42,6 @@ public class BlockLaser extends BlockModContainer implements ILightSource, ISoun
 		setTickRandomly(true);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
-
-	@Override
-	public void generateBeam(@NotNull World world, @Nonnull BlockPos pos) {
-		if (world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) return;
-		TileLaser laser = (TileLaser) world.getTileEntity(pos);
-		if (laser == null) return;
-		if (laser.inventory.getStackInSlot(0) != null && laser.inventory.getStackInSlot(0).stackSize > 0) {
-			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-			EnumFacing face = world.getBlockState(pos).getValue(BlockDirectional.FACING);
-			Vec3d vec = PosUtils.getVecFromFacing(face);
-			Vec3d facingVec = PosUtils.getVecFromFacing(face).scale(1.0 / 3.0);
-
-			ParticleBuilder glitter = new ParticleBuilder(ThreadLocalRandom.current().nextInt(20, 30));
-			glitter.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 1));
-			glitter.setAlpha((float) ThreadLocalRandom.current().nextDouble(0.3, 0.7));
-			glitter.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
-			glitter.setAlphaFunction(new InterpFadeInOut(0.1f, 1.0f));
-			glitter.setMotion(facingVec.scale(1.0 / 50.0));
-			ParticleSpawner.spawn(glitter, world, new StaticInterp<>(center), 2);
-
-			Color color = new Color(255, 255, 255, ConfigValues.GLOWSTONE_ALPHA);
-			new Beam(world, center, vec, color).spawn();
-
-			if (laser.tick < ConfigValues.GLOWSTONE_FUEL_EXPIRE_DELAY) laser.tick++;
-			else {
-				laser.tick = 0;
-				laser.inventory.getStackInSlot(0).stackSize--;
-				laser.markDirty();
-			}
-		}
 	}
 
 	private TileLaser getTE(World world, BlockPos pos) {
@@ -170,5 +126,10 @@ public class BlockLaser extends BlockModContainer implements ILightSource, ISoun
 			for (ItemStack stack : CapsUtils.getListOfItems(laser.inventory))
 				InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
 		super.breakBlock(worldIn, pos, state);
+	}
+
+	@Override
+	public boolean isImmune(@NotNull World world, @NotNull BlockPos pos) {
+		return true;
 	}
 }
