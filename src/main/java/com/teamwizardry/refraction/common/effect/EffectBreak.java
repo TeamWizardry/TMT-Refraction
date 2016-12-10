@@ -1,8 +1,7 @@
 package com.teamwizardry.refraction.common.effect;
 
 import com.teamwizardry.refraction.api.beam.Effect;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import com.teamwizardry.refraction.api.beam.ILightSource;
+import com.teamwizardry.refraction.api.beam.IBeamImmune;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -10,7 +9,6 @@ import net.minecraft.world.World;
 import java.awt.*;
 
 public class EffectBreak extends Effect {
-
 
 	@Override
     public int getChance(int potency) {
@@ -20,7 +18,7 @@ public class EffectBreak extends Effect {
 	@Override
     public void runBlock(World world, BlockPos pos, int potency) {
         IBlockState block = world.getBlockState(pos);
-        if (block.getBlock() instanceof IBeamHandler || block.getBlock() instanceof ILightSource) return;
+        if (block.getBlock() instanceof IBeamImmune && ((IBeamImmune) block.getBlock()).isImmune(world, pos)) return;
 
         float hardness = world.getBlockState(pos).getBlockHardness(world, pos);
         if (hardness >= 0 && hardness * 32 * 2 / 3 < potency)
