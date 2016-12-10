@@ -56,7 +56,7 @@ public class ReflectionTracker {
 
 	@SubscribeEvent
 	public void handleBeams(TickEvent.WorldTickEvent event) {
-		if (event.world.isRemote || getWorld() != event.world || event.phase != TickEvent.Phase.END)
+		if (event.world.isRemote || getWorld() != event.world)
 			return;
 
 		while (!sinkBlocks.isEmpty()) {
