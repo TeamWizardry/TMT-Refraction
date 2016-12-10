@@ -48,14 +48,15 @@ public class ItemPhotonCannon extends ItemMod {
         if (!handMod) cross = cross.scale(-1);
         Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
 
-        Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), new Color(0xFF0ADA))
+        Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), Color.CYAN)
                 .setEnableEffect(true)
                 .setUUIDToSkip(playerIn.getUniqueID())
                 .enableParticleEnd();
         beam.spawn();
 
-        playerIn.motionX = beam.slope.xCoord * -1 / 10.0;
-        playerIn.motionZ = beam.slope.zCoord * -1 / 10.0;
+        playerIn.motionX += beam.slope.xCoord * -1 / 30.0;
+        playerIn.motionY += beam.slope.yCoord * -1 / 30.0;
+        playerIn.motionZ += beam.slope.zCoord * -1 / 30.0;
         playerIn.velocityChanged = true;
     }
 }
