@@ -62,7 +62,7 @@ public class ReflectionTracker {
 
 	@SubscribeEvent
 	public void generateBeams(TickEvent.WorldTickEvent event) {
-		if (event.world.isRemote || getWorld() != event.world)
+		if (event.world.isRemote || getWorld() != event.world || event.phase != TickEvent.Phase.START || sources.isEmpty())
 			return;
 
 		ArrayList<SourcePair> remove = new ArrayList<>();
@@ -85,7 +85,7 @@ public class ReflectionTracker {
 
 	@SubscribeEvent
 	public void handleBeams(TickEvent.WorldTickEvent event) {
-		if (event.world.isRemote || getWorld() != event.world)
+		if (event.world.isRemote || getWorld() != event.world || event.phase != TickEvent.Phase.END || delayBuffers.isEmpty())
 			return;
 
 		Set<BeamPair> temp = new HashSet<>(delayBuffers.keySet());
@@ -174,6 +174,14 @@ public class ReflectionTracker {
 			result = 31 * result + pos.hashCode();
 			return result;
 		}
+
+		@Override
+		public String toString() {
+			return "BeamPair{" +
+					"handler=" + handler +
+					", pos=" + pos +
+					'}';
+		}
 	}
 
 	public static class SourcePair {
@@ -220,6 +228,14 @@ public class ReflectionTracker {
 			int result = source.hashCode();
 			result = 31 * result + pos.hashCode();
 			return result;
+		}
+
+		@Override
+		public String toString() {
+			return "SourcePair{" +
+					"source=" + source +
+					", pos=" + pos +
+					'}';
 		}
 	}
 }
