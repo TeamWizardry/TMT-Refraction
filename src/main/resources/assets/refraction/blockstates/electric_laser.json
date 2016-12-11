@@ -1,22 +1,33 @@
 {
-	"variants": {
-		"facing=down": {
-			"model": "refraction:electric_laser"
-		},
-		"facing=up": {
-			"model": "refraction:electric_laser"
-		},
-		"facing=north": {
-			"model": "refraction:electric_laser"
-		},
-		"facing=south": {
-			"model": "refraction:electric_laser"
-		},
-		"facing=west": {
-			"model": "refraction:electric_laser"
-		},
-		"facing=east": {
-			"model": "refraction:electric_laser"
-		}
-	}
+  "forge_marker": 1,
+  "defaults": {
+    "custom": {
+      "flip-v": true
+    },
+    "model": "refraction:electric_laser.obj",
+    "transform": "forge:default-block",
+    "uvlock": true
+  },
+  "variants": {
+    "facing": {
+      "up": {
+        "x": 90
+      },
+      "down": {
+        "x": 270
+      },
+      "north": {
+      	"y": 180
+      },
+      "south": {
+      },
+      "west": {
+        "y": 90
+      },
+      "east": {
+        "y": 270
+      }
+    },
+    "inventory": [{}]
+  }
 }
