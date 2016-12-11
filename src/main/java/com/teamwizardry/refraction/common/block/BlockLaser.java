@@ -54,6 +54,16 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 	}
 
 	@Override
+	public boolean hasComparatorInputOverride(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return (int) (getTE(worldIn, pos).inventory.getStackInSlot(0).stackSize / 64.0 * 15);
+	}
+
+	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (heldItem != null) {
 			if (heldItem.getItem() != Items.GLOWSTONE_DUST) return false;

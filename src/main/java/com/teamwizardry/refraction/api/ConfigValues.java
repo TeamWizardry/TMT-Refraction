@@ -21,6 +21,8 @@ public final class ConfigValues {
 	public static int ELECTRIC_ALPHA;
 	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "glowstone_fuel_expire_delay", comment = "Change this and it'll set how long glowstone fuel will last in blocks like the laser", defaultValue = 500)
 	public static int GLOWSTONE_FUEL_EXPIRE_DELAY;
+	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "max_tesla_for_electric_laser", comment = "Change this and it'll set how much tesla can be stored in the Electric Laser", defaultValue = 100000)
+	public static int MAX_TESLA;
 	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_electricity_per_tick", comment = "Change this and it'll set how much tesla/tick is required to feed the Electric Laser", defaultValue = 50)
 	public static int TESLA_PER_TICK;
 	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_particle_life", comment = "Change this and it'll set how long beams will stay. Higher numbers will make beams feel laggier but they just VISUALLY stay longer. This is useful if you have terrible TPS issues and/or beams exciterPos flickering for whatever reason.", defaultValue = 3)

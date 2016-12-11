@@ -24,7 +24,7 @@ import java.awt.*;
 @TileRegister("electric_laser")
 public class TileElectricLaser extends TileMod implements ITickable {
 
-	public DualEnergyStorage energy = new DualEnergyStorage(100000, ConfigValues.TESLA_PER_TICK * 2, ConfigValues.TESLA_PER_TICK);
+	public DualEnergyStorage energy = new DualEnergyStorage(ConfigValues.MAX_TESLA, ConfigValues.TESLA_PER_TICK * 2, ConfigValues.TESLA_PER_TICK);
 
 	@Override
 	public void update() {

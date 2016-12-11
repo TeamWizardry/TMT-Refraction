@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.IBeamImmune;
 import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
+import com.teamwizardry.refraction.common.caps.DualEnergyStorage;
 import com.teamwizardry.refraction.common.tile.TileElectricLaser;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -40,10 +41,26 @@ public class BlockElectricLaser extends BlockModContainer implements IBeamImmune
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 
+	private TileElectricLaser getTE(World world, BlockPos pos) {
+		return (TileElectricLaser) world.getTileEntity(pos);
+	}
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
+
+	@Override
+	public boolean hasComparatorInputOverride(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		DualEnergyStorage energy = getTE(worldIn, pos).energy;
+		return (int) ((double) energy.getEnergyStored() / (double) energy.getMaxEnergyStored() * 15);
+	}
+
 
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
@@ -91,8 +108,7 @@ public class BlockElectricLaser extends BlockModContainer implements IBeamImmune
 
 	@Override
 	public boolean shouldEmit(@NotNull World world, @NotNull BlockPos pos) {
-		TileElectricLaser laser = (TileElectricLaser) world.getTileEntity(pos);
-		return laser != null && laser.canFire();
+		return getTE(world, pos).canFire();
 	}
 
 	@Override
