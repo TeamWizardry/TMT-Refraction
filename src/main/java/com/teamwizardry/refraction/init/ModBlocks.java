@@ -25,6 +25,7 @@ public class ModBlocks {
 	public static BlockReflectiveAlloyBlock REFLECTIVE_ALLOY_BLOCK;
 	public static BlockTranslocator TRANSLOCATOR;
 	public static BlockAXYZ AXYZ;
+	public static BlockElectricLaser ELECTRIC_LASER;
 
 	public static BlockFilter FILTER;
 
@@ -48,6 +49,7 @@ public class ModBlocks {
 		TRANSLOCATOR = new BlockTranslocator();
 		AXYZ = new BlockAXYZ();
 		FILTER = new BlockFilter();
+		ELECTRIC_LASER = new BlockElectricLaser();
 	}
 
 	public static void initModels() {

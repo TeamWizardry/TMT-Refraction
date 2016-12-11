@@ -1,0 +1,22 @@
+{
+	"variants": {
+		"facing=down": {
+			"model": "refraction:electric_laser"
+		},
+		"facing=up": {
+			"model": "refraction:electric_laser"
+		},
+		"facing=north": {
+			"model": "refraction:electric_laser"
+		},
+		"facing=south": {
+			"model": "refraction:electric_laser"
+		},
+		"facing=west": {
+			"model": "refraction:electric_laser"
+		},
+		"facing=east": {
+			"model": "refraction:electric_laser"
+		}
+	}
+}
