@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
@@ -7,8 +8,11 @@ import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Saad on 9/11/2016.
@@ -22,11 +26,9 @@ public class TileSpectrometer extends TileMod implements ITickable {
 	@Save
 	public int maxTransparency = 0;
 	public int currentTransparency = 0;
-	private Beam[] beams = new Beam[]{};
+	@NotNull
+	private List<Beam> beams = new ArrayList<>();
 	private int tick = 0;
-
-	public TileSpectrometer() {
-	}
 
 	@Override
 	public void readCustomNBT(NBTTagCompound compound) {
@@ -41,7 +43,7 @@ public class TileSpectrometer extends TileMod implements ITickable {
 	}
 
 	public void handle(Beam... beams) {
-		this.beams = beams;
+		this.beams.addAll(Lists.newArrayList(beams));
 		tick = 1;
 	}
 
@@ -52,7 +54,7 @@ public class TileSpectrometer extends TileMod implements ITickable {
 		if (tick < 20) tick++;
 		else {
 			tick = 0;
-			beams = null;
+			beams.clear();
 			maxColor = new Color(0, 0, 0);
 			maxTransparency = 0;
 			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
@@ -66,7 +68,7 @@ public class TileSpectrometer extends TileMod implements ITickable {
 			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		}
 
-		if (beams == null || beams.length == 0) return;
+		if (beams.size() == 0) return;
 
 		int red = 0;
 		int green = 0;
@@ -80,9 +82,9 @@ public class TileSpectrometer extends TileMod implements ITickable {
 			blue += color.getBlue() * (color.getAlpha() / 255f);
 			alpha += color.getAlpha();
 		}
-		red = Math.min(red / beams.length, 255);
-		green = Math.min(green / beams.length, 255);
-		blue = Math.min(blue / beams.length, 255);
+		red = Math.min(red / beams.size(), 255);
+		green = Math.min(green / beams.size(), 255);
+		blue = Math.min(blue / beams.size(), 255);
 
 		float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
 		Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
@@ -92,5 +94,7 @@ public class TileSpectrometer extends TileMod implements ITickable {
 		this.maxColor = color;
 		this.maxTransparency = color.getAlpha();
 		markDirty();
+
+		beams.clear();
 	}
 }

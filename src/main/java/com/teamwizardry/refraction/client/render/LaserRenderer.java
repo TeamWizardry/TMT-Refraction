@@ -1,7 +1,6 @@
 package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.refraction.api.ConfigValues;
-import com.teamwizardry.refraction.api.beam.ReflectionTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,14 +57,10 @@ public class LaserRenderer {
 
 		GlStateManager.enableBlend();
 		GlStateManager.alphaFunc(GL11.GL_GEQUAL, 1f / 255f);
-		ReflectionTracker tracker = ReflectionTracker.getInstance(Minecraft.getMinecraft().theWorld);
-		if (tracker != null) {
-			RenderLaserUtil.startRenderingLasers();
-			for (LaserRenderInfo info : lasers.keySet()) {
-				RenderLaserUtil.renderLaser(info.color, info.start, info.end);
-			}
-			RenderLaserUtil.finishRenderingLasers();
-		}
+		RenderLaserUtil.startRenderingLasers();
+		for (LaserRenderInfo info : lasers.keySet())
+			RenderLaserUtil.renderLaser(info.color, info.start, info.end);
+		RenderLaserUtil.finishRenderingLasers();
 		GlStateManager.disableBlend();
 
 		GlStateManager.popMatrix();

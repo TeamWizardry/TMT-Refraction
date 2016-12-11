@@ -4,13 +4,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-
 /**
  * Created by TheCodeWarrior
  */
 public interface IBeamHandler extends IBeamImmune {
-	void handleBeams(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam... beams);
+	@SuppressWarnings("deprecation")
+	default void handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+		handleBeams(world, pos, beam);
+	}
+
+	/**
+	 * @deprecated override handleBeam
+	 */
+	@Deprecated
+	default void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
+		// NO-OP
+	}
 
 	@Override
 	default boolean isImmune(@NotNull World world, @NotNull BlockPos pos) {
