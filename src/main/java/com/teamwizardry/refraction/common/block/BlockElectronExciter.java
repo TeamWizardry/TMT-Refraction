@@ -60,17 +60,15 @@ public class BlockElectronExciter extends BlockMod implements IBeamHandler {
     }
 
     @Override
-    public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
+    public void handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
         ExciterObject exciterObject = ExciterTracker.INSTANCE.addExciter(world, pos);
-        for (Beam beam : beams) {
-            if (beam.enableEffect && beam.effect != null && beam.effect.getColor().equals(Color.CYAN)) {
-                EnumFacing block = world.getBlockState(pos).getValue(FACING);
-                if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
-                    exciterObject.hasCardinalBeam = true;
-                    exciterObject.generateBridge();
-                    ExciterTracker.INSTANCE.refreshPower(world, pos);
-                    return;
-                }
+        if (beam.enableEffect && beam.effect != null && beam.effect.getColor().equals(Color.CYAN)) {
+            EnumFacing block = world.getBlockState(pos).getValue(FACING);
+            if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
+                exciterObject.hasCardinalBeam = true;
+                exciterObject.generateBridge();
+                ExciterTracker.INSTANCE.refreshPower(world, pos);
+                return;
             }
         }
         exciterObject.hasCardinalBeam = false;

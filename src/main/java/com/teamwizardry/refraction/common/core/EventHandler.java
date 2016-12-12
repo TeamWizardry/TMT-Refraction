@@ -9,6 +9,7 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -60,5 +61,11 @@ public class EventHandler {
             }
         }
         return players;
+    }
+
+    @SubscribeEvent
+    public void breakBlock(BlockEvent.BreakEvent event) {
+        if (event.getWorld().getBlockState(event.getPos()).getBlock() == ModBlocks.LIGHT_BRIDGE)
+            event.setCanceled(true);
     }
 }
