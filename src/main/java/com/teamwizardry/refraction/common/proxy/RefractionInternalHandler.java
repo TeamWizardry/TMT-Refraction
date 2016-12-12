@@ -13,10 +13,8 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author WireSegal
  *         Created at 11:57 PM on 12/7/16.
- *
- *         DO NOT OVERRIDE THIS CLASS. This will cause Refraction to not work as intended.
  */
-public class RefractionInternalHandler implements IInternalHandler {
+public final class RefractionInternalHandler implements IInternalHandler {
 	@Override
 	public void fireLaserPacket(@NotNull Beam beam) {
 		PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(beam.initLoc, beam.finalLoc, beam.color), new NetworkRegistry.TargetPoint(beam.world.provider.getDimension(), beam.initLoc.xCoord, beam.initLoc.yCoord, beam.initLoc.zCoord, 256));

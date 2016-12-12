@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * @author WireSegal
  *         Created at 11:55 PM on 12/7/16.
  */
-public class DummyInternalHandler implements IInternalHandler {
+public final class DummyInternalHandler implements IInternalHandler {
 	@Override
 	public void fireLaserPacket(@NotNull Beam beam) {
 		// NO-OP
