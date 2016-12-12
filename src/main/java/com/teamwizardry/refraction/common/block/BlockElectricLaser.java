@@ -61,7 +61,6 @@ public class BlockElectricLaser extends BlockModContainer implements IBeamImmune
 		return (int) ((double) energy.getEnergyStored() / (double) energy.getMaxEnergyStored() * 15);
 	}
 
-
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		if (placer.rotationPitch > 45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.UP);

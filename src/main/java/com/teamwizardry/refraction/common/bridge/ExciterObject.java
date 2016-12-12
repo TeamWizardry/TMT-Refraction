@@ -83,6 +83,16 @@ public class ExciterObject {
                 if (size > ConfigValues.BEAM_RANGE) break;
                 BlockPos pos = exciterPos.offset(facing).offset(facing, size);
                 if (world.isAirBlock(pos)) {
+
+                    boolean hasAdjacentBridge = false;
+                    for (EnumFacing facing : EnumFacing.VALUES) {
+                        if (facing == this.facing || facing == this.facing.getOpposite()) continue;
+                        if (world.getBlockState(pos.offset(facing)).getBlock() == ModBlocks.LIGHT_BRIDGE) {
+                            hasAdjacentBridge = true;
+                            break;
+                        }
+                    }
+                    if (!hasAdjacentBridge) break;
                     world.setBlockState(pos, ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, facing.getAxis()), 3);
                     poses.add(pos);
                     size++;

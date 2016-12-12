@@ -26,8 +26,8 @@ public class ModBlocks {
 	public static BlockTranslocator TRANSLOCATOR;
 	public static BlockAXYZ AXYZ;
 	public static BlockElectricLaser ELECTRIC_LASER;
-
-	public static BlockFilter FILTER;
+    public static BlockSolarPanel SOLAR_PANEL;
+    public static BlockFilter FILTER;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -50,7 +50,8 @@ public class ModBlocks {
 		AXYZ = new BlockAXYZ();
 		FILTER = new BlockFilter();
 		ELECTRIC_LASER = new BlockElectricLaser();
-	}
+        SOLAR_PANEL = new BlockSolarPanel();
+    }
 
 	public static void initModels() {
 		ASSEMBLY_TABLE.initModel();
