@@ -79,9 +79,10 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
     }
 
     @Override
-    public void handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
+    public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
         IBlockState state = world.getBlockState(pos);
         fireColor(world, pos, state, beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, beam.color, beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
+        return true;
     }
 
     private void fireColor(World worldObj, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities, UUID uuid) {

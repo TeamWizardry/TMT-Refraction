@@ -40,10 +40,11 @@ public class BlockSolarPanel extends BlockModContainer implements IBeamHandler {
     }
 
     @Override
-    public void handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
-        if (!beam.enableEffect) return;
+    public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+        if (!beam.enableEffect) return true;
         DualEnergyStorage energy = getTE(world, pos).energy;
         energy.receiveEnergy(ConfigValues.TESLA_PER_TICK, false);
+        return true;
     }
 
     @Override

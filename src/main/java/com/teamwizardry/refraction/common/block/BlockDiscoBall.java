@@ -48,10 +48,11 @@ public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
 	}
 
 	@Override
-	public void handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null)
 			((TileDiscoBall) te).handle(beam);
+		return true;
 	}
 
 	@Override

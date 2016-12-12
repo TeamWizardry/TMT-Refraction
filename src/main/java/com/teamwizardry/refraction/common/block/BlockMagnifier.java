@@ -33,9 +33,8 @@ public class BlockMagnifier extends BlockModContainer implements IBeamHandler {
 	}
 
 	@Override
-	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
-		for (Beam beam : beams)
-			beam.createSimilarBeam(beam.finalLoc, beam.slope).spawn();
+	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+		return false;
 	}
 
 	@Override

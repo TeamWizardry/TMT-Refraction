@@ -17,8 +17,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -429,13 +431,34 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // EFFECT HANDLING //
         boolean pass = true;
 
+        boolean traceCompleted = false;
+
+        // Making sure we don't recur //
+        int tries = 0;
+
         // IBeamHandler handling
-        if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
-            IBlockState state = world.getBlockState(trace.getBlockPos());
-            if (state.getBlock() instanceof IBeamHandler) {
-                ((IBeamHandler) state.getBlock()).handleBeam(world, trace.getBlockPos(), this);
-                pass = false;
-            }
+        while (!traceCompleted && tries < 100) {
+            tries++;
+            if (trace == null)
+                return;
+            else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+                BlockPos pos = trace.getBlockPos();
+                IBlockState state = world.getBlockState(pos);
+                BeamHitEvent event = new BeamHitEvent(world, this, pos, state);
+                MinecraftForge.EVENT_BUS.post(event);
+                if (event.getResult() == Event.Result.DEFAULT) {
+                    traceCompleted = true;
+                    if (state.getBlock() instanceof IBeamHandler) {
+                        traceCompleted = (((IBeamHandler) state.getBlock()).handleBeam(world, pos, this));
+                        pass = false;
+                    }
+                } else {
+                    traceCompleted = event.getResult() == Event.Result.DENY;
+                    pass = event.getResult() == Event.Result.ALLOW;
+                }
+            } else traceCompleted = true;
+
+            if (!traceCompleted) traceCompleted = recast();
         }
 
         // Effect handling
@@ -479,6 +502,21 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         if (trace.typeOfHit != RayTraceResult.Type.MISS && enableParticleEnd)
             ParticleSpawner.spawn(particleEnd, world, new StaticInterp<>(trace.hitVec), 1);
         // PARTICLES
+    }
+
+    private boolean recast() {
+        EntityTrace entityTrace = new EntityTrace(world, this).setUUIDToSkip(uuidToSkip);
+        if (entityTrace.range <= 0) return true;
+
+        if (entityTrace.rayTraceResult != null)
+            trace = entityTrace.rayTraceResult;
+        else if (ignoreEntities || (effect != null && effect.getType() == EffectType.BEAM)) // If anyone of these are true, phase beam
+            trace = entityTrace.setIgnoreEntities(true).cast();
+        else trace = entityTrace.setIgnoreEntities(false).cast();
+
+        if (trace != null && trace.hitVec != null) this.finalLoc = trace.hitVec;
+
+        return false;
     }
 
     @Override
