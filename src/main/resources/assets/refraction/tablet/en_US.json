@@ -7,6 +7,9 @@
         {
           "info": "Hello",
           "text": [
+            "&nDisclaimer: This guide is still a work in progress but more or less functional enough",
+            "",
+            "",
             "Hello there, [player]! I'm Eve, your personal assistant!",
             "",
             "I'm here to help you &m<study phys&kics&r&m>&rlearn how to manipulate light using reflection and refraction!",
@@ -38,10 +41,10 @@
         {
           "info": "Oooh, Shiny",
           "text": [
-            "Neither gold nor iron have the reflective properties you'd want to be able to play around with light, but they both are a step in the right direction. The Assembly table will allow you to make such materials, by using Magnifiers to focus beams inside.",
+            "Neither gold nor iron have the reflective properties you'd want to be able to play around with light, but they both are a step in the right direction.",
             "",
             "",
-            "To get something very reflective, using a beam to fuse three iron and three gold in the table should be sufficient. The table requires redstone power to function, to get the components running.",
+            "To get something very reflective, craft an iron ingot with a gold ingot in a regular crafting window. The table requires redstone power to function, to get the components running.",
             "",
             "",
             "It'll give you a highly [recipe:refraction:reflective_alloy], very useful for light manipulation."
@@ -52,6 +55,8 @@
           "text": [
             "Now that you have more reflective resources, you can dispense with the annoyance of placing the [recipe:refraction:magnifier] exactly above the table. By creating a [recipe:refraction:mirror] with reflective alloys and rotating it using a [recipe:refraction:screw_driver] you can redirect beams to any direction.",
             "",
+            "You can craft a [recipe:refraction:mirror] using the assembly table you craft. The Assembly table will allow you to make such materials, by using magnifiers to focus beams into it and providing a redstone signal, it will fuse the items inside of it together provided the beams being pointed into it evaluate to the correct color range and add up to the proper beam strength value (that also has a max and min per recipe).",
+            "You will only need 1 magnifier that produces 1 single weak beam to craft a mirror in the assembly table.",
             "",
             "Using the screwdriver on the air will decrease its precision, and sneak-using it will increase its precision. Using it on a mirror's top will rotate it horizontally, and on a mirror's side it'll rotate it vertically.",
             "",
@@ -65,11 +70,11 @@
             "So far, you've only witnessed thin white beams, let's change it up a bit!",
             "",
             "",
-            "Different colors of beams can produce some effects. These effects can be highly beneficial to your needs, or just plain fun. I'll get to these effects later on, but to acquire them, you'll want to craft yourself a prism.",
+            "Different colors of beams can produce some effects. These effects can be highly beneficial to your needs, or just plain fun. I'll get to these effects later on, but to acquire them, you'll want to craft yourself a [recipe:refraction:prism].",
             "",
             "This particular block will split a light beam into it's three basic colors: red, green, and blue. We'll get to the effects of these colors later on, as I've already said, but to acquire this block, you'll want a minimum of 5 mirrors all pointing into the assembly table with beams from magnifiers on each of them.",
             "",
-            "Next, right click the [recipe:refraction:assembly_table] with 6 lens blocks to input the items and provide a redstone signal to the table and it will craft you your first prism.",
+            "Next, right click the assembly table with 6 lens blocks to input the items and provide a redstone signal to the table and it will craft you your first prism.",
             "",
             "",
             "&c&l[!] WARNING [!]&r Do NOT place the prism in front of a beam just yet. Please read the next section before proceeding because the next part can be lethal to both your person and your surroundings if caution is not taken!"
@@ -92,7 +97,7 @@
             "The green beam is a bonemeal beam. If pointed at a bonemealable block, it has a chance based on it's strength to bonemeal the block",
             "",
             "",
-            "And now comes the most dangerous part... The red beam is a burn beam. It has a chance based on it's strength to set any block it touches on fire and any entity it touches aflame. This beam is EXTREMELY dangerous",
+            "And now comes the most dangerous part... The red beam is a burn beam. It has a chance based on it's strength to set any block it touches on fire and any entity it touches aflame. This beam is &mextremely&r dangerous",
             " if not created with caution because it can and WILL burn down your surroundings easily if you are not careful. This is especially true because of the green beam, because if an area gets bonemealed and burnt, it will cause",
             "tons of fire based damage to your area.",
             "",
@@ -107,7 +112,7 @@
             "",
             "This block will merge any two or more beams that intersect with it and produce a final beam based on the weighted average of all the colors that went into it, taking into account color strength as well as outputting the beam in an averaged angle between them all.",
             "",
-            "This block is extremely useful as it is able to produce the entire color spectrum if used right. You'll want it to use the rest of the effects in the mod, which are:",
+            "This block is extremely useful as it is able to produce the entire color spectrum if use right. You'll want it to use the rest of the effects in the mod, which are:",
             "",
             "",
             "Cyan: Attract entities (items). If the beam is strong enough, it will attract any living entity.",
@@ -141,6 +146,12 @@
             "",
             "",
             "If you want to continually power it automatically, consider a witch farm or a mob farm that filters witches."
+          ]
+        },
+        {
+          "info": "Electric Laser",
+          "text": [
+            "The electric laser block is like the regular laser block. The only difference is that it accepts tesla/forge energy instead of glowstone."
           ]
         },
         {
@@ -248,56 +259,6 @@
           "text": [
             "When placed into an assembly table with any beam hitting it, it will infuse the grenade with that color.",
             "When thrown, the grenade will explode violently with the color (taking into account the original strength as well)"
-          ]
-        }
-      ]
-    },
-    {
-      "icon": "refraction:items/mirror",
-      "info": "Third Page",
-      "subpages": [
-        {
-          "info": "Hello3",
-          "text": [
-            "Hello there! I'm Eve, your personal assistant!",
-            "I'm here to help you <study phys-ERR> use reflection and refraction to manipulate light beams!",
-            "Let's get started, shall we?"
-          ]
-        },
-        {
-          "info": "muffinfssss",
-          "text": [
-            "Let's see here... Ah, yes. Ok so you'll first want to make an [assembly_table]. This simple block will help you craft everything you need. I will guide you through the steps of its usage when we get to that.",
-            "For now, craft one. It requires 7 iron ingots and 1 [lens] block.",
-            "",
-            "Next, you'll want to craft a [magnifier] block. When provided with a 3x3 of lense blocks above it - provided that they have a line of sight to the sky - it will converge the sunlight into a focused beam of light directly below it.",
-            "",
-            "I should note that you should place the magnifier (with the lense blocks above it) anywhere above the assembly table. This will be a one time setup to get you the basic items and can be altered after we're done with the second step."
-          ]
-        }
-      ]
-    },
-    {
-      "icon": "refraction:items/laser_pointer",
-      "info": "Fourth Page",
-      "subpages": [
-        {
-          "info": "Hello4",
-          "text": [
-            "Hello there! I'm Eve, your personal assistant!",
-            "I'm here to help you <study phys-ERR> use reflection and refraction to manipulate light beams!",
-            "Let's get started, shall we?"
-          ]
-        },
-        {
-          "info": "<3333",
-          "text": [
-            "Let's see here... Ah, yes. Ok so you'll first want to make an [assembly_table]. This simple block will help you craft everything you need. I will guide you through the steps of its usage when we get to that.",
-            "For now, craft one. It requires 7 iron ingots and 1 [lens] block.",
-            "",
-            "Next, you'll want to craft a [magnifier] block. When provided with a 3x3 of lense blocks above it - provided that they have a line of sight to the sky - it will converge the sunlight into a focused beam of light directly below it.",
-            "",
-            "I should note that you should place the magnifier (with the lense blocks above it) anywhere above the assembly table. This will be a one time setup to get you the basic items and can be altered after we're done with the second step."
           ]
         }
       ]
