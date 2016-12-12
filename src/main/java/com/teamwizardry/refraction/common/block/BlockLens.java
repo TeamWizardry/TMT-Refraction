@@ -112,12 +112,12 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
         new Beam(worldObj, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).setUUID(uuid).enableParticleBeginning().spawn();
     }
 
-    private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {
+    public static Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {
         double r = from / to, c = -normal.dotProduct(vec);
         return vec.scale(r).add(normal.scale((r * c) - Math.sqrt(1 - (r * r) * (1 - (c * c)))));
     }
 
-    private void showBeam(World worldObj, Vec3d start, Vec3d end, Color color) {
+    public static void showBeam(World worldObj, Vec3d start, Vec3d end, Color color) {
         PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
                 new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
     }

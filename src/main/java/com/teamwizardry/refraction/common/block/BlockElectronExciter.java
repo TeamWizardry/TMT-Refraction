@@ -60,7 +60,7 @@ public class BlockElectronExciter extends BlockMod implements IBeamHandler {
     }
 
     @Override
-    public void handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+    public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
         ExciterObject exciterObject = ExciterTracker.INSTANCE.addExciter(world, pos);
         if (beam.enableEffect && beam.effect != null && beam.effect.getColor().equals(Color.CYAN)) {
             EnumFacing block = world.getBlockState(pos).getValue(FACING);
@@ -68,10 +68,11 @@ public class BlockElectronExciter extends BlockMod implements IBeamHandler {
                 exciterObject.hasCardinalBeam = true;
                 exciterObject.generateBridge();
                 ExciterTracker.INSTANCE.refreshPower(world, pos);
-                return;
+                return true;
             }
         }
         exciterObject.hasCardinalBeam = false;
+        return true;
     }
 
     @NotNull

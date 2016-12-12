@@ -266,13 +266,12 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
     }
 
     @Override
-    public void handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+    public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
         IBlockState state = world.getBlockState(pos);
 
-        if (state.getBlock() != this) return;
         EnumFacing.Axis block = world.getBlockState(pos).getValue(FACING);
         Effect effect = beam.effect;
-        if (effect == null) return;
+        if (effect == null) return true;
         if (effect.getColor().equals(Color.CYAN)) {
             EnumFacing positive = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.POSITIVE, block);
             EnumFacing negative = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.NEGATIVE, block);
@@ -281,19 +280,21 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
                 ExciterObject object = ExciterTracker.INSTANCE.getExciterObjectFromArray(world, pos);
                 if (object == null) {
                     world.setBlockToAir(pos);
-                    return;
+                    return true;
                 }
                 if (object.size <= 0) {
                     world.setBlockToAir(pos);
                     ExciterTracker.INSTANCE.removeExciter(world, pos);
-                    return;
+                    return true;
                 }
                 object.refreshPower();
-                return;
+                return true;
             }
         }
 
         fireColor(world, pos, state, beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, beam.color, beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
+
+        return true;
     }
 
     @Override
