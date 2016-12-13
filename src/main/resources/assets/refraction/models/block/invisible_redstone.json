@@ -1,0 +1,6 @@
+{
+  "parent": "refraction:block/invisible_block",
+  "textures": {
+    "all": "blocks/redstone_block"
+  }
+}

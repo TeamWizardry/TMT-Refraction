@@ -27,7 +27,8 @@ public class ModBlocks {
 	public static BlockAXYZ AXYZ;
 	public static BlockElectricLaser ELECTRIC_LASER;
     public static BlockSolarPanel SOLAR_PANEL;
-    public static BlockFilter FILTER;
+	public static BlockFilter FILTER;
+	public static BlockInvisibleRedstone INVISIBLE_REDSTONE;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -51,7 +52,8 @@ public class ModBlocks {
 		FILTER = new BlockFilter();
 		ELECTRIC_LASER = new BlockElectricLaser();
         SOLAR_PANEL = new BlockSolarPanel();
-    }
+		INVISIBLE_REDSTONE = new BlockInvisibleRedstone();
+	}
 
 	public static void initModels() {
 		ASSEMBLY_TABLE.initModel();

@@ -3,9 +3,9 @@ package com.teamwizardry.refraction.common.block;
 import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.librarianlib.common.base.block.IBlockColorProvider;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -46,7 +46,8 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 			"filter_cyan",
 			"filter_yellow",
 			"filter_magenta",
-			"filter_pink"
+			"filter_pink",
+			"filter_orange"
 	};
 
 	public BlockFilter() {
@@ -131,7 +132,8 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 
 	public enum EnumFilterType implements IStringSerializable {
 		WHITE(0xFFFFFF), RED(0xFF0000), GREEN(0x00FF00), BLUE(0x0000FF),
-		CYAN(0x00FFFF), YELLOW(0xFFFF00), MAGENTA(0xFF00FF), PINK(0xFFAFAF);
+		CYAN(0x00FFFF), YELLOW(0xFFFF00), MAGENTA(0xFF00FF), PINK(0xFFAFAF),
+		ORANGE(0xFFA500);
 
 		public int color;
 

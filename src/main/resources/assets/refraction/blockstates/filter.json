@@ -23,6 +23,9 @@
 		},
 		"color=pink": {
 			"model": "refraction:filter"
+        },
+      "color=orange": {
+        "model": "refraction:filter"
 		}
 	}
 }
