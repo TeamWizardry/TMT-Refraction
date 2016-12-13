@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
@@ -33,6 +34,8 @@ public class TileDiscoBall extends TileMod implements ITickable {
     @NotNull
     public List<Beam> beams = new ArrayList<>();
     private Set<BeamHandler> handlers = new HashSet<>();
+    @Save
+    private int beamHandledTicks = 0;
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
@@ -54,7 +57,13 @@ public class TileDiscoBall extends TileMod implements ITickable {
     }
 
     public void handle(Beam beam) {
-        if (!worldObj.isBlockPowered(pos) && worldObj.isBlockIndirectlyGettingPowered(pos) == 0) return;
+        beamHandledTicks = 5;
+        markDirty();
+
+        if (!worldObj.isBlockPowered(pos) && worldObj.isBlockIndirectlyGettingPowered(pos) == 0) {
+            beams.clear();
+            return;
+        }
 
         boolean add = true;
         for (Beam oldBeam : beams)
@@ -62,6 +71,7 @@ public class TileDiscoBall extends TileMod implements ITickable {
         if (add) {
             beams.add(beam);
             worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+            markDirty();
         }
 
         for (int i = 0; i < 4; i++) {
@@ -89,10 +99,17 @@ public class TileDiscoBall extends TileMod implements ITickable {
 
     @Override
     public void update() {
-        if (worldObj.isBlockPowered(pos) || worldObj.isBlockIndirectlyGettingPowered(pos) != 0 || tick != 0) {
+        if (beamHandledTicks > 0)
+            beamHandledTicks--;
+        else {
+            beams.clear();
+            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+            markDirty();
+        }
+        if (worldObj.isBlockPowered(pos) || worldObj.isBlockIndirectlyGettingPowered(pos) != 0) {
             tick += 5;
             if (tick >= 360) tick = 0;
-        }
+        } else beams.clear();
 
         if (handlers.isEmpty()) return;
 
@@ -111,11 +128,6 @@ public class TileDiscoBall extends TileMod implements ITickable {
             handler.beam.enableParticleBeginning().spawn();
             return handler.life <= 0;
         });
-
-        if (!beams.isEmpty()) {
-            beams.clear();
-            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
-        }
     }
 
     private class BeamHandler {
@@ -130,7 +142,7 @@ public class TileDiscoBall extends TileMod implements ITickable {
             this.rotZ = rotZ;
             this.invertX = ThreadLocalRandom.current().nextBoolean();
             this.invertZ = ThreadLocalRandom.current().nextBoolean();
-            this.life = this.maxLife = ThreadLocalRandom.current().nextInt(5, 10);
+            this.life = this.maxLife = ThreadLocalRandom.current().nextInt(20, 30);
         }
     }
 }

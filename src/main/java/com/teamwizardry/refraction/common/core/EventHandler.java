@@ -89,16 +89,17 @@ public class EventHandler {
                 r = collisionRayTraceLaser(state, worldObj, pos, hitPos.add(ref), hitPos);
                 // trace backward so we don't hit hitPos first
 
-                assert r != null;
-                normal = r.data.scale(-1);
-                Vec3d oldRef = ref;
-                ref = BlockLens.refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
-                if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
-                    ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
-                    break;
+                if (r != null && r.data != null) {
+                    normal = r.data.scale(-1);
+                    Vec3d oldRef = ref;
+                    ref = BlockLens.refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
+                    if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
+                        ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
+                        break;
+                    }
+                    BlockLens.showBeam(worldObj, hitPos, r.hitVec, color);
+                    hitPos = r.hitVec;
                 }
-                BlockLens.showBeam(worldObj, hitPos, r.hitVec, color);
-                hitPos = r.hitVec;
             }
 
             new Beam(worldObj, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).setUUID(uuid).enableParticleBeginning().spawn();

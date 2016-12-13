@@ -98,8 +98,10 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
         if (te.getWorld().isBlockIndirectlyGettingPowered(te.getPos()) > 0
                 || te.getWorld().isBlockPowered(te.getPos()) && te.beams.size() > 0) {
             GlStateManager.translate(0.5, 0.25, 0.5);
-            for (Beam beam : te.beams)
+            for (Beam beam : te.beams) {
                 StarRenderHelper.renderStar(beam.color.getRGB(), 0.2f, 0.2f, 0.2f, beam.slope.hashCode());
+                StarRenderHelper.renderStar(beam.color.brighter().getRGB(), 0.1f, 0.1f, 0.1f, beam.slope.hashCode() + beam.slope.hashCode());
+            }
             GlStateManager.translate(-0.5, -0.25, -0.5);
         }
         GlStateManager.disableBlend();
