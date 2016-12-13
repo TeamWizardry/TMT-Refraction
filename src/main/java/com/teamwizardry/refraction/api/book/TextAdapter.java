@@ -49,7 +49,7 @@ public class TextAdapter {
                             String stackString = word.substring(word.indexOf("recipe:"), word.indexOf("]")).split("recipe:")[1];
                             ItemStack stack = Utils.HANDLER.getStackFromString(stackString);
                             if (stack != null) {
-                                s = s.replace(word, TextFormatting.RESET + "[" + TextFormatting.BLUE + stack.getDisplayName() + TextFormatting.RESET + "]");
+                                s = s.replace(word, TextFormatting.RESET + "[" + TextFormatting.DARK_BLUE + stack.getDisplayName() + TextFormatting.RESET + "]");
                             }
                         }
                     }
