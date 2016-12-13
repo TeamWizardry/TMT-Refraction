@@ -28,6 +28,7 @@ public class ModBlocks {
 	public static BlockElectricLaser ELECTRIC_LASER;
     public static BlockSolarPanel SOLAR_PANEL;
 	public static BlockFilter FILTER;
+	public static BlockInvisible INVISIBLE;
 	public static BlockInvisibleRedstone INVISIBLE_REDSTONE;
 
 	public static void init() {
@@ -52,6 +53,7 @@ public class ModBlocks {
 		FILTER = new BlockFilter();
 		ELECTRIC_LASER = new BlockElectricLaser();
         SOLAR_PANEL = new BlockSolarPanel();
+		INVISIBLE = new BlockInvisible();
 		INVISIBLE_REDSTONE = new BlockInvisibleRedstone();
 	}
 

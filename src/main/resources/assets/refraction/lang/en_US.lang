@@ -35,6 +35,7 @@ tile.refraction:filter_cyan.name=Cyan Creative Filter
 tile.refraction:filter_yellow.name=Yellow Creative Filter
 tile.refraction:filter_magenta.name=Magenta Creative Filter
 tile.refraction:filter_pink.name=Pink Creative Filter
+tile.refraction:filter_orange.name=Orange Creative Filter
 
 
 item.refraction:laser_pen.name=Laser Pen

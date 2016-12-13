@@ -28,7 +28,7 @@ public class EffectBurn extends Effect {
 
     @Override
     public int getChance(int potency) {
-        return potency == 0 ? 0 : 255 / potency;
+        return potency == 0 ? 0 : 2550 / potency;
     }
 
     @Override

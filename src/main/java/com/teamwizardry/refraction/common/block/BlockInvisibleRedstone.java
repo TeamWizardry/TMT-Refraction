@@ -9,6 +9,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -38,6 +39,11 @@ public class BlockInvisibleRedstone extends BlockModContainer {
         return false;
     }
 
+    @Nullable
+    @Override
+    public ItemBlock createItemForm() {
+        return null;
+    }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {

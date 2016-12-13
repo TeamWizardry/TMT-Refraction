@@ -61,7 +61,7 @@ public class Effect implements Cloneable {
     }
 
     void addEntity(World world, Entity entity) {
-        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(potency) == 0) || getChance(potency) <= 0) {
+        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
             int potency = calculateEntityPotency(entity);
             entities.put(entity.getPosition(), entity);
             runEntity(world, entity, potency);
@@ -69,7 +69,7 @@ public class Effect implements Cloneable {
     }
 
     void addBlock(World world, BlockPos pos) {
-        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(potency) == 0) || getChance(potency) <= 0) {
+        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
             blocks.add(pos);
             runBlock(world, pos, calculateBlockPotency(pos));
         }
