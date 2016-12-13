@@ -115,7 +115,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
 
         int red = 0, green = 0, blue = 0, alpha = 0;
 
-        int count = 0;
+        double count = 0;
         for (Beam beam : beams) {
             if (beam.enableEffect) {
                 count++;
@@ -129,9 +129,9 @@ public class TileAssemblyTable extends TileMod implements ITickable {
 
         if (count <= 0) return;
 
-        red = Math.min(red / count, 255);
-        green = Math.min(green / count, 255);
-        blue = Math.min(blue / count, 255);
+        red = (int) Math.min(red / count, 255);
+        green = (int) Math.min(green / count, 255);
+        blue = (int) Math.min(blue / count, 255);
 
         float[] hsbvals2 = Color.RGBtoHSB(red, green, blue, null);
         Color color = new Color(Color.HSBtoRGB(hsbvals2[0], hsbvals2[1], 1));
@@ -179,7 +179,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
                 if (isSpecialRecipe) {
                     ItemStack stack = new ItemStack(specialRecipeItem);
                     NBTTagCompound compound = new NBTTagCompound();
-                    compound.setInteger("color", new Color(red, green, blue, alpha).getRGB());
+                    compound.setInteger("color", color.getRGB());
                     stack.setTagCompound(compound);
 
                     EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(worldObj, pos, stack);
