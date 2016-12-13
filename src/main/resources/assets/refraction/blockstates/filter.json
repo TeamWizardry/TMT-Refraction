@@ -1,31 +1,31 @@
 {
-	"variants": {
-		"color=white": {
-			"model": "refraction:filter"
-		},
-		"color=red": {
-			"model": "refraction:filter"
-		},
-		"color=green": {
-			"model": "refraction:filter"
-		},
-		"color=blue": {
-			"model": "refraction:filter"
-		},
-		"color=cyan": {
-			"model": "refraction:filter"
-		},
-		"color=yellow": {
-			"model": "refraction:filter"
-		},
-		"color=magenta": {
-			"model": "refraction:filter"
-		},
-		"color=pink": {
-			"model": "refraction:filter"
-        },
-      "color=orange": {
-        "model": "refraction:filter"
-		}
-	}
+  "variants": {
+    "color=white": {
+      "model": "refraction:filter"
+    },
+    "color=red": {
+      "model": "refraction:filter"
+    },
+    "color=green": {
+      "model": "refraction:filter"
+    },
+    "color=blue": {
+      "model": "refraction:filter"
+    },
+    "color=cyan": {
+      "model": "refraction:filter"
+    },
+    "color=yellow": {
+      "model": "refraction:filter"
+    },
+    "color=magenta": {
+      "model": "refraction:filter"
+    },
+    "color=pink": {
+      "model": "refraction:filter"
+    },
+    "color=orange": {
+      "model": "refraction:filter"
+    }
+  }
 }
