@@ -30,7 +30,7 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		double r = (te.currentColor.getRed() / 255.0);
 		double g = (te.currentColor.getGreen() / 255.0);
 		double b = (te.currentColor.getBlue() / 255.0);
-		double a = (te.currentTransparency / 255.0);
+		double a = (te.currentColor.getAlpha() / 255.0);
 
 		// RED //
 		GlStateManager.pushMatrix();
