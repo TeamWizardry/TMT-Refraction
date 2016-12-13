@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -22,6 +23,7 @@ public class ItemPhotonCannon extends ItemMod {
     public ItemPhotonCannon() {
         super("photon_cannon");
         setMaxStackSize(1);
+        setMaxDamage(500);
         addPropertyOverride(new ResourceLocation(Constants.MOD_ID, "firing"),
                 (stack, worldIn, entityIn) -> entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F);
     }
@@ -44,6 +46,7 @@ public class ItemPhotonCannon extends ItemMod {
 
     @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
+        if (stack.getItemDamage() >= 500) return;
         if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("color")) {
             Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
             boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
@@ -51,6 +54,8 @@ public class ItemPhotonCannon extends ItemMod {
             if (!handMod) cross = cross.scale(-1);
             Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
 
+            stack.damageItem(1, playerIn);
+            Minecraft.getMinecraft().thePlayer.sendChatMessage(stack.getItemDamage() + "/" + stack.getMaxDamage());
             Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), color)
                     .setEnableEffect(true)
                     .setUUIDToSkip(playerIn.getUniqueID())

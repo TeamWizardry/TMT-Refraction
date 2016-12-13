@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.core;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.BeamHitEvent;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
@@ -12,9 +13,10 @@ import com.teamwizardry.refraction.common.block.BlockPrism;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.init.ModAchievements;
 import com.teamwizardry.refraction.init.ModBlocks;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -69,11 +71,19 @@ public class EventHandler {
     public void handleGlass(BeamHitEvent event) {
         if (event.getState().getBlock() instanceof IBeamHandler) return;
         if (event.getResult() != Event.Result.DEFAULT) return;
-        if (event.getState().getMaterial() != Material.GLASS) return;
 
         Beam beam = event.getBeam();
+        Color dye;
+        if (event.getState().getBlock() == Blocks.STAINED_GLASS
+                || event.getState().getBlock() == Blocks.STAINED_GLASS_PANE) {
+            dye = Utils.getColorFromDyeEnum(event.getState().getValue(BlockStainedGlass.COLOR));
+        } else if (event.getState().getBlock() == Blocks.GLASS_PANE
+                || event.getState().getBlock() == Blocks.GLASS) {
+            dye = beam.color;
+        } else return;
 
-        fireColor(event.getWorld(), event.getPos(), event.getState(), beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, beam.color, beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
+        Color color = new Color(dye.getRed(), dye.getGreen(), dye.getBlue(), (int) (beam.color.getAlpha() / 1.4));
+        fireColor(event.getWorld(), event.getPos(), event.getState(), beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, color, false, beam.ignoreEntities, UUID.randomUUID());
         event.setResult(Event.Result.DENY);
     }
 
