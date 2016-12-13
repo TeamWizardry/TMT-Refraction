@@ -18,7 +18,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -100,7 +99,7 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 	public void handleBeams(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam... beams) {
 		IBlockState state = world.getBlockState(pos);
 		for (Beam beam : beams)
-			beam.createSimilarBeam(new Vec3d(pos).addVector(0.5, 0.5, 0.5), beam.slope, new Color(state.getValue(TYPE).color)).setUUID(UUID.randomUUID()).spawn();
+			beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(state.getValue(TYPE).color)).setUUID(UUID.randomUUID()).spawn();
 	}
 
 	@Nonnull
@@ -112,7 +111,7 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 	@Override
 	public void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		IBlockState state = world.getBlockState(pos);
-		beam.createSimilarBeam(new Vec3d(pos).addVector(0.5, 0.5, 0.5), beam.slope, new Color(state.getValue(TYPE).color)).spawn();
+		beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(state.getValue(TYPE).color)).spawn();
 	}
 
 	@Override
