@@ -1,19 +1,23 @@
 package com.teamwizardry.refraction.common.effect;
 
+import com.teamwizardry.refraction.api.CapsUtils;
 import com.teamwizardry.refraction.api.beam.Effect;
-import com.teamwizardry.refraction.api.beam.EffectTracker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.teamwizardry.refraction.api.beam.EffectTracker.gravityReset;
 
@@ -51,20 +55,46 @@ public class EffectDisperse extends Effect {
     @Override
     public void runBlock(World world, BlockPos pos, int potency) {
         TileEntity tile = world.getTileEntity(beam.trace.getBlockPos());
-        if (tile != null && EffectTracker.burnedTileTracker.contains(beam.trace.getBlockPos())) {
-            if (tile instanceof IInventory) {
-                IInventory inv = (IInventory) tile;
+        if (tile == null) return;
+        if (!EffectBurn.burnedTileTracker.contains(beam.trace.getBlockPos())) return;
+        EffectBurn.burnedTileTracker.remove(beam.trace.getBlockPos());
+        if (tile instanceof IInventory) {
+            IInventory inv = (IInventory) tile;
 
-                for (Entity item : entities.get(pos))
-                    if (item instanceof EntityItem)
-                        TileEntityHopper.putDropInInventoryAllSlots(inv, (EntityItem) item);
-            } else if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit)) {
-                for (Entity item : entities.get(pos))
-                    if (item instanceof EntityItem) {
-                        ((EntityItem) item).getEntityItem().stackSize--;
-                        tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit).insertItem(0, ((EntityItem) item).getEntityItem(), false);
-                    }
-            }
+            Set<Entity> entitySet = new HashSet<>();
+            for (BlockPos poses : entities.keySet()) entitySet.addAll(entities.get(poses));
+
+            entitySet.removeIf(entity -> {
+                if (entity instanceof EntityItem
+                        && entity.getPositionVector().distanceTo(new Vec3d(pos)) <= 2) {
+                    // TODO: duplicate items
+                    TileEntityHopper.putDropInInventoryAllSlots(inv, ((EntityItem) entity));
+                    return true;
+                }
+                return false;
+            });
+            entities.clear();
+            entitySet.forEach(entity -> entities.put(entity.getPosition(), entity));
+
+        } else if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit)) {
+            IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit);
+
+            Set<Entity> entitySet = new HashSet<>();
+            for (BlockPos poses : entities.keySet()) entitySet.addAll(entities.get(poses));
+
+            entitySet.removeIf(entity -> {
+                if (entity instanceof EntityItem
+                        && entity.getPositionVector().distanceTo(new Vec3d(pos)) <= 2) {
+                    ((EntityItem) entity).getEntityItem().stackSize--;
+                    ItemStack clone = ((EntityItem) entity).getEntityItem().copy();
+                    clone.stackSize = 1;
+                    cap.insertItem(CapsUtils.getListOfItems(cap).size(), clone, false);
+                    return true;
+                }
+                return false;
+            });
+            entities.clear();
+            entitySet.forEach(entity -> entities.put(entity.getPosition(), entity));
         }
     }
 

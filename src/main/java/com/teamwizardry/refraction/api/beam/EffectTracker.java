@@ -1,7 +1,6 @@
 package com.teamwizardry.refraction.api.beam;
 
 import com.google.common.collect.HashMultimap;
-import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -26,12 +25,10 @@ import java.util.WeakHashMap;
 public class EffectTracker {
 
     public static ArrayList<Effect> effectRegistry = new ArrayList<>();
-    public static ArrayList<BlockPos> burnedTileTracker = new ArrayList<>();
     public static HashMap<Entity, Integer> gravityReset = new HashMap<>();
     private static WeakHashMap<World, EffectTracker> effectInstances = new WeakHashMap<>();
     private HashMultimap<Effect, BlockPos> effects = HashMultimap.create();
     private BlockTracker blockTracker;
-    private int cooldown;
     private WeakReference<World> world;
 
     public EffectTracker(World world) {
@@ -130,13 +127,6 @@ public class EffectTracker {
                     return true;
                 }
             });
-
-            if (cooldown > 0) {
-                cooldown--;
-            } else {
-                cooldown = Constants.SOURCE_TIMER;
-                burnedTileTracker.clear();
-            }
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.common.effect;
 
+import com.teamwizardry.refraction.api.CapsUtils;
 import com.teamwizardry.refraction.api.beam.Effect;
-import com.teamwizardry.refraction.api.beam.EffectTracker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,8 +12,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.teamwizardry.refraction.api.beam.EffectTracker.gravityReset;
 
@@ -50,32 +52,47 @@ public class EffectAttract extends Effect {
 
     @Override
     public void runBlock(World world, BlockPos pos, int potency) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile != null && EffectTracker.burnedTileTracker.contains(pos)) {
-            if (tile instanceof IInventory) {
-                IInventory inv = (IInventory) tile;
+        if (beam.trace == null) return;
+        TileEntity tile = world.getTileEntity(beam.trace.getBlockPos());
+        if (tile == null) return;
+        if (!EffectBurn.burnedTileTracker.contains(beam.trace.getBlockPos())) return;
+        EffectBurn.burnedTileTracker.remove(beam.trace.getBlockPos());
+        if (ThreadLocalRandom.current().nextInt(2550 / potency) != 0) return;
 
-                for (int i = 0; i < inv.getSizeInventory() - 1; i++) {
-                    ItemStack slotStack = inv.getStackInSlot(i);
-                    if (slotStack != null) {
-                        ItemStack stack = inv.decrStackSize(i, slotStack.stackSize < potency / 50 ? slotStack.stackSize : potency / 50);
-                        if (stack != null) {
+        if (tile instanceof IInventory) {
+            IInventory inv = (IInventory) tile;
 
-                            if (beam.trace != null) {
-                                EntityItem item = new EntityItem(world, beam.trace.hitVec.xCoord, beam.trace.hitVec.yCoord, beam.trace.hitVec.zCoord, stack);
-                                item.motionX = 0;
-                                item.motionY = 0;
-                                item.motionZ = 0;
-                                world.spawnEntityInWorld(item);
-                                break;
-                            }
-                        }
-                    }
+            int lastSlot = 0;
+            for (int i = inv.getSizeInventory() - 1; i > 0; i--) {
+                if (inv.getStackInSlot(i) != null) {
+                    lastSlot = i;
+                    break;
                 }
-            } else if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit)) {
-                for (Entity item : entities.get(pos))
-                    if (item instanceof EntityItem)
-                        tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit).insertItem(0, ((EntityItem) item).getEntityItem(), false);
+            }
+            ItemStack slotStack = inv.getStackInSlot(lastSlot);
+            if (slotStack == null) return;
+
+            ItemStack stack = inv.decrStackSize(lastSlot, slotStack.stackSize < potency / 50 ? slotStack.stackSize : potency / 50);
+            if (stack == null) return;
+
+            EntityItem item = new EntityItem(world, beam.trace.hitVec.xCoord, beam.trace.hitVec.yCoord, beam.trace.hitVec.zCoord, stack);
+            item.motionX = 0;
+            item.motionY = 0;
+            item.motionZ = 0;
+            world.spawnEntityInWorld(item);
+
+        } else if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit)) {
+            IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit);
+            int lastSlot = CapsUtils.getLastOccupiedSlot(cap);
+            if (CapsUtils.getOccupiedSlotCount(cap) > 0) {
+                ItemStack stack = cap.extractItem(lastSlot, cap.getStackInSlot(lastSlot).stackSize < potency / 50 ? cap.getStackInSlot(lastSlot).stackSize : potency / 50, false);
+                if (stack == null) return;
+
+                EntityItem item = new EntityItem(world, beam.trace.hitVec.xCoord, beam.trace.hitVec.yCoord, beam.trace.hitVec.zCoord, stack);
+                item.motionX = 0;
+                item.motionY = 0;
+                item.motionZ = 0;
+                world.spawnEntityInWorld(item);
             }
         }
     }

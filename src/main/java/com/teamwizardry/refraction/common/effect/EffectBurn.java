@@ -1,8 +1,6 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect;
-import com.teamwizardry.refraction.api.beam.EffectTracker;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -17,6 +15,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -26,6 +26,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class EffectBurn extends Effect {
 
+    public static Set<BlockPos> burnedTileTracker = new HashSet<>();
+
     @Override
     public int getChance(int potency) {
         return potency == 0 ? 0 : 2550 / potency;
@@ -34,17 +36,12 @@ public class EffectBurn extends Effect {
     @Override
     public void runBlock(World world, BlockPos pos, int potency) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile != null) {
-            if (!EffectTracker.burnedTileTracker.contains(pos)) {
-                if (tile instanceof IInventory || tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit)) {
-                    EffectTracker.burnedTileTracker.add(pos);
-                    return;
-                }
-            } else if (EffectTracker.burnedTileTracker.contains(pos))
-                EffectTracker.burnedTileTracker.remove(pos);
+        if (tile != null && (tile instanceof IInventory || tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))) {
+            if (!burnedTileTracker.contains(pos)) burnedTileTracker.add(pos);
+            return;
         }
 
-        EnumFacing facing = Utils.getCollisionSide(beam.trace);
+        EnumFacing facing = beam.trace.sideHit;
         if (facing != null) {
             BlockPos newPos = pos.offset(facing);
             IBlockState state = world.getBlockState(newPos);
