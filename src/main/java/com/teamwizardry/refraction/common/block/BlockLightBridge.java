@@ -4,6 +4,8 @@ import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
@@ -11,10 +13,10 @@ import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
 import com.teamwizardry.refraction.api.soundmanager.SoundManager;
-import com.teamwizardry.refraction.common.bridge.ExciterObject;
-import com.teamwizardry.refraction.common.bridge.ExciterTracker;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
+import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.init.ModAchievements;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -23,6 +25,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -39,6 +42,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -82,11 +86,6 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
         setLightLevel(1f);
 
         setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.Axis.Y).withProperty(UP, false).withProperty(DOWN, false).withProperty(LEFT, false).withProperty(RIGHT, false));
-    }
-
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        SoundManager.INSTANCE.addSpeakerNode(worldIn, pos, this);
     }
 
     @Override
@@ -266,29 +265,71 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
     }
 
     @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+        SoundManager.INSTANCE.addSpeakerNode(worldIn, pos, this);
+    }
+
+    @Override
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
+        this.updateTick(worldIn, pos, state, random);
+        EnumFacing.Axis block = worldIn.getBlockState(pos).getValue(FACING);
+        EnumFacing positive = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.POSITIVE, block);
+        EnumFacing negative = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.NEGATIVE, block);
+        boolean pass = false;
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            if (facing == positive || facing == negative) continue;
+            if (worldIn.getBlockState(pos.offset(facing)).getBlock() == ModBlocks.LIGHT_BRIDGE) pass = true;
+        }
+        //if (!pass) worldIn.setBlockToAir(pos);
+    }
+
+    @Override
     public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
         IBlockState state = world.getBlockState(pos);
 
         EnumFacing.Axis block = world.getBlockState(pos).getValue(FACING);
         Effect effect = beam.effect;
         if (effect == null) return true;
-        if (effect.getColor().equals(Color.CYAN)) {
+        if (beam.color.getRGB() == Color.CYAN.getRGB()) {
             EnumFacing positive = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.POSITIVE, block);
             EnumFacing negative = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.NEGATIVE, block);
             Vec3d slope = beam.slope.normalize();
             if (slope.dotProduct(new Vec3d(positive.getDirectionVec())) > 0.999 || slope.dotProduct(new Vec3d(negative.getDirectionVec())) > 0.999) {
-                ExciterObject object = ExciterTracker.INSTANCE.getExciterObjectFromArray(world, pos);
-                if (object == null) {
-                    world.setBlockToAir(pos);
-                    return true;
+
+                EnumFacing facing = PosUtils.getFacing(beam.initLoc, beam.finalLoc);
+                if (facing == null) return true;
+
+                for (int i = 1; i < ConfigValues.BEAM_RANGE; i++) {
+                    BlockPos backwards = pos.offset(facing, i);
+                    if (world.getBlockState(backwards).getBlock() == ModBlocks.ELECTRON_EXCITER) {
+                        IBlockState baseExciterState = world.getBlockState(backwards);
+                        EnumFacing baseExciterFacing = baseExciterState.getValue(BlockElectronExciter.FACING);
+                        TileElectronExciter exciter = (TileElectronExciter) world.getTileEntity(backwards);
+                        if (exciter != null) {
+
+                            // Check for adjacent exciters
+                            boolean pass = false;
+                            for (EnumFacing facing2 : EnumFacing.VALUES) {
+                                if (facing2 != baseExciterFacing || facing2 != baseExciterFacing.getOpposite()) {
+                                    TileElectronExciter neighbor = (TileElectronExciter) world.getTileEntity(backwards.offset(facing2));
+                                    if (neighbor != null && neighbor.hasCardinalBeam) {
+                                        pass = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (pass) {
+                                exciter.expire = Constants.SOURCE_TIMER;
+                                if (world.isAirBlock(pos.offset(baseExciterFacing)))
+                                    world.setBlockState(pos.offset(baseExciterFacing), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, baseExciterFacing.getAxis()), 3);
+                                return true;
+                            } else world.setBlockToAir(pos);
+                        } else world.setBlockToAir(pos);
+                    } else if (world.getBlockState(backwards).getBlock() == Blocks.AIR) {
+                        world.setBlockToAir(pos);
+                        return true;
+                    }
                 }
-                if (object.size <= 0) {
-                    world.setBlockToAir(pos);
-                    ExciterTracker.INSTANCE.removeExciter(world, pos);
-                    return true;
-                }
-                object.refreshPower();
-                return true;
             }
         }
 

@@ -34,25 +34,22 @@ public class EffectBurn extends Effect {
     @Override
     public void runBlock(World world, BlockPos pos, int potency) {
         TileEntity tile = world.getTileEntity(pos);
-        boolean tileFail = true;
         if (tile != null) {
             if (!EffectTracker.burnedTileTracker.contains(pos)) {
                 if (tile instanceof IInventory || tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit)) {
                     EffectTracker.burnedTileTracker.add(pos);
-                    tileFail = false;
+                    return;
                 }
             } else if (EffectTracker.burnedTileTracker.contains(pos))
                 EffectTracker.burnedTileTracker.remove(pos);
         }
 
-        if (tileFail && potency >= 50 && ThreadLocalRandom.current().nextInt(0, 10) == 0) {
-            EnumFacing facing = Utils.getCollisionSide(beam.trace);
-            if (facing != null) {
-                BlockPos newPos = pos.offset(facing);
-                IBlockState state = world.getBlockState(newPos);
-                if (state.getBlock() == Blocks.AIR)
-                    world.setBlockState(newPos, Blocks.FIRE.getDefaultState());
-            }
+        EnumFacing facing = Utils.getCollisionSide(beam.trace);
+        if (facing != null) {
+            BlockPos newPos = pos.offset(facing);
+            IBlockState state = world.getBlockState(newPos);
+            if (state.getBlock() == Blocks.AIR)
+                world.setBlockState(newPos, Blocks.FIRE.getDefaultState());
         }
     }
 

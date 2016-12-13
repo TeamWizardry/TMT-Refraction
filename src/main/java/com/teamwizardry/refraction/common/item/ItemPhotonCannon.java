@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
+import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import net.minecraft.entity.EntityLivingBase;
@@ -43,20 +44,18 @@ public class ItemPhotonCannon extends ItemMod {
 
     @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
-        boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
-        Vec3d cross = playerIn.getLook(1).crossProduct(new Vec3d(0, playerIn.getEyeHeight(), 0)).normalize().scale(playerIn.width / 2);
-        if (!handMod) cross = cross.scale(-1);
-        Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
+        if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("color")) {
+            Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
+            boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
+            Vec3d cross = playerIn.getLook(1).crossProduct(new Vec3d(0, playerIn.getEyeHeight(), 0)).normalize().scale(playerIn.width / 2);
+            if (!handMod) cross = cross.scale(-1);
+            Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
 
-        Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), Color.CYAN)
-                .setEnableEffect(true)
-                .setUUIDToSkip(playerIn.getUniqueID())
-                .enableParticleEnd();
-        beam.spawn();
-
-        playerIn.motionX += beam.slope.xCoord * -1 / 30.0;
-        playerIn.motionY += beam.slope.yCoord * -1 / 30.0;
-        playerIn.motionZ += beam.slope.zCoord * -1 / 30.0;
-        playerIn.velocityChanged = true;
+            Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), color)
+                    .setEnableEffect(true)
+                    .setUUIDToSkip(playerIn.getUniqueID())
+                    .enableParticleEnd();
+            beam.spawn();
+        }
     }
 }

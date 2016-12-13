@@ -4,9 +4,9 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.CapsUtils;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.client.render.RenderAssemblyTable;
-import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.common.tile.TileAssemblyTable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -78,8 +78,8 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 				playerIn.setHeldItem(hand, table.output.extractItem(0, table.output.getStackInSlot(0).stackSize, false));
 				playerIn.openContainer.detectAndSendChanges();
 
-			} else if (table.getOccupiedSlotCount() > 0) {
-				playerIn.setHeldItem(hand, table.inventory.extractItem(table.getLastOccupiedSlot(), 1, false));
+			} else if (CapsUtils.getOccupiedSlotCount(table.inventory) > 0) {
+				playerIn.setHeldItem(hand, table.inventory.extractItem(CapsUtils.getLastOccupiedSlot(table.inventory), 1, false));
 				playerIn.openContainer.detectAndSendChanges();
 			}
 			table.markDirty();

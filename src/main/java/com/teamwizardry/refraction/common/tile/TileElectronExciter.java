@@ -1,0 +1,43 @@
+package com.teamwizardry.refraction.common.tile;
+
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.common.util.saving.Save;
+import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.common.block.BlockElectronExciter;
+import com.teamwizardry.refraction.init.ModBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+
+/**
+ * Created by LordSaad.
+ */
+@TileRegister("electron_exciter")
+public class TileElectronExciter extends TileMod implements ITickable {
+
+    @Save
+    public int expire;
+    @Save
+    public boolean hasCardinalBeam = false;
+
+    @Override
+    public void update() {
+        if (worldObj.isRemote) return;
+        if (expire > 0) expire--;
+        else {
+            hasCardinalBeam = false;
+            IBlockState state = worldObj.getBlockState(pos);
+            EnumFacing facing = state.getValue(BlockElectronExciter.FACING);
+            int size = 1;
+            while (size < ConfigValues.BEAM_RANGE) {
+                BlockPos bridgePos = pos.offset(facing, size);
+                if (worldObj.getBlockState(bridgePos).getBlock() == ModBlocks.LIGHT_BRIDGE) {
+                    worldObj.setBlockToAir(bridgePos);
+                    size++;
+                } else break;
+            }
+        }
+    }
+}

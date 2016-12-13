@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.tile;
 
+import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpColorFade;
@@ -12,9 +13,11 @@ import com.teamwizardry.refraction.api.*;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.init.ModItems;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,6 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,7 +36,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by LordSaad44
  */
 @TileRegister("assembly_table")
-public class TileAssemblyTable extends TileMod {
+public class TileAssemblyTable extends TileMod implements ITickable {
 
     @Save
     public boolean isCrafting = false;
@@ -71,7 +75,11 @@ public class TileAssemblyTable extends TileMod {
     @Save
     private int craftingTime = 0;
     @Save
-    private boolean isGrenadeRecipe = false;
+    private boolean isSpecialRecipe = false;
+    private Item specialRecipeItem;
+
+    @NotNull
+    private List<Beam> beams = new ArrayList<>();
 
     public TileAssemblyTable() {
     }
@@ -93,13 +101,22 @@ public class TileAssemblyTable extends TileMod {
         return INFINITE_EXTENT_AABB;
     }
 
-    public void handle(Beam... inputs) {
+    public void handle(Beam... beams) {
+        if (worldObj.isRemote) return;
         if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
-        if (inputs.length <= 0) return;
+        this.beams.addAll(Lists.newArrayList(beams));
+    }
+
+    @Override
+    public void update() {
+        if (worldObj.isRemote) return;
+        if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
+        if (beams.isEmpty()) return;
+
         int red = 0, green = 0, blue = 0, alpha = 0;
 
         int count = 0;
-        for (Beam beam : inputs) {
+        for (Beam beam : beams) {
             if (beam.enableEffect) {
                 count++;
                 red += beam.color.getRed() * (beam.color.getAlpha() / 255f);
@@ -108,6 +125,7 @@ public class TileAssemblyTable extends TileMod {
                 alpha += beam.color.getAlpha();
             }
         }
+        beams.clear();
 
         red = Math.min(red / count, 255);
         green = Math.min(green / count, 255);
@@ -118,7 +136,7 @@ public class TileAssemblyTable extends TileMod {
         color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha / 2, 255));
 
         if (isCrafting) {
-            if (craftingTime < 100) {
+            if (craftingTime < 200) {
                 craftingTime++;
                 ParticleBuilder builder = new ParticleBuilder(5);
                 builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
@@ -156,13 +174,12 @@ public class TileAssemblyTable extends TileMod {
                             ThreadLocalRandom.current().nextDouble(-0.01, 0.01)));
                     builder.setLifetime(ThreadLocalRandom.current().nextInt(20, 80));
                 });
-                if (isGrenadeRecipe) {
-                    ItemStack stack = new ItemStack(ModItems.GRENADE);
+                if (isSpecialRecipe) {
+                    ItemStack stack = new ItemStack(specialRecipeItem);
                     NBTTagCompound compound = new NBTTagCompound();
-                    compound.setInteger("color", new Color(red, green, blue).getRGB());
-                    compound.setInteger("color_alpha", Math.min(alpha, 255));
+                    compound.setInteger("color", new Color(red, green, blue, alpha).getRGB());
                     stack.setTagCompound(compound);
-                    //MARKER: GRENADE CRAFTING
+
                     EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(worldObj, pos, stack);
                     MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);
                     output.setStackInSlot(0, eventAssemblyTableCraft.getOutput());
@@ -172,20 +189,23 @@ public class TileAssemblyTable extends TileMod {
             return;
         }
 
-        if (getOccupiedSlotCount() <= 0) return;
+        if (CapsUtils.getOccupiedSlotCount(inventory) <= 0) return;
 
         if (CapsUtils.getListOfItems(inventory).size() == 1
-                && CapsUtils.getListOfItems(inventory).get(0).getItem() == ModItems.GRENADE) {
+                && (CapsUtils.getListOfItems(inventory).get(0).getItem() == ModItems.GRENADE
+                || CapsUtils.getListOfItems(inventory).get(0).getItem() == ModItems.PHOTON_CANNON)) {
             isCrafting = true;
             craftingTime = 0;
-            isGrenadeRecipe = true;
+            isSpecialRecipe = true;
+            specialRecipeItem = CapsUtils.getListOfItems(inventory).get(0).getItem();
             CapsUtils.clearInventory(inventory);
             markDirty();
+            return;
         }
 
         for (AssemblyRecipe recipe : AssemblyRecipes.recipes) {
 
-            if (recipe.getItems().size() != getOccupiedSlotCount()) continue;
+            if (recipe.getItems().size() != CapsUtils.getOccupiedSlotCount(inventory)) continue;
             if (color.getRed() > recipe.getMaxRed()) continue;
             if (color.getRed() < recipe.getMinRed()) continue;
             if (color.getGreen() > recipe.getMaxGreen()) continue;
@@ -195,35 +215,17 @@ public class TileAssemblyTable extends TileMod {
             if (color.getAlpha() > recipe.getMaxStrength()) continue;
             if (color.getAlpha() < recipe.getMinStrength()) continue;
 
-            if (Utils.matchItemStackLists(getListOfItems(), Utils.getListOfObjects(recipe.getItems()))) {
+            if (Utils.matchItemStackLists(CapsUtils.getListOfItems(inventory), Utils.getListOfObjects(recipe.getItems()))) {
                 //MARKER: REGULAR CRAFTING
                 EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(worldObj, pos, recipe.getResult().copy());
                 MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);
                 output.setStackInSlot(0, eventAssemblyTableCraft.getOutput());
                 isCrafting = true;
-                isGrenadeRecipe = false;
+                isSpecialRecipe = false;
                 craftingTime = 0;
-                for (int i = 0; i < inventory.getSlots(); i++) inventory.setStackInSlot(i, null);
+                CapsUtils.clearInventory(inventory);
                 markDirty();
             }
         }
-    }
-
-    public int getOccupiedSlotCount() {
-        int x = 0;
-        for (int i = 0; i < inventory.getSlots(); i++) if (inventory.getStackInSlot(i) != null) x++;
-        return x;
-    }
-
-    public int getLastOccupiedSlot() {
-        for (int i = inventory.getSlots() - 1; i > 0; i--) if (inventory.getStackInSlot(i) != null) return i;
-        return 0;
-    }
-
-    public List<ItemStack> getListOfItems() {
-        List<ItemStack> stacks = new ArrayList<>();
-        for (int i = 0; i < inventory.getSlots(); i++)
-            if (inventory.getStackInSlot(i) != null) stacks.add(inventory.getStackInSlot(i));
-        return stacks;
     }
 }
