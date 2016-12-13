@@ -23,23 +23,18 @@ public class TileSpectrometer extends TileMod implements ITickable {
 	@Save
 	public Color maxColor = Color.BLACK;
 	public Color currentColor = Color.BLACK;
-	@Save
-	public int maxTransparency = 0;
-	public int currentTransparency = 0;
 	@NotNull
 	private List<Beam> beams = new ArrayList<>();
 	private int tick = 0;
 
 	@Override
 	public void readCustomNBT(NBTTagCompound compound) {
-		this.currentColor = new Color(compound.getInteger("current_color"));
-		this.currentTransparency = compound.getInteger("current_alpha");
+		this.currentColor = new Color(compound.getInteger("current_color"), true);
 	}
 
 	@Override
 	public void writeCustomNBT(NBTTagCompound compound, boolean sync) {
 		compound.setInteger("current_color", currentColor.getRGB());
-		compound.setInteger("current_alpha", currentTransparency);
 	}
 
 	public void handle(Beam... beams) {
@@ -56,15 +51,11 @@ public class TileSpectrometer extends TileMod implements ITickable {
 			tick = 0;
 			beams.clear();
 			maxColor = new Color(0, 0, 0);
-			maxTransparency = 0;
 			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		}
 
-		if (currentColor.getRGB() != maxColor.getRGB() || currentTransparency != maxTransparency) {
+		if (currentColor.getRGB() != maxColor.getRGB()) {
 			currentColor = Utils.mixColors(currentColor, maxColor, 0.9);
-			double inverse_percent = 1.0 - 0.9;
-			double transparency = currentTransparency * 0.9 + maxTransparency * inverse_percent;
-			currentTransparency = (int) transparency;
 			worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
 		}
 
@@ -92,7 +83,6 @@ public class TileSpectrometer extends TileMod implements ITickable {
 
 		if (color.getRGB() == maxColor.getRGB()) return;
 		this.maxColor = color;
-		this.maxTransparency = color.getAlpha();
 		markDirty();
 
 		beams.clear();
