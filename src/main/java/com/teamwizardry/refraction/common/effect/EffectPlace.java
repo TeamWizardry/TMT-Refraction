@@ -53,14 +53,14 @@ public class EffectPlace extends Effect {
             if (result == EnumActionResult.SUCCESS || result == EnumActionResult.PASS) continue;
 
             for (EnumFacing facing : EnumFacing.VALUES) {
-                if (!world.isAirBlock(pos.offset(facing))) continue;
+                if (world.isAirBlock(pos.offset(facing))) continue;
                 EnumActionResult result2 = fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, entity.getEntityItem(), EnumHand.MAIN_HAND, pos, facing, 0, 0, 0);
                 if (result2 == EnumActionResult.SUCCESS || result2 == EnumActionResult.PASS)
                     continue primary;
             }
 
             for (EnumFacing facing : EnumFacing.VALUES) {
-                if (world.isAirBlock(pos.offset(facing))) continue;
+                if (!world.isAirBlock(pos.offset(facing))) continue;
                 world.setBlockState(pos.offset(facing), ModBlocks.INVISIBLE.getDefaultState());
                 EnumActionResult result2 = fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, entity.getEntityItem(), EnumHand.MAIN_HAND, pos, facing, 0, 0, 0);
                 world.setBlockToAir(pos.offset(facing));
