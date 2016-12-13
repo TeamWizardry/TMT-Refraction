@@ -127,6 +127,8 @@ public class TileAssemblyTable extends TileMod implements ITickable {
         }
         beams.clear();
 
+        if (count <= 0) return;
+
         red = Math.min(red / count, 255);
         green = Math.min(green / count, 255);
         blue = Math.min(blue / count, 255);
