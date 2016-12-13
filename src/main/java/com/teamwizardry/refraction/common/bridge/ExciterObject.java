@@ -26,6 +26,7 @@ public class ExciterObject {
     public Set<BlockPos> poses = new HashSet<>();
     public int power = Constants.SOURCE_TIMER;
     public boolean hasCardinalBeam = false;
+    public boolean hasGenerated = false;
 
     public ExciterObject(@NotNull World world, @NotNull BlockPos exciter) {
         this.world = world;
@@ -35,7 +36,7 @@ public class ExciterObject {
 
     public void refreshPower() {
         power = Constants.SOURCE_TIMER;
-        refreshBridge();
+        //refreshBridge();
     }
 
     public void decrementPower() {
@@ -65,6 +66,17 @@ public class ExciterObject {
                 poses.forEach(pos -> {
                     if (world.isAirBlock(pos))
                         world.setBlockState(pos, ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, facing.getAxis()), 3);
+                    else {
+                        boolean hasAdjacentBridge = false;
+                        for (EnumFacing facing : EnumFacing.VALUES) {
+                            if (facing == this.facing || facing == this.facing.getOpposite()) continue;
+                            if (world.getBlockState(pos.offset(facing)).getBlock() == ModBlocks.LIGHT_BRIDGE) {
+                                hasAdjacentBridge = true;
+                                break;
+                            }
+                        }
+                        if (!hasAdjacentBridge) world.setBlockToAir(pos);
+                    }
                 });
             else clearBlocks();
         } else clearBlocks();
@@ -74,9 +86,10 @@ public class ExciterObject {
         if (hasCardinalBeam) {
             boolean pass = false;
             for (EnumFacing facing : EnumFacing.VALUES) {
-                ExciterObject object = ExciterTracker.INSTANCE.getExciterObject(world, exciterPos.offset(facing));
-                if (object != null && object.hasCardinalBeam)
+                ExciterObject neighborObject = ExciterTracker.INSTANCE.getExciterObject(world, exciterPos.offset(facing));
+                if (neighborObject != null && neighborObject.hasCardinalBeam) {
                     pass = true;
+                }
             }
 
             while (pass) {

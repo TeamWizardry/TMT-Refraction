@@ -3,7 +3,9 @@ package com.teamwizardry.refraction.api.raytrace;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.BeamPulsar;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -32,14 +34,35 @@ public class EntityTrace {
     public Vec3d slope;
     public double range = ConfigValues.BEAM_RANGE;
     public boolean ignoreEntities;
-    public boolean skippedRefAlloyPlayer;
     @Nullable
     public UUID uuidToSkip;
 
-    public EntityTrace(World world, Vec3d pos, Vec3d slope) {
+    /**
+     * May not exist; used only for the recasting utilities in Beam.
+     */
+    @Nullable
+    public RayTraceResult rayTraceResult;
+
+    public EntityTrace(@NotNull World world, @NotNull Vec3d pos, @NotNull Vec3d slope) {
         this.world = world;
         this.pos = pos;
         this.slope = slope;
+    }
+
+    /**
+     * This constructor is for recasting, as it sets the range.
+     */
+    public EntityTrace(@NotNull World world, @NotNull Beam beam) {
+        this(world, beam.finalLoc.add(beam.slope.scale(0.05)), beam.slope);
+        BlockPos bpos = new BlockPos(beam.finalLoc.add(beam.slope));
+        IBlockState state = world.getBlockState(bpos);
+        RayTraceResult cast = BeamPulsar.fromBlock(state, world, bpos, beam.finalLoc.add(beam.slope.scale(0.05)), beam.finalLoc.add(beam.slope));
+        if (!state.getBlock().isAir(state, world, bpos) && cast != null && cast.typeOfHit != RayTraceResult.Type.MISS)
+            rayTraceResult = cast;
+        else {
+            double dist = beam.initLoc.distanceTo(beam.finalLoc);
+            range = beam.range - dist;
+        }
     }
 
     private static RayTraceResult blockTrace(World world, Vec3d pos, Vec3d ray, double distance) {

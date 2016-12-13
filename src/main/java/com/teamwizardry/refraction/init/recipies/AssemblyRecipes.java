@@ -22,7 +22,6 @@ public class AssemblyRecipes {
 	public static void init() {
 		recipes = new ArrayList<>();
 
-		recipes.add(new AssemblyRecipe(new ItemStack(ModItems.REFLECTIVE_ALLOY, 3), new Color(0x01FFFFFF, true), new Color(0xB3FFFFFF, true), Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT, Items.GOLD_INGOT, Items.GOLD_INGOT, Items.GOLD_INGOT));
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.DISCO_BALL), new Color(0xA6FF00BE, true), new Color(0xCCDC00FF, true), Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY));
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.MIRROR), new Color(0x01FFFFFF, true), new Color(0xB3FFFFFF, true), Blocks.GLASS_PANE, Blocks.GLASS_PANE, Blocks.GLASS_PANE, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY, ModItems.REFLECTIVE_ALLOY));
 		recipes.add(new AssemblyRecipe(new ItemStack(ModBlocks.PRISM), new Color(0x40FFFFFF, true), new Color(0xB3FFFFFF, true), ModBlocks.LENS, ModBlocks.LENS, ModBlocks.LENS, ModBlocks.LENS, ModBlocks.LENS, ModBlocks.LENS));

@@ -4,7 +4,6 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.common.bridge.ExciterObject;
 import com.teamwizardry.refraction.common.bridge.ExciterTracker;
@@ -61,24 +60,19 @@ public class BlockElectronExciter extends BlockMod implements IBeamHandler {
     }
 
     @Override
-    public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
+    public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
         ExciterObject exciterObject = ExciterTracker.INSTANCE.addExciter(world, pos);
-        for (Beam beam : beams) {
-            if (!beam.enableEffect) continue;
+        if (beam.enableEffect && beam.effect != null && beam.effect.getColor().equals(Color.CYAN)) {
             EnumFacing block = world.getBlockState(pos).getValue(FACING);
-            Effect effect = beam.effect;
-            if (effect == null)
-                continue;
-            if (effect.getColor().equals(Color.CYAN)) {
-                if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
-                    exciterObject.hasCardinalBeam = true;
-                    exciterObject.generateBridge();
-                    ExciterTracker.INSTANCE.refreshPower(world, pos);
-                    return;
-                }
+            if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
+                exciterObject.hasCardinalBeam = true;
+                exciterObject.generateBridge();
+                ExciterTracker.INSTANCE.refreshPower(world, pos);
+                return true;
             }
         }
         exciterObject.hasCardinalBeam = false;
+        return true;
     }
 
     @NotNull

@@ -210,12 +210,11 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 	}
 
 	@Override
-	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
-		for (Beam beam : beams)
-			beam.createSimilarBeam(beam.finalLoc, beam.slope).spawn();
+	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
 		world.setBlockState(pos, world.getBlockState(pos).withProperty(ON, true));
 		for (EnumFacing facing : EnumFacing.VALUES)
 			world.notifyNeighborsOfStateExcept(pos.offset(facing), this, facing.getOpposite());
 		world.scheduleUpdate(pos, this, 20);
+		return false;
 	}
 }

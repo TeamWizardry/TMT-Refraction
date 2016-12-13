@@ -8,9 +8,17 @@ import org.jetbrains.annotations.NotNull;
  * Created by TheCodeWarrior
  */
 public interface IBeamHandler extends IBeamImmune {
+	/**
+	 * Handle a beam. The default implementation is provided for backwards compatibility.
+	 * @param world The world the block is in
+	 * @param pos The pos of the block
+	 * @param beam The beam being handled
+	 * @return Whether the beam should be stopped
+	 */
 	@SuppressWarnings("deprecation")
-	default void handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+	default boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
 		handleBeams(world, pos, beam);
+		return true;
 	}
 
 	/**

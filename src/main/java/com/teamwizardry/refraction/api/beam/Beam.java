@@ -2,7 +2,6 @@ package com.teamwizardry.refraction.api.beam;
 
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.common.util.bitsaving.IllegalValueSetException;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
@@ -18,8 +17,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -89,7 +90,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      * A unique identifier for a beam. Used for uniqueness checks.
      */
     @NotNull
-    public UUID uuid = UUID.randomUUID();
+    public UUID uuid;
 
     /**
      * The number of times this beam has bounced or been reflected.
@@ -121,6 +122,8 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         this.finalLoc = slope.normalize().scale(128).add(initLoc);
         this.color = color;
 
+        uuid = UUID.nameUUIDFromBytes((initLoc.hashCode() + "").getBytes());
+
         particleEnd = particleBeginning = new ParticleBuilder(3);
         particleBeginning.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
         particleBeginning.disableRandom();
@@ -138,6 +141,24 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
     public Beam(NBTTagCompound compound) {
         deserializeNBT(compound);
+    }
+
+    public boolean doBeamsMatch(Beam beam) {
+        return beam.color.getRGB() == color.getRGB()
+                && beam.slope.xCoord == slope.xCoord
+                && beam.slope.yCoord == slope.yCoord
+                && beam.slope.zCoord == slope.zCoord
+                && beam.initLoc.xCoord == initLoc.xCoord
+                && beam.initLoc.yCoord == initLoc.yCoord
+                && beam.initLoc.zCoord == initLoc.zCoord
+                && beam.enableParticleEnd == enableParticleEnd
+                && beam.enableParticleBeginning == enableParticleBeginning
+                && beam.uuidToSkip == uuidToSkip
+                && beam.enableEffect == enableEffect
+                && beam.ignoreEntities == ignoreEntities
+                && beam.allowedBounceTimes == allowedBounceTimes
+                && beam.bouncedTimes == bouncedTimes
+                && beam.range == range;
     }
 
     /**
@@ -410,13 +431,34 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // EFFECT HANDLING //
         boolean pass = true;
 
+        boolean traceCompleted = false;
+
+        // Making sure we don't recur //
+        int tries = 0;
+
         // IBeamHandler handling
-        if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
-            IBlockState state = world.getBlockState(trace.getBlockPos());
-            if (state.getBlock() instanceof IBeamHandler) {
-                ((IBeamHandler) state.getBlock()).handleBeam(world, trace.getBlockPos(), this);
-                pass = false;
-            }
+        while (!traceCompleted && tries < 100) {
+            tries++;
+            if (trace == null)
+                return;
+            else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+                BlockPos pos = trace.getBlockPos();
+                IBlockState state = world.getBlockState(pos);
+                BeamHitEvent event = new BeamHitEvent(world, this, pos, state);
+                MinecraftForge.EVENT_BUS.post(event);
+                if (event.getResult() == Event.Result.DEFAULT) {
+                    traceCompleted = true;
+                    if (state.getBlock() instanceof IBeamHandler) {
+                        traceCompleted = (((IBeamHandler) state.getBlock()).handleBeam(world, pos, this));
+                        pass = false;
+                    }
+                } else {
+                    traceCompleted = event.getResult() == Event.Result.DENY;
+                    pass = event.getResult() == Event.Result.ALLOW;
+                }
+            } else traceCompleted = true;
+
+            if (!traceCompleted) traceCompleted = recast();
         }
 
         // Effect handling
@@ -462,6 +504,21 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // PARTICLES
     }
 
+    private boolean recast() {
+        EntityTrace entityTrace = new EntityTrace(world, this).setUUIDToSkip(uuidToSkip);
+        if (entityTrace.range <= 0) return true;
+
+        if (entityTrace.rayTraceResult != null)
+            trace = entityTrace.rayTraceResult;
+        else if (ignoreEntities || (effect != null && effect.getType() == EffectType.BEAM)) // If anyone of these are true, phase beam
+            trace = entityTrace.setIgnoreEntities(true).cast();
+        else trace = entityTrace.setIgnoreEntities(false).cast();
+
+        if (trace != null && trace.hitVec != null) this.finalLoc = trace.hitVec;
+
+        return false;
+    }
+
     @Override
     public boolean equals(Object other) {
         return other instanceof Beam && ((Beam) other).uuid.equals(uuid);
@@ -482,36 +539,47 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         compound.setDouble("slope_y", slope.yCoord);
         compound.setDouble("slope_z", slope.zCoord);
         compound.setInteger("color", color.getRGB());
-        compound.setInteger("color_alpha", color.getAlpha());
         compound.setInteger("world", world.provider.getDimension());
+        compound.setInteger("bounce_times", bouncedTimes);
+        compound.setInteger("allowed_bounce_times", allowedBounceTimes);
+        compound.setDouble("range", range);
         compound.setUniqueId("uuid", uuid);
         compound.setBoolean("ignore_entities", ignoreEntities);
         compound.setBoolean("enable_effect", enableEffect);
+        compound.setBoolean("enable_particle_beginning", enableParticleBeginning);
+        compound.setBoolean("enable_particle_end", enableEffect);
+        if (uuidToSkip != null) compound.setUniqueId("uuid_to_skip", uuidToSkip);
         return compound;
     }
 
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
-        if (nbt.hasKey("world"))
+        if (nbt.hasKey("world")) {
             world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(nbt.getInteger("dim"));
-        else throw new NullPointerException("'world' key not found or missing in deserialized beam object.");
-        if (nbt.hasKey("init_loc_x") && nbt.hasKey("init_loc_y") && nbt.hasKey("init_loc_z"))
+        } else throw new NullPointerException("'world' key not found or missing in deserialized beam object.");
+        if (nbt.hasKey("init_loc_x") && nbt.hasKey("init_loc_y") && nbt.hasKey("init_loc_z")) {
             initLoc = new Vec3d(nbt.getDouble("init_loc_x"), nbt.getDouble("init_loc_y"), nbt.getDouble("init_loc_z"));
-        else throw new NullPointerException("'init_loc' key not found or missing in deserialized beam object.");
-        if (nbt.hasKey("slope_loc_x") && nbt.hasKey("slope_loc_y") && nbt.hasKey("slope_loc_z")) {
+        } else throw new NullPointerException("'init_loc' key not found or missing in deserialized beam object.");
+        if (nbt.hasKey("slope_x") && nbt.hasKey("slope_y") && nbt.hasKey("slope_z")) {
             slope = new Vec3d(nbt.getDouble("slope_x"), nbt.getDouble("slope_y"), nbt.getDouble("slope_z"));
             finalLoc = slope.normalize().scale(128).add(initLoc);
         } else throw new NullPointerException("'slope' key not found or missing in deserialized beam object.");
 
         if (nbt.hasKey("color")) {
-            color = new Color(nbt.getInteger("color"));
-            color = new Color(color.getRed(), color.getGreen(), color.getBlue(), nbt.getInteger("color_alpha"));
+            color = new Color(nbt.getInteger("color"), true);
         } else
             throw new NullPointerException("'color' or 'color_alpha' keys not found or missing in deserialized beam object.");
 
-        if (nbt.hasKey("uuid")) if (nbt.hasKey("uuid")) uuid = nbt.getUniqueId("uuid");
-        else throw new IllegalValueSetException("'uuid' key not found or missing in deserialized beam object.");
+        if (nbt.hasKey("uuid") && nbt.getUniqueId("uuid") != null) uuid = nbt.getUniqueId("uuid");
+        else uuid = UUID.randomUUID();
+        if (nbt.hasKey("uuid_to_skip")) uuidToSkip = nbt.getUniqueId("uuid_to_skip");
         if (nbt.hasKey("ignore_entities")) ignoreEntities = nbt.getBoolean("ignore_entities");
         if (nbt.hasKey("enable_effect")) enableEffect = nbt.getBoolean("enable_effect");
+        if (nbt.hasKey("range")) range = nbt.getDouble("range");
+        if (nbt.hasKey("bounce_times")) bouncedTimes = nbt.getInteger("bounce_times");
+        if (nbt.hasKey("allowed_bounce_times")) allowedBounceTimes = nbt.getInteger("allowed_bounce_times");
+        if (nbt.hasKey("enable_particle_beginning"))
+            enableParticleBeginning = nbt.getBoolean("enable_particle_beginning");
+        if (nbt.hasKey("enable_particle_end")) enableParticleEnd = nbt.getBoolean("enable_particle_end");
     }
 }

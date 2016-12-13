@@ -41,7 +41,7 @@ public class BeamPulsar {
 
 				if (!exclude.contains(blockpos)) {
 					if ((!ignoreBlockWithoutBoundingBox || iblockstate.getCollisionBoundingBox(world, blockpos) != Block.NULL_AABB) && block.canCollideCheck(iblockstate, stopOnLiquid)) {
-						RayTraceResult raytraceresult = block instanceof ILaserTrace ? ((ILaserTrace) block).collisionRayTraceLaser(iblockstate, world, blockpos, start, end) : iblockstate.collisionRayTrace(world, blockpos, start, end);
+						RayTraceResult raytraceresult = fromBlock(iblockstate, world, blockpos, start, end);
 
 						if (raytraceresult != null) {
 							return raytraceresult;
@@ -165,5 +165,10 @@ public class BeamPulsar {
 		} else {
 			return null;
 		}
+	}
+
+	public static RayTraceResult fromBlock(IBlockState state, World world, BlockPos pos, Vec3d start, Vec3d end) {
+		Block block = state.getBlock();
+		return block instanceof ILaserTrace ? ((ILaserTrace) block).collisionRayTraceLaser(state, world, pos, start, end) : state.collisionRayTrace(world, pos, start, end);
 	}
 }
