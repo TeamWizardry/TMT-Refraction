@@ -98,8 +98,9 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 	@Override
 	public void handleBeams(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam... beams) {
 		IBlockState state = world.getBlockState(pos);
+		EnumFilterType type = state.getValue(TYPE);
 		for (Beam beam : beams)
-			beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(state.getValue(TYPE).color)).setUUID(UUID.randomUUID()).spawn();
+			beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(type.red, type.green, type.blue, beam.color.getAlpha() / 255f)).setUUID(UUID.randomUUID()).spawn();
 	}
 
 	@Nonnull
@@ -134,10 +135,14 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 		CYAN(0x00FFFF), YELLOW(0xFFFF00), MAGENTA(0xFF00FF), PINK(0xFFAFAF),
 		ORANGE(0xFFA500);
 
-		public int color;
+		public final int color;
+		public final float red, green, blue;
 
 		EnumFilterType(int color) {
 			this.color = color;
+			red = ((color & 0xFF0000) >> 16) / 255f;
+			green = ((color & 0xFF00) >> 8) / 255f;
+			blue = ((color & 0xFF)) / 255f;
 		}
 
 		@Override
