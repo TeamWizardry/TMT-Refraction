@@ -25,8 +25,6 @@ public class TileSpectrometer extends TileMod implements ITickable {
     public Color currentColor = new Color(0, 0, 0, 0);
     @NotNull
     private List<Beam> beams = new ArrayList<>();
-    @Save
-    private int beamHandledTicks = 5;
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
@@ -39,7 +37,6 @@ public class TileSpectrometer extends TileMod implements ITickable {
     }
 
     public void handle(Beam... beams) {
-        beamHandledTicks = 5;
         markDirty();
         this.beams.addAll(Lists.newArrayList(beams));
     }
@@ -48,21 +45,17 @@ public class TileSpectrometer extends TileMod implements ITickable {
     public void update() {
         if (worldObj.isRemote) return;
 
-        if (beamHandledTicks > 0)
-            beamHandledTicks--;
-        else {
-            beams.clear();
-            maxColor = new Color(0, 0, 0, 0);
-            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
-            markDirty();
-        }
-
         if (currentColor.getRGB() != maxColor.getRGB()) {
             currentColor = Utils.mixColors(currentColor, maxColor, 0.9);
             worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
         }
 
-        if (beams.isEmpty()) return;
+        if (beams.isEmpty()) {
+            maxColor = new Color(0, 0, 0, 0);
+            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+            markDirty();
+            return;
+        }
 
         int red = 0;
         int green = 0;
@@ -86,6 +79,8 @@ public class TileSpectrometer extends TileMod implements ITickable {
 
         if (color.getRGB() == maxColor.getRGB()) return;
         this.maxColor = color;
+
+        beams.clear();
         markDirty();
     }
 }
