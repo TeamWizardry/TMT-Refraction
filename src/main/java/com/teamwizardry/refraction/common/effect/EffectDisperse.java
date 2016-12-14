@@ -19,6 +19,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44
@@ -54,6 +55,7 @@ public class EffectDisperse extends Effect {
     public void runEntity(World world, Entity entity, int potency) {
         setEntityMotion(entity, potency);
         EffectTracker.gravityReset.put(entity, 30);
+
         if (entity instanceof EntityPlayer)
             ((EntityPlayer) entity).velocityChanged = true;
         if (entity instanceof EntityItem) {
@@ -64,8 +66,10 @@ public class EffectDisperse extends Effect {
             for (BlockPos pos : BlockPos.getAllInBoxMutable(entity.getPosition().add(-1, -1, -1), entity.getPosition().add(1, 1, 1))) {
                 TileEntity tileEntity = world.getTileEntity(pos);
 
-                if (tileEntity == null)
-                    continue;
+                if (tileEntity == null) continue;
+                if (!EffectBurn.burnedTileTracker.contains(beam.trace.getBlockPos())) continue;
+                EffectBurn.burnedTileTracker.remove(beam.trace.getBlockPos());
+                if (ThreadLocalRandom.current().nextInt(2550 / potency) != 0) continue;
 
                 if (!tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))
                     continue;
