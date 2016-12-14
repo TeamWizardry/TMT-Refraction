@@ -1,11 +1,15 @@
 package com.teamwizardry.refraction.common.effect;
 
+import com.google.common.base.Optional;
+import com.teamwizardry.librarianlib.common.util.MethodHandleHelper;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
+import kotlin.jvm.functions.Function0;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -18,9 +22,11 @@ import java.awt.*;
 
 /**
  * Created by LordSaad44
- * Will disperse any entities that intersect with the beam. < 128 only disperses item entities.
+ * Will disperse any entities that intersect with the beam. Potency < 128 only disperses item entities.
  */
 public class EffectDisperse extends Effect {
+
+    private static Function0<Object> ITEM = MethodHandleHelper.wrapperForStaticGetter(EntityItem.class, "c", "field_184533_c", "ITEM");
 
     @Override
     public EffectType getType() {
@@ -46,6 +52,10 @@ public class EffectDisperse extends Effect {
         if (entity instanceof EntityPlayer)
             ((EntityPlayer) entity).velocityChanged = true;
         if (entity instanceof EntityItem) {
+
+            ItemStack itemstack = entity.getDataManager().get((DataParameter<Optional<ItemStack>>) ITEM.invoke()).orNull();
+            if (itemstack == null) return;
+
             for (BlockPos pos : BlockPos.getAllInBoxMutable(entity.getPosition().add(-1, -1, -1), entity.getPosition().add(1, 1, 1))) {
                 TileEntity tileEntity = world.getTileEntity(pos);
 

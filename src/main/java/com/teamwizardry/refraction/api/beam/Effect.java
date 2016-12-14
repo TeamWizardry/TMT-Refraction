@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.*;
@@ -60,7 +61,7 @@ public class Effect implements Cloneable {
     public void runBlock(World world, BlockPos pos, int potency) {
     }
 
-    void addEntity(World world, Entity entity) {
+    void addEntity(@NotNull World world, @NotNull Entity entity) {
         if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
             int potency = calculateEntityPotency(entity);
             entities.put(entity.getPosition(), entity);
@@ -68,7 +69,7 @@ public class Effect implements Cloneable {
         }
     }
 
-    void addBlock(World world, BlockPos pos) {
+    void addBlock(@NotNull World world, @NotNull BlockPos pos) {
         if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
             blocks.add(pos);
             runBlock(world, pos, calculateBlockPotency(pos));

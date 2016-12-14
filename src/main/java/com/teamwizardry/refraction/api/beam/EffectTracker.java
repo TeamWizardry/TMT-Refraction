@@ -100,7 +100,8 @@ public class EffectTracker {
                         if (effect.beam.trace.typeOfHit == RayTraceResult.Type.BLOCK) {
                             effect.addBlock(w, effect.beam.trace.getBlockPos());
                         } else if (effect.beam.trace.typeOfHit == RayTraceResult.Type.ENTITY) {
-                            effect.addEntity(w, effect.beam.trace.entityHit);
+                            if (effect.beam.trace.entityHit != null)
+                                effect.addEntity(w, effect.beam.trace.entityHit);
                         }
                     }
 
@@ -110,7 +111,9 @@ public class EffectTracker {
                         if (effect.getType() == Effect.EffectType.BEAM) {
                             AxisAlignedBB axis = new AxisAlignedBB(blockPos);
                             List<Entity> entities = effect.filterEntities(w.getEntitiesWithinAABB(Entity.class, axis));
-                            entities.forEach(entity -> effect.addEntity(w, entity));
+                            entities.forEach(entity -> {
+                                if (entity != null) effect.addEntity(w, entity);
+                            });
                         }
                     });
                     // RUN EFFECT METHODS //
