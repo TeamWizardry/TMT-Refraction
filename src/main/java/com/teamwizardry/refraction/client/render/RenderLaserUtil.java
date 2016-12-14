@@ -51,7 +51,7 @@ public class RenderLaserUtil {
             GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE);
         }
 
-        Vec3d playerEyes = Minecraft.getMinecraft().thePlayer.getPositionEyes(ClientTickHandler.getPartialTicks());
+        Vec3d playerEyes = Minecraft.getMinecraft().player.getPositionEyes(ClientTickHandler.getPartialTicks());
         Vec3d normal = (end.subtract(start)).crossProduct(playerEyes.subtract(start)).normalize(); //(b.subtract(a)).crossProduct(c.subtract(a));
         if (normal.yCoord < 0)
             normal = normal.scale(-1);

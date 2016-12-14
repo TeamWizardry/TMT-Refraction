@@ -17,6 +17,6 @@ public class TileInvisibleRedstone extends TileMod implements ITickable {
     @Override
     public void update() {
         if (expiry > 0) expiry--;
-        else worldObj.setBlockToAir(pos);
+        else world.setBlockToAir(pos);
     }
 }

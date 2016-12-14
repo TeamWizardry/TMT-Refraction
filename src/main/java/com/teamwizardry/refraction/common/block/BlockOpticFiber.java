@@ -157,20 +157,20 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 		}
 	}
 
-	private EnumBiFacing getBiFacing(World worldObj, BlockPos pos) {
-		IBlockState state = worldObj.getBlockState(pos);
-		if (state.getBlock() != ModBlocks.OPTIC_FIBER)
+    private EnumBiFacing getBiFacing(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() != ModBlocks.OPTIC_FIBER)
 			return null;
 		return state.getValue(BlockOpticFiber.FACING);
 	}
 
-	private void spawnBeam(World worldObj, Beam beam, Vec3d loc, EnumFacing dir) {
-		BlockPos newPos = new BlockPos(loc).offset(dir);
-		IBlockState state = worldObj.getBlockState(newPos);
-		Beam newBeam = beam.createSimilarBeam(loc, getFacingVector(dir)).setUUID(UUID.randomUUID());
+    private void spawnBeam(World world, Beam beam, Vec3d loc, EnumFacing dir) {
+        BlockPos newPos = new BlockPos(loc).offset(dir);
+        IBlockState state = world.getBlockState(newPos);
+        Beam newBeam = beam.createSimilarBeam(loc, getFacingVector(dir)).setUUID(UUID.randomUUID());
 		if (state.getBlock() instanceof IOpticConnectable) {
-			((IOpticConnectable) state.getBlock()).handleFiberBeam(worldObj, newPos, newBeam);
-		} else newBeam.spawn();
+            ((IOpticConnectable) state.getBlock()).handleFiberBeam(world, newPos, newBeam);
+        } else newBeam.spawn();
 	}
 
 	private Vec3d getFacingVector(EnumFacing facing) {
@@ -271,8 +271,8 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 
 	@NotNull
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		int largestPriority = 0;
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        int largestPriority = 0;
 		int secondPriority = 0;
 		EnumFacing primary = null;
 		EnumFacing secondary = null;

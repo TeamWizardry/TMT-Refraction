@@ -39,13 +39,13 @@ minecraft {
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not always work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20160803"
+    mappings = "stable_29"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
 repositories {
     mavenCentral()
-//    maven { url "https://jitpack.io" }
+    maven { url "https://jitpack.io" }
     maven { url "http://dvs1.progwml6.com/files/maven" }
     maven { url "http://mobiusstrip.eu/maven" }
     maven {
@@ -59,7 +59,7 @@ repositories {
 }
 
 dependencies {
-//    compile 'com.github.TeamWizardry:LibrarianLib:-SNAPSHOT'
+    compile 'com.github.TeamWizardry:LibrarianLib:-SNAPSHOT'
     deobfCompile "mezz.jei:jei_1.10.2:3.13.3.382:api"
     compile "MineTweaker3:MineTweaker3-API:3.0.14.59"
     runtime "mezz.jei:jei_1.10.2:3.13.3.382"

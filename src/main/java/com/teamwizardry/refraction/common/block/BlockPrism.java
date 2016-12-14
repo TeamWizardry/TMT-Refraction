@@ -72,8 +72,8 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
         }
 	}
 
-	private void fireColor(World worldObj, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities, UUID uuid) {
-		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, worldObj, pos, hitPos.subtract(ref), hitPos.add(ref));
+	private void fireColor(World world, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities, UUID uuid) {
+		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, world, pos, hitPos.subtract(ref), hitPos.add(ref));
 		assert r != null;
 		Vec3d normal = r.data;
         ref = refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.GLASS_IOR + IORMod, ref, normal).normalize();
@@ -81,7 +81,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 
 		for (int i = 0; i < 5; i++) {
 
-			r = collisionRayTraceLaser(state, worldObj, pos, hitPos.add(ref), hitPos);
+			r = collisionRayTraceLaser(state, world, pos, hitPos.add(ref), hitPos);
 			// trace backward so we don't hit hitPos first
 
 			assert r != null;
@@ -92,11 +92,11 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 				ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
 				break;
 			}
-			showBeam(worldObj, hitPos, r.hitVec, color);
+			showBeam(world, hitPos, r.hitVec, color);
 			hitPos = r.hitVec;
 		}
 
-		new Beam(worldObj, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).setUUID(uuid).enableParticleBeginning().spawn();
+		new Beam(world, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).setUUID(uuid).enableParticleBeginning().spawn();
 	}
 
 	private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {
@@ -104,13 +104,13 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 		return vec.scale(r).add(normal.scale((r * c) - Math.sqrt(1 - (r * r) * (1 - (c * c)))));
 	}
 
-	private void showBeam(World worldObj, Vec3d start, Vec3d end, Color color) {
+	private void showBeam(World world, Vec3d start, Vec3d end, Color color) {
 		PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
-				new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
+				new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(FACING, placer.getHorizontalFacing());
 	}
 
@@ -147,11 +147,6 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 	@Override
 	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
 		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
-	}
-
-	@Override
-	public boolean isVisuallyOpaque() {
-		return false;
 	}
 
 	@Override

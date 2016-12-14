@@ -26,7 +26,12 @@ import java.awt.*;
  */
 public class EffectDisperse extends Effect {
 
-    private static Function0<Object> ITEM = MethodHandleHelper.wrapperForStaticGetter(EntityItem.class, "c", "field_184533_c", "ITEM");
+    private static Function0<Object> ItemHandler = MethodHandleHelper.wrapperForStaticGetter(EntityItem.class, "c", "field_184533_c", "ITEM");
+    private static Object ITEM;
+
+    static {
+        ITEM = ItemHandler.invoke();
+    }
 
     @Override
     public EffectType getType() {
@@ -53,7 +58,7 @@ public class EffectDisperse extends Effect {
             ((EntityPlayer) entity).velocityChanged = true;
         if (entity instanceof EntityItem) {
 
-            ItemStack itemstack = entity.getDataManager().get((DataParameter<Optional<ItemStack>>) ITEM.invoke()).orNull();
+            ItemStack itemstack = entity.getDataManager().get((DataParameter<Optional<ItemStack>>) ITEM).orNull();
             if (itemstack == null) return;
 
             for (BlockPos pos : BlockPos.getAllInBoxMutable(entity.getPosition().add(-1, -1, -1), entity.getPosition().add(1, 1, 1))) {

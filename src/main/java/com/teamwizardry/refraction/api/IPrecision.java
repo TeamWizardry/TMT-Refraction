@@ -29,7 +29,7 @@ public interface IPrecision {
 
 		public static int getRotationIndex(ItemStack stack) {
 			int i = ItemNBTHelper.getInt(stack, MODE_TAG, DEFAULT_MULTIPLIER);
-			return MathHelper.clamp_int(i, 0, multipliers.length - 1);
+			return MathHelper.clamp(i, 0, multipliers.length - 1);
 		}
 	}
 
@@ -51,6 +51,26 @@ public interface IPrecision {
 	void setRotX(World worldIn, BlockPos pos, float x);
 
 	float getRotY(World worldIn, BlockPos pos);
+
+	final class Helper {
+
+		public static final String MODE_TAG = "mode";
+		public static final int DEFAULT_MULTIPLIER = 4;
+
+		public static final float[] multipliers = {
+				0.125f, 0.25f, 0.5f, 1,
+				5, 22.5f, 45, 90
+		};
+
+		public static float getRotationMultiplier(ItemStack stack) {
+			return multipliers[getRotationIndex(stack)];
+		}
+
+		public static int getRotationIndex(ItemStack stack) {
+			int i = ItemNBTHelper.getInt(stack, MODE_TAG, DEFAULT_MULTIPLIER);
+			return MathHelper.clamp(i, 0, multipliers.length - 1);
+		}
+	}
 
 	void setRotY(World worldIn, BlockPos pos, float y);
 

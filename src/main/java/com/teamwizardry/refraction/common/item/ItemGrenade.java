@@ -6,8 +6,8 @@ import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.common.entity.EntityGrenade;
 import com.teamwizardry.refraction.init.ModAchievements;
+import kotlin.jvm.functions.Function2;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,8 +20,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -61,8 +59,8 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 						entityGrenade.setPosition(entityplayer.posX, entityplayer.posY + entityplayer.eyeHeight, entityplayer.posZ);
 						entityGrenade.setHeadingFromThrower(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0f, 1.5f, 1.0f);
 						stack.damageItem(1, entityplayer);
-						world.spawnEntityInWorld(entityGrenade);
-						entityGrenade.velocityChanged = true;
+                        world.spawnEntity(entityGrenade);
+                        entityGrenade.velocityChanged = true;
 					}
 
 					world.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
@@ -114,10 +112,7 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 
 	@Nullable
 	@Override
-	@SideOnly(Side.CLIENT)
-	public IItemColor getItemColor() {
-		return (stack, tintIndex) -> (tintIndex == 1 ?
-				getColor(stack).getRGB()
-				: 0xFFFFFF);
-	}
+    public Function2<ItemStack, Integer, Integer> getItemColorFunction() {
+        return (stack, tintIndex) -> (tintIndex == 1 ? getColor(stack).getRGB() : 0xFFFFFF);
+    }
 }

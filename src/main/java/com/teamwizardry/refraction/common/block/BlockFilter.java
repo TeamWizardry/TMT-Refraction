@@ -6,13 +6,14 @@ import com.teamwizardry.librarianlib.common.base.block.IBlockColorProvider;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import kotlin.jvm.functions.Function2;
+import kotlin.jvm.functions.Function4;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -20,8 +21,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -81,20 +80,6 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 		return AABB;
 	}
 
-	@Nullable
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IBlockColor getBlockColor() {
-		return (state, worldIn, pos, tintIndex) -> state.getValue(TYPE).color;
-	}
-
-	@Nullable
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IItemColor getItemColor() {
-		return (stack, tintIndex) -> EnumFilterType.values()[stack.getItemDamage() % EnumFilterType.values().length].color;
-	}
-
 	@Override
 	public void handleBeams(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam... beams) {
 		IBlockState state = world.getBlockState(pos);
@@ -128,7 +113,19 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
-	}
+    }
+
+    @Nullable
+    @Override
+    public Function2<ItemStack, Integer, Integer> getItemColorFunction() {
+        return (stack, tintIndex) -> EnumFilterType.values()[stack.getItemDamage() % EnumFilterType.values().length].color;
+    }
+
+    @Nullable
+    @Override
+    public Function4<IBlockState, IBlockAccess, BlockPos, Integer, Integer> getBlockColorFunction() {
+        return (state, worldIn, pos, tintIndex) -> state.getValue(TYPE).color;
+    }
 
 	public enum EnumFilterType implements IStringSerializable {
 		WHITE(0xFFFFFF), RED(0xFF0000), GREEN(0x00FF00), BLUE(0x0000FF),

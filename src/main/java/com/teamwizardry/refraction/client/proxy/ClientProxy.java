@@ -52,8 +52,8 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 
 	@Override
 	public World getWorld() {
-		return Minecraft.getMinecraft().theWorld;
-	}
+        return Minecraft.getMinecraft().world;
+    }
 
 	@Override
 	public void onResourceManagerReload(IResourceManager resourceManager) {

@@ -42,7 +42,7 @@ public class StackModule implements IParsedModule {
             component.getText().setValue(displayName);
             this.x += fr.getStringWidth(displayName);
 
-            List<String> tooltip = stack.getTooltip(Minecraft.getMinecraft().thePlayer, false);
+            List<String> tooltip = stack.getTooltip(Minecraft.getMinecraft().player, false);
             component.BUS.hook(GuiComponent.PostDrawEvent.class, postDrawEvent -> {
                 if (component.getMouseOver())
                     component.setTooltip(tooltip);

@@ -86,8 +86,8 @@ public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return this.getStateFromMeta(meta).withProperty(FACING, facing);
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return this.getStateFromMeta(meta).withProperty(FACING, facing);
 	}
 
 	@Override

@@ -56,16 +56,16 @@ public class TileSpectrometer extends TileMod implements ITickable {
 
     @Override
     public void update() {
-        if (worldObj.isRemote) return;
+        if (world.isRemote) return;
 
         if (currentColor.getRGB() != maxColor.getRGB()) {
             currentColor = Utils.mixColors(currentColor, maxColor, 0.9);
-            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
         }
 
         if (beams.isEmpty()) {
             maxColor = new Color(0, 0, 0, 0);
-            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
             markDirty();
             return;
         }

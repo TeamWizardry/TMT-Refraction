@@ -50,7 +50,7 @@ public class ItemLaserPen extends ItemMod {
         if (!worldIn.isRemote) {
             EntityLaserPointer e = new EntityLaserPointer(worldIn, playerIn, hand == EnumHand.MAIN_HAND ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT);
             e.updateRayPos();
-            worldIn.spawnEntityInWorld(e);
+            worldIn.spawnEntity(e);
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 	}

@@ -7,9 +7,9 @@ import com.teamwizardry.librarianlib.common.base.block.ItemModBlock;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.DimWithPos;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.init.ModBlocks;
 import gnu.trove.map.hash.TObjectIntHashMap;
@@ -217,7 +217,7 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
 							world.setBlockState(pos.offset(dir), ModBlocks.AXYZ.getDefaultState());
 						else if (!world.isRemote) {
 							ItemStack stack = new ItemStack(ModBlocks.AXYZ);
-							world.spawnEntityInWorld(new EntityItem(world, x + dir.getFrontOffsetX(), y + dir.getFrontOffsetY(), z + dir.getFrontOffsetZ(), stack));
+							world.spawnEntity(new EntityItem(world, x + dir.getFrontOffsetX(), y + dir.getFrontOffsetY(), z + dir.getFrontOffsetZ(), stack));
 						}
 						checkedCoords.add(s);
 						newPos = new DimWithPos(world.provider.getDimension(), pos.offset(dir));

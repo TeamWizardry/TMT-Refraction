@@ -38,7 +38,7 @@ public class TextAdapter {
         for (JsonElement element : object.getAsJsonArray())
             if (element.isJsonPrimitive() && !element.getAsString().isEmpty()) {
                 String s = element.getAsString();
-                s = s.replace("[player]", Minecraft.getMinecraft().thePlayer.getDisplayNameString());
+                s = s.replace("[player]", Minecraft.getMinecraft().player.getDisplayNameString());
                 s = s.replace("&", "§");
                 TextComponentString componentString = new TextComponentString(s);
                 s = componentString.getFormattedText();

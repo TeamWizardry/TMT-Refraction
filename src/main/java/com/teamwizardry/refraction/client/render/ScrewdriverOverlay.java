@@ -101,8 +101,8 @@ public class ScrewdriverOverlay {
 		if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
 			// HIGHLIGHT ANGLE
 			if (highlighting != null) {
-				World world = Minecraft.getMinecraft().theWorld;
-				IBlockState state = world.getBlockState(highlighting);
+                World world = Minecraft.getMinecraft().world;
+                IBlockState state = world.getBlockState(highlighting);
 				if (state.getBlock() instanceof IPrecision) {
 					IPrecision prec = (IPrecision) state.getBlock();
 					GlStateManager.pushMatrix();
@@ -138,9 +138,9 @@ public class ScrewdriverOverlay {
 	}
 
 	private ItemStack getItemInHand(Item item) {
-		ItemStack stack = Minecraft.getMinecraft().thePlayer.getHeldItemMainhand();
-		if (stack == null)
-			stack = Minecraft.getMinecraft().thePlayer.getHeldItemOffhand();
+        ItemStack stack = Minecraft.getMinecraft().player.getHeldItemMainhand();
+        if (stack == null)
+            stack = Minecraft.getMinecraft().player.getHeldItemOffhand();
 
 		if (stack == null)
 			return null;

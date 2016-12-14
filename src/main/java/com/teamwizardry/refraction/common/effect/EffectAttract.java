@@ -79,7 +79,7 @@ public class EffectAttract extends Effect {
             item.motionX = 0;
             item.motionY = 0;
             item.motionZ = 0;
-            world.spawnEntityInWorld(item);
+            world.spawnEntity(item);
 
         } else if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit)) {
             IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit);
@@ -92,7 +92,7 @@ public class EffectAttract extends Effect {
                 item.motionX = 0;
                 item.motionY = 0;
                 item.motionZ = 0;
-                world.spawnEntityInWorld(item);
+                world.spawnEntity(item);
             }
         }
     }

@@ -129,7 +129,7 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return getDefaultState().withProperty(DIRECTION, facing.getOpposite());
 	}
 

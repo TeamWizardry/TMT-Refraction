@@ -24,17 +24,17 @@ public class TileElectronExciter extends TileMod implements ITickable {
 
     @Override
     public void update() {
-        if (worldObj.isRemote) return;
+        if (world.isRemote) return;
         if (expire > 0) expire--;
         else {
             hasCardinalBeam = false;
-            IBlockState state = worldObj.getBlockState(pos);
+            IBlockState state = world.getBlockState(pos);
             EnumFacing facing = state.getValue(BlockElectronExciter.FACING);
             int size = 1;
             while (size < ConfigValues.BEAM_RANGE) {
                 BlockPos bridgePos = pos.offset(facing, size);
-                if (worldObj.getBlockState(bridgePos).getBlock() == ModBlocks.LIGHT_BRIDGE) {
-                    worldObj.setBlockToAir(bridgePos);
+                if (world.getBlockState(bridgePos).getBlock() == ModBlocks.LIGHT_BRIDGE) {
+                    world.setBlockToAir(bridgePos);
                     size++;
                 } else break;
             }

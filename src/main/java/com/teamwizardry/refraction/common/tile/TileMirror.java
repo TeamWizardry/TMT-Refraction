@@ -49,7 +49,7 @@ public class TileMirror extends TileMod implements ITickable {
 		rotPrevX = rotDestX;
 		rotDestX = rotX;
 		transitionX = true;
-		worldTime = worldObj.getTotalWorldTime();
+		worldTime = world.getTotalWorldTime();
 		markDirty();
 	}
 
@@ -63,7 +63,7 @@ public class TileMirror extends TileMod implements ITickable {
 		rotPrevY = rotDestY;
 		rotDestY = rotY;
 		transitionY = true;
-		worldTime = worldObj.getTotalWorldTime();
+		worldTime = world.getTotalWorldTime();
 		markDirty();
 	}
 
@@ -93,10 +93,10 @@ public class TileMirror extends TileMod implements ITickable {
 
 	@Override
 	public void update() {
-		if (worldObj.isRemote) return;
+		if (world.isRemote) return;
 		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((rotPrevX - rotDestX) / 2.0), 15)),
 				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((rotPrevY - rotDestY) / 2.0), 15));
-		double worldTimeTransition = (worldObj.getTotalWorldTime() - worldTime);
+		double worldTimeTransition = (world.getTotalWorldTime() - worldTime);
 		float rotX = rotDestX, rotY = rotDestY;
 
 		if (transitionX) {

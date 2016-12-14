@@ -58,7 +58,7 @@ public class EntityGrenade extends EntityThrowable {
 
         if (life > 0) life--;
         else {
-            if (worldObj.isRemote) return;
+            if (world.isRemote) return;
             if (explosionTimer > 0) {
                 explosionTimer--;
 
@@ -69,7 +69,7 @@ public class EntityGrenade extends EntityThrowable {
                 glitter.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
                 glitter.setAlphaFunction(new InterpFadeInOut(0.0f, 1.0f));
 
-                ParticleSpawner.spawn(glitter, worldObj, new StaticInterp<>(pos), 15, 0, (i, build) -> {
+                ParticleSpawner.spawn(glitter, world, new StaticInterp<>(pos), 15, 0, (i, build) -> {
                     double radius = 0.3;
                     double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
                     double r = radius * ThreadLocalRandom.current().nextFloat();
@@ -85,7 +85,7 @@ public class EntityGrenade extends EntityThrowable {
                 ParticleBuilder glitterCore = new ParticleBuilder(ThreadLocalRandom.current().nextInt(10, 20));
                 glitterCore.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
                 glitterCore.setAlphaFunction(new InterpFadeInOut(0.0f, 1.0f));
-                ParticleSpawner.spawn(glitterCore, worldObj, new StaticInterp<>(pos), 5, 0, (i, build) -> {
+                ParticleSpawner.spawn(glitterCore, world, new StaticInterp<>(pos), 5, 0, (i, build) -> {
                     double radius = 0.2;
                     double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
                     double r = radius * ThreadLocalRandom.current().nextFloat();
@@ -106,7 +106,7 @@ public class EntityGrenade extends EntityThrowable {
 
                     Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
                     Color c = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (color.getAlpha() / ThreadLocalRandom.current().nextDouble(1, 3)));
-                    new Beam(worldObj, pos, dest, c).spawn();
+                    new Beam(world, pos, dest, c).spawn();
                     playSound(ModSounds.CRACKLE, 1f, ThreadLocalRandom.current().nextFloat());
                 }
             } else setDead();

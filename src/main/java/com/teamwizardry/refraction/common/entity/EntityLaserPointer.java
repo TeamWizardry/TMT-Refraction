@@ -97,8 +97,8 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		Vec3d vec3d = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord, player.posZ + cross.zCoord);
 		Vec3d vec3d1 = this.getVectorForRotation(player.rotationPitch, player.rotationYawHead);
 		Vec3d vec3d2 = vec3d.addVector(vec3d1.xCoord * blockReachDistance, vec3d1.yCoord * blockReachDistance, vec3d1.zCoord * blockReachDistance);
-		return player.worldObj.rayTraceBlocks(vec3d, vec3d2, false, false, true);
-	}
+        return player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
+    }
 
 	@Override
 	public EnumHandSide getPrimaryHand() {
@@ -153,7 +153,7 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		boolean b = buffer.readBoolean();
 		if (!b) {
 			UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
-			player = new WeakReference<>(worldObj.getPlayerEntityByUUID(uuid));
-		}
+            player = new WeakReference<>(world.getPlayerEntityByUUID(uuid));
+        }
 	}
 }

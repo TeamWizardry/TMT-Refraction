@@ -55,7 +55,7 @@ public class ItemPhotonCannon extends ItemMod {
             Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
 
             stack.damageItem(1, playerIn);
-            Minecraft.getMinecraft().thePlayer.sendChatMessage(stack.getItemDamage() + "/" + stack.getMaxDamage());
+            Minecraft.getMinecraft().player.sendChatMessage(stack.getItemDamage() + "/" + stack.getMaxDamage());
             Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), color)
                     .setEnableEffect(true)
                     .setUUIDToSkip(playerIn.getUniqueID())

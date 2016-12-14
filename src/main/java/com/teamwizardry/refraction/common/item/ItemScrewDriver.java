@@ -48,12 +48,12 @@ public class ItemScrewDriver extends ItemMod {
 			return EnumActionResult.SUCCESS;
 		} else {
 			int ori = getRotationIndex(stack);
-			int i = MathHelper.clamp_int(playerIn.isSneaking() ? ori - 1 : ori + 1, 0, multipliers.length - 1);
+			int i = MathHelper.clamp(playerIn.isSneaking() ? ori - 1 : ori + 1, 0, multipliers.length - 1);
 
 			if (ori == i) return EnumActionResult.FAIL;
 
 			ItemNBTHelper.setInt(stack, MODE_TAG, i);
-			if (playerIn.worldObj.isRemote)
+			if (playerIn.world.isRemote)
 				displayItemName(30);
 			return EnumActionResult.SUCCESS;
 		}
@@ -62,12 +62,12 @@ public class ItemScrewDriver extends ItemMod {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		int ori = getRotationIndex(stack);
-		int i = MathHelper.clamp_int(playerIn.isSneaking() ? ori - 1 : ori + 1, 0, multipliers.length - 1);
+		int i = MathHelper.clamp(playerIn.isSneaking() ? ori - 1 : ori + 1, 0, multipliers.length - 1);
 		if (ori == i)
 			return ActionResult.newResult(EnumActionResult.FAIL, stack);
 
-		ItemNBTHelper.setInt(stack, MODE_TAG, MathHelper.clamp_int(i, 0, multipliers.length - 1));
-		if (playerIn.worldObj.isRemote)
+		ItemNBTHelper.setInt(stack, MODE_TAG, MathHelper.clamp(i, 0, multipliers.length - 1));
+		if (playerIn.world.isRemote)
 			displayItemName(30);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}

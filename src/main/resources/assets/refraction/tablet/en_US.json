@@ -124,7 +124,10 @@
             "Yellow: Has a chance, based on strength, to break blocks it touches.",
             "",
             "",
-            "Pink: Has a chance, based on strength, to place a block that it intersects with in item form."
+            "Pink: Has a chance, based on strength, to place a block that it intersects with in item form.",
+            "",
+            "",
+            "Orange: When pointed at a redstone component, will power it. Has to have at least 1 air block available anywhere around the block it's pointing at. Also will respect the side of the redstone component it hits. Redstone power output depends on potency."
           ]
         }
       ]
@@ -194,7 +197,10 @@
             "The block form of this alloy will reflect/bounce all beams that intersect with it in the cardinal direction hit.",
             "",
             "",
-            "In a way, it's sort of a cheap precisionless mirror. This block is considered as great protection against volatile or dangerous beams."
+            "In a way, it's sort of a cheap precisionless mirror. This block is considered as great protection against volatile or dangerous beams.",
+            "",
+            "",
+            "You can also craft reflective alloy armor with this ingot. Each piece will decrease the potency of any beam effect that hits you. A full set wont completely negate effects, but you will become a walking mirror. IE: Beams will literally bounce and reflect off of you in the direction you face."
           ]
         },
         {
@@ -259,6 +265,68 @@
           "text": [
             "When placed into an assembly table with any beam hitting it, it will infuse the grenade with that color.",
             "When thrown, the grenade will explode violently with the color (taking into account the original strength as well)"
+          ]
+        },
+        {
+          "info": "Electron Exciter",
+          "text": [
+            "Our friends at aperture science have provided us with their amazing technology of hard light bridges!",
+            "",
+            "By pointing 2 (or more) attraction (cyan) beams perfectly parallel and pointing straight into 2 adjacent [recipe:refraction:electron_exciter]s, a bridge made out of pure light will form between them.",
+            "",
+            "",
+            "This bridge is indestructible, and therefore great for a plethora of uses. You can stack multiple bridges next to each other and in any direction.",
+            "",
+            "",
+            "My friend, GlAdOs told me to send you this message: 'These bridges are made from natural light that we pumped in from the surface. If you rubbed your cheek on one, it would be like standing outside with the sun shining on your face. It would also set your hair on fire, so don't actually do it.'"
+          ]
+        },
+        {
+          "info": "AXYZ",
+          "text": [
+            "The [recipe:refraction:axyz] is a rather odd block. It's essentially a worm hole generator. Quite complex in usage.",
+            "",
+            "I was told that this technology isn't quite advanced enough yet, it can generator wormholes, but only photons can pass through it. Matter cannot, however, and therefore, any beam that goes into it, will go out wherever the wormhole is set to and not the other way around even.",
+            "",
+            "The tear in space and time isn't big nor powerful enough to do anything else.",
+            "",
+            "",
+            "The mechanics of this device are unusual to say the least. It says here that you need to point a [recipe:refraction:translocator] right at it and have a dispersion beam (magneta) fed into the translocator via fiber optic hooked into it.",
+            "",
+            "Apparently, the moment you allow the beam to pass into the translocator pointing at the wormhole generator, the generator will immediately displace itself in the direction the translocator was pointing at it from.",
+            "",
+            "What's essentially happening here, is that you are displacing the wormhole generator and separating it from the other end of the wormhole. You are more or less shifting the block without shifting the wormhole.",
+            "",
+            "",
+            "The [recipe:refraction:axyz] is also pushable by a piston. However, since the wormhole is bound to this block, the wormhole will shift in the direction the generator is facing when pushed.",
+            "",
+            "A sort of 'quantum entanglement' of sorts.",
+            "",
+            "",
+            "By repeating the process of teleposing the generator with a translocator and pushing it with pistons, you can treat the generator like a 'cursor' to move the generator freely in the world. This can allow for some very neat mechanics such as advanced quarries.",
+            "",
+            "Pointing any beam into it will displace the beam to the direction of the wormhole."
+          ]
+        }
+      ]
+    },
+    {
+      "icon": "refraction:items/mirror",
+      "info": "Misc",
+      "subpages": [
+        {
+          "info": "Inventory Management",
+          "text": [
+            "You might wonder if there's a way to extract and insert items to and from inventories using light. Well... There is!",
+            "",
+            "",
+            "The disperse (magenta) and attract (cyan) effects can insert and extract items to and from inventories respectively.",
+            "",
+            "The actual process however, is a bit crude... You see... You have to kinda... Burn a hole into the inventory with a burn beam first",
+            "A laser pointing at the inventory will then extract or insert the items through that hole. So you must point a burn beam on the inventory desired.",
+            "",
+            "",
+            "Physics is beautiful, isn't it?"
           ]
         }
       ]

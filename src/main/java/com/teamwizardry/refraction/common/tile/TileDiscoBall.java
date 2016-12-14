@@ -60,7 +60,7 @@ public class TileDiscoBall extends TileMod implements ITickable {
         beamHandledTicks = 5;
         markDirty();
 
-        if (!worldObj.isBlockPowered(pos) && worldObj.isBlockIndirectlyGettingPowered(pos) == 0) {
+        if (!world.isBlockPowered(pos) && world.isBlockIndirectlyGettingPowered(pos) == 0) {
             beams.clear();
             return;
         }
@@ -70,7 +70,7 @@ public class TileDiscoBall extends TileMod implements ITickable {
             if (oldBeam.doBeamsMatch(beam)) add = false;
         if (add) {
             beams.add(beam);
-            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
             markDirty();
         }
 
@@ -82,7 +82,7 @@ public class TileDiscoBall extends TileMod implements ITickable {
 
             Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
 
-            Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(new Vec3d(worldObj.getBlockState(pos).getValue(BlockDiscoBall.FACING).getDirectionVec()).scale(0.2));
+            Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getDirectionVec()).scale(0.2));
 
             Beam subBeams = beam.createSimilarBeam(center, dest)
                     .setColor(new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8)))
@@ -103,10 +103,10 @@ public class TileDiscoBall extends TileMod implements ITickable {
             beamHandledTicks--;
         else {
             beams.clear();
-            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
             markDirty();
         }
-        if (worldObj.isBlockPowered(pos) || worldObj.isBlockIndirectlyGettingPowered(pos) != 0) {
+        if (world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) != 0) {
             tick += 5;
             if (tick >= 360) tick = 0;
         } else beams.clear();

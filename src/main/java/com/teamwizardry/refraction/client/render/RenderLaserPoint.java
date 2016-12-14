@@ -112,8 +112,8 @@ public class RenderLaserPoint extends Render<EntityLaserPointer> {
 	}
 
 	/*
-	
-	Vec3d playerEyes = Minecraft.getMinecraft().thePlayer.getPositionEyes(partialTicks);
+
+	Vec3d playerEyes = Minecraft.getMinecraft().player.getPositionEyes(partialTicks);
 		Vec3d pos = entity.getPositionVector();
 		
 		Vec3d v = playerEyes.subtract(pos).normalize();

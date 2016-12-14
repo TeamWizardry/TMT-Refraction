@@ -87,8 +87,8 @@ public class EventHandler {
         event.setResult(Event.Result.DENY);
     }
 
-    private void fireColor(World worldObj, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities, UUID uuid) {
-        BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, worldObj, pos, hitPos.subtract(ref), hitPos.add(ref));
+    private void fireColor(World world, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities, UUID uuid) {
+        BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, world, pos, hitPos.subtract(ref), hitPos.add(ref));
         if (r != null && r.data != null) {
             Vec3d normal = r.data;
             ref = BlockLens.refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.GLASS_IOR + IORMod, ref, normal).normalize();
@@ -96,7 +96,7 @@ public class EventHandler {
 
             for (int i = 0; i < 5; i++) {
 
-                r = collisionRayTraceLaser(state, worldObj, pos, hitPos.add(ref), hitPos);
+                r = collisionRayTraceLaser(state, world, pos, hitPos.add(ref), hitPos);
                 // trace backward so we don't hit hitPos first
 
                 if (r != null && r.data != null) {
@@ -107,12 +107,12 @@ public class EventHandler {
                         ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
                         break;
                     }
-                    BlockLens.showBeam(worldObj, hitPos, r.hitVec, color);
+                    BlockLens.showBeam(world, hitPos, r.hitVec, color);
                     hitPos = r.hitVec;
                 }
             }
 
-            new Beam(worldObj, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).setUUID(uuid).enableParticleBeginning().spawn();
+            new Beam(world, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).setUUID(uuid).enableParticleBeginning().spawn();
         }
     }
 

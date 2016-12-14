@@ -22,6 +22,10 @@ public class CraftingRecipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.LASER_PEN), "  A", " BC", "D  ", 'A', Blocks.STONE_BUTTON, 'B', "dustRedstone", 'C', "ingotIron", 'D', "blockGlass"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.REFLECTIVE_ALLOY_BLOCK), "AAA", "AAA", "AAA", 'A', ModItems.REFLECTIVE_ALLOY));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.GRENADE, 3), " A ", "ABA", " A ", 'A', ModItems.REFLECTIVE_ALLOY, 'B', Blocks.TNT));
-		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.BOOK), ModItems.LASER_PEN, Items.BOOK);
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.HELMET), "AAA", "A A", "   ", 'A', ModItems.REFLECTIVE_ALLOY));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.CHESTPLATE), "A A", "AAA", "AAA", 'A', ModItems.REFLECTIVE_ALLOY));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.LEGGINGS), "AAA", "A A", "A A", 'A', ModItems.REFLECTIVE_ALLOY));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.BOOTS), "   ", "A A", "A A", 'A', ModItems.REFLECTIVE_ALLOY));
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.BOOK), ModItems.LASER_PEN, Items.BOOK);
 	}
 }

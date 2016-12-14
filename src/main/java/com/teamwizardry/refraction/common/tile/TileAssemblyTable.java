@@ -102,15 +102,15 @@ public class TileAssemblyTable extends TileMod implements ITickable {
     }
 
     public void handle(Beam... beams) {
-        if (worldObj.isRemote) return;
-        if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
+        if (world.isRemote) return;
+        if (!world.isBlockPowered(getPos()) && world.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
         this.beams.addAll(Lists.newArrayList(beams));
     }
 
     @Override
     public void update() {
-        if (worldObj.isRemote) return;
-        if (!worldObj.isBlockPowered(getPos()) && worldObj.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
+        if (world.isRemote) return;
+        if (!world.isBlockPowered(getPos()) && world.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
         if (beams.isEmpty()) return;
 
         int red = 0, green = 0, blue = 0, alpha = 0;
@@ -144,7 +144,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
                 builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
                 builder.setColorFunction(new InterpColorFade(Color.RED, 1, 255, 1));
                 builder.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
-                ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(20, 40), 0, (aFloat, particleBuilder) -> {
+                ParticleSpawner.spawn(builder, world, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(20, 40), 0, (aFloat, particleBuilder) -> {
                     double radius = 0.3;
                     double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
                     double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
@@ -163,7 +163,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
                 builder.setAlphaFunction(new InterpFadeInOut(0.1f, 0.3f));
                 builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
                 builder.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
-                ParticleSpawner.spawn(builder, worldObj, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1.25, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(200, 300), 0, (aFloat, particleBuilder) -> {
+                ParticleSpawner.spawn(builder, world, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1.25, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(200, 300), 0, (aFloat, particleBuilder) -> {
                     double radius = 0.1;
                     double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
                     double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
@@ -182,7 +182,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
                     compound.setInteger("color", color.getRGB());
                     stack.setTagCompound(compound);
 
-                    EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(worldObj, pos, stack);
+                    EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(world, pos, stack);
                     MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);
                     output.setStackInSlot(0, eventAssemblyTableCraft.getOutput());
                 }
@@ -219,7 +219,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
 
             if (Utils.matchItemStackLists(CapsUtils.getListOfItems(inventory), Utils.getListOfObjects(recipe.getItems()))) {
                 //MARKER: REGULAR CRAFTING
-                EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(worldObj, pos, recipe.getResult().copy());
+                EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(world, pos, recipe.getResult().copy());
                 MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);
                 output.setStackInSlot(0, eventAssemblyTableCraft.getOutput());
                 isCrafting = true;

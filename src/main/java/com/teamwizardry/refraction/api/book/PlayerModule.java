@@ -18,7 +18,7 @@ public class PlayerModule implements IParsedModule {
     public PlayerModule(TextAdapter textAdapter, int x, int y) {
         fr.setBidiFlag(true);
         fr.setUnicodeFlag(true);
-        String playerName = Minecraft.getMinecraft().thePlayer.getDisplayNameString();
+        String playerName = Minecraft.getMinecraft().player.getDisplayNameString();
         this.x = x;
         this.y = y;
 

@@ -29,13 +29,13 @@ public class BeamPulsar {
 	public static RayTraceResult rayTraceBlocks(World world, Set<BlockPos> exclude, Vec3d start, Vec3d end, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
 		if (!Double.isNaN(start.xCoord) && !Double.isNaN(start.yCoord) && !Double.isNaN(start.zCoord)) {
 			if (!Double.isNaN(end.xCoord) && !Double.isNaN(end.yCoord) && !Double.isNaN(end.zCoord)) {
-				int i = MathHelper.floor_double(end.xCoord);
-				int j = MathHelper.floor_double(end.yCoord);
-				int k = MathHelper.floor_double(end.zCoord);
-				int l = MathHelper.floor_double(start.xCoord);
-				int i1 = MathHelper.floor_double(start.yCoord);
-				int j1 = MathHelper.floor_double(start.zCoord);
-				BlockPos blockpos = new BlockPos(l, i1, j1);
+                int i = MathHelper.floor(end.xCoord);
+                int j = MathHelper.floor(end.yCoord);
+                int k = MathHelper.floor(end.zCoord);
+                int l = MathHelper.floor(start.xCoord);
+                int i1 = MathHelper.floor(start.yCoord);
+                int j1 = MathHelper.floor(start.zCoord);
+                BlockPos blockpos = new BlockPos(l, i1, j1);
 				IBlockState iblockstate = world.getBlockState(blockpos);
 				Block block = iblockstate.getBlock();
 
@@ -136,10 +136,10 @@ public class BeamPulsar {
 						start = new Vec3d(start.xCoord + d6 * d5, start.yCoord + d7 * d5, d2);
 					}
 
-					l = MathHelper.floor_double(start.xCoord) - (enumfacing == EnumFacing.EAST ? 1 : 0);
-					i1 = MathHelper.floor_double(start.yCoord) - (enumfacing == EnumFacing.UP ? 1 : 0);
-					j1 = MathHelper.floor_double(start.zCoord) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
-					blockpos = new BlockPos(l, i1, j1);
+                    l = MathHelper.floor(start.xCoord) - (enumfacing == EnumFacing.EAST ? 1 : 0);
+                    i1 = MathHelper.floor(start.yCoord) - (enumfacing == EnumFacing.UP ? 1 : 0);
+                    j1 = MathHelper.floor(start.zCoord) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
+                    blockpos = new BlockPos(l, i1, j1);
 					IBlockState iblockstate1 = world.getBlockState(blockpos);
 					Block block1 = iblockstate1.getBlock();
 
