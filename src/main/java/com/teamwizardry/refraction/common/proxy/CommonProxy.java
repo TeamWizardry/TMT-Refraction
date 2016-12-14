@@ -19,6 +19,7 @@ import com.teamwizardry.refraction.init.recipies.CraftingRecipes;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -31,57 +32,59 @@ import net.minecraftforge.fml.relauncher.Side;
  */
 public class CommonProxy {
 
-	public void preInit(FMLPreInitializationEvent event) {
-		Utils.HANDLER = new RefractionInternalHandler();
+    public void preInit(FMLPreInitializationEvent event) {
+        Utils.HANDLER = new RefractionInternalHandler();
 
-		CatChaseHandler.INSTANCE.getClass(); // load the class
-		ModSounds.init();
-		ModTab.init();
-		ModBlocks.init();
-		ModItems.init();
-		ModEntities.init();
-		ModEffects.init();
-		ModAchievements.init();
+        CatChaseHandler.INSTANCE.getClass(); // load the class
+        ModSounds.init();
+        ModTab.init();
+        ModBlocks.init();
+        ModItems.init();
+        ModEntities.init();
+        ModEffects.init();
+        ModAchievements.init();
 
-		EventHandler.INSTANCE.getClass();
-		SoundManager.INSTANCE.getClass();
-		ExciterTracker.INSTANCE.getClass();
+        EventHandler.INSTANCE.getClass();
+        SoundManager.INSTANCE.getClass();
+        ExciterTracker.INSTANCE.getClass();
 
-		EasyConfigHandler.init();
-		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
-		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
-		PacketHandler.register(PacketAXYZMarks.class, Side.CLIENT);
-	}
+        EasyConfigHandler.init();
+        NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
+        PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
+        PacketHandler.register(PacketAXYZMarks.class, Side.CLIENT);
+    }
 
-	public void init(FMLInitializationEvent event) {
-		CraftingRecipes.init();
-		AssemblyRecipes.init();
-	}
+    public void init(FMLInitializationEvent event) {
+        CraftingRecipes.init();
+        AssemblyRecipes.init();
+    }
 
-	public void postInit(FMLPostInitializationEvent event) {
-		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.SCREW_DRIVER, new DispenserScrewDriverBehavior());
-		SoundManager.INSTANCE.addSpeaker(ModBlocks.LASER, 40, ModSounds.electrical_hums, 0.015f, 1f, false);
-		SoundManager.INSTANCE.addSpeaker(ModBlocks.LIGHT_BRIDGE, 67, ModSounds.light_bridges, 0.05f, 1f, false);
-		MTRefractionPlugin.init();
-	}
+    public void postInit(FMLPostInitializationEvent event) {
+        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.SCREW_DRIVER, new DispenserScrewDriverBehavior());
+        SoundManager.INSTANCE.addSpeaker(ModBlocks.LASER, 40, ModSounds.electrical_hums, 0.015f, 1f, false);
+        SoundManager.INSTANCE.addSpeaker(ModBlocks.LIGHT_BRIDGE, 67, ModSounds.light_bridges, 0.05f, 1f, false);
 
-	public void serverStarting(FMLServerStartingEvent event) {
-		String clname = Utils.HANDLER.getClass().getName();
-		String expect =	RefractionInternalHandler.class.getName();
-		if(!clname.equals(expect)) {
-			new IllegalAccessError("The Refraction API internal method handler has been overriden. "
-					+ "This will cause the intended behavior of Refraction to be different than expected. "
-					+ "It's marked \"Do not Override\", anyway. Whoever the hell overrode it needs to go "
-					+ " back to primary school and learn to read. (Expected classname: " + expect + ", Actual classname: " + clname + ")").printStackTrace();
-			FMLCommonHandler.instance().exitJava(1, true);
-		}
-	}
+        if (Loader.isModLoaded("MineTweaker3"))
+            MTRefractionPlugin.init();
+    }
 
-	public World getWorld() {
-		return FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
-	}
+    public void serverStarting(FMLServerStartingEvent event) {
+        String clname = Utils.HANDLER.getClass().getName();
+        String expect = RefractionInternalHandler.class.getName();
+        if (!clname.equals(expect)) {
+            new IllegalAccessError("The Refraction API internal method handler has been overriden. "
+                    + "This will cause the intended behavior of Refraction to be different than expected. "
+                    + "It's marked \"Do not Override\", anyway. Whoever the hell overrode it needs to go "
+                    + " back to primary school and learn to read. (Expected classname: " + expect + ", Actual classname: " + clname + ")").printStackTrace();
+            FMLCommonHandler.instance().exitJava(1, true);
+        }
+    }
 
-	public boolean isClient() {
-		return false;
-	}
+    public World getWorld() {
+        return FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
+    }
+
+    public boolean isClient() {
+        return false;
+    }
 }
