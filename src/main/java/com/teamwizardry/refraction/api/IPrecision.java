@@ -13,26 +13,6 @@ import net.minecraft.world.World;
  */
 public interface IPrecision {
 
-	final class Helper {
-
-		public static final String MODE_TAG = "mode";
-		public static final int DEFAULT_MULTIPLIER = 4;
-
-		public static final float[] multipliers = {
-				0.125f, 0.25f, 0.5f, 1,
-				5, 22.5f, 45, 90
-		};
-
-		public static float getRotationMultiplier(ItemStack stack) {
-			return multipliers[getRotationIndex(stack)];
-		}
-
-		public static int getRotationIndex(ItemStack stack) {
-			int i = ItemNBTHelper.getInt(stack, MODE_TAG, DEFAULT_MULTIPLIER);
-			return MathHelper.clamp(i, 0, multipliers.length - 1);
-		}
-	}
-
 	default void adjust(World worldIn, BlockPos pos, ItemStack stack, boolean sneaking, EnumFacing side) {
 		IBlockState state = worldIn.getBlockState(pos);
 		if (state.getBlock() instanceof IPrecision && !worldIn.isRemote) {
@@ -52,6 +32,8 @@ public interface IPrecision {
 
 	float getRotY(World worldIn, BlockPos pos);
 
+	void setRotY(World worldIn, BlockPos pos, float y);
+
 	final class Helper {
 
 		public static final String MODE_TAG = "mode";
@@ -71,7 +53,5 @@ public interface IPrecision {
 			return MathHelper.clamp(i, 0, multipliers.length - 1);
 		}
 	}
-
-	void setRotY(World worldIn, BlockPos pos, float y);
 
 }
