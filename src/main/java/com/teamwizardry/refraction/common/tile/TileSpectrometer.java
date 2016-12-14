@@ -23,6 +23,8 @@ public class TileSpectrometer extends TileMod implements ITickable {
     @Save
     public Color maxColor = new Color(0, 0, 0, 0);
     public Color currentColor = new Color(0, 0, 0, 0);
+    @Save
+    public boolean beamUpdate = false;
     @NotNull
     private List<Beam> beams = new ArrayList<>();
 
@@ -37,8 +39,19 @@ public class TileSpectrometer extends TileMod implements ITickable {
     }
 
     public void handle(Beam... beams) {
+        if (this.beams.isEmpty()) {
+            this.beams.addAll(Lists.newArrayList(beams));
+            return;
+        }
+        ArrayList<Beam> tempBeams = new ArrayList<>();
+        tempBeams.addAll(this.beams);
+        for (Beam beam1 : beams) {
+            beamUpdate = true;
+            for (Beam beam2 : tempBeams)
+                if (beam1.doBeamsMatch(beam2)) return;
+            this.beams.add(beam1);
+        }
         markDirty();
-        this.beams.addAll(Lists.newArrayList(beams));
     }
 
     @Override
@@ -56,6 +69,9 @@ public class TileSpectrometer extends TileMod implements ITickable {
             markDirty();
             return;
         }
+
+        if (!beamUpdate) return;
+        beamUpdate = false;
 
         int red = 0;
         int green = 0;
