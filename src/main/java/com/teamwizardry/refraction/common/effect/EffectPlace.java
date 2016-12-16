@@ -1,22 +1,18 @@
 package com.teamwizardry.refraction.common.effect;
 
 import com.mojang.authlib.GameProfile;
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.beam.Effect;
-import com.teamwizardry.refraction.init.ModBlocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
 import java.awt.*;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -37,38 +33,21 @@ public class EffectPlace extends Effect {
     }
 
     @Override
-    public void runBlock(World world, BlockPos pos, int potency) {
+    public void runEntity(World world, Entity entity, int potency) {
+        if (beam.trace.typeOfHit != RayTraceResult.Type.BLOCK) return;
+        if (!(entity instanceof EntityItem)) return;
+        EntityItem item = (EntityItem) entity;
+
         if (fakePlayer == null)
             fakePlayer = FakePlayerFactory.get((WorldServer) world, new GameProfile(UUID.randomUUID(), "Refraction Place Effect"));
         fakePlayer.setSneaking(true);
 
-        AxisAlignedBB axis = new AxisAlignedBB(pos);
-        List<EntityItem> entities = world.getEntitiesWithinAABB(EntityItem.class, axis);
-        primary:
-        for (EntityItem entity : entities) {
-            if (entity == null) continue;
-            if (ItemNBTHelper.getBoolean(entity.getEntityItem(), "effect_place_pass", false)) continue;
+        fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, item.getEntityItem(), EnumHand.MAIN_HAND, beam.trace.getBlockPos().offset(beam.trace.sideHit), beam.trace.sideHit, 0, 0, 0);
+    }
 
-            EnumActionResult result = fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, entity.getEntityItem(), EnumHand.MAIN_HAND, pos, beam.trace.sideHit, 0, 0, 0);
-            if (result == EnumActionResult.SUCCESS || result == EnumActionResult.PASS) continue;
+    @Override
+    public void runBlock(World world, BlockPos pos, int potency) {
 
-            for (EnumFacing facing : EnumFacing.VALUES) {
-                if (world.isAirBlock(pos.offset(facing))) continue;
-                EnumActionResult result2 = fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, entity.getEntityItem(), EnumHand.MAIN_HAND, pos, facing, 0, 0, 0);
-                if (result2 == EnumActionResult.SUCCESS || result2 == EnumActionResult.PASS)
-                    continue primary;
-            }
-
-            for (EnumFacing facing : EnumFacing.VALUES) {
-                if (!world.isAirBlock(pos.offset(facing))) continue;
-                world.setBlockState(pos.offset(facing), ModBlocks.INVISIBLE.getDefaultState());
-                EnumActionResult result2 = fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, entity.getEntityItem(), EnumHand.MAIN_HAND, pos, facing, 0, 0, 0);
-                world.setBlockToAir(pos.offset(facing));
-                if (result2 == EnumActionResult.FAIL) continue;
-                continue primary;
-            }
-            ItemNBTHelper.setBoolean(entity.getEntityItem(), "effect_place_pass", true);
-        }
     }
 
     @Override

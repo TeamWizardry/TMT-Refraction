@@ -16,7 +16,6 @@ import com.teamwizardry.refraction.client.jei.JEIRefractionPlugin;
 import mezz.jei.api.IRecipeRegistry;
 import mezz.jei.api.gui.IRecipeLayoutDrawable;
 import mezz.jei.api.recipe.IFocus;
-import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -130,11 +129,10 @@ public class ExtraSidebar {
                     // check if recipe is refraction's
                     IRecipeRegistry registry = JEIRefractionPlugin.jeiRuntime.getRecipeRegistry();
                     IFocus<ItemStack> focus = registry.createFocus(IFocus.Mode.OUTPUT, stack);
-                    for (IRecipeCategory<?> category : registry.getRecipeCategories(focus))
-                        if (category.getUid().equals(Constants.MOD_ID + ".assembly_table")) {
-                            GlStateManager.translate(10, -10, 0);
-                            GlStateManager.scale(0.5, 0.5, 0.5);
-                        }
+                    registry.getRecipeCategories(focus).stream().filter(category -> category.getUid().equals(Constants.MOD_ID + ".assembly_table")).forEach(category -> {
+                        GlStateManager.translate(10, -10, 0);
+                        GlStateManager.scale(0.5, 0.5, 0.5);
+                    });
 
                     drawable.draw(Minecraft.getMinecraft(), 0, 0);
                     GlStateManager.enableBlend();

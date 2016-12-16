@@ -15,6 +15,11 @@ public class EffectBreak extends Effect {
         return potency == 0 ? 0 : 5550 / potency;
 	}
 
+    @Override
+    public EffectType getType() {
+        return EffectType.BEAM;
+    }
+
 	@Override
     public void runBlock(World world, BlockPos pos, int potency) {
         IBlockState block = world.getBlockState(pos);

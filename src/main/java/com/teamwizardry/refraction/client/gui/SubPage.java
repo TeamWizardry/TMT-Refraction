@@ -107,7 +107,7 @@ public class SubPage {
                 i = extraSidebar.id;
                 extraSidebars.add(extraSidebar);
             }
-
+        if (adapter != null && !adapter.extraSidebars.isEmpty()) i++;
         if (object.has("extra") && object.get("extra").isJsonArray()) {
             for (JsonElement extraObject : object.get("extra").getAsJsonArray()) {
                 if (extraObject.isJsonObject()) {

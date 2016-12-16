@@ -42,6 +42,12 @@
             "",
             "",
             "I should note that you should place the magnifier (with the lens blocks above it) anywhere above the assembly table. This will be a one time setup to get you the basic items and can be altered after we're done with the second step."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/assembly_table_setup.png",
+              "title": "Initial Setup"
+            }
           ]
         },
         {
@@ -68,6 +74,12 @@
             "",
             "",
             "If you focus multiple beams into an assembly table, it'll be able to do more intense recipes, granting you more components to play with."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/mirror_array_setup.png",
+              "title": "Mirror Array"
+            }
           ]
         },
         {
@@ -84,6 +96,12 @@
             "",
             "",
             "&c&l[!] WARNING [!]&r Do NOT place the prism in front of a beam just yet. Please read the next section before proceeding because the next part can be lethal to both your person and your surroundings if caution is not taken!"
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/prism_splitting.png",
+              "title": "Prism Splitting"
+            }
           ]
         },
         {
@@ -109,6 +127,12 @@
             "",
             "",
             "The moment you place down the prism, all 3 of these beams will be split and refracted outwards. Be VERY careful that you are in a safe, burn free zone."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/prism_splitting.png",
+              "title": "Prism Splitting"
+            }
           ]
         },
         {
@@ -134,6 +158,12 @@
             "",
             "",
             "Orange: When pointed at a redstone component, will power it. Has to have at least 1 air block available anywhere around the block it's pointing at. Also will respect the side of the redstone component it hits. Redstone power output depends on potency."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/reflection_chamber.png",
+              "title": "Beam Merging"
+            }
           ]
         }
       ]
@@ -145,7 +175,7 @@
         {
           "title": "Laser",
           "text": [
-            "The laser block, when fed with glowstone, will produce a light beam that lasts for 25 seconds.",
+            "The [recipe:refraction:laser] block, when fed with glowstone, will produce a light beam that lasts for 25 seconds.",
             "",
             "",
             "This block is different from a magnifier in that it's beam is 4x more powerful in strength than a magnifier.",
@@ -155,18 +185,24 @@
             "",
             "",
             "If you want to continually power it automatically, consider a witch farm or a mob farm that filters witches."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/laser_block.png",
+              "title": "Laser Block"
+            }
           ]
         },
         {
           "title": "Electric Laser",
           "text": [
-            "The electric laser block is like the regular laser block. The only difference is that it accepts tesla/forge energy instead of glowstone."
+            "The [recipe:refraction:electric_laser] block is like the regular laser block. The only difference is that it accepts tesla/forge energy instead of glowstone."
           ]
         },
         {
           "title": "Screwdriver",
           "text": [
-            "You've already supposedly read and used the screwdriver, but to recap:",
+            "You've already supposedly read and used the [recipe:refraction:screw_driver], but to recap:",
             "",
             "",
             "Right click the air to increment it's angle. Shift right click to decrement.",
@@ -190,15 +226,21 @@
         {
           "title": "Mirrors / Splitter",
           "text": [
-            "This block is a half-mirror. It has the same properties as a mirror, but instead of reflecting a beam directly",
+            "This [recipe:refraction:splitter] block is a half-mirror. It has the same properties as a mirror, but instead of reflecting a beam directly",
             ", the beam will be split into 2 halves. One is reflected like that of a normal mirror, and the other half phases",
             " right through the beam."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/splitter.png",
+              "title": "Splitter"
+            }
           ]
         },
         {
           "title": "Reflective Alloy",
           "text": [
-            "You've already seen the reflective alloy ingots, but what you didn't know is that it has a block variation.",
+            "You've already seen the [recipe:refraction:reflective_alloy] ingots, but what you didn't know is that it has a block variation.",
             "",
             "The block form of this alloy will reflect/bounce all beams that intersect with it in the cardinal direction hit.",
             "",
@@ -212,7 +254,7 @@
         {
           "title": "Disco Ball",
           "text": [
-            "The disco ball is one of the most interesting blocks in the mod.",
+            "The [recipe:refraction:disco_ball] is one of the most interesting blocks in the mod.",
             "",
             "When this block receives a redstone signal, it will start spinning (it's a disco ball after all).",
             "",
@@ -225,6 +267,12 @@
             "",
             "",
             "&c&l[!] WARNING [!]&r It is HIGHLY recommended you surround the block with reflective alloy blocks to avoid potential disasters from occuring."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/disco_ball.png",
+              "title": "Disco Ball"
+            }
           ]
         },
         {
@@ -236,6 +284,12 @@
             "",
             "",
             "Moreover, beams will phase directly through it for convenience."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/sensor.png",
+              "title": "Sensor"
+            }
           ]
         },
         {
@@ -250,6 +304,12 @@
             "These cables are also useful when working with reflection chambers. If you place a cable against the face of a reflection chamber",
             " - provided that the angle of the output beam from the reflection chamber is from the face the cable is against - it will output the beam",
             " straight to the cable, directly adjusting it to a cardinal direction."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/optic_fiber.png",
+              "title": "Optic Fiber"
+            }
           ]
         },
         {
@@ -258,12 +318,24 @@
             "The spectrometer is a block that can show you the strength of each individual array of color from a beam intersecting with the block.",
             "",
             "It will show you red, green, blue, and white bars on its face indicating the rgb values of the beams hitting it as well as white acting as beam strength."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/spectrometer.png",
+              "title": "Spectrometer"
+            }
           ]
         },
         {
           "title": "Laser Pen",
           "text": [
             "KAT LAZORS."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/laser_pen.png",
+              "title": "Laser Pen"
+            }
           ]
         },
         {
@@ -271,6 +343,12 @@
           "text": [
             "When placed into an assembly table with any beam hitting it, it will infuse the grenade with that color.",
             "When thrown, the grenade will explode violently with the color (taking into account the original strength as well)"
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/photon_grenade.png",
+              "title": "Photon Grenade"
+            }
           ]
         },
         {
@@ -285,6 +363,12 @@
             "",
             "",
             "My friend, GlAdOs, told me to send you this message: 'These bridges are made from natural light that we pumped in from the surface. If you rubbed your cheek on one, it would be like standing outside with the sun shining on your face. It would also set your hair on fire, so don't actually do it.'"
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/light_bridge.png",
+              "title": "Light Bridges"
+            }
           ]
         },
         {
@@ -306,6 +390,12 @@
             "",
             "",
             "By repeating the process of using teleposers and pistons on the generator, you can treat the generator like a 'cursor' to move the wormhole freely in the world. This can allow for some more advanced machines such as automatically moving quarries."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/wormhole.png",
+              "title": "AXYZ With Wormhole"
+            }
           ]
         }
       ]
@@ -327,6 +417,12 @@
             "",
             "",
             "Physics is beautiful, isn't it?"
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/insert_extract.png",
+              "title": "Insert & Extract"
+            }
           ]
         }
       ]

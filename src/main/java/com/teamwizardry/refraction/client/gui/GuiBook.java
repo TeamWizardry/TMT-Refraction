@@ -6,7 +6,6 @@ import com.google.gson.JsonParser;
 import com.teamwizardry.librarianlib.LibrarianLib;
 import com.teamwizardry.librarianlib.client.gui.GuiBase;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
@@ -31,7 +30,6 @@ public class GuiBook extends GuiBase {
     public static Sprite BACKGROUND_BOOTUP_SPRITE = BACKGROUND_BOOTUP_TEXTURE.getSprite("bg", 232, 323);
 
     public Vec2d position;
-    public ComponentVoid componentPlate;
     public ArrayList<Page> pages = new ArrayList<>();
     public int selectedPage = 0;
 
@@ -69,13 +67,12 @@ public class GuiBook extends GuiBase {
         position = background.getPos();
         getMainComponents().add(background);
 
-        for (Page page : pages) background.add(page.getComponent());
-
         ComponentSprite backgroundHandle = new ComponentSprite(BACKGROUND_HANDLE_SPRITE,
                 (getGuiWidth() / 2) - (BACKGROUND_HANDLE_SPRITE.getWidth() / 2),
                 (getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
         getMainComponents().add(backgroundHandle);
-        getMainComponents().add(componentPlate);
+
+        for (Page page : pages) background.add(page.getComponent());
 
         ComponentSprite bootup = new ComponentSprite(BACKGROUND_BOOTUP_SPRITE,
                 (getGuiWidth() / 2) - (BACKGROUND_HANDLE_SPRITE.getWidth() / 2),
