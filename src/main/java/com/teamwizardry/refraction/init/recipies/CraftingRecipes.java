@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.init.recipies;
 
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.init.Blocks;
@@ -27,5 +28,8 @@ public class CraftingRecipes {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.LEGGINGS), "AAA", "A A", "A A", 'A', ModItems.REFLECTIVE_ALLOY));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.BOOTS), "   ", "A A", "A A", 'A', ModItems.REFLECTIVE_ALLOY));
         GameRegistry.addShapelessRecipe(new ItemStack(ModItems.BOOK), ModItems.LASER_PEN, Items.BOOK);
-	}
+
+        if (!ConfigValues.DISABLE_PHOTON_CANNON)
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.PHOTON_CANNON), "AB ", "CDB", "ECA", 'A', ModBlocks.OPTIC_FIBER, 'B', ModBlocks.MIRROR, 'C', ModItems.REFLECTIVE_ALLOY, 'D', ModBlocks.ELECTRON_EXCITER, 'E', ModBlocks.SENSOR));
+    }
 }

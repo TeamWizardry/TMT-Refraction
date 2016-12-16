@@ -1,11 +1,11 @@
 {
   "pages": [
     {
-      "icon": "refraction:items/book",
-      "info": "Getting Started",
+      "icon": "refraction:textures/items/book.png",
+      "title": "Getting Started",
       "subpages": [
         {
-          "info": "Hello",
+          "title": "Hello",
           "text": [
             "&nDisclaimer: This guide is still a work in progress but more or less functional enough",
             "",
@@ -22,10 +22,16 @@
             "",
             "",
             "Let's get started, shall we?"
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/refraction_logo.png",
+              "title": "Logo"
+            }
           ]
         },
         {
-          "info": "Baby Steps",
+          "title": "Baby Steps",
           "text": [
             "Ok, let's see here... Ah, yes. So you'll first want to make a [recipe:refraction:assembly_table]. This simple block will help you craft everything you need. I will guide you through the steps of its usage when we get to that.",
             "",
@@ -39,7 +45,7 @@
           ]
         },
         {
-          "info": "Oooh, Shiny",
+          "title": "Oooh, Shiny",
           "text": [
             "Neither gold nor iron have the reflective properties you'd want to be able to play around with light, but they both are a step in the right direction.",
             "",
@@ -51,7 +57,7 @@
           ]
         },
         {
-          "info": "Reflection",
+          "title": "Reflection",
           "text": [
             "Now that you have more reflective resources, you can dispense with the annoyance of placing the [recipe:refraction:magnifier] exactly above the table. By creating a [recipe:refraction:mirror] with reflective alloys and rotating it using a [recipe:refraction:screw_driver] you can redirect beams to any direction.",
             "",
@@ -65,7 +71,7 @@
           ]
         },
         {
-          "info": "Refraction",
+          "title": "Refraction",
           "text": [
             "So far, you've only witnessed thin white beams, let's change it up a bit!",
             "",
@@ -81,7 +87,7 @@
           ]
         },
         {
-          "info": "RGB",
+          "title": "RGB",
           "text": [
             "Now, I know what you might be thinking: Eve, what the crap are the effects, what do they look like, and how do I use them already?!",
             "",
@@ -106,7 +112,7 @@
           ]
         },
         {
-          "info": "Effects",
+          "title": "Effects",
           "text": [
             "So, if you haven't burnt down your area already, let's get to the more notable effects. You can get the rest of the effects from the mod using a [recipe:refraction:reflection_chamber].",
             "",
@@ -133,11 +139,11 @@
       ]
     },
     {
-      "icon": "refraction:items/disco_ball",
-      "info": "Items & Blocks",
+      "icon": "refraction:textures/items/disco_ball.png",
+      "title": "Items & Blocks",
       "subpages": [
         {
-          "info": "Laser",
+          "title": "Laser",
           "text": [
             "The laser block, when fed with glowstone, will produce a light beam that lasts for 25 seconds.",
             "",
@@ -152,13 +158,13 @@
           ]
         },
         {
-          "info": "Electric Laser",
+          "title": "Electric Laser",
           "text": [
             "The electric laser block is like the regular laser block. The only difference is that it accepts tesla/forge energy instead of glowstone."
           ]
         },
         {
-          "info": "Screwdriver",
+          "title": "Screwdriver",
           "text": [
             "You've already supposedly read and used the screwdriver, but to recap:",
             "",
@@ -182,7 +188,7 @@
           ]
         },
         {
-          "info": "Mirrors / Splitter",
+          "title": "Mirrors / Splitter",
           "text": [
             "This block is a half-mirror. It has the same properties as a mirror, but instead of reflecting a beam directly",
             ", the beam will be split into 2 halves. One is reflected like that of a normal mirror, and the other half phases",
@@ -190,7 +196,7 @@
           ]
         },
         {
-          "info": "Reflective Alloy",
+          "title": "Reflective Alloy",
           "text": [
             "You've already seen the reflective alloy ingots, but what you didn't know is that it has a block variation.",
             "",
@@ -204,7 +210,7 @@
           ]
         },
         {
-          "info": "Disco Ball",
+          "title": "Disco Ball",
           "text": [
             "The disco ball is one of the most interesting blocks in the mod.",
             "",
@@ -222,7 +228,7 @@
           ]
         },
         {
-          "info": "Sensor",
+          "title": "Sensor",
           "text": [
             "This little dongle of a block will produce a flashing redstone signal against the block it's placed against.",
             "",
@@ -233,7 +239,7 @@
           ]
         },
         {
-          "info": "Optic Fiber",
+          "title": "Optic Fiber",
           "text": [
             "Optic fiber cables are very important cabling here. Any beam pointed at one end of an optic fiber cable will output the beam",
             " at the other end of the cable whilst also adjusting it to the cardinal direction it's facing with absolutely no loss.",
@@ -247,7 +253,7 @@
           ]
         },
         {
-          "info": "Spectrometer",
+          "title": "Spectrometer",
           "text": [
             "The spectrometer is a block that can show you the strength of each individual array of color from a beam intersecting with the block.",
             "",
@@ -255,20 +261,20 @@
           ]
         },
         {
-          "info": "Laser Pen",
+          "title": "Laser Pen",
           "text": [
             "KAT LAZORS."
           ]
         },
         {
-          "info": "Photon Grenades",
+          "title": "Photon Grenades",
           "text": [
             "When placed into an assembly table with any beam hitting it, it will infuse the grenade with that color.",
             "When thrown, the grenade will explode violently with the color (taking into account the original strength as well)"
           ]
         },
         {
-          "info": "Electron Exciter",
+          "title": "Electron Exciter",
           "text": [
             "Our friends at aperture science have provided us with their amazing technology of hard light bridges!",
             "",
@@ -282,7 +288,7 @@
           ]
         },
         {
-          "info": "AXYZ",
+          "title": "AXYZ",
           "text": [
             "The [recipe:refraction:axyz] is a rather odd block. It's essentially a wormhole generator. Quite complex in usage.",
             "",
@@ -305,11 +311,11 @@
       ]
     },
     {
-      "icon": "refraction:items/mirror",
-      "info": "Misc",
+      "icon": "refraction:textures/items/mirror.png",
+      "title": "Misc",
       "subpages": [
         {
-          "info": "Inventory Management",
+          "title": "Inventory Management",
           "text": [
             "You might wonder if there's a way to extract and insert items to and from inventories using light. Well... There is!",
             "",

@@ -30,8 +30,8 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 	private static Sprite
 			BAR = texture.getSprite("bar", 64, 8),
 			OUTLINE = texture.getSprite("outline", 34 * 2, 12),
-			SLOT = texture.getSprite("slot", 18, 18);
-	private ArrayList<ItemStack> inputs = new ArrayList<>();
+            SLOT = texture.getSprite("slotcomp", 18, 18);
+    private ArrayList<ItemStack> inputs = new ArrayList<>();
 	private ArrayList<ItemStack> outputs = new ArrayList<>();
 	private List<FluidStack> fluidInputs = ImmutableList.of();
 	private List<FluidStack> fluidOutputs = ImmutableList.of();

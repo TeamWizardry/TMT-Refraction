@@ -28,8 +28,8 @@ public class ModItems {
 		REFLECTIVE_ALLOY = new ItemReflectiveAlloy();
 		BOOK = new ItemBook();
 		GRENADE = new ItemGrenade();
-		//PHOTON_CANNON = new ItemPhotonCannon();
-		HELMET = new ItemReflectiveAlloyHelmet();
+        PHOTON_CANNON = new ItemPhotonCannon();
+        HELMET = new ItemReflectiveAlloyHelmet();
 		CHESTPLATE = new ItemReflectiveAlloyChestPlate();
 		LEGGINGS = new ItemReflectiveAlloyLeggings();
 		BOOTS = new ItemReflectiveAlloyBoots();

@@ -1,13 +1,21 @@
 package com.teamwizardry.refraction.api.book;
 
 import com.google.gson.JsonElement;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
+import com.teamwizardry.librarianlib.client.gui.components.ComponentSlot;
+import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
 import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.client.gui.ExtraSidebar;
+import com.teamwizardry.refraction.client.gui.SubPage;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author LordSaad
@@ -17,23 +25,19 @@ import org.jetbrains.annotations.NotNull;
 public class TextAdapter {
 
     public static int wrapLength = 200;
-    private ComponentText textComponent;
+    public ArrayList<ExtraSidebar> extraSidebars = new ArrayList<>();
+    private SubPage subPage;
+    private int id;
     private JsonElement object;
+    private Set<Item> items = new HashSet<>();
 
-    public TextAdapter(@NotNull JsonElement object) {
+    public TextAdapter(@NotNull SubPage subPage, int id, @NotNull JsonElement object) {
+        this.subPage = subPage;
+        this.id = id;
         this.object = object;
-        textComponent = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
-        textComponent.addTag("text");
-        textComponent.getUnicode().setValue(true);
-        textComponent.getWrap().setValue(TextAdapter.wrapLength);
-        textComponent.getText().setValue(convertLinesToString(object));
     }
 
-    public ComponentText getComponent() {
-        return textComponent;
-    }
-
-    private String convertLinesToString(JsonElement object) {
+    public String convertLinesToString() {
         String text = "";
         for (JsonElement element : object.getAsJsonArray())
             if (element.isJsonPrimitive() && !element.getAsString().isEmpty()) {
@@ -48,8 +52,16 @@ public class TextAdapter {
                         if (word.contains("recipe:")) {
                             String stackString = word.substring(word.indexOf("recipe:"), word.indexOf("]")).split("recipe:")[1];
                             ItemStack stack = Utils.HANDLER.getStackFromString(stackString);
-                            if (stack != null) {
+                            if (stack != null && !items.contains(stack.getItem())) {
+                                items.add(stack.getItem());
                                 s = s.replace(word, TextFormatting.RESET + "[" + TextFormatting.DARK_BLUE + stack.getDisplayName() + TextFormatting.RESET + "]");
+
+                                ExtraSidebar extraSidebar = new ExtraSidebar(subPage, id++, null, ExtraSidebar.SidebarType.RECIPE);
+                                extraSidebar.title = stack.getDisplayName().length() > 17 ? stack.getDisplayName().substring(0, 17) + "..." : stack.getDisplayName();
+                                extraSidebar.contentComp = new ComponentVoid(0, 0);
+                                extraSidebar.slotcomp = new ComponentSlot(ExtraSidebar.extraSliderSprite.getWidth() - 16 - 8, 1);
+                                extraSidebar.slotcomp.getStack().setValue(stack);
+                                extraSidebars.add(extraSidebar.init());
                             }
                         }
                     }

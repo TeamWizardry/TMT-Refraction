@@ -27,21 +27,47 @@ public class JEIRefractionPlugin extends BlankModPlugin {
 
 	public static IJeiRuntime jeiRuntime;
 
-    public static ItemStack getStackFromString(String itemId) {
-        ResourceLocation location = new ResourceLocation(itemId);
-        ItemStack stack = null;
+	public static ItemStack getStackFromString(String itemId) {
+		ResourceLocation location = new ResourceLocation(itemId);
+		ItemStack stack = null;
 
-        if (ForgeRegistries.ITEMS.containsKey(location)) {
-            Item item = ForgeRegistries.ITEMS.getValue(location);
-            if (item != null) stack = new ItemStack(item);
+		if (ForgeRegistries.ITEMS.containsKey(location)) {
+			Item item = ForgeRegistries.ITEMS.getValue(location);
+			if (item != null) stack = new ItemStack(item);
 
-        } else if (ForgeRegistries.BLOCKS.containsKey(location)) {
-            Block block = ForgeRegistries.BLOCKS.getValue(location);
-            if (block != null) stack = new ItemStack(block);
+		} else if (ForgeRegistries.BLOCKS.containsKey(location)) {
+			Block block = ForgeRegistries.BLOCKS.getValue(location);
+			if (block != null) stack = new ItemStack(block);
 
-        }
-        return stack;
-    }
+		}
+		return stack;
+	}
+
+	public static IRecipeLayoutDrawable getDrawableFromItem(ItemStack stack) {
+		if (stack != null) {
+			IRecipeRegistry registry = JEIRefractionPlugin.jeiRuntime.getRecipeRegistry();
+			IFocus<ItemStack> focus = registry.createFocus(IFocus.Mode.OUTPUT, stack);
+			for (IRecipeCategory<?> category : registry.getRecipeCategories(focus)) {
+				if (category.getUid().equals(Constants.MOD_ID + ".assembly_table")
+						|| category.getUid().equals(VanillaRecipeCategoryUid.CRAFTING)) {
+					List<IRecipeLayoutDrawable> layouts = getLayouts(registry, category, focus);
+					if (!layouts.isEmpty())
+						return layouts.get(0);
+				}
+			}
+		}
+		return null;
+	}
+
+	private static <T extends IRecipeWrapper> List<IRecipeLayoutDrawable> getLayouts(IRecipeRegistry registry, IRecipeCategory<T> category, IFocus<ItemStack> focus) {
+		List<IRecipeLayoutDrawable> layouts = new ArrayList<>();
+		List<T> wrappers = registry.getRecipeWrappers(category, focus);
+		for (T wrapper : wrappers) {
+			IRecipeLayoutDrawable layout = registry.createRecipeLayoutDrawable(category, wrapper, focus);
+			layouts.add(layout);
+		}
+		return layouts;
+	}
 
 	@Override
 	public void register(@Nonnull IModRegistry registry) {
@@ -60,33 +86,5 @@ public class JEIRefractionPlugin extends BlankModPlugin {
 	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 		super.onRuntimeAvailable(jeiRuntime);
 		JEIRefractionPlugin.jeiRuntime = jeiRuntime;
-	}
-
-	private IRecipeLayoutDrawable getDrawableFromItem(String itemId) {
-		ItemStack stack = getStackFromString(itemId);
-
-		if (stack != null) {
-			IRecipeRegistry registry = JEIRefractionPlugin.jeiRuntime.getRecipeRegistry();
-			IFocus<ItemStack> focus = registry.createFocus(IFocus.Mode.OUTPUT, stack);
-			for (IRecipeCategory<?> category : registry.getRecipeCategories(focus)) {
-				if (category.getUid().equals(Constants.MOD_ID + ".assembly_table")
-						|| category.getUid().equals(VanillaRecipeCategoryUid.CRAFTING)) {
-					List<IRecipeLayoutDrawable> layouts = getLayouts(registry, category, focus);
-					if (!layouts.isEmpty())
-						return layouts.get(0);
-				}
-			}
-		}
-		return null;
-	}
-
-	private <T extends IRecipeWrapper> List<IRecipeLayoutDrawable> getLayouts(IRecipeRegistry registry, IRecipeCategory<T> category, IFocus<ItemStack> focus) {
-		List<IRecipeLayoutDrawable> layouts = new ArrayList<>();
-		List<T> wrappers = registry.getRecipeWrappers(category, focus);
-		for (T wrapper : wrappers) {
-			IRecipeLayoutDrawable layout = registry.createRecipeLayoutDrawable(category, wrapper, focus);
-			layouts.add(layout);
-		}
-		return layouts;
 	}
 }

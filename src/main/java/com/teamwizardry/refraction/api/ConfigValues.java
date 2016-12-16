@@ -33,7 +33,9 @@ public final class ConfigValues {
 	public static int BEAM_BOUNCE_LIMIT;
 	@ConfigPropertyDouble(modid = Constants.MOD_ID, category = "general", id = "player_beam_reflect_strength_division", comment = "When a player wearing full reflective alloy armor stands infront of a beam, it will reflect the beam but divide it's strength by this amount.", defaultValue = 1.4)
 	public static double PLAYER_BEAM_REFLECT_STRENGTH_DIVSION;
-	@ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "laser_rendering", id = "disable_additive_blending", comment = "If disabled, will make beams opaque and not blend visually.", defaultValue = true)
+    @ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "guns", id = "disable_photon_cannon", comment = "Setting this to true will completely remove the gun item from the game", defaultValue = false)
+    public static boolean DISABLE_PHOTON_CANNON;
+    @ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "laser_rendering", id = "disable_additive_blending", comment = "If disabled, will make beams opaque and not blend visually.", defaultValue = true)
 	public static boolean ADDITIVE_BLENDING;
 	@ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "laser_rendering", id = "use_flat_beam_texture", comment = "If enabled, will use a completely flat texture for beams. It's a nice minimalistic style.", defaultValue = false)
 	public static boolean USE_FLAT_BEAM_TEXTURE;
