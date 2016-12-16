@@ -52,16 +52,18 @@ public class TextAdapter {
                         if (word.contains("recipe:")) {
                             String stackString = word.substring(word.indexOf("recipe:"), word.indexOf("]")).split("recipe:")[1];
                             ItemStack stack = Utils.HANDLER.getStackFromString(stackString);
-                            if (stack != null && !items.contains(stack.getItem())) {
-                                items.add(stack.getItem());
+                            if (stack != null) {
                                 s = s.replace(word, TextFormatting.RESET + "[" + TextFormatting.DARK_BLUE + stack.getDisplayName() + TextFormatting.RESET + "]");
 
-                                ExtraSidebar extraSidebar = new ExtraSidebar(subPage, id++, null, ExtraSidebar.SidebarType.RECIPE);
-                                extraSidebar.title = stack.getDisplayName().length() > 17 ? stack.getDisplayName().substring(0, 17) + "..." : stack.getDisplayName();
-                                extraSidebar.contentComp = new ComponentVoid(0, 0);
-                                extraSidebar.slotcomp = new ComponentSlot(ExtraSidebar.extraSliderSprite.getWidth() - 16 - 8, 1);
-                                extraSidebar.slotcomp.getStack().setValue(stack);
-                                extraSidebars.add(extraSidebar.init());
+                                if (!items.contains(stack.getItem())) {
+                                    items.add(stack.getItem());
+                                    ExtraSidebar extraSidebar = new ExtraSidebar(subPage, id++, null, ExtraSidebar.SidebarType.RECIPE);
+                                    extraSidebar.title = stack.getDisplayName().length() > 17 ? stack.getDisplayName().substring(0, 17) + "..." : stack.getDisplayName();
+                                    extraSidebar.contentComp = new ComponentVoid(0, 0);
+                                    extraSidebar.slotcomp = new ComponentSlot(ExtraSidebar.extraSliderSprite.getWidth() - 16 - 8, 1);
+                                    extraSidebar.slotcomp.getStack().setValue(stack);
+                                    extraSidebars.add(extraSidebar.init());
+                                }
                             }
                         }
                     }
