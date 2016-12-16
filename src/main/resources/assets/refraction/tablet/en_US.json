@@ -7,9 +7,6 @@
         {
           "title": "Hello",
           "text": [
-            "&nDisclaimer: This guide is still a work in progress but more or less functional enough",
-            "",
-            "",
             "Hello there, [player]! I'm Eve, your personal assistant!",
             "",
             "I'm here to help you &m<study phys&kics&r&m>&rlearn how to manipulate light using reflection and refraction!",
@@ -26,7 +23,7 @@
           "extra": [
             {
               "image": "refraction:textures/refraction_logo.png",
-              "title": "Logo"
+              "title": "Refraction"
             }
           ]
         },
