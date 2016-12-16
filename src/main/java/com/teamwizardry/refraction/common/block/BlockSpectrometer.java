@@ -43,10 +43,11 @@ public class BlockSpectrometer extends BlockModContainer implements IBeamHandler
 	}
 
 	@Override
-	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
+	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null)
-			((TileSpectrometer) te).handle(beams);
+			((TileSpectrometer) te).handle(beam);
+		return true;
 	}
 
 	@SideOnly(Side.CLIENT)

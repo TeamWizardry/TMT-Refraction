@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.google.common.collect.Lists;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
@@ -23,8 +22,8 @@ public class TileSpectrometer extends TileMod implements ITickable {
     @Save
     public Color maxColor = new Color(0, 0, 0, 0);
     public Color currentColor = new Color(0, 0, 0, 0);
-    @Save
-    public boolean beamUpdate = false;
+    @NotNull
+    private List<Beam> lastTickBeams = new ArrayList<>();
     @NotNull
     private List<Beam> beams = new ArrayList<>();
 
@@ -38,20 +37,24 @@ public class TileSpectrometer extends TileMod implements ITickable {
         compound.setInteger("current_color", currentColor.getRGB());
     }
 
-    public void handle(Beam... beams) {
-        if (this.beams.isEmpty()) {
-            this.beams.addAll(Lists.newArrayList(beams));
-            return;
-        }
-        ArrayList<Beam> tempBeams = new ArrayList<>();
-        tempBeams.addAll(this.beams);
-        for (Beam beam1 : beams) {
-            beamUpdate = true;
-            for (Beam beam2 : tempBeams)
-                if (beam1.doBeamsMatch(beam2)) return;
-            this.beams.add(beam1);
-        }
+    public void handle(Beam beam) {
+        for (Beam beam2 : beams)
+            if (beam2.doBeamsMatch(beam)) return;
+        this.beams.add(beam);
         markDirty();
+    }
+
+    public boolean noChangeInBeams() {
+        if (beams.size() != lastTickBeams.size()) return false;
+        for (Beam beam : lastTickBeams) {
+            boolean flag = false;
+            for (Beam beam2 : beams) if (beam.doBeamsMatch(beam2)) {
+                flag = true;
+                break;
+            }
+            if (!flag) return false;
+        }
+        return true;
     }
 
     @Override
@@ -64,14 +67,19 @@ public class TileSpectrometer extends TileMod implements ITickable {
         }
 
         if (beams.isEmpty()) {
+            lastTickBeams.clear();
             maxColor = new Color(0, 0, 0, 0);
             world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
             markDirty();
             return;
         }
 
-        if (!beamUpdate) return;
-        beamUpdate = false;
+        if (noChangeInBeams()) {
+            lastTickBeams.clear();
+            lastTickBeams.addAll(beams);
+            beams.clear();
+            return;
+        }
 
         int red = 0;
         int green = 0;
@@ -96,6 +104,8 @@ public class TileSpectrometer extends TileMod implements ITickable {
         if (color.getRGB() == maxColor.getRGB()) return;
         this.maxColor = color;
 
+        lastTickBeams.clear();
+        lastTickBeams.addAll(beams);
         beams.clear();
         markDirty();
     }
