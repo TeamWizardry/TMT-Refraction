@@ -454,7 +454,9 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
                     traceCompleted = event.getResult() == Event.Result.DENY;
                     pass = event.getResult() == Event.Result.ALLOW;
                 }
-            } else traceCompleted = true;
+            } else
+                traceCompleted = trace.typeOfHit != RayTraceResult.Type.ENTITY ||
+                        !MinecraftForge.EVENT_BUS.post(new BeamHitEntityEvent(world, this, trace.entityHit));
 
             if (!traceCompleted) traceCompleted = recast();
         }
