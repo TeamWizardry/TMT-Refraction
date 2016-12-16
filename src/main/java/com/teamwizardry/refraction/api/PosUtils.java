@@ -56,4 +56,28 @@ public final class PosUtils {
 		}
 		return new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 	}
+
+	public static int getDistance(Vec3d initLoc, Vec3d slope, BlockPos pos) {
+		double slopeX = slope.xCoord < 0 ? -slope.xCoord : slope.xCoord;
+		double slopeY = slope.yCoord < 0 ? -slope.yCoord : slope.yCoord;
+		double slopeZ = slope.zCoord < 0 ? -slope.zCoord : slope.zCoord;
+		if (slopeX > slopeY) {
+			if (slopeX > slopeZ) {
+				double x = pos.getX() - initLoc.xCoord;
+				int dist = (int) (x * slope.xCoord);
+				return dist < 0 ? -dist : dist;
+			}
+			double z = pos.getZ() - initLoc.zCoord;
+			int dist = (int) (z * slope.zCoord);
+			return dist < 0 ? -dist : dist;
+		}
+		if (slopeY > slopeZ) {
+			double y = pos.getY() - initLoc.yCoord;
+			int dist = (int) (y * slope.yCoord);
+			return dist < 0 ? -dist : dist;
+		}
+		double z = pos.getZ() - initLoc.zCoord;
+		int dist = (int) (z * slope.zCoord);
+		return dist < 0 ? -dist : dist;
+	}
 }

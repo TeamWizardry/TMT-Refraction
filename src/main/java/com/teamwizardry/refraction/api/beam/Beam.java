@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.api.beam;
 
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
+import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
@@ -110,7 +111,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     /**
      * The physical particle that will spawn at the beginning or end
      */
-    public ParticleBuilder particleBeginning, particleEnd;
+    public ParticleBuilder particle1, particle2;
 
     @Nullable
     public UUID uuidToSkip;
@@ -124,11 +125,19 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
         uuid = UUID.nameUUIDFromBytes((initLoc.hashCode() + "").getBytes());
 
-        particleEnd = particleBeginning = new ParticleBuilder(3);
-        particleBeginning.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
-        particleBeginning.disableRandom();
-        particleBeginning.disableMotionCalculation();
-        particleBeginning.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 5));
+        particle1 = new ParticleBuilder(3);
+        particle1.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
+        particle1.disableRandom();
+        particle1.disableMotionCalculation();
+        particle1.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 5));
+
+        particle2 = new ParticleBuilder(ThreadLocalRandom.current().nextInt(20, 100));
+        particle2.setRender(new ResourceLocation(Constants.MOD_ID, "particles/lens_flare_1"));
+        particle2.disableRandom();
+        particle2.disableMotionCalculation();
+        particle2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ThreadLocalRandom.current().nextInt(10, 15)));
+        particle2.setAlphaFunction(new InterpFadeInOut((float) ThreadLocalRandom.current().nextDouble(0.1, 0.5), (float) ThreadLocalRandom.current().nextDouble(0.1, 0.5)));
+        particle2.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 2));
     }
 
     public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color) {
@@ -224,11 +233,11 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     /**
      * Will change the physical particle to spawn in the beginning.
      *
-     * @param particleBeginning The new particle to spawn
+     * @param particle1 The new particle to spawn
      * @return The new beam created. Can be modified as needed.
      */
-    public Beam setParticleBeginning(ParticleBuilder particleBeginning) {
-        this.particleBeginning = particleBeginning;
+    public Beam setParticle1(ParticleBuilder particle1) {
+        this.particle1 = particle1;
         return this;
     }
 
@@ -240,17 +249,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      */
     public Beam setUUIDToSkip(UUID uuidToSkip) {
         this.uuidToSkip = uuidToSkip;
-        return this;
-    }
-
-    /**
-     * Will change the physical particle to spawn in the end.
-     *
-     * @param particleEnd The new particle to spawn
-     * @return The new beam created. Can be modified as needed.
-     */
-    public Beam setParticleEnd(ParticleBuilder particleEnd) {
-        this.particleEnd = particleEnd;
         return this;
     }
 
@@ -496,11 +494,17 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         Utils.HANDLER.fireLaserPacket(this);
 
         // PARTICLES
-        if (enableParticleBeginning)
-            ParticleSpawner.spawn(particleBeginning, world, new StaticInterp<>(initLoc), 1);
+        if (enableParticleBeginning) {
+            ParticleSpawner.spawn(particle1, world, new StaticInterp<>(initLoc), 1);
+            if (ThreadLocalRandom.current().nextInt(100) == 0)
+                ParticleSpawner.spawn(particle2, world, new StaticInterp<>(initLoc), 1);
+        }
 
-        if (trace.typeOfHit != RayTraceResult.Type.MISS && enableParticleEnd)
-            ParticleSpawner.spawn(particleEnd, world, new StaticInterp<>(trace.hitVec), 1);
+        if (trace.hitVec != null && enableParticleEnd) {
+            ParticleSpawner.spawn(particle1, world, new StaticInterp<>(trace.hitVec), 1);
+            if (ThreadLocalRandom.current().nextInt(100) == 0)
+                ParticleSpawner.spawn(particle2, world, new StaticInterp<>(trace.hitVec), 1);
+        }
         // PARTICLES
     }
 

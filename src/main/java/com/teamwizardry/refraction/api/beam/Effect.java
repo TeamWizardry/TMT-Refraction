@@ -2,13 +2,13 @@ package com.teamwizardry.refraction.api.beam;
 
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.api.PosUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -88,43 +88,18 @@ public class Effect implements Cloneable {
     }
 
     private int calculateBlockPotency(BlockPos pos) {
-        int potency = Math.max(0, this.potency - getDistance(pos) * ConfigValues.DISTANCE_LOSS);
+        int potency = Math.max(0, this.potency - PosUtils.getDistance(beam.initLoc, beam.slope, pos) * ConfigValues.DISTANCE_LOSS);
         blockPotencies.put(pos, potency);
         return potency;
     }
 
     private int calculateEntityPotency(Entity entity) {
-        int potency = Math.max(0, this.potency - getDistance(entity.getPosition()) * ConfigValues.DISTANCE_LOSS);
+        int potency = Math.max(0, this.potency - PosUtils.getDistance(beam.initLoc, beam.slope, entity.getPosition()) * ConfigValues.DISTANCE_LOSS);
         for (ItemStack armor : entity.getArmorInventoryList())
             if (armor != null && armor.getItem() instanceof IReflectiveArmor)
                 potency /= ((IReflectiveArmor) armor.getItem()).reflectionDampeningConstant(armor, this);
         entityPotencies.put(entity.getUniqueID(), potency);
         return potency;
-    }
-
-    private int getDistance(BlockPos pos) {
-        Vec3d slope = beam.slope;
-        double slopeX = slope.xCoord < 0 ? -slope.xCoord : slope.xCoord;
-        double slopeY = slope.yCoord < 0 ? -slope.yCoord : slope.yCoord;
-        double slopeZ = slope.zCoord < 0 ? -slope.zCoord : slope.zCoord;
-        if (slopeX > slopeY) {
-            if (slopeX > slopeZ) {
-                double x = pos.getX() - beam.initLoc.xCoord;
-                int dist = (int) (x * slope.xCoord);
-                return dist < 0 ? -dist : dist;
-            }
-            double z = pos.getZ() - beam.initLoc.zCoord;
-            int dist = (int) (z * slope.zCoord);
-            return dist < 0 ? -dist : dist;
-        }
-        if (slopeY > slopeZ) {
-            double y = pos.getY() - beam.initLoc.yCoord;
-            int dist = (int) (y * slope.yCoord);
-            return dist < 0 ? -dist : dist;
-        }
-        double z = pos.getZ() - beam.initLoc.zCoord;
-        int dist = (int) (z * slope.zCoord);
-        return dist < 0 ? -dist : dist;
     }
 
     public int getChance(int potency) {

@@ -21,5 +21,6 @@ public class EventHandlerClient {
 		event.getMap().registerSprite(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 		event.getMap().registerSprite(new ResourceLocation(Constants.MOD_ID, "particles/star"));
         event.getMap().registerSprite(new ResourceLocation(Constants.MOD_ID, "particles/sparkle_blurred"));
+        event.getMap().registerSprite(new ResourceLocation(Constants.MOD_ID, "particles/lens_flare_1"));
     }
 }
