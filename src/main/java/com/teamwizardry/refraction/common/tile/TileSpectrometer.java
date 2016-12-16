@@ -61,48 +61,45 @@ public class TileSpectrometer extends TileMod implements ITickable {
     public void update() {
         if (world.isRemote) return;
 
-        if (currentColor.getRGB() != maxColor.getRGB()) {
-            currentColor = Utils.mixColors(currentColor, maxColor, 0.9);
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+        block: {
+            if (currentColor.getRGB() != maxColor.getRGB()) {
+                currentColor = Utils.mixColors(currentColor, maxColor, 0.9);
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                markDirty();
+            }
+
+            if (beams.isEmpty()) {
+                maxColor = new Color(0, 0, 0, 0);
+                world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+                markDirty();
+                break block;
+            }
+
+            if (noChangeInBeams()) break block;
+
+            int red = 0;
+            int green = 0;
+            int blue = 0;
+            int alpha = 0;
+
+            for (Beam beam : beams) {
+                Color color = beam.color;
+                red += color.getRed() * (color.getAlpha() / 255f);
+                green += color.getGreen() * (color.getAlpha() / 255f);
+                blue += color.getBlue() * (color.getAlpha() / 255f);
+                alpha += color.getAlpha();
+            }
+            red = Math.min(red / beams.size(), 255);
+            green = Math.min(green / beams.size(), 255);
+            blue = Math.min(blue / beams.size(), 255);
+
+            float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
+            Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
+            color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
+
+            if (color.getRGB() == maxColor.getRGB()) return;
+            this.maxColor = color;
         }
-
-        if (beams.isEmpty()) {
-            lastTickBeams.clear();
-            maxColor = new Color(0, 0, 0, 0);
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-            markDirty();
-            return;
-        }
-
-        if (noChangeInBeams()) {
-            lastTickBeams.clear();
-            lastTickBeams.addAll(beams);
-            beams.clear();
-            return;
-        }
-
-        int red = 0;
-        int green = 0;
-        int blue = 0;
-        int alpha = 0;
-
-        for (Beam beam : beams) {
-            Color color = beam.color;
-            red += color.getRed() * (color.getAlpha() / 255f);
-            green += color.getGreen() * (color.getAlpha() / 255f);
-            blue += color.getBlue() * (color.getAlpha() / 255f);
-            alpha += color.getAlpha();
-        }
-        red = Math.min(red / beams.size(), 255);
-        green = Math.min(green / beams.size(), 255);
-        blue = Math.min(blue / beams.size(), 255);
-
-        float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
-        Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
-        color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
-
-        if (color.getRGB() == maxColor.getRGB()) return;
-        this.maxColor = color;
 
         lastTickBeams.clear();
         lastTickBeams.addAll(beams);
