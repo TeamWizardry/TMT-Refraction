@@ -59,7 +59,7 @@ public class TileMagnifier extends TileMod implements ITickable {
 				Vec3d dir = new Vec3d(0, -1, 0);
 				Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), ConfigValues.SOLAR_ALPHA);
 
-				new Beam(world, center, dir, color).spawn();
+                new Beam(world, center, dir, color).enableParticleBeginning().spawn();
 
 				return;
 			}

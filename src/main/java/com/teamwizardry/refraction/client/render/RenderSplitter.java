@@ -68,8 +68,8 @@ public class RenderSplitter extends TileEntitySpecialRenderer<TileSplitter> {
 	@Override
 	public void renderTileEntityAt(TileSplitter te, double x, double y, double z, float partialTicks, int destroyStage) {
 		double subtractedMillis = (te.getWorld().getTotalWorldTime() - te.worldTime);
-		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((te.rotPrevX - te.rotDestX) / 2.0), 20)),
-				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((te.rotPrevY - te.rotDestY) / 2.0), 20));
+		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((te.rotPrevX - te.rotDestX) / 2.0), 15)),
+				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((te.rotPrevY - te.rotDestY) / 2.0), 15));
 		float rotX = te.getRotX(), rotY = te.getRotY();
 
 		GlStateManager.pushMatrix();

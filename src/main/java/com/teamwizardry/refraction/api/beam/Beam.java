@@ -137,7 +137,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         particle2.disableMotionCalculation();
         particle2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ThreadLocalRandom.current().nextInt(10, 15)));
         particle2.setAlphaFunction(new InterpFadeInOut((float) ThreadLocalRandom.current().nextDouble(0.1, 0.5), (float) ThreadLocalRandom.current().nextDouble(0.1, 0.5)));
-        particle2.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 2));
+        particle2.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 2.5));
     }
 
     public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color) {

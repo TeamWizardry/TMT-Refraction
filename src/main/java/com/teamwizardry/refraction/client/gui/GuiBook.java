@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import com.teamwizardry.librarianlib.LibrarianLib;
 import com.teamwizardry.librarianlib.client.gui.GuiBase;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
+import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
@@ -32,9 +33,11 @@ public class GuiBook extends GuiBase {
     public Vec2d position;
     public ArrayList<Page> pages = new ArrayList<>();
     public int selectedPage = 0;
+    public ComponentVoid mainComponent;
 
     public GuiBook() {
-        super(256, 256);
+        super(0, 0);
+        mainComponent = new ComponentVoid(width / 2, height / 2, 256, 256);
 
         String langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
         InputStream stream;
@@ -65,19 +68,17 @@ public class GuiBook extends GuiBase {
                 (getGuiWidth() / 2) - (BACKGROUND_SPRITE.getWidth() / 2),
                 (getGuiHeight() / 2) - (BACKGROUND_SPRITE.getHeight() / 2));
         position = background.getPos();
-        getMainComponents().add(background);
+        mainComponent.add(background);
 
         ComponentSprite backgroundHandle = new ComponentSprite(BACKGROUND_HANDLE_SPRITE,
                 (getGuiWidth() / 2) - (BACKGROUND_HANDLE_SPRITE.getWidth() / 2),
                 (getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
-        getMainComponents().add(backgroundHandle);
+        mainComponent.add(backgroundHandle);
 
         for (Page page : pages) background.add(page.getComponent());
 
-        ComponentSprite bootup = new ComponentSprite(BACKGROUND_BOOTUP_SPRITE,
-                (getGuiWidth() / 2) - (BACKGROUND_HANDLE_SPRITE.getWidth() / 2),
-                (getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
-        // getMainComponents().add(bootup);
+        getMainComponents().add(mainComponent);
+        getMainComponents().setSize(getMainComponents().getSize().mul(2));
     }
 
     @Override
