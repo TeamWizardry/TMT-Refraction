@@ -10,7 +10,7 @@ import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect.EffectType;
 import com.teamwizardry.refraction.api.raytrace.EntityTrace;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -479,17 +479,17 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         }
         // EFFECT HANDLING
 
-        // PLAYER REFLECTING
+        // ENTITY REFLECTING
         if (ThreadLocalRandom.current().nextInt(3) == 0)
-            if (trace.typeOfHit == RayTraceResult.Type.ENTITY && trace.entityHit instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) trace.entityHit;
-                if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null
-                        && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null
-                        && player.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null
-                        && player.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null)
-                    createSimilarBeam(player.getLook(1)).setIgnoreEntities(true).enableParticleBeginning().spawn();
+            if (trace.typeOfHit == RayTraceResult.Type.ENTITY && trace.entityHit instanceof EntityLivingBase) {
+                EntityLivingBase entity = (EntityLivingBase) trace.entityHit;
+                if (entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null
+                        && entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null
+                        && entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null
+                        && entity.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null)
+                    createSimilarBeam(entity.getLook(1)).setIgnoreEntities(true).enableParticleBeginning().spawn();
             }
-        // PLAYER REFLECTING
+        // ENTITY REFLECTING
 
         // Particle packet sender
         Utils.HANDLER.fireLaserPacket(this);
