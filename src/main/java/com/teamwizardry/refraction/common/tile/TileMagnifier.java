@@ -102,8 +102,8 @@ public class TileMagnifier extends TileMod implements ITickable {
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);
 
-				new Beam(world, center, dir, color).setEnableEffect(false).spawn();
-			}
+                new Beam(world, center, dir, color).enableParticleBeginning().setEnableEffect(false).spawn();
+            }
 		}
 	}
 }
