@@ -43,7 +43,9 @@ public class RenderLaserUtil {
         if (ConfigValues.USE_FLAT_BEAM_TEXTURE) Minecraft.getMinecraft().getTextureManager().bindTexture(textLaserFlat);
         else Minecraft.getMinecraft().getTextureManager().bindTexture(textLaser);
 
-        color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(50, color.getAlpha()));
+        int alpha = Math.max(50, color.getAlpha());
+        int addColorMin = 30 * alpha / 255;
+        color = new Color(Math.max(addColorMin, color.getRed()), Math.max(addColorMin, color.getGreen()), Math.max(addColorMin, color.getBlue()), alpha);
 
         GlStateManager.disableCull();
         if (ConfigValues.ADDITIVE_BLENDING) {
@@ -56,7 +58,10 @@ public class RenderLaserUtil {
         if (normal.yCoord < 0)
             normal = normal.scale(-1);
 
-        Vec3d d = normal.scale((0.25 * color.getAlpha() / 255f) / 2.);
+        //Vec3d d = normal.scale((0.25 * color.getAlpha() / 255f) / 2.);
+        Vec3d d = new Vec3d(0, (0.25 * color.getAlpha() / 255f) / 2.0, 0);
+        Vec3d d2 = new Vec3d((0.25 * color.getAlpha() / 255f) / 2.0, 0, 0);
+        Vec3d d3 = new Vec3d(0, 0, (0.25 * color.getAlpha() / 255f) / 2.0);
 
         double vMin = 0, vMax = 1;
         double uMin = 0, uMax = 1;
@@ -71,6 +76,24 @@ public class RenderLaserUtil {
         pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
         pos(vb, end.subtract(d)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
         pos(vb, end.add(d)).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+
+        if (!drawingLasers)
+            tessellator.draw();
+
+        if (!drawingLasers) vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+        pos(vb, start.add(d2)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+        pos(vb, start.subtract(d2)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+        pos(vb, end.subtract(d2)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+        pos(vb, end.add(d2)).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+
+        if (!drawingLasers)
+            tessellator.draw();
+
+        if (!drawingLasers) vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+        pos(vb, start.add(d3)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+        pos(vb, start.subtract(d3)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+        pos(vb, end.subtract(d3)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+        pos(vb, end.add(d3)).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
 
         if (!drawingLasers)
             tessellator.draw();

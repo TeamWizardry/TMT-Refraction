@@ -5,7 +5,6 @@ import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import com.teamwizardry.refraction.common.bridge.ExciterTracker;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
@@ -173,7 +172,6 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        ExciterTracker.INSTANCE.removeExciter(worldIn, pos);
         super.breakBlock(worldIn, pos, state);
     }
 

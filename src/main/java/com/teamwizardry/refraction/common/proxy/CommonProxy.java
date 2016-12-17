@@ -6,7 +6,6 @@ import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.soundmanager.SoundManager;
 import com.teamwizardry.refraction.client.gui.GuiHandler;
-import com.teamwizardry.refraction.common.bridge.ExciterTracker;
 import com.teamwizardry.refraction.common.core.CatChaseHandler;
 import com.teamwizardry.refraction.common.core.DispenserScrewDriverBehavior;
 import com.teamwizardry.refraction.common.core.EventHandler;
@@ -46,7 +45,6 @@ public class CommonProxy {
 
         EventHandler.INSTANCE.getClass();
         SoundManager.INSTANCE.getClass();
-        ExciterTracker.INSTANCE.getClass();
 
         EasyConfigHandler.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
