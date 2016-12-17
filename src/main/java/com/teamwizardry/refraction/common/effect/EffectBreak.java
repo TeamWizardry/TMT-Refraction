@@ -21,7 +21,7 @@ public class EffectBreak extends Effect {
     }
 
 	@Override
-    public void runBlock(World world, BlockPos pos, int potency) {
+    public void runFinalBlock(World world, BlockPos pos, int potency) {
         IBlockState block = world.getBlockState(pos);
         if (block.getBlock() instanceof IBeamImmune && ((IBeamImmune) block.getBlock()).isImmune(world, pos)) return;
 

@@ -96,13 +96,11 @@ public class EffectTracker {
             effects.keySet().removeIf(effect -> {
                 if (effect != null && w != null && effects.get(effect) != null) {
                     // RUN EFFECT METHODS //
-                    if (effect.getType() == Effect.EffectType.SINGLE) {
-                        if (effect.beam.trace.typeOfHit == RayTraceResult.Type.BLOCK) {
-                            effect.addBlock(w, effect.beam.trace.getBlockPos());
-                        } else if (effect.beam.trace.typeOfHit == RayTraceResult.Type.ENTITY) {
-                            if (effect.beam.trace.entityHit != null)
-                                effect.addEntity(w, effect.beam.trace.entityHit);
-                        }
+                    if (effect.beam.trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+                        effect.addFinalBlock(w, effect.beam.trace.getBlockPos());
+                    } else if (effect.beam.trace.typeOfHit == RayTraceResult.Type.ENTITY) {
+                        if (effect.beam.trace.entityHit != null)
+                            effect.addEntity(w, effect.beam.trace.entityHit);
                     }
 
                     effects.get(effect).forEach(blockPos -> {

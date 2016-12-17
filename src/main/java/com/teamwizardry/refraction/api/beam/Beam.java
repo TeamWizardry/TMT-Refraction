@@ -29,7 +29,6 @@ import java.awt.*;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-// TODO: make sparkles configurable + whether to spawn them at the end or beginning of a beam.
 public class Beam implements INBTSerializable<NBTTagCompound> {
 
     /**

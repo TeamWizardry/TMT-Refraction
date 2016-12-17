@@ -61,6 +61,16 @@ public class Effect implements Cloneable {
     public void runBlock(World world, BlockPos pos, int potency) {
     }
 
+    /**
+     * The block that the beam intersects with at the end of the raycast.
+     *
+     * @param world   The world object.
+     * @param pos     The position of the block intersected.
+     * @param potency The strength of the beam.
+     */
+    public void runFinalBlock(World world, BlockPos pos, int potency) {
+    }
+
     void addEntity(@NotNull World world, @NotNull Entity entity) {
         if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
             int potency = calculateEntityPotency(entity);
@@ -73,6 +83,13 @@ public class Effect implements Cloneable {
         if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
             blocks.add(pos);
             runBlock(world, pos, calculateBlockPotency(pos));
+        }
+    }
+
+    void addFinalBlock(@NotNull World world, @NotNull BlockPos pos) {
+        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+            blocks.add(pos);
+            runFinalBlock(world, pos, calculateBlockPotency(pos));
         }
     }
 
