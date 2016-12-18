@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by LordSaad44
@@ -91,11 +90,11 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
     @Override
     public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
         IBlockState state = world.getBlockState(pos);
-        fireColor(world, pos, state, beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, beam.color, beam.enableEffect, beam.ignoreEntities, UUID.randomUUID());
+        fireColor(world, pos, state, beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, beam);
         return true;
     }
 
-    private void fireColor(World world, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities, UUID uuid) {
+    private void fireColor(World world, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Beam beam) {
         BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, world, pos, hitPos.subtract(ref), hitPos.add(ref));
         assert r != null;
         Vec3d normal = r.data;
@@ -115,11 +114,11 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
                 ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
                 break;
             }
-            showBeam(world, hitPos, r.hitVec, color);
+            showBeam(world, hitPos, r.hitVec, beam.color);
             hitPos = r.hitVec;
         }
 
-        new Beam(world, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).setUUID(uuid).enableParticleBeginning().spawn();
+        beam.createSimilarBeam(hitPos, ref).enableParticleBeginning().spawn();
     }
 
     @Override

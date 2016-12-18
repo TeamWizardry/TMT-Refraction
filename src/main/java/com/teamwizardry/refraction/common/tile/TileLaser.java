@@ -10,6 +10,7 @@ import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -62,7 +63,7 @@ public class TileLaser extends TileMod implements ITickable {
 			ParticleSpawner.spawn(glitter, world, new StaticInterp<>(center), 2);
 
 			Color color = new Color(255, 255, 255, ConfigValues.GLOWSTONE_ALPHA);
-			new Beam(world, center, vec, color).spawn();
+            new Beam(world, center, vec, color).setMode(BeamModeRegistry.DefaultModes.EFFECT).spawn();
 
 			if (tick < ConfigValues.GLOWSTONE_FUEL_EXPIRE_DELAY) tick++;
 			else {

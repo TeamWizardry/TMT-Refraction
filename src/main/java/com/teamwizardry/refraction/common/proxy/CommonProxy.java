@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.EasyConfigHandler;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import com.teamwizardry.refraction.api.soundmanager.SoundManager;
 import com.teamwizardry.refraction.client.gui.GuiHandler;
 import com.teamwizardry.refraction.common.core.CatChaseHandler;
@@ -45,6 +46,8 @@ public class CommonProxy {
 
         EventHandler.INSTANCE.getClass();
         SoundManager.INSTANCE.getClass();
+
+        BeamModeRegistry.INSTANCE.getClass();
 
         EasyConfigHandler.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());

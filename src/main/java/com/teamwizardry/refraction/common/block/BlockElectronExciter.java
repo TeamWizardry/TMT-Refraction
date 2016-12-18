@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
@@ -67,7 +68,7 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 
     @Override
     public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
-        if (beam.enableEffect && beam.effect != null && beam.effect.getColor().equals(Color.CYAN)) {
+        if (beam.mode.equals(BeamModeRegistry.DefaultModes.EFFECT) && beam.effect != null && beam.effect.getColor().equals(Color.CYAN)) {
             EnumFacing block = world.getBlockState(pos).getValue(FACING);
             if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
                 TileElectronExciter exciter = getTE(world, pos);

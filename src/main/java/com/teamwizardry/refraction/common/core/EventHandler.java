@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by LordSaad44
@@ -83,11 +82,11 @@ public class EventHandler {
         } else return;
 
         Color color = new Color(dye.getRed(), dye.getGreen(), dye.getBlue(), (int) (beam.color.getAlpha() / 1.4));
-        fireColor(event.getWorld(), event.getPos(), event.getState(), beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, color, false, beam.ignoreEntities, UUID.randomUUID());
+        fireColor(event.getWorld(), event.getPos(), event.getState(), beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, color, beam);
         event.setResult(Event.Result.DENY);
     }
 
-    private void fireColor(World world, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, boolean disableEffect, boolean ignoreEntities, UUID uuid) {
+    private void fireColor(World world, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, Beam beam) {
         BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, world, pos, hitPos.subtract(ref), hitPos.add(ref));
         if (r != null && r.data != null) {
             Vec3d normal = r.data;
@@ -112,7 +111,7 @@ public class EventHandler {
                 }
             }
 
-            new Beam(world, hitPos, ref, color).setEnableEffect(disableEffect).setIgnoreEntities(ignoreEntities).setUUID(uuid).enableParticleBeginning().spawn();
+            beam.createSimilarBeam(hitPos, ref, color).enableParticleBeginning().spawn();
         }
     }
 
