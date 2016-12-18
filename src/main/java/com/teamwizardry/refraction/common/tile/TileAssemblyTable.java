@@ -11,7 +11,7 @@ import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.*;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
 import com.teamwizardry.refraction.init.ModItems;
 import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import net.minecraft.item.Item;
@@ -118,7 +118,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
 
         double count = 0;
         for (Beam beam : beams) {
-            if (beam.mode.equals(BeamModeRegistry.DefaultModes.EFFECT)) {
+            if (beam.mode instanceof ModeEffect) {
                 count++;
                 red += beam.color.getRed() * (beam.color.getAlpha() / 255f);
                 green += beam.color.getGreen() * (beam.color.getAlpha() / 255f);

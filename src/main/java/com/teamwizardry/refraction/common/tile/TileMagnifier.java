@@ -6,7 +6,7 @@ import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.state.IBlockState;
@@ -60,7 +60,7 @@ public class TileMagnifier extends TileMod implements ITickable {
 				Vec3d dir = new Vec3d(0, -1, 0);
 				Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), ConfigValues.SOLAR_ALPHA);
 
-                new Beam(world, center, dir, color).setMode(BeamModeRegistry.DefaultModes.EFFECT).enableParticleBeginning().spawn();
+                new Beam(world, center, dir, color).setMode(new ModeEffect()).enableParticleBeginning().spawn();
 
 				return;
 			}

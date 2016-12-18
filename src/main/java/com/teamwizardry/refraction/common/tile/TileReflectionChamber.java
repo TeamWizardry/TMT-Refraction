@@ -6,7 +6,7 @@ import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.RotationHelper;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
 import com.teamwizardry.refraction.common.block.BlockOpticFiber;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
@@ -59,7 +59,7 @@ public class TileReflectionChamber extends TileMod implements ITickable {
 		int aAlpha = 0, eAlpha = 0;
 		for (Beam beam : beams) {
 			Color color = beam.color;
-            if (!beam.mode.equals(BeamModeRegistry.DefaultModes.EFFECT)) {
+            if (!(beam.mode instanceof ModeEffect)) {
                 aRed += color.getRed() * (color.getAlpha() / 255f);
 				aGreen += color.getGreen() * (color.getAlpha() / 255f);
 				aBlue += color.getBlue() * (color.getAlpha() / 255f);
@@ -87,7 +87,7 @@ public class TileReflectionChamber extends TileMod implements ITickable {
 			color1 = new Color(color1.getRed(), color1.getGreen(), color1.getBlue(), Math.min(aAlpha, 255));
 
 			Vec3d out1 = RotationHelper.averageDirection(angles1);
-            Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out1, color1).setMode(BeamModeRegistry.DefaultModes.NONE).setIgnoreEntities(false);
+            Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out1, color1).setIgnoreEntities(false);
             EnumFacing facing = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
 			IBlockState state = world.getBlockState(pos.offset(facing));
 			if (state.getBlock() == ModBlocks.OPTIC_FIBER && state.getValue(BlockOpticFiber.FACING).contains(facing))
@@ -106,7 +106,7 @@ public class TileReflectionChamber extends TileMod implements ITickable {
 
 			Vec3d out2 = RotationHelper.averageDirection(angles2);
 
-            Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out2, color2).setMode(BeamModeRegistry.DefaultModes.EFFECT).setIgnoreEntities(false);
+            Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), out2, color2).setMode(new ModeEffect()).setIgnoreEntities(false);
             EnumFacing facing = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
 			IBlockState state = world.getBlockState(pos.offset(facing));
 			if (state.getBlock() == ModBlocks.OPTIC_FIBER && state.getValue(BlockOpticFiber.FACING).contains(facing.getOpposite()))

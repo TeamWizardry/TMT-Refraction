@@ -8,7 +8,10 @@ import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect.EffectType;
+import com.teamwizardry.refraction.api.beam.modes.BeamMode;
 import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
+import com.teamwizardry.refraction.api.beam.modes.ModeNone;
 import com.teamwizardry.refraction.api.raytrace.EntityTrace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -36,7 +39,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      * The mode of the beam
      */
     @NotNull
-    public String mode = BeamModeRegistry.DefaultModes.NONE;
+    public BeamMode mode = new ModeNone();
 
     /**
      * The initial position the beams comes from.
@@ -236,7 +239,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      * @param mode defines the new mode this beam will be.
      * @return The new beam created. Can be modified as needed.
      */
-    public Beam setMode(String mode) {
+    public Beam setMode(BeamMode mode) {
         this.mode = mode;
         return this;
     }
@@ -395,10 +398,10 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
     private Beam initializeVariables() {
         // EFFECT CHECKING //
-        if (effect == null && mode.equals(BeamModeRegistry.DefaultModes.EFFECT)) {
+        if (effect == null && mode instanceof ModeEffect) {
             Effect tempEffect = EffectTracker.getEffect(this);
             if (tempEffect != null) effect = tempEffect;
-        } else if (effect != null && !mode.equals(BeamModeRegistry.DefaultModes.EFFECT)) effect = null;
+        } else if (effect != null && !(mode instanceof ModeEffect)) effect = null;
         // EFFECT CHECKING //
 
         // BEAM PHASING CHECKS //
@@ -462,7 +465,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         }
 
         // Effect handling
-        if (mode.equals(BeamModeRegistry.DefaultModes.EFFECT))
+        if (mode instanceof ModeEffect)
             if (effect != null) {
                 if (effect.getType() == EffectType.BEAM)
                     EffectTracker.addEffect(world, this);
@@ -555,7 +558,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         compound.setBoolean("ignore_entities", ignoreEntities);
         compound.setBoolean("enable_particle_beginning", enableParticleBeginning);
         compound.setBoolean("enable_particle_end", enableParticleEnd);
-        compound.setString("mode", mode);
+        compound.setString("mode", mode.getName());
         if (uuidToSkip != null) compound.setUniqueId("uuid_to_skip", uuidToSkip);
         return compound;
     }

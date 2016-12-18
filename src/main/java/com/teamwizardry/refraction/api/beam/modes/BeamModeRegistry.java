@@ -3,8 +3,6 @@ package com.teamwizardry.refraction.api.beam.modes;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry.DefaultModes.*;
-
 /**
  * Created by LordSaad.
  */
@@ -12,21 +10,21 @@ public class BeamModeRegistry {
 
     public static BeamModeRegistry INSTANCE = new BeamModeRegistry();
 
-    private Set<String> modes = new HashSet<>();
+    private Set<BeamMode> modes = new HashSet<>();
 
     private BeamModeRegistry() {
-        registerMode(EFFECT);
-        registerMode(NONE);
-        registerMode(GUN);
+        registerMode(new ModeEffect());
+        registerMode(new ModeNone());
+        registerMode(new ModeGun());
     }
 
-    public void registerMode(String mode) {
+    public void registerMode(BeamMode mode) {
         modes.add(mode);
     }
 
-    public String getMode(String newMode) {
-        for (String mode : modes) if (mode.equalsIgnoreCase(newMode)) return mode;
-        return NONE;
+    public BeamMode getMode(String newMode) {
+        for (BeamMode mode : modes) if (mode.getName().equals(newMode)) return mode;
+        return new ModeNone();
     }
 
     public static class DefaultModes {
