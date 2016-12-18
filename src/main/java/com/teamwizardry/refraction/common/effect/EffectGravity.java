@@ -79,7 +79,7 @@ public class EffectGravity extends Effect {
                 IBlockState state = world.getBlockState(pos);
                 int potency = event.getBeam().color.getAlpha();
                 double hardness = state.getBlock().getBlockHardness(state, world, event.getPos());
-                if (hardness >= 0 && hardness * 32 * 2 / 3 < potency && world.getTileEntity(pos) == null) {
+                if (hardness >= 0 && hardness * 64 < potency && world.getTileEntity(pos) == null) {
                     EntityFallingBlock falling = new EntityFallingBlock(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
                     falling.fallTime = 1;
                     world.setBlockToAir(pos);
