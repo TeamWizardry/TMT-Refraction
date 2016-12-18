@@ -16,6 +16,7 @@ public class BeamModeRegistry {
         registerMode(new ModeEffect());
         registerMode(new ModeNone());
         registerMode(new ModeGun());
+        registerMode(new ModeGrenade());
     }
 
     public void registerMode(BeamMode mode) {
@@ -25,11 +26,5 @@ public class BeamModeRegistry {
     public BeamMode getMode(String newMode) {
         for (BeamMode mode : modes) if (mode.getName().equals(newMode)) return mode;
         return new ModeNone();
-    }
-
-    public static class DefaultModes {
-        public static final String EFFECT = "effect";
-        public static final String NONE = "none";
-        public static final String GUN = "gun";
     }
 }

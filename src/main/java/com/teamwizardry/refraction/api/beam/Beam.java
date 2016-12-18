@@ -14,6 +14,7 @@ import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
 import com.teamwizardry.refraction.api.beam.modes.ModeNone;
 import com.teamwizardry.refraction.api.raytrace.EntityTrace;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTTagCompound;
@@ -116,8 +117,17 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      */
     public ParticleBuilder particle1, particle2;
 
+    /**
+     * The uuid of the entity that will not be affected by the beam.
+     */
     @Nullable
     public UUID uuidToSkip;
+
+    /**
+     * The person theoretically casting the beam.
+     */
+    @Nullable
+    public Entity caster;
 
     public Beam(@NotNull World world, @NotNull Vec3d initLoc, @NotNull Vec3d slope, @NotNull Color color) {
         this.world = world;
@@ -165,7 +175,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
                 && beam.initLoc.zCoord == initLoc.zCoord
                 && beam.enableParticleEnd == enableParticleEnd
                 && beam.enableParticleBeginning == enableParticleBeginning
-                && beam.uuidToSkip == uuidToSkip
                 && beam.ignoreEntities == ignoreEntities
                 && beam.allowedBounceTimes == allowedBounceTimes
                 && beam.bouncedTimes == bouncedTimes
@@ -215,7 +224,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         return createSimilarBeam(init, dir, color);
     }
 
-
     /**
      * Will create a similar beam that starts and ends in the positions you specify, with a custom color.
      *
@@ -230,17 +238,30 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
                 .setAllowedBounceTimes(allowedBounceTimes)
                 .setBouncedTimes(bouncedTimes)
                 .incrementBouncedTimes()
-                .setMode(mode);
+                .setMode(mode)
+                .setRange(range)
+                .setCaster(caster);
     }
 
     /**
      * Will change the mode of the beam
      *
-     * @param mode defines the new mode this beam will be.
+     * @param mode Defines the new mode this beam will be.
      * @return The new beam created. Can be modified as needed.
      */
-    public Beam setMode(BeamMode mode) {
+    public Beam setMode(@NotNull BeamMode mode) {
         this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Will set the theoretical caster of the beam.
+     *
+     * @param caster Defines the entity casting the beam.
+     * @return The new beam created. Can be modified as needed.
+     */
+    public Beam setCaster(@Nullable Entity caster) {
+        this.caster = caster;
         return this;
     }
 
@@ -387,15 +408,16 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         return this;
     }
 
-    public UUID getUUID() {
-        return this.uuid;
-    }
-
     public Beam setUUID(UUID uuid) {
         this.uuid = uuid;
         return this;
     }
 
+    /**
+     * Will initialize all variables left to prepare before the beam actually spawns.
+     *
+     * @return This beam itself for the convenience of editing a beam in one line/chain.
+     */
     private Beam initializeVariables() {
         // EFFECT CHECKING //
         if (effect == null && mode instanceof ModeEffect) {

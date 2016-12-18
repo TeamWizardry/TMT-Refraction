@@ -8,4 +8,9 @@ public class ModeGun extends ModeEffect {
     public String getName() {
         return "gun";
     }
+
+    @Override
+    public boolean runSpecialEffects() {
+        return true;
+    }
 }

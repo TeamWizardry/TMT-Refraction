@@ -6,7 +6,9 @@ import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOu
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
 import com.teamwizardry.refraction.init.ModSounds;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -28,16 +30,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class EntityGrenade extends EntityThrowable {
 
     public static final DataParameter<Integer> DATA_COLOR = EntityDataManager.createKey(EntityGrenade.class, DataSerializers.VARINT);
-
     public int life = 100, explosionTimer = 50;
+    private EntityLivingBase caster;
 
     public EntityGrenade(World worldIn) {
         super(worldIn);
         applyColor(Color.WHITE);
     }
 
-    public EntityGrenade(World worldIn, Color color) {
+    public EntityGrenade(World worldIn, Color color, EntityLivingBase caster) {
         super(worldIn);
+        this.caster = caster;
         applyColor(color);
     }
 
@@ -97,7 +100,7 @@ public class EntityGrenade extends EntityThrowable {
                     glitterCore.setMotion(new Vec3d(x, ThreadLocalRandom.current().nextDouble(-0.2, 0.2), z));
                 });
 
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < 30; i++) {
                     double radius = 5;
                     double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
                     double r = radius * ThreadLocalRandom.current().nextFloat();
@@ -106,7 +109,7 @@ public class EntityGrenade extends EntityThrowable {
 
                     Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
                     Color c = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (color.getAlpha() / ThreadLocalRandom.current().nextDouble(1, 3)));
-                    new Beam(world, pos, dest, c).spawn();
+                    new Beam(world, pos, dest, c).setCaster(caster).setMode(new ModeEffect()).spawn();
                     playSound(ModSounds.CRACKLE, 1f, ThreadLocalRandom.current().nextFloat());
                 }
             } else setDead();

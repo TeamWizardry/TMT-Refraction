@@ -8,4 +8,9 @@ public class ModeEffect implements BeamMode {
     public String getName() {
         return "effect";
     }
+
+    @Override
+    public boolean runSpecialEffects() {
+        return false;
+    }
 }

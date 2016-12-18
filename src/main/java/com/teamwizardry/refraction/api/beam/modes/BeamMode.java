@@ -7,4 +7,6 @@ public interface BeamMode {
 
     String getName();
 
+    boolean runSpecialEffects();
+
 }

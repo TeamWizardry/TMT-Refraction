@@ -66,7 +66,7 @@ public class EffectDisperse extends Effect {
                 if (tileEntity == null) continue;
                 if (!EffectBurn.burnedTileTracker.contains(beam.trace.getBlockPos())) continue;
                 EffectBurn.burnedTileTracker.remove(beam.trace.getBlockPos());
-                if (ThreadLocalRandom.current().nextInt(2550 / potency) != 0) continue;
+                if (ThreadLocalRandom.current().nextInt(potency > 0 ? 2550 / potency : 1) != 0) return;
 
                 if (!tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))
                     continue;

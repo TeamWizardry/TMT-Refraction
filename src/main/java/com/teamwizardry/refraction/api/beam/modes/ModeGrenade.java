@@ -3,14 +3,14 @@ package com.teamwizardry.refraction.api.beam.modes;
 /**
  * Created by LordSaad.
  */
-public class ModeNone implements BeamMode {
+public class ModeGrenade implements BeamMode {
     @Override
     public String getName() {
-        return "none";
+        return "grenade";
     }
 
     @Override
     public boolean runSpecialEffects() {
-        return false;
+        return true;
     }
 }

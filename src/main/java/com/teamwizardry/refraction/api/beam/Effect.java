@@ -62,6 +62,40 @@ public class Effect implements Cloneable {
     }
 
     /**
+     * The run method when a beam is spawned from a gun.
+     *
+     * @param world   The world object.
+     * @param caster  The entity casting the beam.
+     * @param potency The strength of the beam.
+     */
+    public void specialRunBlock(World world, BlockPos pos, EntityLivingBase caster, int potency) {
+        runBlock(world, pos, potency);
+    }
+
+    /**
+     * The run method when a beam is spawned from a gun.
+     *
+     * @param world   The world object.
+     * @param caster  The entity casting the beam.
+     * @param potency The strength of the beam.
+     */
+    public void specialRunFinalBlock(World world, BlockPos pos, EntityLivingBase caster, int potency) {
+        runFinalBlock(world, pos, potency);
+    }
+
+    /**
+     * The run method when a beam is spawned from a gun.
+     *
+     * @param world   The world object.
+     * @param caster  The entity casting the beam.
+     * @param entity  The entity intersected with
+     * @param potency The strength of the beam.
+     */
+    public void specialRunEntity(World world, Entity entity, EntityLivingBase caster, int potency) {
+        runEntity(world, entity, potency);
+    }
+
+    /**
      * The block that the beam intersects with at the end of the raycast.
      *
      * @param world   The world object.
@@ -93,10 +127,32 @@ public class Effect implements Cloneable {
         }
     }
 
+    void specialAddBlock(@NotNull World world, @NotNull BlockPos pos, @NotNull EntityLivingBase caster) {
+        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+            blocks.add(pos);
+            specialRunBlock(world, pos, caster, calculateBlockPotency(pos));
+        }
+    }
+
+    void specialAddFinalBlock(@NotNull World world, @NotNull BlockPos pos, @NotNull EntityLivingBase caster) {
+        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+            blocks.add(pos);
+            specialRunFinalBlock(world, pos, caster, calculateBlockPotency(pos));
+        }
+    }
+
+    void specialAddEntity(@NotNull World world, @NotNull Entity entity, @NotNull EntityLivingBase caster) {
+        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+            int potency = calculateEntityPotency(entity);
+            entities.put(entity.getPosition(), entity);
+            specialRunEntity(world, entity, caster, potency);
+        }
+    }
+
     List<Entity> filterEntities(List<Entity> entityList) {
         entityList.removeIf(entity -> potency < 1
-                || beam.uuidToSkip != null
-                && beam.uuidToSkip.equals(entity.getUniqueID())
+                || (beam.uuidToSkip != null
+                && beam.uuidToSkip.equals(entity.getUniqueID()))
                 || (entity instanceof EntityLivingBase
                 && ((EntityLivingBase) entity).getActivePotionEffect(MobEffects.INVISIBILITY) != null)
                 || (entity instanceof EntityPlayer
