@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.effect;
 
 import com.teamwizardry.refraction.api.beam.Effect;
+import com.teamwizardry.refraction.api.beam.EffectTracker;
 import com.teamwizardry.refraction.api.beam.IBeamImmune;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +24,7 @@ public class EffectBreak extends Effect {
 	@Override
     public void runFinalBlock(World world, BlockPos pos, int potency) {
         IBlockState block = world.getBlockState(pos);
+        if (EffectTracker.gravityProtection.containsKey(pos)) return;
         if (block.getBlock() instanceof IBeamImmune && ((IBeamImmune) block.getBlock()).isImmune(world, pos)) return;
 
         float hardness = world.getBlockState(pos).getBlockHardness(world, pos);

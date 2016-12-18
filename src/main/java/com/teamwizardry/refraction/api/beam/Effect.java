@@ -3,6 +3,8 @@ package com.teamwizardry.refraction.api.beam;
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.PosUtils;
+import com.teamwizardry.refraction.api.beam.modes.BeamMode;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,6 +41,10 @@ public class Effect implements Cloneable {
         return this;
     }
 
+    public BeamMode getRequiredBeamMode() {
+        return new ModeEffect();
+    }
+
     /**
      * The entity that the beam intersects with. If it's a beam type, it'll run on all the entities it's
      * traversed through. If it's a single type, it'll only run on the one entity it hit.
@@ -51,7 +57,7 @@ public class Effect implements Cloneable {
     }
 
     /**
-     * The block that the beam intersects with. If it's a beam type, it'll run on all the blocks it's
+     * The block that the beam intersects with. If it's a beam type, it'll run on all the gravityProtection it's
      * traversed through. If it's a single type, it'll only run on that one block.
      *
      * @param world   The world object.

@@ -17,6 +17,7 @@ public class BeamModeRegistry {
         registerMode(new ModeNone());
         registerMode(new ModeGun());
         registerMode(new ModeGrenade());
+        registerMode(new ModeGravity());
     }
 
     public void registerMode(BeamMode mode) {

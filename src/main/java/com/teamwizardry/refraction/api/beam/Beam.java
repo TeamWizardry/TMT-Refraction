@@ -365,7 +365,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     /**
      * If set to true, the beam will phase through entities.
      *
-     * @param ignoreEntities The boolean that will specify if the beam should phase through blocks or not. Default false.
+     * @param ignoreEntities The boolean that will specify if the beam should phase through gravityProtection or not. Default false.
      * @return This beam itself for the convenience of editing a beam in one line/chain.
      */
     public Beam setIgnoreEntities(boolean ignoreEntities) {

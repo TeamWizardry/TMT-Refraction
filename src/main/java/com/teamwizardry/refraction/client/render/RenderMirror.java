@@ -58,9 +58,9 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 					location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 			modelMirrorSplitter = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 					location -> {
-						if (location.toString().equals(Constants.MOD_ID + ":blocks/mirror_normal"))
-							location = new ResourceLocation(Constants.MOD_ID, "blocks/mirror_splitter");
-						return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                        if (location.toString().equals(Constants.MOD_ID + ":gravityProtection/mirror_normal"))
+                            location = new ResourceLocation(Constants.MOD_ID, "gravityProtection/mirror_splitter");
+                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
 					});
 		}
 	}
