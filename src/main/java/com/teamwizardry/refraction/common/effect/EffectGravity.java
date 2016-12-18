@@ -46,24 +46,6 @@ public class EffectGravity extends Effect {
             ((EntityPlayer) entity).velocityChanged = true;
     }
 
-//    @Override
-//    public void runFinalBlock(World world, BlockPos pos, int potency) {
-//        if (world.isAirBlock(pos)) return;
-//        if (world.isAirBlock(pos.down())) {
-//
-//            IBlockState state = world.getBlockState(pos);
-//            double hardness = state.getBlockHardness(world, pos);
-//            if (hardness >= 0 && hardness * 32 * 2 / 3 < potency && world.getTileEntity(pos) == null) {
-//                EntityFallingBlock falling = new EntityFallingBlock(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
-//                falling.fallTime = 1;
-//                world.setBlockToAir(pos);
-//                world.spawnEntity(falling);
-//            }
-//        }
-//
-//        EffectTracker.gravityProtection.put(pos, 50);
-//    }
-
 
     @SubscribeEvent
     public void beamHit(BeamHitEvent event) {
