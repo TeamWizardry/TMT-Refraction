@@ -3,9 +3,11 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
+import com.teamwizardry.refraction.api.beam.modes.ModeGravity;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
@@ -28,7 +30,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Saad on 8/16/2016.
@@ -55,7 +59,9 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
     }
 
     private TileElectronExciter getTE(World world, BlockPos pos) {
-        return (TileElectronExciter) world.getTileEntity(pos);
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileElectronExciter) return (TileElectronExciter) tile;
+        return null;
     }
 
     @Override
@@ -68,33 +74,58 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 
     @Override
     public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
-        if (beam.mode instanceof ModeEffect && beam.effect != null && beam.effect.getColor().equals(Color.CYAN)) {
-            EnumFacing block = world.getBlockState(pos).getValue(FACING);
-            if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
-                TileElectronExciter exciter = getTE(world, pos);
-                exciter.expire = Constants.SOURCE_TIMER;
-                exciter.hasCardinalBeam = true;
+        if (beam.mode instanceof ModeEffect && beam.effect != null) {
+            if (beam.effect.getColor().equals(Color.CYAN)) {
+                EnumFacing block = world.getBlockState(pos).getValue(FACING);
+                if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
+                    TileElectronExciter exciter = getTE(world, pos);
+                    exciter.expire = Constants.SOURCE_TIMER;
+                    exciter.hasCardinalBeam = true;
 
-                boolean pass = false;
-                for (EnumFacing facing : EnumFacing.VALUES) {
-                    if (facing != block || facing != block.getOpposite()) {
-                        TileElectronExciter neighbor = getTE(world, pos.offset(facing));
-                        if (neighbor != null)
-                            if (neighbor.hasCardinalBeam && world.getBlockState(pos.offset(facing)).getValue(FACING) == block) {
-                                pass = true;
-                                break;
-                            }
+                    boolean pass = false;
+                    for (EnumFacing facing : EnumFacing.VALUES) {
+                        if (facing != block || facing != block.getOpposite()) {
+                            TileElectronExciter neighbor = getTE(world, pos.offset(facing));
+                            if (neighbor != null)
+                                if (neighbor.hasCardinalBeam && world.getBlockState(pos.offset(facing)).getValue(FACING) == block) {
+                                    pass = true;
+                                    break;
+                                }
+                        }
                     }
-                }
 
-                if (pass && world.isAirBlock(pos.offset(block)))
-                    world.setBlockState(pos.offset(block), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
-                return true;
+                    if (pass && world.isAirBlock(pos.offset(block)))
+                        world.setBlockState(pos.offset(block), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
+                    return true;
+                }
+            } else if (beam.effect.getColor().equals(Color.MAGENTA)) {
+                EnumFacing block = world.getBlockState(pos).getValue(FACING);
+                if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
+
+                    Set<EnumFacing> exciters = new HashSet<>();
+                    for (EnumFacing facing : EnumFacing.VALUES)
+                        if (facing != block || facing != block.getOpposite()) {
+                            TileElectronExciter neighbor = getTE(world, pos.offset(facing));
+                            if (neighbor != null && world.getBlockState(pos.offset(facing)).getValue(FACING) == block)
+                                exciters.add(facing);
+                        }
+                    if (!exciters.isEmpty()) {
+                        Color color = new Color(0, 150, 255, beam.color.getAlpha() / exciters.size());
+                        for (EnumFacing facing : exciters) {
+                            beam.createSimilarBeam(PosUtils.getSideCenter(pos.offset(facing), block), PosUtils.getVecFromFacing(block), color)
+                                    .setMode(new ModeGravity())
+                                    .spawn();
+                        }
+                    }
+                    return true;
+                }
             }
         }
         TileElectronExciter exciter = getTE(world, pos);
-        exciter.expire = Constants.SOURCE_TIMER;
-        exciter.hasCardinalBeam = true;
+        if (exciter != null) {
+            exciter.expire = Constants.SOURCE_TIMER;
+            exciter.hasCardinalBeam = true;
+        }
         return true;
     }
 

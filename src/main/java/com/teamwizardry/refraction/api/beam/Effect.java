@@ -68,6 +68,14 @@ public class Effect implements Cloneable {
     }
 
     /**
+     * The general run method. Runs when the effect happens.
+     *
+     * @param world   The world object.
+     */
+    public void run(World world) {
+    }
+
+    /**
      * The run method when a beam is spawned from a gun.
      *
      * @param world   The world object.

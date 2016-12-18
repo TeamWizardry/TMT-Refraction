@@ -98,6 +98,7 @@ public class EffectTracker {
             effects.keySet().removeIf(effect -> {
                 if (effect != null && w != null && effects.get(effect) != null) {
                     // RUN EFFECT METHODS //
+                    effect.run(w);
                     if (effect.beam.mode.runSpecialEffects()) {
                         if (effect.beam.caster != null) {
                             if (effect.beam.trace.typeOfHit == RayTraceResult.Type.BLOCK) {

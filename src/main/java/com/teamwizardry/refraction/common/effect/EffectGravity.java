@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.beam.BeamHitEvent;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
 import com.teamwizardry.refraction.api.beam.modes.BeamMode;
@@ -46,36 +46,59 @@ public class EffectGravity extends Effect {
             ((EntityPlayer) entity).velocityChanged = true;
     }
 
-    @Override
-    public void runFinalBlock(World world, BlockPos pos, int potency) {
-        if (world.isAirBlock(pos)) return;
-        IBlockState state = world.getBlockState(pos);
-        if (world.isAirBlock(pos.down())) {
+//    @Override
+//    public void runFinalBlock(World world, BlockPos pos, int potency) {
+//        if (world.isAirBlock(pos)) return;
+//        if (world.isAirBlock(pos.down())) {
+//
+//            IBlockState state = world.getBlockState(pos);
+//            double hardness = state.getBlockHardness(world, pos);
+//            if (hardness >= 0 && hardness * 32 * 2 / 3 < potency && world.getTileEntity(pos) == null) {
+//                EntityFallingBlock falling = new EntityFallingBlock(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
+//                falling.fallTime = 1;
+//                world.setBlockToAir(pos);
+//                world.spawnEntity(falling);
+//            }
+//        }
+//
+//        EffectTracker.gravityProtection.put(pos, 50);
+//    }
 
-            double hardness = state.getBlockHardness(world, pos);
-            if (hardness >= 0 && hardness * 32 * 2 / 3 < potency && world.getTileEntity(pos) == null) {
-                EntityFallingBlock falling = new EntityFallingBlock(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
-                falling.fallTime = 1;
-                world.setBlockToAir(pos);
-                world.spawnEntity(falling);
-                return;
+
+    @SubscribeEvent
+    public void beamHit(BeamHitEvent event) {
+        if (event.getBeam().mode instanceof ModeGravity) {
+            World world = event.getWorld();
+            BlockPos pos = event.getPos();
+
+            if (world.isAirBlock(pos)) return;
+
+            EffectTracker.gravityProtection.put(pos, 50);
+
+            if (world.isAirBlock(pos.down())) {
+                IBlockState state = world.getBlockState(pos);
+                int potency = event.getBeam().color.getAlpha();
+                double hardness = state.getBlock().getBlockHardness(state, world, event.getPos());
+                if (hardness >= 0 && hardness * 32 * 2 / 3 < potency && world.getTileEntity(pos) == null) {
+                    EntityFallingBlock falling = new EntityFallingBlock(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
+                    falling.fallTime = 1;
+                    world.setBlockToAir(pos);
+                    world.spawnEntity(falling);
+                }
             }
         }
-
-        EffectTracker.gravityProtection.put(pos, Constants.SOURCE_TIMER);
     }
+
 
     @SubscribeEvent
     public void interact1(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getPos() != null && EffectTracker.gravityProtection.containsKey(event.getPos())) {
+        if (event.getPos() != null && EffectTracker.gravityProtection.containsKey(event.getPos()))
             event.setCanceled(true);
-        }
     }
 
     @SubscribeEvent
     public void interact2(PlayerInteractEvent.LeftClickBlock event) {
-        if (event.getPos() != null && EffectTracker.gravityProtection.containsKey(event.getPos())) {
+        if (event.getPos() != null && EffectTracker.gravityProtection.containsKey(event.getPos()))
             event.setCanceled(true);
-        }
     }
 }
