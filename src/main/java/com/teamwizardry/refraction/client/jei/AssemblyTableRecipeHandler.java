@@ -20,15 +20,9 @@ public class AssemblyTableRecipeHandler implements IRecipeHandler<AssemblyRecipe
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-		return Constants.MOD_ID + ".assembly_table";
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull AssemblyRecipe recipe) {
-		return getRecipeCategoryUid();
-	}
+        return Constants.MOD_ID + ".assembly_table";
+    }
 
 	@Nonnull
 	@Override

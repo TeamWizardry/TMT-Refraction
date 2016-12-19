@@ -10,7 +10,6 @@ import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.client.render.RenderMirror;
 import com.teamwizardry.refraction.common.tile.TileMirror;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -23,6 +22,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -84,7 +84,8 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+		World worldIn = (World) world;
 		if (worldIn.isRemote) return;
 
 		TileMirror mirror = getTE(worldIn, pos);
@@ -112,7 +113,7 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 

@@ -25,16 +25,9 @@ public class ItemReflectiveAlloyHelmet extends ItemModArmor implements IReflecti
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         ItemStack itemstack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-
-        if (itemstack == null) {
-            playerIn.setItemStackToSlot(EntityEquipmentSlot.HEAD, itemStackIn.copy());
-            itemStackIn.stackSize = 0;
-            return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
-        } else {
-            return new ActionResult(EnumActionResult.FAIL, itemStackIn);
-        }
+        return new ActionResult<>(EnumActionResult.FAIL, itemstack);
     }
 
     @Override

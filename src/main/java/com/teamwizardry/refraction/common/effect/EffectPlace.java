@@ -63,7 +63,7 @@ public class EffectPlace extends Effect {
             ItemStack stack = player.inventory.getStackInSlot(i);
             if (stack == null) continue;
             if (!(stack.getItem() instanceof ItemBlock)) continue;
-            if (stack.stackSize <= 0) continue;
+            if (stack.getCount() <= 0) continue;
             chosenStack = stack;
         }
         if (chosenStack == null) return;

@@ -45,15 +45,15 @@ public class ItemLaserPen extends ItemMod {
     }
 
 	@Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        playerIn.setActiveHand(hand);
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        playerIn.setActiveHand(handIn);
         if (!worldIn.isRemote) {
-            EntityLaserPointer e = new EntityLaserPointer(worldIn, playerIn, hand == EnumHand.MAIN_HAND ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT);
+            EntityLaserPointer e = new EntityLaserPointer(worldIn, playerIn, handIn == EnumHand.MAIN_HAND ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT);
             e.updateRayPos();
             worldIn.spawnEntity(e);
         }
-        return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
-	}
+        return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getActiveItemStack());
+    }
 
     @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {

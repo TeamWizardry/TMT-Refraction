@@ -7,7 +7,6 @@ import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.client.render.RenderDiscoBall;
 import com.teamwizardry.refraction.common.tile.TileDiscoBall;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -20,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -71,17 +71,18 @@ public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+		IBlockState state = world.getBlockState(pos);
 		EnumFacing enumfacing = state.getValue(FACING);
 
-		if (!this.canBlockStay(worldIn, pos, enumfacing)) {
-			this.dropBlockAsItem(worldIn, pos, state, 0);
-			worldIn.setBlockToAir(pos);
+		if (!this.canBlockStay(world, pos, enumfacing)) {
+			this.dropBlockAsItem((World) world, pos, state, 0);
+			((World) world).setBlockToAir(pos);
 		}
-		super.neighborChanged(state, worldIn, pos, blockIn);
+		super.onNeighborChange(world, pos, neighbor);
 	}
 
-	private boolean canBlockStay(World worldIn, BlockPos pos, EnumFacing facing) {
+	private boolean canBlockStay(IBlockAccess worldIn, BlockPos pos, EnumFacing facing) {
 		return worldIn.getBlockState(pos.offset(facing.getOpposite())).isSideSolid(worldIn, pos.offset(facing.getOpposite()), facing);
 	}
 
@@ -106,7 +107,7 @@ public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 

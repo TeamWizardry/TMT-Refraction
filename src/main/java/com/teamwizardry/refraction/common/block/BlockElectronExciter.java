@@ -208,7 +208,7 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
     }
 
     @Override
-    public boolean canRenderInLayer(BlockRenderLayer layer) {
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return layer == BlockRenderLayer.CUTOUT;
     }
 

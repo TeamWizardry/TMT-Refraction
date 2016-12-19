@@ -59,23 +59,23 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
 			TileAssemblyTable table = getTE(worldIn, pos);
 
-			if (heldItem != null && heldItem.stackSize > 0) {
-				ItemStack stack = heldItem.copy();
-				stack.stackSize = 1;
-				--heldItem.stackSize;
+			if (!playerIn.getActiveItemStack().isEmpty()) {
+				ItemStack stack = playerIn.getActiveItemStack().copy();
+				stack.setCount(1);
+				playerIn.getActiveItemStack().setCount(playerIn.getActiveItemStack().getCount() - 1);
 				for (int i = 0; i < table.inventory.getSlots(); i++)
-					if (table.inventory.getStackInSlot(i) == null) {
+					if (table.inventory.getStackInSlot(i).isEmpty()) {
 						table.inventory.insertItem(i, stack, false);
 						break;
 					}
 				playerIn.openContainer.detectAndSendChanges();
 
-			} else if (table.output.getStackInSlot(0) != null) {
-				playerIn.setHeldItem(hand, table.output.extractItem(0, table.output.getStackInSlot(0).stackSize, false));
+			} else if (table.output.getStackInSlot(0).isEmpty()) {
+				playerIn.setHeldItem(hand, table.output.extractItem(0, table.output.getStackInSlot(0).getCount(), false));
 				playerIn.openContainer.detectAndSendChanges();
 
 			} else if (CapsUtils.getOccupiedSlotCount(table.inventory) > 0) {
@@ -97,7 +97,7 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 

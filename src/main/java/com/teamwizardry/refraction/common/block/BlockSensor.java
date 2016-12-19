@@ -5,7 +5,6 @@ import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -87,17 +86,18 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+        IBlockState state = world.getBlockState(pos);
         EnumFacing enumfacing = state.getValue(FACING);
 
-        if (!this.canBlockStay(worldIn, pos, enumfacing)) {
-            this.dropBlockAsItem(worldIn, pos, state, 0);
-            worldIn.setBlockToAir(pos);
+        if (!this.canBlockStay(world, pos, enumfacing)) {
+            this.dropBlockAsItem((World) world, pos, state, 0);
+            ((World) world).setBlockToAir(pos);
         }
-        super.neighborChanged(state, worldIn, pos, blockIn);
+        super.onNeighborChange(world, pos, neighbor);
     }
 
-    private boolean canBlockStay(World worldIn, BlockPos pos, EnumFacing facing) {
+    private boolean canBlockStay(IBlockAccess worldIn, BlockPos pos, EnumFacing facing) {
         return worldIn.getBlockState(pos.offset(facing.getOpposite())).isSideSolid(worldIn, pos.offset(facing.getOpposite()), facing);
     }
 

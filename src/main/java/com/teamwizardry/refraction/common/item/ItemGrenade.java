@@ -44,7 +44,7 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 
 			int i = this.getMaxItemUseDuration(stack) - timeLeft;
 
-			if (stack != null || shouldRemoveStack) {
+			if (shouldRemoveStack) {
 				if (stack == null) {
 					stack = new ItemStack(this);
 				}
@@ -65,22 +65,19 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 
 					world.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-					if (!isCreativeMode) {
-						--stack.stackSize;
-						if (stack.stackSize == 0) entityplayer.inventory.deleteStack(stack);
-					}
+					if (!isCreativeMode) stack.setCount(stack.getCount() - 1);
 				}
 			}
 		}
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-		if (world.isRemote && (Minecraft.getMinecraft().currentScreen != null))
-			return new ActionResult<>(EnumActionResult.FAIL, stack);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		if (worldIn.isRemote && (Minecraft.getMinecraft().currentScreen != null))
+			return new ActionResult<>(EnumActionResult.FAIL, playerIn.getActiveItemStack());
 		else {
-			player.setActiveHand(hand);
-			return new ActionResult<>(EnumActionResult.PASS, stack);
+			playerIn.setActiveHand(handIn);
+			return new ActionResult<>(EnumActionResult.PASS, playerIn.getActiveItemStack());
 		}
 	}
 

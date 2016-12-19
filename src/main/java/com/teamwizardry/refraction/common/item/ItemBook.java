@@ -28,10 +28,9 @@ public class ItemBook extends ItemMod {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		if (worldIn.isRemote) {
-			playerIn.openGui(Refraction.instance, 0, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
-		}
-		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
-	}
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        if (worldIn.isRemote)
+            playerIn.openGui(Refraction.instance, 0, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+        return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getActiveItemStack());
+    }
 }

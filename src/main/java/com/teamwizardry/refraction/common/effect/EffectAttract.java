@@ -72,7 +72,7 @@ public class EffectAttract extends Effect {
             ItemStack slotStack = inv.getStackInSlot(lastSlot);
             if (slotStack == null) return;
 
-            ItemStack stack = inv.decrStackSize(lastSlot, slotStack.stackSize < potency / 50 ? slotStack.stackSize : potency / 50);
+            ItemStack stack = inv.decrStackSize(lastSlot, slotStack.getCount() < potency / 50 ? slotStack.getCount() : potency / 50);
             if (stack == null) return;
 
             EntityItem item = new EntityItem(world, beam.trace.hitVec.xCoord, beam.trace.hitVec.yCoord, beam.trace.hitVec.zCoord, stack);
@@ -85,7 +85,7 @@ public class EffectAttract extends Effect {
             IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit);
             int lastSlot = CapsUtils.getLastOccupiedSlot(cap);
             if (CapsUtils.getOccupiedSlotCount(cap) > 0) {
-                ItemStack stack = cap.extractItem(lastSlot, cap.getStackInSlot(lastSlot).stackSize < potency / 50 ? cap.getStackInSlot(lastSlot).stackSize : potency / 50, false);
+                ItemStack stack = cap.extractItem(lastSlot, cap.getStackInSlot(lastSlot).getCount() < potency / 50 ? cap.getStackInSlot(lastSlot).getCount() : potency / 50, false);
                 if (stack == null) return;
 
                 EntityItem item = new EntityItem(world, beam.trace.hitVec.xCoord, beam.trace.hitVec.yCoord, beam.trace.hitVec.zCoord, stack);

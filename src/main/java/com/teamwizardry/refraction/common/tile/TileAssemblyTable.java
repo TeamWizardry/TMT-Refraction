@@ -63,7 +63,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
     public ItemStackHandler inventory = new ItemStackHandler(54) {
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if (output.getStackInSlot(0) != null && output.getStackInSlot(0).stackSize > 0) return null;
+            if (output.getStackInSlot(0).isEmpty()) return null;
             if (isCrafting) return null;
             return super.extractItem(slot, amount, simulate);
         }

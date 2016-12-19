@@ -60,20 +60,20 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 
 	@Override
 	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
-		return (int) (getTE(worldIn, pos).inventory.getStackInSlot(0).stackSize / 64.0 * 15);
+		return (int) (getTE(worldIn, pos).inventory.getStackInSlot(0).getCount() / 64.0 * 15);
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (heldItem != null) {
-			if (heldItem.getItem() != Items.GLOWSTONE_DUST) return false;
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (!playerIn.getActiveItemStack().isEmpty()) {
+			if (playerIn.getActiveItemStack().getItem() != Items.GLOWSTONE_DUST) return false;
 
 			TileLaser laser = getTE(worldIn, pos);
 			if (laser == null) return false;
-			ItemStack stack = heldItem.copy();
-			stack.stackSize = 1;
+			ItemStack stack = playerIn.getActiveItemStack().copy();
+			stack.setCount(1);
 			ItemStack left = laser.inventory.insertItem(0, stack, false);
-			if (left == null) heldItem.stackSize--;
+			if (left.isEmpty()) playerIn.getActiveItemStack().setCount(playerIn.getActiveItemStack().getCount() - 1);
 			laser.markDirty();
 		}
 		return true;
@@ -103,7 +103,7 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 
@@ -126,7 +126,7 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 	@Override
 	public boolean shouldEmit(@NotNull World world, @NotNull BlockPos pos) {
 		TileLaser laser = (TileLaser) world.getTileEntity(pos);
-		return !(world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) && laser != null && laser.inventory.getStackInSlot(0) != null && laser.inventory.getStackInSlot(0).stackSize > 0;
+		return !(world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) && laser != null && laser.inventory.getStackInSlot(0) != null && laser.inventory.getStackInSlot(0).getCount() > 0;
 	}
 
 	@Override

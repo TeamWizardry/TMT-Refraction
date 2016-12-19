@@ -124,8 +124,8 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.CUTOUT;
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return layer == BlockRenderLayer.CUTOUT;
 	}
 
 	@Override

@@ -74,7 +74,7 @@ public class EffectDisperse extends Effect {
                 IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit);
 
                 ItemStack newStack = ItemHandlerHelper.insertItem(handler, ((EntityItem) entity).getEntityItem(), false);
-                if (newStack == null || newStack.stackSize == 0) entity.setDead();
+                if (newStack == null || newStack.getCount() == 0) entity.setDead();
                 ((EntityItem) entity).setEntityItemStack(newStack);
             }
         }

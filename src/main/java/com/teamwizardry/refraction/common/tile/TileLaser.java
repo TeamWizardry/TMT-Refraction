@@ -48,8 +48,8 @@ public class TileLaser extends TileMod implements ITickable {
 	public void update() {
 		World world = getWorld();
 		if (world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) return;
-		if (inventory.getStackInSlot(0) != null && inventory.getStackInSlot(0).stackSize > 0) {
-			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+        if (inventory.getStackInSlot(0) != null && inventory.getStackInSlot(0).getCount() > 0) {
+            Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			EnumFacing face = world.getBlockState(pos).getValue(BlockDirectional.FACING);
 			Vec3d vec = PosUtils.getVecFromFacing(face);
 			Vec3d facingVec = PosUtils.getVecFromFacing(face).scale(1.0 / 3.0);

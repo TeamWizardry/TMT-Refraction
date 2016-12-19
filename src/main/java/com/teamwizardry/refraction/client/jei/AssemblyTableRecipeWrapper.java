@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -29,13 +29,10 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 	private static Texture texture = new Texture(loc);
 	private static Sprite
 			BAR = texture.getSprite("bar", 64, 8),
-			OUTLINE = texture.getSprite("outline", 34 * 2, 12),
             SLOT = texture.getSprite("slotcomp", 18, 18);
     private ArrayList<ItemStack> inputs = new ArrayList<>();
-	private ArrayList<ItemStack> outputs = new ArrayList<>();
-	private List<FluidStack> fluidInputs = ImmutableList.of();
-	private List<FluidStack> fluidOutputs = ImmutableList.of();
-	private Color maxColor, currentColor;
+    private ItemStack output;
+    private Color maxColor, currentColor;
 	private AssemblyRecipe recipe;
 	private int cycleTimer = 0, transitionTicks = 0;
 	private boolean cycleSwitch, transition = false;
@@ -43,37 +40,18 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 	public AssemblyTableRecipeWrapper(AssemblyRecipe recipe) {
 		this.recipe = recipe;
 		inputs.addAll(recipe.getItems());
-		outputs.add(recipe.getResult());
-		maxColor = recipe.getMinColor();
+        output = recipe.getResult();
+        maxColor = recipe.getMinColor();
 		currentColor = recipe.getMinColor();
 		cycleSwitch = true;
 		transition = true;
 	}
 
 	@Override
-	public void getIngredients(IIngredients ingredients) {
-
-	}
-
-	@Override
-	public List getInputs() {
-		return inputs;
-	}
-
-	@Override
-	public List getOutputs() {
-		return outputs;
-	}
-
-	@Override
-	public List<FluidStack> getFluidInputs() {
-		return fluidInputs;
-	}
-
-	@Override
-	public List<FluidStack> getFluidOutputs() {
-		return fluidOutputs;
-	}
+    public void getIngredients(@NotNull IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, inputs);
+        ingredients.setOutput(ItemStack.class, output);
+    }
 
 	@Override
 	public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
@@ -140,11 +118,8 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 		GlStateManager.popMatrix();
 	}
 
-	@Override
-	public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
-	}
-
-	@Override
+    @NotNull
+    @Override
 	public List<String> getTooltipStrings(int mouseX, int mouseY) {
 		return ImmutableList.of();
 	}

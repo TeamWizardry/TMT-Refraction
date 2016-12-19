@@ -25,16 +25,9 @@ public class ItemReflectiveAlloyBoots extends ItemModArmor implements IReflectiv
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         ItemStack itemstack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-
-        if (itemstack == null) {
-            playerIn.setItemStackToSlot(EntityEquipmentSlot.FEET, itemStackIn.copy());
-            itemStackIn.stackSize = 0;
-            return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
-        } else {
-            return new ActionResult(EnumActionResult.FAIL, itemStackIn);
-        }
+        return new ActionResult<>(EnumActionResult.FAIL, itemstack);
     }
 
     @Override

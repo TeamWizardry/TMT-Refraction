@@ -1,13 +1,14 @@
 package com.teamwizardry.refraction.api;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
+import com.teamwizardry.librarianlib.LibrarianLog;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import com.teamwizardry.librarianlib.LibrarianLog;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by LordSaad44
@@ -37,8 +38,8 @@ public class AssemblyRecipe {
 		for (Object obj : items) {
 			if (obj instanceof ItemStack) {
 				ItemStack stack = (ItemStack) obj;
-				int stackSize = stack.stackSize;
-				stack.stackSize = 1;
+				int stackSize = stack.getCount();
+				stack.setCount(1);
 				for (int i = 0; i < stackSize; i++) {
 					this.items.add(stack);
 				}
@@ -83,8 +84,8 @@ public class AssemblyRecipe {
 		for (Object obj : items) {
 			if (obj instanceof ItemStack) {
 				ItemStack stack = (ItemStack) obj;
-				int stackSize = stack.stackSize;
-				stack.stackSize = 1;
+				int stackSize = stack.getCount();
+				stack.setCount(1);
 				for (int i = 0; i < stackSize; i++) {
 					this.items.add(stack);
 				}

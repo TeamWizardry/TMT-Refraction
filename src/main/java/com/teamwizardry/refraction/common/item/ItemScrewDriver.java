@@ -28,7 +28,6 @@ import static com.teamwizardry.refraction.api.IPrecision.Helper.*;
  */
 public class ItemScrewDriver extends ItemMod {
 
-
 	@SideOnly(Side.CLIENT)
 	private static Function2<GuiIngame, Object, Unit> remainingHighlightTicksSetter;
 
@@ -40,37 +39,37 @@ public class ItemScrewDriver extends ItemMod {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		Block block = worldIn.getBlockState(pos).getBlock();
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        Block block = worldIn.getBlockState(pos).getBlock();
 
 		if (block instanceof IPrecision) {
-			((IPrecision) block).adjust(worldIn, pos, stack, playerIn.isSneaking(), facing);
-			return EnumActionResult.SUCCESS;
+            ((IPrecision) block).adjust(worldIn, pos, player.getActiveItemStack(), player.isSneaking(), facing);
+            return EnumActionResult.SUCCESS;
 		} else {
-			int ori = getRotationIndex(stack);
-			int i = MathHelper.clamp(playerIn.isSneaking() ? ori - 1 : ori + 1, 0, multipliers.length - 1);
+            int ori = getRotationIndex(player.getActiveItemStack());
+            int i = MathHelper.clamp(player.isSneaking() ? ori - 1 : ori + 1, 0, multipliers.length - 1);
 
 			if (ori == i) return EnumActionResult.FAIL;
 
-			ItemNBTHelper.setInt(stack, MODE_TAG, i);
-			if (playerIn.world.isRemote)
-				displayItemName(30);
+            ItemNBTHelper.setInt(player.getActiveItemStack(), MODE_TAG, i);
+            if (player.world.isRemote)
+                displayItemName(30);
 			return EnumActionResult.SUCCESS;
 		}
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		int ori = getRotationIndex(stack);
-		int i = MathHelper.clamp(playerIn.isSneaking() ? ori - 1 : ori + 1, 0, multipliers.length - 1);
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        int ori = getRotationIndex(playerIn.getActiveItemStack());
+        int i = MathHelper.clamp(playerIn.isSneaking() ? ori - 1 : ori + 1, 0, multipliers.length - 1);
 		if (ori == i)
-			return ActionResult.newResult(EnumActionResult.FAIL, stack);
+            return ActionResult.newResult(EnumActionResult.FAIL, playerIn.getActiveItemStack());
 
-		ItemNBTHelper.setInt(stack, MODE_TAG, MathHelper.clamp(i, 0, multipliers.length - 1));
-		if (playerIn.world.isRemote)
+        ItemNBTHelper.setInt(playerIn.getActiveItemStack(), MODE_TAG, MathHelper.clamp(i, 0, multipliers.length - 1));
+        if (playerIn.world.isRemote)
 			displayItemName(30);
-		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
-	}
+        return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getActiveItemStack());
+    }
 
 	@SideOnly(Side.CLIENT)
 	private void displayItemName(int ticks) {

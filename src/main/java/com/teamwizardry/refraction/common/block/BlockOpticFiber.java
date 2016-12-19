@@ -380,7 +380,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
     }
 
     @Override
-    public boolean canRenderInLayer(BlockRenderLayer layer) {
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return layer == BlockRenderLayer.CUTOUT;
     }
 

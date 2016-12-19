@@ -62,7 +62,7 @@ public class EffectBurn extends Effect {
                     cooked.dropItem(result.getItem(), 1);
                     cooked.isImmuneToFire();
                     cooked.setNoPickupDelay();
-                    item.getEntityItem().stackSize--;
+                    item.getEntityItem().setCount(item.getEntityItem().getCount() - 1);
                 }
                 pass = false;
             }
