@@ -16,6 +16,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 
+import static com.teamwizardry.refraction.api.beam.EffectTracker.gravityReset;
+
 /**
  * Created by LordSaad.
  */
@@ -39,8 +41,8 @@ public class EffectGravity extends Effect {
     @Override
     public void runEntity(World world, Entity entity, int potency) {
         if (entity instanceof EntityFallingBlock) return;
-        entity.setNoGravity(false);
-        entity.motionY = -1 * potency / 255.0;
+        entity.setNoGravity(true);
+        gravityReset.put(entity, 30);
         entity.fallDistance = 0;
         if (entity instanceof EntityPlayer)
             ((EntityPlayer) entity).velocityChanged = true;

@@ -16,6 +16,7 @@ import com.teamwizardry.refraction.client.jei.JEIRefractionPlugin;
 import mezz.jei.api.IRecipeRegistry;
 import mezz.jei.api.gui.IRecipeLayoutDrawable;
 import mezz.jei.api.recipe.IFocus;
+import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -127,15 +128,30 @@ public class ExtraSidebar {
                     RenderHelper.enableGUIStandardItemLighting();
                     GlStateManager.translate(background.getPos().getXi() + 8, background.getPos().getYi() + 30, 0);
 
+                    Vec2d pos = event.getMousePos();
+                    pos = new Vec2d(pos.getXi() - 8, pos.getYi() - 30);
+
                     // check if recipe is refraction's
+                    boolean isAssembly = false;
                     IRecipeRegistry registry = JEIRefractionPlugin.jeiRuntime.getRecipeRegistry();
                     IFocus<ItemStack> focus = registry.createFocus(IFocus.Mode.OUTPUT, stack);
-                    registry.getRecipeCategories(focus).stream().filter(category -> category.getUid().equals(Constants.MOD_ID + ".assembly_table")).forEach(category -> {
+                    for (IRecipeCategory<?> category : registry.getRecipeCategories(focus))
+                        if (category.getUid().equals(Constants.MOD_ID + ".assembly_table"))
+                            isAssembly = true;
+
+                    if (isAssembly) {
                         GlStateManager.translate(10, -10, 0);
                         GlStateManager.scale(0.5, 0.5, 0.5);
-                    });
+                        pos = new Vec2d(pos.getXi() - 10, pos.getYi() + 10).mul(1 / 0.5);
+                    }
 
-                    drawable.draw(Minecraft.getMinecraft(), 0, 0);
+                    drawable.draw(Minecraft.getMinecraft(), pos.getXi(), pos.getYi());
+
+                    if (isAssembly) {
+                        GlStateManager.translate(-10, 10, 0);
+                        GlStateManager.scale(1 / 0.5, 1 / 0.5, 1 / 0.5);
+                        GlStateManager.translate(-background.getPos().getXi() - 8, -background.getPos().getYi() - 30, 0);
+                    }
                     GlStateManager.enableBlend();
                     RenderHelper.disableStandardItemLighting();
                     GlStateManager.popMatrix();

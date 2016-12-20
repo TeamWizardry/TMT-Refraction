@@ -82,7 +82,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null)
-			((TileReflectionChamber) te).handle(beam);
+			((TileReflectionChamber) te).handleBeam(beam);
 		return true;
 	}
 

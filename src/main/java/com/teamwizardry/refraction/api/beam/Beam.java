@@ -55,7 +55,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
     /**
      * The destination of the beam. Don't touch this, just set the slope to the final loc
-     * and let this class handle it unless you know what you're doing.
+     * and let this class handleBeam it unless you know what you're doing.
      */
     public Vec3d finalLoc;
 
