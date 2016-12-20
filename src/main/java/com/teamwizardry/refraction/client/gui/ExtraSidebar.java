@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -117,7 +118,7 @@ public class ExtraSidebar {
             }
         });
 
-        if (sidebarType == SidebarType.RECIPE)
+        if (sidebarType == SidebarType.RECIPE && Loader.isModLoaded("JEI"))
             background.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
                 if (subPage.isSelected && isSelected) {
                     ItemStack stack = slotcomp.getStack().getValue(slotcomp);
