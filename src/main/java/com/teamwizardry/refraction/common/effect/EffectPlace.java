@@ -29,7 +29,7 @@ public class EffectPlace extends Effect {
 
     @Override
     public int getChance(int potency) {
-        return potency == 0 ? 0 : 5550 / potency;
+        return potency == 0 ? 0 : 355 / potency;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.common.effect;
 import com.teamwizardry.refraction.api.beam.BeamHitEvent;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.beam.modes.BeamMode;
 import com.teamwizardry.refraction.api.beam.modes.ModeGravity;
 import net.minecraft.block.state.IBlockState;
@@ -58,9 +59,9 @@ public class EffectGravity extends Effect {
             if (world.isAirBlock(pos)) return;
 
             EffectTracker.gravityProtection.put(pos, 50);
+            IBlockState state = world.getBlockState(pos);
 
-            if (world.isAirBlock(pos.down())) {
-                IBlockState state = world.getBlockState(pos);
+            if (world.isAirBlock(pos.down()) && !(state.getBlock() instanceof IBeamHandler)) {
                 int potency = event.getBeam().color.getAlpha();
                 double hardness = state.getBlock().getBlockHardness(state, world, event.getPos());
                 if (hardness >= 0 && hardness * 64 < potency && world.getTileEntity(pos) == null) {
