@@ -99,7 +99,7 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
             return handler.life <= 0;
         });
 
-        endUpdateTick();
+        purge();
     }
 
     private class BeamHandler {

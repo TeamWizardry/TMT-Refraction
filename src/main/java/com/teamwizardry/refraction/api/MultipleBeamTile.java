@@ -1,14 +1,13 @@
 package com.teamwizardry.refraction.api;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.beam.Beam;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by LordSaad.
@@ -16,12 +15,9 @@ import java.util.List;
 public class MultipleBeamTile extends TileMod {
 
     @NotNull
-    public List<Beam> lastTickBeams = new ArrayList<>();
+    public Set<Beam> lastTickBeams = new HashSet<>();
     @NotNull
-    public List<Beam> beams = new ArrayList<>();
-
-    @Save
-    public int tick = 5;
+    public Set<Beam> beams = new HashSet<>();
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
@@ -49,7 +45,7 @@ public class MultipleBeamTile extends TileMod {
         markDirty();
     }
 
-    private boolean noChangeInBeams() {
+    protected boolean noChangeInBeams() {
         if (beams.size() != lastTickBeams.size()) return false;
         for (Beam beam : lastTickBeams) {
             boolean flag = false;
@@ -64,22 +60,13 @@ public class MultipleBeamTile extends TileMod {
     }
 
     protected boolean checkTick() {
-        if (world.isRemote) return false;
-
-        if (tick > 0) {
-            tick--;
-            return false;
-        } else tick = 5;
-
-        return !noChangeInBeams() && !beams.isEmpty();
-
+        return !world.isRemote && !noChangeInBeams() && !beams.isEmpty();
     }
 
-    protected boolean endUpdateTick() {
+    protected void purge() {
         lastTickBeams.clear();
         lastTickBeams.addAll(beams);
         beams.clear();
         markDirty();
-        return false;
     }
 }

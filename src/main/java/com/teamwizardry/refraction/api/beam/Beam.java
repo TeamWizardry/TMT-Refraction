@@ -113,24 +113,21 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      * Will spawn a particle at either the beginning or at the end of the beam if any are enabled.
      */
     public boolean enableParticleBeginning = false, enableParticleEnd;
-
-    /**
-     * The physical particle that will spawn at the beginning or end
-     */
-    @SideOnly(Side.CLIENT)
-    private ParticleBuilder particle1, particle2;
-
     /**
      * The uuid of the entity that will not be affected by the beam.
      */
     @Nullable
     public UUID uuidToSkip;
-
     /**
      * The person theoretically casting the beam.
      */
     @Nullable
     public Entity caster;
+    /**
+     * The physical particle that will spawn at the beginning or end
+     */
+    @SideOnly(Side.CLIENT)
+    private ParticleBuilder particle1, particle2;
 
     public Beam(@NotNull World world, @NotNull Vec3d initLoc, @NotNull Vec3d slope, @NotNull Color color) {
         this.world = world;
@@ -140,9 +137,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         this.color = color;
 
         uuid = UUID.nameUUIDFromBytes((initLoc.hashCode() + "").getBytes());
-    }
 
-    {
         Utils.HANDLER.runIfClient(() -> {
             particle1 = new ParticleBuilder(3);
             particle1.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
@@ -518,14 +513,16 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
         // PARTICLES
         if (enableParticleBeginning) Utils.HANDLER.runIfClient(() -> {
-            ParticleSpawner.spawn(particle1, world, new StaticInterp<>(initLoc), 1);
-            if (ThreadLocalRandom.current().nextInt(5) == 0)
+            if (ThreadLocalRandom.current().nextInt(10) == 0)
+                ParticleSpawner.spawn(particle1, world, new StaticInterp<>(initLoc), 1);
+            if (ThreadLocalRandom.current().nextInt(100) == 0)
                 ParticleSpawner.spawn(particle2, world, new StaticInterp<>(initLoc), 1);
         });
 
         if (trace.hitVec != null && enableParticleEnd) Utils.HANDLER.runIfClient(() -> {
-            ParticleSpawner.spawn(particle1, world, new StaticInterp<>(trace.hitVec), 1);
-            if (ThreadLocalRandom.current().nextInt(5) == 0)
+            if (ThreadLocalRandom.current().nextInt(10) == 0)
+                ParticleSpawner.spawn(particle1, world, new StaticInterp<>(trace.hitVec), 1);
+            if (ThreadLocalRandom.current().nextInt(100) == 0)
                 ParticleSpawner.spawn(particle2, world, new StaticInterp<>(trace.hitVec), 1);
         });
         // PARTICLES

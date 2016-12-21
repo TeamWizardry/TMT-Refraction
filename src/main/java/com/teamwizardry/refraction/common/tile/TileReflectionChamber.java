@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,9 +30,6 @@ import java.util.List;
 @TileRegister("reflection_chamber")
 public class TileReflectionChamber extends MultipleBeamTile implements ITickable {
 
-    @Nullable
-    private Beam beam;
-
     @NotNull
     @SideOnly(Side.CLIENT)
     @Override
@@ -45,67 +41,62 @@ public class TileReflectionChamber extends MultipleBeamTile implements ITickable
     public void update() {
         World world = getWorld();
 
-        if (beam != null) beam.spawn();
+        HashMap<BeamMode, ColorData> colorData = new HashMap<>();
 
-        if (checkTick()) {
-            beam = null;
-            HashMap<BeamMode, ColorData> colorData = new HashMap<>();
+        for (Beam beam : beams) {
 
-            for (Beam beam : beams) {
-
-                boolean pass = false;
-                BeamMode finalMode = new ModeEffect();
-                for (BeamMode mode : colorData.keySet()) {
-                    if (beam.mode.getClass().isAssignableFrom(mode.getClass())) {
-                        pass = true;
-                        finalMode = mode;
-                        break;
-                    }
-                }
-
-                Color color = beam.color;
-                if (!pass) {
-                    colorData.put(beam.mode, new ColorData(color, beam.slope));
-                    continue;
-                }
-
-                ColorData data = colorData.get(finalMode);
-                data.red += color.getRed() * (color.getAlpha() / 255f);
-                data.green += color.getGreen() * (color.getAlpha() / 255f);
-                data.blue += color.getBlue() * (color.getAlpha() / 255f);
-                data.alpha += color.getAlpha();
-
-                List<Vec3d> angles = new ArrayList<>();
-                angles.add(data.angle);
-                angles.add(beam.slope);
-                data.angle = RotationHelper.averageDirection(angles);
-
-                data.count++;
-
-                colorData.put(finalMode, data);
-            }
-
+            boolean pass = false;
+            BeamMode finalMode = new ModeEffect();
             for (BeamMode mode : colorData.keySet()) {
-                ColorData data = colorData.get(mode);
-                int red = Math.min(data.red / data.count, 255),
-                        green = Math.min(data.green / data.count, 255),
-                        blue = Math.min(data.blue / data.count, 255),
-                        alpha = Math.min(data.alpha, 255);
-
-                float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
-                Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
-                color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
-
-                Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), data.angle, color).setMode(mode);
-                EnumFacing facing = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
-                IBlockState state = world.getBlockState(pos.offset(facing));
-                if (state.getBlock() == ModBlocks.OPTIC_FIBER && state.getValue(BlockOpticFiber.FACING).contains(facing))
-                    this.beam = beam.setSlope(PosUtils.getVecFromFacing(facing));
-                else this.beam = beam;
+                if (beam.mode.getClass().isAssignableFrom(mode.getClass())) {
+                    pass = true;
+                    finalMode = mode;
+                    break;
+                }
             }
 
-            endUpdateTick();
+            Color color = beam.color;
+            if (!pass) {
+                colorData.put(beam.mode, new ColorData(color, beam.slope));
+                continue;
+            }
+
+            ColorData data = colorData.get(finalMode);
+            data.red += color.getRed() * (color.getAlpha() / 255f);
+            data.green += color.getGreen() * (color.getAlpha() / 255f);
+            data.blue += color.getBlue() * (color.getAlpha() / 255f);
+            data.alpha += color.getAlpha();
+
+            List<Vec3d> angles = new ArrayList<>();
+            angles.add(data.angle);
+            angles.add(beam.slope);
+            data.angle = RotationHelper.averageDirection(angles);
+
+            data.count++;
+
+            colorData.put(finalMode, data);
         }
+
+        for (BeamMode mode : colorData.keySet()) {
+            ColorData data = colorData.get(mode);
+            int red = Math.min(data.red / data.count, 255),
+                    green = Math.min(data.green / data.count, 255),
+                    blue = Math.min(data.blue / data.count, 255),
+                    alpha = Math.min(data.alpha, 255);
+
+            float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
+            Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
+            color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+
+            Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), data.angle, color).setMode(mode);
+            EnumFacing facing = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
+            IBlockState state = world.getBlockState(pos.offset(facing));
+            if (state.getBlock() == ModBlocks.OPTIC_FIBER && state.getValue(BlockOpticFiber.FACING).contains(facing))
+                beam.setSlope(PosUtils.getVecFromFacing(facing)).spawn();
+            else beam.spawn();
+        }
+
+        purge();
     }
 
     private class ColorData {
