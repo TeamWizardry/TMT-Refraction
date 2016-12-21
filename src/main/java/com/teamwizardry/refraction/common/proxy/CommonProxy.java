@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.common.util.EasyConfigHandler;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.api.internal.ClientRunnable;
 import com.teamwizardry.refraction.api.soundmanager.SoundManager;
 import com.teamwizardry.refraction.client.gui.GuiHandler;
 import com.teamwizardry.refraction.common.core.CatChaseHandler;
