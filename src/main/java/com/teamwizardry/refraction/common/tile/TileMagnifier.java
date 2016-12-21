@@ -30,7 +30,8 @@ public class TileMagnifier extends TileMod implements ITickable {
 
 		boolean hasLens = false;
 		int worldTime = (int) (world.getWorldTime() % 24000L);
-		if (!(worldTime >= Constants.NIGHT_START && worldTime < Constants.NIGHT_END)) {
+		if (!(worldTime >= Constants.NIGHT_START && worldTime < Constants.NIGHT_END)
+				&& !world.isRaining()) {
 			for (int y = 1; y < 10; y++) {
 				BlockPos lens = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
 				if (world.getBlockState(lens).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens))

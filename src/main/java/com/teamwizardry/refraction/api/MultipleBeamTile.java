@@ -22,10 +22,17 @@ public class MultipleBeamTile extends TileMod {
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
         beams.clear();
-        NBTTagList array = compound.getTagList("beams", net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < array.tagCount(); i++) {
-            Beam beam = new Beam(array.getCompoundTagAt(i));
+        NBTTagList array1 = compound.getTagList("beams", net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < array1.tagCount(); i++) {
+            Beam beam = new Beam(array1.getCompoundTagAt(i));
             beams.add(beam);
+        }
+
+        lastTickBeams.clear();
+        NBTTagList array2 = compound.getTagList("last_tick_beams", net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < array2.tagCount(); i++) {
+            Beam beam = new Beam(array2.getCompoundTagAt(i));
+            lastTickBeams.add(beam);
         }
     }
 
@@ -35,6 +42,12 @@ public class MultipleBeamTile extends TileMod {
             NBTTagList array = new NBTTagList();
             for (Beam beam : beams) array.appendTag(beam.serializeNBT());
             compound.setTag("beams", array);
+        }
+
+        if (lastTickBeams.size() > 0) {
+            NBTTagList array = new NBTTagList();
+            for (Beam beam : lastTickBeams) array.appendTag(beam.serializeNBT());
+            compound.setTag("last_tick_beams", array);
         }
     }
 
