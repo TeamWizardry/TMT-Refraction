@@ -55,7 +55,7 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 
 					if (!world.isRemote) {
                         Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
-                        EntityGrenade entityGrenade = new EntityGrenade(world, color);
+						EntityGrenade entityGrenade = new EntityGrenade(world, color, entityplayer);
 						entityGrenade.setPosition(entityplayer.posX, entityplayer.posY + entityplayer.eyeHeight, entityplayer.posZ);
 						entityGrenade.setHeadingFromThrower(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0f, 1.5f, 1.0f);
 						stack.damageItem(1, entityplayer);

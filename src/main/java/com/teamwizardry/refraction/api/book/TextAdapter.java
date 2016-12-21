@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.Loader;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class TextAdapter {
                             if (stack != null) {
                                 s = s.replace(word, TextFormatting.RESET + "[" + TextFormatting.DARK_BLUE + stack.getDisplayName() + TextFormatting.RESET + "]");
 
-                                if (!items.contains(stack.getItem())) {
+                                if (!items.contains(stack.getItem()) && Loader.isModLoaded("JEI")) {
                                     items.add(stack.getItem());
                                     ExtraSidebar extraSidebar = new ExtraSidebar(subPage, id++, null, ExtraSidebar.SidebarType.RECIPE);
                                     extraSidebar.title = stack.getDisplayName().length() > 17 ? stack.getDisplayName().substring(0, 17) + "..." : stack.getDisplayName();

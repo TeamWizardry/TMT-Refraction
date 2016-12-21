@@ -3,6 +3,8 @@ package com.teamwizardry.refraction.api.beam;
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.PosUtils;
+import com.teamwizardry.refraction.api.beam.modes.BeamMode;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,6 +41,10 @@ public class Effect implements Cloneable {
         return this;
     }
 
+    public BeamMode getRequiredBeamMode() {
+        return new ModeEffect();
+    }
+
     /**
      * The entity that the beam intersects with. If it's a beam type, it'll run on all the entities it's
      * traversed through. If it's a single type, it'll only run on the one entity it hit.
@@ -51,7 +57,7 @@ public class Effect implements Cloneable {
     }
 
     /**
-     * The block that the beam intersects with. If it's a beam type, it'll run on all the blocks it's
+     * The block that the beam intersects with. If it's a beam type, it'll run on all the gravityProtection it's
      * traversed through. If it's a single type, it'll only run on that one block.
      *
      * @param world   The world object.
@@ -59,6 +65,58 @@ public class Effect implements Cloneable {
      * @param potency The strength of the beam.
      */
     public void runBlock(World world, BlockPos pos, int potency) {
+    }
+
+    /**
+     * The general run method. Runs when the effect happens.
+     *
+     * @param world   The world object.
+     */
+    public void run(World world) {
+    }
+
+    /**
+     * The run method when a beam is spawned from a gun.
+     *
+     * @param world   The world object.
+     * @param caster  The entity casting the beam.
+     * @param potency The strength of the beam.
+     */
+    public void specialRunBlock(World world, BlockPos pos, EntityLivingBase caster, int potency) {
+        runBlock(world, pos, potency);
+    }
+
+    /**
+     * The run method when a beam is spawned from a gun.
+     *
+     * @param world   The world object.
+     * @param caster  The entity casting the beam.
+     * @param potency The strength of the beam.
+     */
+    public void specialRunFinalBlock(World world, BlockPos pos, EntityLivingBase caster, int potency) {
+        runFinalBlock(world, pos, potency);
+    }
+
+    /**
+     * The run method when a beam is spawned from a gun.
+     *
+     * @param world   The world object.
+     * @param caster  The entity casting the beam.
+     * @param entity  The entity intersected with
+     * @param potency The strength of the beam.
+     */
+    public void specialRunEntity(World world, Entity entity, EntityLivingBase caster, int potency) {
+        runEntity(world, entity, potency);
+    }
+
+    /**
+     * The block that the beam intersects with at the end of the raycast.
+     *
+     * @param world   The world object.
+     * @param pos     The position of the block intersected.
+     * @param potency The strength of the beam.
+     */
+    public void runFinalBlock(World world, BlockPos pos, int potency) {
     }
 
     void addEntity(@NotNull World world, @NotNull Entity entity) {
@@ -76,10 +134,39 @@ public class Effect implements Cloneable {
         }
     }
 
+    void addFinalBlock(@NotNull World world, @NotNull BlockPos pos) {
+        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+            blocks.add(pos);
+            runFinalBlock(world, pos, calculateBlockPotency(pos));
+        }
+    }
+
+    void specialAddBlock(@NotNull World world, @NotNull BlockPos pos, @NotNull EntityLivingBase caster) {
+        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+            blocks.add(pos);
+            specialRunBlock(world, pos, caster, calculateBlockPotency(pos));
+        }
+    }
+
+    void specialAddFinalBlock(@NotNull World world, @NotNull BlockPos pos, @NotNull EntityLivingBase caster) {
+        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+            blocks.add(pos);
+            specialRunFinalBlock(world, pos, caster, calculateBlockPotency(pos));
+        }
+    }
+
+    void specialAddEntity(@NotNull World world, @NotNull Entity entity, @NotNull EntityLivingBase caster) {
+        if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+            int potency = calculateEntityPotency(entity);
+            entities.put(entity.getPosition(), entity);
+            specialRunEntity(world, entity, caster, potency);
+        }
+    }
+
     List<Entity> filterEntities(List<Entity> entityList) {
         entityList.removeIf(entity -> potency < 1
-                || beam.uuidToSkip != null
-                && beam.uuidToSkip.equals(entity.getUniqueID())
+                || (beam.uuidToSkip != null
+                && beam.uuidToSkip.equals(entity.getUniqueID()))
                 || (entity instanceof EntityLivingBase
                 && ((EntityLivingBase) entity).getActivePotionEffect(MobEffects.INVISIBILITY) != null)
                 || (entity instanceof EntityPlayer

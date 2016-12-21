@@ -6,6 +6,7 @@ import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
 import com.teamwizardry.refraction.common.caps.DualEnergyStorage;
 import com.teamwizardry.refraction.common.tile.TileSolarPanel;
 import net.minecraft.block.SoundType;
@@ -41,7 +42,7 @@ public class BlockSolarPanel extends BlockModContainer implements IBeamHandler {
 
     @Override
     public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
-        if (!beam.enableEffect) return true;
+        if (!(beam.mode instanceof ModeEffect)) return true;
         DualEnergyStorage energy = getTE(world, pos).energy;
         energy.receiveEnergy(ConfigValues.TESLA_PER_TICK, false);
         return true;

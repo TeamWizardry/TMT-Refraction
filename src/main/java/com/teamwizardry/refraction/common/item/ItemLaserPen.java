@@ -66,7 +66,6 @@ public class ItemLaserPen extends ItemMod {
 
             new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0x20FF0000, true))
                     .setUUIDToSkip(player.getUniqueID())
-                    .setEnableEffect(false)
                     .enableParticleEnd()
                     .spawn();
         }

@@ -8,9 +8,14 @@ import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect.EffectType;
+import com.teamwizardry.refraction.api.beam.modes.BeamMode;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
+import com.teamwizardry.refraction.api.beam.modes.ModeNone;
 import com.teamwizardry.refraction.api.raytrace.EntityTrace;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -31,8 +36,13 @@ import java.awt.*;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-// TODO: make sparkles configurable + whether to spawn them at the end or beginning of a beam.
 public class Beam implements INBTSerializable<NBTTagCompound> {
+
+    /**
+     * The mode of the beam
+     */
+    @NotNull
+    public BeamMode mode = new ModeNone();
 
     /**
      * The initial position the beams comes from.
@@ -47,7 +57,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
     /**
      * The destination of the beam. Don't touch this, just set the slope to the final loc
-     * and let this class handle it unless you know what you're doing.
+     * and let this class handleBeam it unless you know what you're doing.
      */
     public Vec3d finalLoc;
 
@@ -68,12 +78,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      */
     @Nullable
     public Effect effect;
-
-    /**
-     * Specify whether this beam will be aesthetic only or not.
-     * If not, it will run the effect dictated by the color unless the effect is changed.
-     */
-    public boolean enableEffect = true;
 
     /**
      * If true, the beam will phase through entities.
@@ -116,8 +120,17 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     @SideOnly(Side.CLIENT)
     private ParticleBuilder particle1, particle2;
 
+    /**
+     * The uuid of the entity that will not be affected by the beam.
+     */
     @Nullable
     public UUID uuidToSkip;
+
+    /**
+     * The person theoretically casting the beam.
+     */
+    @Nullable
+    public Entity caster;
 
     public Beam(@NotNull World world, @NotNull Vec3d initLoc, @NotNull Vec3d slope, @NotNull Color color) {
         this.world = world;
@@ -143,7 +156,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
             particle2.disableMotionCalculation();
             particle2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ThreadLocalRandom.current().nextInt(10, 15)));
             particle2.setAlphaFunction(new InterpFadeInOut((float) ThreadLocalRandom.current().nextDouble(0.1, 0.5), (float) ThreadLocalRandom.current().nextDouble(0.1, 0.5)));
-            particle2.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 2));
+            particle2.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 2.5));
         });
     }
 
@@ -169,12 +182,11 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
                 && beam.initLoc.zCoord == initLoc.zCoord
                 && beam.enableParticleEnd == enableParticleEnd
                 && beam.enableParticleBeginning == enableParticleBeginning
-                && beam.uuidToSkip == uuidToSkip
-                && beam.enableEffect == enableEffect
                 && beam.ignoreEntities == ignoreEntities
                 && beam.allowedBounceTimes == allowedBounceTimes
                 && beam.bouncedTimes == bouncedTimes
-                && beam.range == range;
+                && beam.range == range
+                && beam.mode.equals(mode);
     }
 
     /**
@@ -219,7 +231,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         return createSimilarBeam(init, dir, color);
     }
 
-
     /**
      * Will create a similar beam that starts and ends in the positions you specify, with a custom color.
      *
@@ -230,11 +241,35 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     public Beam createSimilarBeam(Vec3d init, Vec3d dir, Color color) {
         return new Beam(world, init, dir, color)
                 .setIgnoreEntities(ignoreEntities)
-                .setEnableEffect(enableEffect)
                 .setUUID(uuid)
                 .setAllowedBounceTimes(allowedBounceTimes)
                 .setBouncedTimes(bouncedTimes)
-                .incrementBouncedTimes();
+                .incrementBouncedTimes()
+                .setMode(mode)
+                .setRange(range)
+                .setCaster(caster);
+    }
+
+    /**
+     * Will change the mode of the beam
+     *
+     * @param mode Defines the new mode this beam will be.
+     * @return The new beam created. Can be modified as needed.
+     */
+    public Beam setMode(@NotNull BeamMode mode) {
+        this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Will set the theoretical caster of the beam.
+     *
+     * @param caster Defines the entity casting the beam.
+     * @return The new beam created. Can be modified as needed.
+     */
+    public Beam setCaster(@Nullable Entity caster) {
+        this.caster = caster;
+        return this;
     }
 
     /**
@@ -326,22 +361,11 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     /**
      * If set to true, the beam will phase through entities.
      *
-     * @param ignoreEntities The boolean that will specify if the beam should phase through blocks or not. Default false.
+     * @param ignoreEntities The boolean that will specify if the beam should phase through gravityProtection or not. Default false.
      * @return This beam itself for the convenience of editing a beam in one line/chain.
      */
     public Beam setIgnoreEntities(boolean ignoreEntities) {
         this.ignoreEntities = ignoreEntities;
-        return this;
-    }
-
-    /**
-     * If set to false, the beam will be an aesthetic only beam that will not produce any effect.
-     *
-     * @param enableEffect The boolean that will specify if the beam should enable it's effect or not. Default true.
-     * @return This beam itself for the convenience of editing a beam in one line/chain.
-     */
-    public Beam setEnableEffect(boolean enableEffect) {
-        this.enableEffect = enableEffect;
         return this;
     }
 
@@ -380,21 +404,22 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         return this;
     }
 
-    public UUID getUUID() {
-        return this.uuid;
-    }
-
     public Beam setUUID(UUID uuid) {
         this.uuid = uuid;
         return this;
     }
 
+    /**
+     * Will initialize all variables left to prepare before the beam actually spawns.
+     *
+     * @return This beam itself for the convenience of editing a beam in one line/chain.
+     */
     private Beam initializeVariables() {
         // EFFECT CHECKING //
-        if (effect == null && enableEffect) {
+        if (effect == null && mode instanceof ModeEffect) {
             Effect tempEffect = EffectTracker.getEffect(this);
             if (tempEffect != null) effect = tempEffect;
-        } else if (effect != null && !enableEffect) effect = null;
+        } else if (effect != null && !(mode instanceof ModeEffect)) effect = null;
         // EFFECT CHECKING //
 
         // BEAM PHASING CHECKS //
@@ -458,35 +483,35 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         }
 
         // Effect handling
-        if (effect != null) {
-            if (effect.getType() == EffectType.BEAM)
-                EffectTracker.addEffect(world, this);
+        if (mode instanceof ModeEffect)
+            if (effect != null) {
+                if (effect.getType() == EffectType.BEAM)
+                    EffectTracker.addEffect(world, this);
 
-            else if (pass) {
-                if (effect.getType() == EffectType.SINGLE) {
-                    if (trace.typeOfHit != RayTraceResult.Type.MISS)
-                        EffectTracker.addEffect(world, trace.hitVec, effect);
+                else if (pass) {
+                    if (effect.getType() == EffectType.SINGLE) {
+                        if (trace.typeOfHit != RayTraceResult.Type.MISS)
+                            EffectTracker.addEffect(world, trace.hitVec, effect);
 
-                    else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
-                        BlockPos pos = trace.getBlockPos();
-                        EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
+                        else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+                            BlockPos pos = trace.getBlockPos();
+                            EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
+                        }
                     }
                 }
             }
-        }
         // EFFECT HANDLING
 
-        // PLAYER REFLECTING
-        if (ThreadLocalRandom.current().nextInt(3) == 0)
-            if (trace.typeOfHit == RayTraceResult.Type.ENTITY && trace.entityHit instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) trace.entityHit;
-                if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null
-                        && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null
-                        && player.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null
-                        && player.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null)
-                    createSimilarBeam(player.getLook(1)).setIgnoreEntities(true).enableParticleBeginning().spawn();
-            }
-        // PLAYER REFLECTING
+        // ENTITY REFLECTING
+        if (trace.typeOfHit == RayTraceResult.Type.ENTITY && trace.entityHit instanceof EntityLivingBase) {
+            EntityLivingBase entity = (EntityLivingBase) trace.entityHit;
+            if (entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null
+                    && entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null
+                    && entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null
+                    && entity.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null)
+                createSimilarBeam(entity.getLook(1)).setUUIDToSkip(entity.getUniqueID()).enableParticleBeginning().spawn();
+        }
+        // ENTITY REFLECTING
 
         // Particle packet sender
         Utils.HANDLER.fireLaserPacket(this);
@@ -494,13 +519,13 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // PARTICLES
         if (enableParticleBeginning) Utils.HANDLER.runIfClient(() -> {
             ParticleSpawner.spawn(particle1, world, new StaticInterp<>(initLoc), 1);
-            if (ThreadLocalRandom.current().nextInt(100) == 0)
+            if (ThreadLocalRandom.current().nextInt(5) == 0)
                 ParticleSpawner.spawn(particle2, world, new StaticInterp<>(initLoc), 1);
         });
 
         if (trace.hitVec != null && enableParticleEnd) Utils.HANDLER.runIfClient(() -> {
             ParticleSpawner.spawn(particle1, world, new StaticInterp<>(trace.hitVec), 1);
-            if (ThreadLocalRandom.current().nextInt(100) == 0)
+            if (ThreadLocalRandom.current().nextInt(5) == 0)
                 ParticleSpawner.spawn(particle2, world, new StaticInterp<>(trace.hitVec), 1);
         });
         // PARTICLES
@@ -547,9 +572,9 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         compound.setDouble("range", range);
         compound.setUniqueId("uuid", uuid);
         compound.setBoolean("ignore_entities", ignoreEntities);
-        compound.setBoolean("enable_effect", enableEffect);
         compound.setBoolean("enable_particle_beginning", enableParticleBeginning);
-        compound.setBoolean("enable_particle_end", enableEffect);
+        compound.setBoolean("enable_particle_end", enableParticleEnd);
+        compound.setString("mode", mode.getName());
         if (uuidToSkip != null) compound.setUniqueId("uuid_to_skip", uuidToSkip);
         return compound;
     }
@@ -576,12 +601,12 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         else uuid = UUID.randomUUID();
         if (nbt.hasKey("uuid_to_skip")) uuidToSkip = nbt.getUniqueId("uuid_to_skip");
         if (nbt.hasKey("ignore_entities")) ignoreEntities = nbt.getBoolean("ignore_entities");
-        if (nbt.hasKey("enable_effect")) enableEffect = nbt.getBoolean("enable_effect");
         if (nbt.hasKey("range")) range = nbt.getDouble("range");
         if (nbt.hasKey("bounce_times")) bouncedTimes = nbt.getInteger("bounce_times");
         if (nbt.hasKey("allowed_bounce_times")) allowedBounceTimes = nbt.getInteger("allowed_bounce_times");
         if (nbt.hasKey("enable_particle_beginning"))
             enableParticleBeginning = nbt.getBoolean("enable_particle_beginning");
+        mode = BeamModeRegistry.INSTANCE.getMode(nbt.getString("mode"));
         if (nbt.hasKey("enable_particle_end")) enableParticleEnd = nbt.getBoolean("enable_particle_end");
     }
 }

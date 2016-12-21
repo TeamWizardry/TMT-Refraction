@@ -4,7 +4,7 @@ import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
-import net.minecraft.client.Minecraft;
+import com.teamwizardry.refraction.api.beam.modes.ModeGun;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -55,10 +55,12 @@ public class ItemPhotonCannon extends ItemMod {
             Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
 
             stack.damageItem(1, playerIn);
-            Minecraft.getMinecraft().player.sendChatMessage(stack.getItemDamage() + "/" + stack.getMaxDamage());
             Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), color)
-                    .setEnableEffect(true)
+                    .setMode(new ModeGun())
                     .setUUIDToSkip(playerIn.getUniqueID())
+                    .setCaster(playerIn)
+                    .setRange(30)
+                    .enableParticleBeginning()
                     .enableParticleEnd();
             beam.spawn();
         }

@@ -1,26 +1,21 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.api.MultipleBeamTile;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -28,37 +23,16 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by LordSaad44
  */
 @TileRegister("disco_ball")
-public class TileDiscoBall extends TileMod implements ITickable {
+public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 
+    @Save
     public double tick = 0;
     @NotNull
-    public List<Beam> beams = new ArrayList<>();
     private Set<BeamHandler> handlers = new HashSet<>();
-    @Save
-    private int beamHandledTicks = 0;
 
     @Override
-    public void readCustomNBT(NBTTagCompound compound) {
-        beams.clear();
-        NBTTagList array = compound.getTagList("beams", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < array.tagCount(); i++) {
-            Beam beam = new Beam(array.getCompoundTagAt(i));
-            beams.add(beam);
-        }
-    }
-
-    @Override
-    public void writeCustomNBT(NBTTagCompound compound, boolean sync) {
-        if (beams.size() > 0) {
-            NBTTagList array = new NBTTagList();
-            for (Beam beam : beams) array.appendTag(beam.serializeNBT());
-            compound.setTag("beams", array);
-        }
-    }
-
-    public void handle(Beam beam) {
-        beamHandledTicks = 5;
-        markDirty();
+    public void handleBeam(Beam beam) {
+        super.handleBeam(beam);
 
         if (!world.isBlockPowered(pos) && world.isBlockIndirectlyGettingPowered(pos) == 0) {
             beams.clear();
@@ -91,6 +65,7 @@ public class TileDiscoBall extends TileMod implements ITickable {
         }
     }
 
+    @NotNull
     @SideOnly(Side.CLIENT)
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
@@ -99,13 +74,8 @@ public class TileDiscoBall extends TileMod implements ITickable {
 
     @Override
     public void update() {
-        if (beamHandledTicks > 0)
-            beamHandledTicks--;
-        else {
-            beams.clear();
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-            markDirty();
-        }
+        if (!checkTick()) return;
+
         if (world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) != 0) {
             tick += 5;
             if (tick >= 360) tick = 0;
@@ -128,15 +98,17 @@ public class TileDiscoBall extends TileMod implements ITickable {
             handler.beam.enableParticleBeginning().spawn();
             return handler.life <= 0;
         });
+
+        endUpdateTick();
     }
 
     private class BeamHandler {
         public Beam beam;
-        public boolean invertX = false, invertZ = false;
-        public int life = 20, maxLife = 20;
-        public double rotX = 0, rotZ;
+        boolean invertX = false, invertZ = false;
+        int life = 20, maxLife = 20;
+        double rotX = 0, rotZ;
 
-        public BeamHandler(Beam beam, double rotX, double rotZ) {
+        BeamHandler(Beam beam, double rotX, double rotZ) {
             this.beam = beam;
             this.rotX = rotX;
             this.rotZ = rotZ;

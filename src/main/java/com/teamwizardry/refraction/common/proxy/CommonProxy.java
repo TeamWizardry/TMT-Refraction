@@ -4,13 +4,13 @@ import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.EasyConfigHandler;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.api.internal.ClientRunnable;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import com.teamwizardry.refraction.api.soundmanager.SoundManager;
 import com.teamwizardry.refraction.client.gui.GuiHandler;
-import com.teamwizardry.refraction.common.bridge.ExciterTracker;
 import com.teamwizardry.refraction.common.core.CatChaseHandler;
 import com.teamwizardry.refraction.common.core.DispenserScrewDriverBehavior;
 import com.teamwizardry.refraction.common.core.EventHandler;
+import com.teamwizardry.refraction.common.effect.EffectGravity;
 import com.teamwizardry.refraction.common.mt.MTRefractionPlugin;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
@@ -19,6 +19,7 @@ import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import com.teamwizardry.refraction.init.recipies.CraftingRecipes;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -47,7 +48,10 @@ public class CommonProxy {
 
         EventHandler.INSTANCE.getClass();
         SoundManager.INSTANCE.getClass();
-        ExciterTracker.INSTANCE.getClass();
+
+        BeamModeRegistry.INSTANCE.getClass();
+
+        MinecraftForge.EVENT_BUS.register(new EffectGravity());
 
         EasyConfigHandler.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());

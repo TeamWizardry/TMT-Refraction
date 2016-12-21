@@ -13,5 +13,6 @@ public class ModEffects {
 		EffectTracker.registerEffect(new EffectDisperse());
 		EffectTracker.registerEffect(new EffectPlace());
 		EffectTracker.registerEffect(new EffectRedstone());
+		EffectTracker.registerEffect(new EffectGravity());
 	}
 }

@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.api.beam;
 
 import com.google.common.collect.HashMultimap;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -25,6 +26,7 @@ import java.util.WeakHashMap;
 public class EffectTracker {
 
     public static ArrayList<Effect> effectRegistry = new ArrayList<>();
+    public static HashMap<BlockPos, Integer> gravityProtection = new HashMap<>();
     public static HashMap<Entity, Integer> gravityReset = new HashMap<>();
     private static WeakHashMap<World, EffectTracker> effectInstances = new WeakHashMap<>();
     private HashMultimap<Effect, BlockPos> effects = HashMultimap.create();
@@ -96,29 +98,61 @@ public class EffectTracker {
             effects.keySet().removeIf(effect -> {
                 if (effect != null && w != null && effects.get(effect) != null) {
                     // RUN EFFECT METHODS //
-                    if (effect.getType() == Effect.EffectType.SINGLE) {
-                        if (effect.beam.trace.typeOfHit == RayTraceResult.Type.BLOCK) {
-                            effect.addBlock(w, effect.beam.trace.getBlockPos());
-                        } else if (effect.beam.trace.typeOfHit == RayTraceResult.Type.ENTITY) {
-                            if (effect.beam.trace.entityHit != null)
-                                effect.addEntity(w, effect.beam.trace.entityHit);
-                        }
-                    }
+                    effect.run(w);
+                    if (effect.beam.mode.runSpecialEffects()) {
+                        if (effect.beam.caster != null) {
+                            if (effect.beam.trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+                                effect.specialAddFinalBlock(w, effect.beam.trace.getBlockPos(), (EntityLivingBase) effect.beam.caster);
+                            } else if (effect.beam.trace.typeOfHit == RayTraceResult.Type.ENTITY) {
+                                if (effect.beam.trace.entityHit != null)
+                                    effect.specialAddEntity(w, effect.beam.trace.entityHit, (EntityLivingBase) effect.beam.caster);
+                            }
 
-                    effects.get(effect).forEach(blockPos -> {
-                        effect.addBlock(w, blockPos);
+                            effects.get(effect).forEach(blockPos -> {
+                                effect.specialAddBlock(w, blockPos, (EntityLivingBase) effect.beam.caster);
 
-                        if (effect.getType() == Effect.EffectType.BEAM) {
-                            AxisAlignedBB axis = new AxisAlignedBB(blockPos);
-                            List<Entity> entities = effect.filterEntities(w.getEntitiesWithinAABB(Entity.class, axis));
-                            entities.forEach(entity -> {
-                                if (entity != null) effect.addEntity(w, entity);
+                                if (effect.getType() == Effect.EffectType.BEAM) {
+                                    AxisAlignedBB axis = new AxisAlignedBB(blockPos);
+                                    List<Entity> entities = effect.filterEntities(w.getEntitiesWithinAABB(Entity.class, axis));
+                                    entities.forEach(entity -> {
+                                        if (entity != null)
+                                            effect.specialAddEntity(w, entity, (EntityLivingBase) effect.beam.caster);
+                                    });
+                                }
                             });
                         }
-                    });
+                    } else {
+                        if (effect.beam.mode.getClass().isAssignableFrom(effect.getRequiredBeamMode().getClass())) {
+                            if (effect.beam.trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+                                effect.addFinalBlock(w, effect.beam.trace.getBlockPos());
+                            } else if (effect.beam.trace.typeOfHit == RayTraceResult.Type.ENTITY) {
+                                if (effect.beam.trace.entityHit != null)
+                                    effect.addEntity(w, effect.beam.trace.entityHit);
+                            }
+
+                            effects.get(effect).forEach(blockPos -> {
+                                effect.addBlock(w, blockPos);
+
+                                if (effect.getType() == Effect.EffectType.BEAM) {
+                                    AxisAlignedBB axis = new AxisAlignedBB(blockPos);
+                                    List<Entity> entities = effect.filterEntities(w.getEntitiesWithinAABB(Entity.class, axis));
+                                    entities.forEach(entity -> {
+                                        if (entity != null) effect.addEntity(w, entity);
+                                    });
+                                }
+                            });
+                        }
+                    }
                     // RUN EFFECT METHODS //
                 }
                 return true;
+            });
+
+            gravityProtection.keySet().removeIf(pos -> {
+                if (gravityProtection.get(pos) > 0) {
+                    gravityProtection.put(pos, gravityProtection.get(pos) - 1);
+                    return false;
+                } else return true;
             });
 
             gravityReset.keySet().removeIf(entity -> {

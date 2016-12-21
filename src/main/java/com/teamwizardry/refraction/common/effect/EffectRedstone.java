@@ -22,7 +22,7 @@ import java.awt.*;
 public class EffectRedstone extends Effect {
 
     @Override
-    public void runBlock(World world, BlockPos pos, int potency) {
+    public void runFinalBlock(World world, BlockPos pos, int potency) {
         EnumFacing facing = beam.trace.sideHit;
         if (facing != null) {
             IBlockState adjacentState = world.getBlockState(pos.offset(facing));

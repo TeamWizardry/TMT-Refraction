@@ -25,7 +25,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class RenderSplitter extends TileEntitySpecialRenderer<TileSplitter> {
 
-	private IBakedModel modelArms, modelMirror, modelMirrorSplitter;
+    private IBakedModel modelArms, modelMirrorSplitter;
 
 	public RenderSplitter() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -34,7 +34,6 @@ public class RenderSplitter extends TileEntitySpecialRenderer<TileSplitter> {
 	@SubscribeEvent
 	public void reload(ClientProxy.ResourceReloadEvent event) {
 		modelArms = null;
-		modelMirror = null;
 	}
 
 	private void getBakedModels() {
@@ -48,19 +47,17 @@ public class RenderSplitter extends TileEntitySpecialRenderer<TileSplitter> {
 			modelArms = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 					location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 		}
-		if (modelMirror == null || modelMirrorSplitter == null) {
-			try {
+        if (modelMirrorSplitter == null) {
+            try {
 				model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID, "block/mirror_head"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			modelMirror = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
-					location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 			modelMirrorSplitter = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 					location -> {
-						if (location.toString().equals(Constants.MOD_ID + ":blocks/mirror_normal"))
-							location = new ResourceLocation(Constants.MOD_ID, "blocks/mirror_splitter");
-						return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                        if (location.toString().equals(Constants.MOD_ID + ":blocks/mirror_normal"))
+                            location = new ResourceLocation(Constants.MOD_ID, "blocks/mirror_splitter");
+                        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
 					});
 		}
 	}
@@ -68,8 +65,8 @@ public class RenderSplitter extends TileEntitySpecialRenderer<TileSplitter> {
 	@Override
 	public void renderTileEntityAt(TileSplitter te, double x, double y, double z, float partialTicks, int destroyStage) {
 		double subtractedMillis = (te.getWorld().getTotalWorldTime() - te.worldTime);
-		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((te.rotPrevX - te.rotDestX) / 2.0), 20)),
-				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((te.rotPrevY - te.rotDestY) / 2.0), 20));
+		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((te.rotPrevX - te.rotDestX) / 2.0), 15)),
+				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((te.rotPrevY - te.rotDestY) / 2.0), 15));
 		float rotX = te.getRotX(), rotY = te.getRotY();
 
 		GlStateManager.pushMatrix();

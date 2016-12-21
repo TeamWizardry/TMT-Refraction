@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  * <br>
  * This event is not {@link Cancelable}.<br>
  * This event has a result. {@link HasResult}
- * The result determines whether the block shouldn't be allowed to handle its beam ({@link Result#DENY}),
+ * The result determines whether the block shouldn't be allowed to handleBeam its beam ({@link Result#DENY}),
  * the normal handling occurs ({@link Result#DEFAULT}),
  * or if the beam should go straight through the block ({@link Result#ALLOW}).
  * <br>
