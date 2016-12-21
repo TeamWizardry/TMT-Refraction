@@ -1,7 +1,9 @@
 package com.teamwizardry.refraction.common.proxy;
 
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.internal.ClientRunnable;
 import com.teamwizardry.refraction.api.internal.IInternalHandler;
 import com.teamwizardry.refraction.client.jei.JEIRefractionPlugin;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
@@ -24,5 +26,10 @@ public final class RefractionInternalHandler implements IInternalHandler {
 	@Override
 	public ItemStack getStackFromString(@NotNull String string) {
 		return JEIRefractionPlugin.getStackFromString(string);
+	}
+
+	@Override
+	public void runIfClient(@NotNull ClientRunnable runnable) {
+		Refraction.proxy.runIfClient(runnable);
 	}
 }

@@ -16,4 +16,6 @@ public interface IInternalHandler {
 
 	@Nullable
 	ItemStack getStackFromString(@NotNull String string);
+
+	void runIfClient(@NotNull ClientRunnable runnable);
 }

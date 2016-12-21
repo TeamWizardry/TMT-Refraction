@@ -20,4 +20,9 @@ public final class DummyInternalHandler implements IInternalHandler {
 	public ItemStack getStackFromString(@NotNull String string) {
 		return null;
 	}
+
+	@Override
+	public void runIfClient(@NotNull ClientRunnable runnable) {
+		// NO-OP
+	}
 }

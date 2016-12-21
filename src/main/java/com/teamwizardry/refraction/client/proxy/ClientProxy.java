@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.client.proxy;
 
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.internal.ClientRunnable;
 import com.teamwizardry.refraction.client.EventHandlerClient;
 import com.teamwizardry.refraction.client.render.LaserRenderer;
 import com.teamwizardry.refraction.client.render.RenderGrenade;
@@ -48,6 +49,11 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		if (Minecraft.getMinecraft().getResourceManager() instanceof IReloadableResourceManager)
 			((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
 
+	}
+
+	@Override
+	public void runIfClient(ClientRunnable runnable) {
+		runnable.run();
 	}
 
 	@Override

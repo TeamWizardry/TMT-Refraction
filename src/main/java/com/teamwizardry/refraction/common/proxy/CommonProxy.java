@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.EasyConfigHandler;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.api.internal.ClientRunnable;
 import com.teamwizardry.refraction.api.soundmanager.SoundManager;
 import com.teamwizardry.refraction.client.gui.GuiHandler;
 import com.teamwizardry.refraction.common.bridge.ExciterTracker;
@@ -80,11 +81,11 @@ public class CommonProxy {
         }
     }
 
-    public World getWorld() {
-        return FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
+    public void runIfClient(ClientRunnable runnable) {
+        // NO-OP
     }
 
-    public boolean isClient() {
-        return false;
+    public World getWorld() {
+        return FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld();
     }
 }
