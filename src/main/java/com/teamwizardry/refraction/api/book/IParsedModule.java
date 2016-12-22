@@ -12,6 +12,7 @@ public interface IParsedModule {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
 
-    @NotNull
+    @SuppressWarnings("rawtypes")
+	@NotNull
     GuiComponent getComponent();
 }

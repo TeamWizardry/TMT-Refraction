@@ -15,7 +15,6 @@ public interface IBeamHandler extends IBeamImmune {
 	 * @param beam The beam being handled
 	 * @return Whether the beam should be stopped
 	 */
-	@SuppressWarnings("deprecation")
 	default boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
 		handleBeams(world, pos, beam);
 		return true;

@@ -24,3 +24,4 @@ eclipse
 run
 gradle-app.setting
 /hs_err_pid*.log
+*.hprof

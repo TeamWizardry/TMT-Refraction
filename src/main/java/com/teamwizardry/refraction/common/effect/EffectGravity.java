@@ -1,11 +1,7 @@
-package com.teamwizardry.refraction.common.effect;
+	package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.beam.BeamHitEvent;
-import com.teamwizardry.refraction.api.beam.Effect;
-import com.teamwizardry.refraction.api.beam.EffectTracker;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import com.teamwizardry.refraction.api.beam.modes.BeamMode;
-import com.teamwizardry.refraction.api.beam.modes.ModeGravity;
+import static com.teamwizardry.refraction.api.beam.EffectTracker.gravityReset;
+import java.awt.Color;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
@@ -14,10 +10,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import java.awt.*;
-
-import static com.teamwizardry.refraction.api.beam.EffectTracker.gravityReset;
+import com.teamwizardry.refraction.api.beam.BeamHitEvent;
+import com.teamwizardry.refraction.api.beam.Effect;
+import com.teamwizardry.refraction.api.beam.EffectTracker;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.modes.BeamMode;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.api.beam.modes.ModeGravity;
 
 /**
  * Created by LordSaad.
@@ -36,7 +35,7 @@ public class EffectGravity extends Effect {
 
     @Override
     public BeamMode getRequiredBeamMode() {
-        return new ModeGravity();
+        return BeamModeRegistry.GRAVITY;
     }
 
     @Override
@@ -50,7 +49,8 @@ public class EffectGravity extends Effect {
     }
 
 
-    @SubscribeEvent
+    @SuppressWarnings("deprecation")
+	@SubscribeEvent
     public void beamHit(BeamHitEvent event) {
         if (event.getBeam().mode instanceof ModeGravity) {
             World world = event.getWorld();

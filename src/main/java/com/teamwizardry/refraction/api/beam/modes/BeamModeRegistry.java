@@ -8,24 +8,28 @@ import java.util.Set;
  */
 public class BeamModeRegistry {
 
-    public static BeamModeRegistry INSTANCE = new BeamModeRegistry();
+    public static final BeamMode EFFECT = new ModeEffect();
+    public static final BeamMode NONE = new ModeNone();
+    public static final BeamMode GUN = new ModeGun();
+    public static final BeamMode GRENADE = new ModeGrenade();
+    public static final BeamMode GRAVITY = new ModeGravity();
 
-    private Set<BeamMode> modes = new HashSet<>();
+    private static Set<BeamMode> modes = new HashSet<>();
 
-    private BeamModeRegistry() {
-        registerMode(new ModeEffect());
-        registerMode(new ModeNone());
-        registerMode(new ModeGun());
-        registerMode(new ModeGrenade());
-        registerMode(new ModeGravity());
+    public static void init() {
+        registerMode(EFFECT);
+        registerMode(NONE);
+        registerMode(GUN);
+        registerMode(GRENADE);
+        registerMode(GRAVITY);
     }
 
-    public void registerMode(BeamMode mode) {
+    public static void registerMode(BeamMode mode) {
         modes.add(mode);
     }
 
-    public BeamMode getMode(String newMode) {
+    public static BeamMode getMode(String newMode) {
         for (BeamMode mode : modes) if (mode.getName().equals(newMode)) return mode;
-        return new ModeNone();
+        return BeamModeRegistry.NONE;
     }
 }

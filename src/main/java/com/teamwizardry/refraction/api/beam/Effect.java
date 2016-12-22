@@ -1,10 +1,12 @@
 package com.teamwizardry.refraction.api.beam;
 
-import com.google.common.collect.HashMultimap;
-import com.teamwizardry.refraction.api.ConfigValues;
-import com.teamwizardry.refraction.api.PosUtils;
-import com.teamwizardry.refraction.api.beam.modes.BeamMode;
-import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
+import java.awt.Color;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,11 +15,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
-
-import java.awt.*;
-import java.util.*;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import com.google.common.collect.HashMultimap;
+import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.api.PosUtils;
+import com.teamwizardry.refraction.api.beam.modes.BeamMode;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 
 /**
  * Created by LordSaad44
@@ -42,7 +44,7 @@ public class Effect implements Cloneable {
     }
 
     public BeamMode getRequiredBeamMode() {
-        return new ModeEffect();
+        return BeamModeRegistry.EFFECT;
     }
 
     /**

@@ -36,7 +36,8 @@ public class PlayerModule implements IParsedModule {
         fr.setUnicodeFlag(false);
     }
 
-    @NotNull
+    @SuppressWarnings("rawtypes")
+	@NotNull
     @Override
     public GuiComponent getComponent() {
         return component;

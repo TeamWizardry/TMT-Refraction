@@ -1,14 +1,14 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.google.common.collect.Lists;
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.librarianlib.common.util.EnumBiFacing;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.IOpticConnectable;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import com.teamwizardry.refraction.init.ModBlocks;
+import static net.minecraft.util.EnumFacing.DOWN;
+import static net.minecraft.util.EnumFacing.EAST;
+import static net.minecraft.util.EnumFacing.NORTH;
+import static net.minecraft.util.EnumFacing.SOUTH;
+import static net.minecraft.util.EnumFacing.UP;
+import static net.minecraft.util.EnumFacing.WEST;
+import java.util.List;
+import java.util.UUID;
+import javax.annotation.Nonnull;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -27,12 +27,15 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.UUID;
-
-import static net.minecraft.util.EnumFacing.*;
+import com.google.common.collect.Lists;
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.librarianlib.common.util.EnumBiFacing;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.IOpticConnectable;
+import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.init.ModBlocks;
 
 /**
  * Created by Saad on 9/15/2016.

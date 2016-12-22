@@ -52,8 +52,8 @@ public class MultipleBeamTile extends TileMod {
     }
 
     public void handleBeam(Beam beam) {
-        for (Beam beam2 : beams)
-            if (beam2.doBeamsMatch(beam)) return;
+//        for (Beam beam2 : beams)
+//            if (beam2.doBeamsMatch(beam)) return;
         this.beams.add(beam);
         markDirty();
     }

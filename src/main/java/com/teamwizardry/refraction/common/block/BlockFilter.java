@@ -1,12 +1,8 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.google.common.collect.Lists;
-import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.librarianlib.common.base.block.IBlockColorProvider;
-import com.teamwizardry.refraction.api.IOpticConnectable;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
+import java.awt.Color;
+import java.util.List;
+import javax.annotation.Nonnull;
 import kotlin.jvm.functions.Function2;
 import kotlin.jvm.functions.Function4;
 import net.minecraft.block.SoundType;
@@ -23,10 +19,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
-import java.util.List;
+import com.google.common.collect.Lists;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.librarianlib.common.base.block.IBlockColorProvider;
+import com.teamwizardry.refraction.api.IOpticConnectable;
+import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 
 /**
  * Created by LordSaad44
@@ -85,7 +84,7 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 		IBlockState state = world.getBlockState(pos);
 		EnumFilterType type = state.getValue(TYPE);
 		for (Beam beam : beams)
-			beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(type.red, type.green, type.blue, beam.color.getAlpha() / 255f)).setMode(new ModeEffect()).spawn();
+			beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(type.red, type.green, type.blue, beam.color.getAlpha() / 255f)).setMode(BeamModeRegistry.EFFECT).spawn();
 	}
 
 	@Nonnull
@@ -97,7 +96,7 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 	@Override
 	public void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		IBlockState state = world.getBlockState(pos);
-		beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(state.getValue(TYPE).color)).setMode(new ModeEffect()).spawn();
+		beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(state.getValue(TYPE).color)).setMode(BeamModeRegistry.EFFECT).spawn();
 	}
 
 	@Override

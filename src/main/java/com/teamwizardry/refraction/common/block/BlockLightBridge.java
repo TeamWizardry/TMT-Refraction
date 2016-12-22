@@ -274,10 +274,10 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
         EnumFacing.Axis block = worldIn.getBlockState(pos).getValue(FACING);
         EnumFacing positive = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.POSITIVE, block);
         EnumFacing negative = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.NEGATIVE, block);
-        boolean pass = false;
+//        boolean pass = false;
         for (EnumFacing facing : EnumFacing.VALUES) {
             if (facing == positive || facing == negative) continue;
-            if (worldIn.getBlockState(pos.offset(facing)).getBlock() == ModBlocks.LIGHT_BRIDGE) pass = true;
+//            if (worldIn.getBlockState(pos.offset(facing)).getBlock() == ModBlocks.LIGHT_BRIDGE) pass = true;
         }
         //if (!pass) worldIn.setBlockToAir(pos);
     }

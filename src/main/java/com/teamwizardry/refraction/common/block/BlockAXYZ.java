@@ -1,18 +1,15 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.google.common.collect.Lists;
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.librarianlib.common.base.block.ItemModBlock;
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
-import com.teamwizardry.librarianlib.common.util.DimWithPos;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.IOpticConnectable;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
-import com.teamwizardry.refraction.init.ModBlocks;
 import gnu.trove.map.hash.TObjectIntHashMap;
+import java.awt.Color;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import javax.annotation.Nonnull;
 import kotlin.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonMoving;
@@ -46,17 +43,23 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
-import java.util.*;
-import java.util.List;
+import com.google.common.collect.Lists;
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.librarianlib.common.base.block.ItemModBlock;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.librarianlib.common.util.DimWithPos;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.IOpticConnectable;
+import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
+import com.teamwizardry.refraction.init.ModBlocks;
 
 /**
  * @author WireSegal
  *         Created at 9:34 PM on 11/12/16.
  */
-@SuppressWarnings("StatementWithEmptyBody")
 public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectable {
 
 	public static final PropertyBool[] PROPS = new PropertyBool[]{

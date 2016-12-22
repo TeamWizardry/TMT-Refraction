@@ -50,7 +50,7 @@ public class CommonProxy {
         EventHandler.INSTANCE.getClass();
         SoundManager.INSTANCE.getClass();
 
-        BeamModeRegistry.INSTANCE.getClass();
+        BeamModeRegistry.init();
 
         MinecraftForge.EVENT_BUS.register(new EffectGravity());
 

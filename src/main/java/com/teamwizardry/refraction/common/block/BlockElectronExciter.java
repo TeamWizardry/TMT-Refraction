@@ -1,15 +1,9 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.PosUtils;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
-import com.teamwizardry.refraction.api.beam.modes.ModeGravity;
-import com.teamwizardry.refraction.common.tile.TileElectronExciter;
-import com.teamwizardry.refraction.init.ModBlocks;
+import java.awt.Color;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -28,11 +22,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.awt.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
+import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.PosUtils;
+import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
+import com.teamwizardry.refraction.common.tile.TileElectronExciter;
+import com.teamwizardry.refraction.init.ModBlocks;
 
 /**
  * Created by Saad on 8/16/2016.
@@ -113,7 +112,7 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
                         Color color = new Color(0, 150, 255, beam.color.getAlpha() / exciters.size());
                         for (EnumFacing facing : exciters) {
                             beam.createSimilarBeam(PosUtils.getSideCenter(pos.offset(facing), block), PosUtils.getVecFromFacing(block), color)
-                                    .setMode(new ModeGravity())
+                                    .setMode(BeamModeRegistry.GRAVITY)
                                     .spawn();
                         }
                     }

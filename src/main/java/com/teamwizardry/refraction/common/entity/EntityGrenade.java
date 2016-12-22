@@ -1,13 +1,8 @@
 package com.teamwizardry.refraction.common.entity;
 
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
-import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
-import com.teamwizardry.refraction.init.ModSounds;
+import java.awt.Color;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,10 +14,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.awt.*;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
+import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
+import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.init.ModSounds;
 
 /**
  * Created by LordSaad.
@@ -109,7 +108,7 @@ public class EntityGrenade extends EntityThrowable {
 
                     Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
                     Color c = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (color.getAlpha() / ThreadLocalRandom.current().nextDouble(1, 3)));
-                    new Beam(world, pos, dest, c).setCaster(caster).setMode(new ModeEffect()).spawn();
+                    new Beam(world, pos, dest, c).setCaster(caster).setMode(BeamModeRegistry.EFFECT).spawn();
                     playSound(ModSounds.CRACKLE, 1f, ThreadLocalRandom.current().nextFloat());
                 }
             } else setDead();
