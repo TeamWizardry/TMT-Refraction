@@ -1,8 +1,17 @@
 package com.teamwizardry.refraction.api.beam;
 
-import java.awt.Color;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
+import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
+import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
+import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.api.beam.Effect.EffectType;
+import com.teamwizardry.refraction.api.beam.modes.BeamMode;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
+import com.teamwizardry.refraction.api.raytrace.EntityTrace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,18 +30,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
-import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
-import com.teamwizardry.refraction.api.ConfigValues;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.api.beam.Effect.EffectType;
-import com.teamwizardry.refraction.api.beam.modes.BeamMode;
-import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
-import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
-import com.teamwizardry.refraction.api.raytrace.EntityTrace;
+
+import java.awt.*;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Beam implements INBTSerializable<NBTTagCompound> {
 
@@ -122,6 +123,10 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     @Nullable
     public Entity caster;
     /**
+     * The custom name of the beam
+     */
+    public String customName = "";
+    /**
      * The physical particle that will spawn at the beginning or end
      */
     @SideOnly(Side.CLIENT)
@@ -134,7 +139,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         this.finalLoc = slope.normalize().scale(128).add(initLoc);
         this.color = color;
 
-//        uuid = UUID.nameUUIDFromBytes((initLoc.hashCode() + "").getBytes());
 
         Utils.HANDLER.runIfClient(() -> {
             particle1 = new ParticleBuilder(3);
@@ -250,6 +254,17 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      */
     public Beam setMode(@NotNull BeamMode mode) {
         this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Will change the name of the beam.
+     *
+     * @param name Defines the custom name of the beam.
+     * @return The new beam created. Can be modified as needed.
+     */
+    public Beam setName(@NotNull String name) {
+        this.customName = name;
         return this;
     }
 
@@ -543,13 +558,11 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
     @Override
     public boolean equals(Object other) {
     	return super.equals(other);
-//        return other instanceof Beam && ((Beam) other).uuid.equals(uuid);
     }
 
     @Override
     public int hashCode() {
     	return super.hashCode();
-//        return uuid.hashCode();
     }
 
     @Override
@@ -566,7 +579,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         compound.setInteger("bounce_times", bouncedTimes);
         compound.setInteger("allowed_bounce_times", allowedBounceTimes);
         compound.setDouble("range", range);
-//        compound.setUniqueId("uuid", uuid);
+        compound.setString("name", customName);
         compound.setBoolean("ignore_entities", ignoreEntities);
         compound.setBoolean("enable_particle_beginning", enableParticleBeginning);
         compound.setBoolean("enable_particle_end", enableParticleEnd);
@@ -593,8 +606,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         } else
             throw new NullPointerException("'color' or 'color_alpha' keys not found or missing in deserialized beam object.");
 
-//        if (nbt.hasKey("uuid") && nbt.getUniqueId("uuid") != null) uuid = nbt.getUniqueId("uuid");
-//        else uuid = UUID.randomUUID();
+        if (nbt.hasKey("name")) customName = nbt.getString("name");
         if (nbt.hasKey("uuid_to_skip")) uuidToSkip = nbt.getUniqueId("uuid_to_skip");
         if (nbt.hasKey("ignore_entities")) ignoreEntities = nbt.getBoolean("ignore_entities");
         if (nbt.hasKey("range")) range = nbt.getDouble("range");

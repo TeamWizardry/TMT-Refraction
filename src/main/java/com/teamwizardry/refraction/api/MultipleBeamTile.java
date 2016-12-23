@@ -21,13 +21,18 @@ import java.util.Set;
  *
  * When using, be sure to implement super.handle() if you are overriding that. Same goes for super.update()
  * Otherwise, you override them and have them do nothing.
+ *
+ * Use beamData. Don't use beams unless your sure of what you are doing.
+ *
+ * Don't forget to purge in the end of your update method!
+ * And yes, it's mandatory. You HAVE to override update, implement super, then purge at the end.
  */
 public class MultipleBeamTile extends TileMod implements ITickable {
 
     @NotNull
     public HashMultimap<BeamMode, Beam> beamData = HashMultimap.create();
     @NotNull
-    private Set<Beam> beams = new HashSet<>();
+    public Set<Beam> beams = new HashSet<>();
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
@@ -41,7 +46,7 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound, boolean sync) {
-        if (beams.size() > 0) {
+        if (!beams.isEmpty()) {
             NBTTagList array = new NBTTagList();
             for (Beam beam : beams) array.appendTag(beam.serializeNBT());
             compound.setTag("beams", array);

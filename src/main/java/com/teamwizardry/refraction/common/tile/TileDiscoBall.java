@@ -1,20 +1,26 @@
 package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.MultipleBeamTile;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -28,27 +34,62 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
     @Save
     public double tick = 0;
     @NotNull
-    private Set<BeamHandler> handlers = new HashSet<>();
+    public Set<Color> colors = new HashSet<>();
+    @NotNull
+    private HashMap<Beam, Integer> beamlifes = new HashMap<>();
+
+    @Override
+    public void readCustomNBT(NBTTagCompound compound) {
+        super.readCustomNBT(compound);
+
+        colors.clear();
+        NBTTagList array = compound.getTagList("colors", Constants.NBT.TAG_INT);
+        for (int i = 0; i < array.tagCount(); i++)
+            colors.add(new Color(array.getIntAt(i)));
+    }
+
+    @Override
+    public void writeCustomNBT(NBTTagCompound compound, boolean sync) {
+        super.writeCustomNBT(compound, sync);
+
+        if (!colors.isEmpty()) {
+            NBTTagList array = new NBTTagList();
+            for (Color color : colors) array.appendTag(new NBTTagInt(color.getRGB()));
+            compound.setTag("colors", array);
+        }
+    }
 
     @Override
     public void handleBeam(Beam beam) {
-        super.handleBeam(beam);
+        if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) return;
+        if (beam.customName.equals("disco_ball_beam")) return;
+        if (beamlifes.size() > 20) return;
 
-        for (int i = 0; i < 4; i++) {
+        this.beams.add(beam);
 
-            double radius = 5, rotX = ThreadLocalRandom.current().nextDouble(0, 360), rotZ = ThreadLocalRandom.current().nextDouble(0, 360);
-            int x = (int) (radius * MathHelper.cos((float) Math.toRadians(rotX)));
-            int z = (int) (radius * MathHelper.sin((float) Math.toRadians(rotZ)));
+        boolean flag = true;
+        for (Color color : colors)
+            if (color.getRGB() == beam.color.getRGB()) {
+                flag = false;
+                break;
+            }
+        if (flag) colors.add(beam.color);
 
-            Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
+        markDirty();
 
-            Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getDirectionVec()).scale(0.2));
+        double radius = 5, rotX = ThreadLocalRandom.current().nextDouble(0, 360), rotZ = ThreadLocalRandom.current().nextDouble(0, 360);
+        int x = (int) (radius * MathHelper.cos((float) Math.toRadians(rotX)));
+        int z = (int) (radius * MathHelper.sin((float) Math.toRadians(rotZ)));
 
-            Beam subBeams = beam.createSimilarBeam(center, dest)
-                    .setColor(new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / ThreadLocalRandom.current().nextInt(1, 8)))
-                    .setAllowedBounceTimes(ConfigValues.DISCO_BALL_BEAM_BOUNCE_LIMIT);
-            handlers.add(new BeamHandler(subBeams, rotX, rotZ));
-        }
+        Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
+
+        Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getDirectionVec()).scale(0.2));
+
+        Beam subBeam = beam.createSimilarBeam(center, dest)
+                .setColor(new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / ThreadLocalRandom.current().nextDouble(2, 4))))
+                .setAllowedBounceTimes(ConfigValues.DISCO_BALL_BEAM_BOUNCE_LIMIT)
+                .setName("disco_ball_beam");
+        beamlifes.put(subBeam, 20);
     }
 
     @NotNull
@@ -61,41 +102,41 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
     @Override
     public void update() {
         super.update();
+        if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) {
+            purge();
+            return;
+        }
 
-        if (handlers.isEmpty()) return;
+        tick += 5;
+        if (tick >= 360) {
+            tick = 0;
+            colors.clear();
+            markDirty();
+        }
 
-        handlers.removeIf(handler -> {
-            handler.life--;
+        if (beamlifes.isEmpty()) {
+            purge();
+            return;
+        }
 
-            Color c = new Color(handler.beam.color.getRed(), handler.beam.color.getGreen(), handler.beam.color.getBlue(), handler.beam.color.getAlpha() * handler.life / handler.maxLife);
+        Set<Beam> copy = new HashSet<>(beamlifes.keySet());
 
-            handler.rotX = handler.invertX ? handler.rotX + 5 : handler.rotX - 5;
-            handler.rotZ = handler.invertZ ? handler.rotZ + 5 : handler.rotZ - 5;
+        copy.forEach(beam -> {
+            if (beamlifes.get(beam) > 0)
+                beamlifes.put(beam, beamlifes.get(beam) - 1);
+            else {
+                beamlifes.remove(beam);
+                return;
+            }
 
-            double radius = 5;
-            int x = (int) (radius * MathHelper.cos((float) Math.toRadians(handler.rotX)));
-            int z = (int) (radius * MathHelper.sin((float) Math.toRadians(handler.rotZ)));
-            handler.beam = handler.beam.createSimilarBeam().setColor(c).setSlope(handler.beam.slope.addVector(x, 0, z));
-            handler.beam.enableParticleBeginning().spawn();
-            return handler.life <= 0;
+            Matrix4 matrix = new Matrix4();
+            matrix.rotate(Math.toRadians(5), new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getOpposite().getDirectionVec()));
+
+            Vec3d slope = matrix.apply(beam.slope);
+
+            beam.setSlope(slope).spawn();
         });
 
         purge();
-    }
-
-    private class BeamHandler {
-        public Beam beam;
-        boolean invertX = false, invertZ = false;
-        int life = 20, maxLife = 20;
-        double rotX = 0, rotZ;
-
-        BeamHandler(Beam beam, double rotX, double rotZ) {
-            this.beam = beam;
-            this.rotX = rotX;
-            this.rotZ = rotZ;
-            this.invertX = ThreadLocalRandom.current().nextBoolean();
-            this.invertZ = ThreadLocalRandom.current().nextBoolean();
-            this.life = this.maxLife = ThreadLocalRandom.current().nextInt(20, 30);
-        }
     }
 }
