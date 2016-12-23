@@ -106,4 +106,9 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 		}
 		return true;
 	}
+
+	@Override
+	public boolean canEditItems(Color color, IItemHandlerModifiable items, IItemHandlerModifiable output, int ticks) {
+		return false;
+	}
 }

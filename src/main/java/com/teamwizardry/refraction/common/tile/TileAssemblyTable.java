@@ -45,12 +45,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class TileAssemblyTable extends TileMod implements ITickable {
 
     @Nullable
-    private IAssemblyBehavior behavior;
-
-    @Nullable
-    public IAssemblyBehavior getBehavior() {
-        return behavior;
-    }
+    public IAssemblyBehavior behavior;
 
     @Save
     public ItemStackHandler output = new ItemStackHandler(1) {
@@ -91,6 +86,10 @@ public class TileAssemblyTable extends TileMod implements ITickable {
     };
     @Save
     private int craftingTime = 0;
+
+    public int getCraftingTime() {
+        return craftingTime;
+    }
 
     @NotNull
     private List<Beam> beams = new ArrayList<>();

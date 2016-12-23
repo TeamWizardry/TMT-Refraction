@@ -27,4 +27,16 @@ public interface IAssemblyBehavior {
 	 * @return Whether to continue recipe processing.
 	 */
 	boolean tick(Color color, IItemHandlerModifiable items, IItemHandlerModifiable output, int ticks);
+
+	/**
+	 * Check whether items are allowed to be edited by the player or insertion.
+	 *
+	 * Note that if you return true from this, the behavior will be reset.
+	 *
+	 * @param items The ItemStackHandler holding inputs, that can reasonably be assumed to have size 54.
+	 * @param output The ItemStackHandler holding outputs, that can reasonably be assumed to have size 1.
+	 * @param ticks The number of ticks crafting has occurred for.
+	 * @return Whether items can be edited.
+	 */
+	boolean canEditItems(IItemHandlerModifiable items, IItemHandlerModifiable output, int ticks);
 }

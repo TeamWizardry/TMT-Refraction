@@ -64,7 +64,12 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 		if (!worldIn.isRemote) {
 			TileAssemblyTable table = getTE(worldIn, pos);
 
-			if (table.getBehavior() != null) return true;
+			if (table.behavior != null) {
+				boolean allowedToEdit = table.behavior.canEditItems(table.inventory, table.output, table.getCraftingTime());
+				if (allowedToEdit)
+					table.behavior = null;
+				else return true;
+			}
 
 			if (table.output.getStackInSlot(0) != null) {
 				ItemHandlerHelper.giveItemToPlayer(playerIn, table.output.extractItem(0, 64, false));
