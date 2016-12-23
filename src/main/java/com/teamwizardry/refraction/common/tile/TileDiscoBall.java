@@ -37,6 +37,12 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
     public Set<Color> colors = new HashSet<>();
     @NotNull
     private HashMap<Beam, Integer> beamlifes = new HashMap<>();
+    private Matrix4 matrix = new Matrix4();
+
+    @Override
+    public void onLoad() {
+        matrix.rotate(Math.toRadians(5), new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getOpposite().getDirectionVec()));
+    }
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
@@ -73,7 +79,10 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
                 flag = false;
                 break;
             }
-        if (flag) colors.add(beam.color);
+        if (flag) {
+            colors.add(beam.color);
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+        }
 
         markDirty();
 
@@ -128,9 +137,6 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
                 beamlifes.remove(beam);
                 return;
             }
-
-            Matrix4 matrix = new Matrix4();
-            matrix.rotate(Math.toRadians(5), new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getOpposite().getDirectionVec()));
 
             Vec3d slope = matrix.apply(beam.slope);
 
