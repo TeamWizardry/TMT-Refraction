@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,22 +64,20 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 		if (!worldIn.isRemote) {
 			TileAssemblyTable table = getTE(worldIn, pos);
 
-			if (heldItem != null && heldItem.stackSize > 0) {
+			if (table.getBehavior() != null) return true;
+
+			if (table.output.getStackInSlot(0) != null) {
+				ItemHandlerHelper.giveItemToPlayer(playerIn, table.output.extractItem(0, 64, false));
+				playerIn.openContainer.detectAndSendChanges();
+			} else if (heldItem != null && heldItem.stackSize > 0) {
 				ItemStack stack = heldItem.copy();
 				stack.stackSize = 1;
-				for (int i = 0; i < table.inventory.getSlots(); i++)
-					if (table.inventory.insertItem(i, stack, false) != stack) {
-						--heldItem.stackSize;
-						break;
-					}
+				ItemStack insert = ItemHandlerHelper.insertItem(table.inventory, stack, false);
+				if (insert == null || insert.stackSize == 0)
+					heldItem.stackSize--;
 				playerIn.openContainer.detectAndSendChanges();
-
-			} else if (table.output.getStackInSlot(0) != null) {
-				playerIn.setHeldItem(hand, table.output.extractItem(0, table.output.getStackInSlot(0).stackSize, false));
-				playerIn.openContainer.detectAndSendChanges();
-
 			} else if (CapsUtils.getOccupiedSlotCount(table.inventory) > 0) {
-				playerIn.setHeldItem(hand, table.inventory.extractItem(CapsUtils.getLastOccupiedSlot(table.inventory), 1, false));
+				ItemHandlerHelper.giveItemToPlayer(playerIn, table.inventory.extractItem(CapsUtils.getLastOccupiedSlot(table.inventory), 1, false));
 				playerIn.openContainer.detectAndSendChanges();
 			}
 			table.markDirty();
