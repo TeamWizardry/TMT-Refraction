@@ -55,7 +55,7 @@ public class RecipeAmmo implements IRecipe {
 
         ItemStack stack = ammoConsumer.copy();
 
-        UUID uuid = UUID.randomUUID();
+        UUID uuid = ItemNBTHelper.getUUID(stack, "uuid", false);
 
         ItemNBTHelper.setUUID(stack, "uuid", uuid);
         IAmmoConsumer.setDurability(stack, 1000);

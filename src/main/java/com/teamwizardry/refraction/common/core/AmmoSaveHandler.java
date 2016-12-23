@@ -52,6 +52,13 @@ public class AmmoSaveHandler {
     @SubscribeEvent
     public void load(WorldEvent.Load event) {
         getSaveData();
+        markDirty();
+    }
+
+    @SubscribeEvent
+    public void unload(WorldEvent.Unload event) {
+        getSaveData();
+        markDirty();
     }
 
     public static class DurabilityData extends WorldSavedData {

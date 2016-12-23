@@ -6,12 +6,14 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.modes.ModeGun;
+import com.teamwizardry.refraction.common.core.AmmoSaveHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -56,6 +58,7 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer {
 
     @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
+        playerIn.sendMessage(new TextComponentString(AmmoSaveHandler.durabilities + ""));
         if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("color")) {
             if (IAmmoConsumer.hasDurability(stack)) {
                 if (IAmmoConsumer.getDurability(stack) <= 0) {
