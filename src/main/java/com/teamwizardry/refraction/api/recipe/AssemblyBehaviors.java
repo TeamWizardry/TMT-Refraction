@@ -20,7 +20,7 @@ public final class AssemblyBehaviors {
 	public static IAssemblyBehavior register(String key, IAssemblyBehavior recipe) {
 		key = LibHelpersKt.getCurrentModId() + ":" + key;
 		if (behaviors.containsKey(key))
-			throw new IllegalArgumentException("Key " + key + "already used for an assembly recipe");
+			throw new IllegalArgumentException("Key " + key + " already used for an assembly recipe");
 		behaviors.put(key, recipe);
 		return recipe;
 	}

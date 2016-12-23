@@ -86,13 +86,12 @@ public class TileAssemblyTable extends TileMod implements ITickable {
     };
     @Save
     private int craftingTime = 0;
+    @NotNull
+    private List<Beam> beams = new ArrayList<>();
 
     public int getCraftingTime() {
         return craftingTime;
     }
-
-    @NotNull
-    private List<Beam> beams = new ArrayList<>();
 
     @Override
     public void readCustomNBT(NBTTagCompound cmp) {
@@ -125,6 +124,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
+    @NotNull
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(@NotNull Capability<T> capability, @NotNull EnumFacing facing) {
