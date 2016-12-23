@@ -18,6 +18,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -37,12 +38,9 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
     public Set<Color> colors = new HashSet<>();
     @NotNull
     private HashMap<Beam, Integer> beamlifes = new HashMap<>();
-    private Matrix4 matrix = new Matrix4();
 
-    @Override
-    public void onLoad() {
-        matrix.rotate(Math.toRadians(5), new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getOpposite().getDirectionVec()));
-    }
+    @Nullable
+    private Matrix4 matrix;
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
@@ -136,6 +134,11 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
             else {
                 beamlifes.remove(beam);
                 return;
+            }
+
+            if (matrix == null) {
+                matrix = new Matrix4();
+                matrix.rotate(Math.toRadians(5), new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getOpposite().getDirectionVec()));
             }
 
             Vec3d slope = matrix.apply(beam.slope);

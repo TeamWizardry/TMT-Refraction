@@ -21,6 +21,7 @@ public class ModItems {
 	public static ItemReflectiveAlloyChestPlate CHESTPLATE;
 	public static ItemReflectiveAlloyLeggings LEGGINGS;
 	public static ItemReflectiveAlloyBoots BOOTS;
+	public static ItemLightCartridge LIGHT_CARTRIDGE;
 
 	public static void init() {
 		LASER_PEN = new ItemLaserPen();
@@ -33,5 +34,6 @@ public class ModItems {
 		CHESTPLATE = new ItemReflectiveAlloyChestPlate();
 		LEGGINGS = new ItemReflectiveAlloyLeggings();
 		BOOTS = new ItemReflectiveAlloyBoots();
+		LIGHT_CARTRIDGE = new ItemLightCartridge();
 	}
 }

@@ -3,10 +3,7 @@ package com.teamwizardry.refraction.client.proxy;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.internal.ClientRunnable;
 import com.teamwizardry.refraction.client.EventHandlerClient;
-import com.teamwizardry.refraction.client.render.LaserRenderer;
-import com.teamwizardry.refraction.client.render.RenderGrenade;
-import com.teamwizardry.refraction.client.render.RenderLaserPoint;
-import com.teamwizardry.refraction.client.render.ScrewdriverOverlay;
+import com.teamwizardry.refraction.client.render.*;
 import com.teamwizardry.refraction.common.entity.EntityGrenade;
 import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
@@ -36,7 +33,8 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		OBJLoader.INSTANCE.addDomain(Constants.MOD_ID);
 		LaserRenderer.INSTANCE.getClass();
 		ScrewdriverOverlay.INSTANCE.getClass();
-		EventHandlerClient.INSTANCE.getClass(); // ditto
+        GunOverlay.INSTANCE.getClass();
+        EventHandlerClient.INSTANCE.getClass(); // ditto
 		ModBlocks.initModels();
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityLaserPointer.class, RenderLaserPoint::new);

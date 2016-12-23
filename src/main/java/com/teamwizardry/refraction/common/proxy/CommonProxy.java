@@ -8,6 +8,7 @@ import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import com.teamwizardry.refraction.api.internal.ClientRunnable;
 import com.teamwizardry.refraction.api.soundmanager.SoundManager;
 import com.teamwizardry.refraction.client.gui.GuiHandler;
+import com.teamwizardry.refraction.common.core.AmmoSaveHandler;
 import com.teamwizardry.refraction.common.core.CatChaseHandler;
 import com.teamwizardry.refraction.common.core.DispenserScrewDriverBehavior;
 import com.teamwizardry.refraction.common.core.EventHandler;
@@ -48,6 +49,7 @@ public class CommonProxy {
         ModAchievements.init();
 
         EventHandler.INSTANCE.getClass();
+        AmmoSaveHandler.INSTANCE.getClass();
         SoundManager.INSTANCE.getClass();
 
         BeamModeRegistry.init();
