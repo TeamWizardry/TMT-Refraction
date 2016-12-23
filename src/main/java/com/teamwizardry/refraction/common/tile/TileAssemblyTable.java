@@ -196,7 +196,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
 
         if (CapsUtils.getListOfItems(inventory).size() == 1
                 && (CapsUtils.getListOfItems(inventory).get(0).getItem() == ModItems.GRENADE
-                || CapsUtils.getListOfItems(inventory).get(0).getItem() == ModItems.PHOTON_CANNON)) {
+                || CapsUtils.getListOfItems(inventory).get(0).getItem() instanceof IAmmo)) {
             isCrafting = true;
             craftingTime = 0;
             isSpecialRecipe = true;
