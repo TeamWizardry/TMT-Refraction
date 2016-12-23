@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
-import com.teamwizardry.refraction.api.AssemblyRecipe;
+import com.teamwizardry.refraction.api.recipe.AssemblyRecipe;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
 import mezz.jei.api.ingredients.IIngredients;
@@ -42,7 +42,7 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 
 	public AssemblyTableRecipeWrapper(AssemblyRecipe recipe) {
 		this.recipe = recipe;
-		inputs.addAll(recipe.getItems());
+		inputs.addAll(recipe.getRecipe());
 		outputs.add(recipe.getResult());
 		maxColor = recipe.getMinColor();
 		currentColor = recipe.getMinColor();

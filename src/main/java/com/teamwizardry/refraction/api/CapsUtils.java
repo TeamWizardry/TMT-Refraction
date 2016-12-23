@@ -2,7 +2,7 @@ package com.teamwizardry.refraction.api;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public final class CapsUtils {
 		return stacks;
 	}
 
-	public static void clearInventory(ItemStackHandler inventory) {
+	public static void clearInventory(IItemHandlerModifiable inventory) {
 		for (int i = 0; i < inventory.getSlots(); i++)
 			inventory.setStackInSlot(i, null);
 	}

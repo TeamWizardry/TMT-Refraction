@@ -8,6 +8,6 @@ https://minecraft.curseforge.com/projects/refraction
 
 Minetweaker Support:
 
-mods.refraction.AssemblyTable.addRecipe(output, inputs, minLaserStrenght, maxLaserStrength, minRed, maxRed, minGreen, maxGreen, minBlue, maxBlue)
+mods.refraction.AssemblyTable.addRecipe(name, output, inputs, minLaserStrenght, maxLaserStrength, minRed, maxRed, minGreen, maxGreen, minBlue, maxBlue)
 
 mods.refraction.AssemblyTable.remove(output)

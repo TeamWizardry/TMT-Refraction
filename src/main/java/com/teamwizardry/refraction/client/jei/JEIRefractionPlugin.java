@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.client.jei;
 
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.recipe.AssemblyBehaviors;
 import com.teamwizardry.refraction.init.ModBlocks;
-import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import mezz.jei.api.*;
 import mezz.jei.api.gui.IRecipeLayoutDrawable;
 import mezz.jei.api.recipe.IFocus;
@@ -77,7 +77,7 @@ public class JEIRefractionPlugin extends BlankModPlugin {
 
 		registry.addRecipeHandlers(new AssemblyTableRecipeHandler());
 
-		registry.addRecipes(AssemblyRecipes.recipes);
+		registry.addRecipes(new ArrayList<>(AssemblyBehaviors.getBehaviors().values()));
 
 		registry.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.ASSEMBLY_TABLE), AssemblyTableRecipeCategory.UID);
 	}

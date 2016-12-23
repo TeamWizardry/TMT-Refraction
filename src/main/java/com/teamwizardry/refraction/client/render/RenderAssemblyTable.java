@@ -17,7 +17,7 @@ public class RenderAssemblyTable extends TileEntitySpecialRenderer<TileAssemblyT
 		tick++;
 		if (tick > 360) tick = 0;
 
-		if (te.output.getStackInSlot(0) != null && !te.isCrafting) {
+		if (te.output.getStackInSlot(0) != null && te.getBehavior() == null) {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x + 0.5, y + 1.35, z + 0.5);
 			GlStateManager.scale(0.5, 0.5, 0.5);

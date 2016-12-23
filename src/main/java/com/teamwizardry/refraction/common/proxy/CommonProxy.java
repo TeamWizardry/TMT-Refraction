@@ -16,8 +16,8 @@ import com.teamwizardry.refraction.common.mt.MTRefractionPlugin;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.init.*;
-import com.teamwizardry.refraction.init.recipies.AssemblyRecipes;
 import com.teamwizardry.refraction.init.recipies.CraftingRecipes;
+import com.teamwizardry.refraction.init.recipies.ModAssemblyRecipes;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -62,7 +62,7 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         CraftingRecipes.init();
-        AssemblyRecipes.init();
+        ModAssemblyRecipes.init();
     }
 
     public void postInit(FMLPostInitializationEvent event) {
