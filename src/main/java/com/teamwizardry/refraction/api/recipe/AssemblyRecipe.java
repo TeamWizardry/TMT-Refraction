@@ -86,14 +86,14 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 	@Override
 	public boolean canAccept(Color color, IItemHandler items) {
 		return recipe.size() == CapsUtils.getOccupiedSlotCount(items) &&
-				color.getRed() < maxRed &&
-				color.getRed() > minRed &&
-				color.getGreen() < maxGreen &&
-				color.getGreen() > minGreen &&
-				color.getBlue() < maxBlue &&
-				color.getBlue() > minBlue &&
-				color.getAlpha() < maxStrength &&
-				color.getAlpha() > minStrength &&
+				color.getRed() <= maxRed &&
+				color.getRed() >= minRed &&
+				color.getGreen() <= maxGreen &&
+				color.getGreen() >= minGreen &&
+				color.getBlue() <= maxBlue &&
+				color.getBlue() >= minBlue &&
+				color.getAlpha() <= maxStrength &&
+				color.getAlpha() >= minStrength &&
 				Utils.matchItemStackLists(CapsUtils.getListOfItems(items), Utils.getListOfObjects(recipe));
 	}
 
