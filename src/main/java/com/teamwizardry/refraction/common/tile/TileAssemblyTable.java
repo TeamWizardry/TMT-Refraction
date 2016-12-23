@@ -11,7 +11,6 @@ import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.Refraction;
-import com.teamwizardry.refraction.api.CapsUtils;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
@@ -47,7 +46,6 @@ public class TileAssemblyTable extends TileMod implements ITickable {
     @Nullable
     public IAssemblyBehavior behavior;
 
-    @Save
     public ItemStackHandler output = new ItemStackHandler(1) {
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
@@ -65,8 +63,15 @@ public class TileAssemblyTable extends TileMod implements ITickable {
             markDirty();
         }
     };
-    @Save
+
     public ItemStackHandler inventory = new ItemStackHandler(54) {
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            if (output.getStackInSlot(0) != null && output.getStackInSlot(0).stackSize > 0) return stack;
+            if (behavior != null) return stack;
+            return super.insertItem(slot, stack, simulate);
+        }
+
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
             if (output.getStackInSlot(0) != null && output.getStackInSlot(0).stackSize > 0) return null;
@@ -96,18 +101,24 @@ public class TileAssemblyTable extends TileMod implements ITickable {
     @Override
     public void readCustomNBT(NBTTagCompound cmp) {
         behavior = AssemblyBehaviors.getBehaviors().get(cmp.getString("behavior"));
+        inventory.deserializeNBT(cmp.getCompoundTag("items"));
+        output.deserializeNBT(cmp.getCompoundTag("output"));
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound cmp, boolean sync) {
         if (behavior != null)
             cmp.setString("behavior", AssemblyBehaviors.getBehaviors().inverse().get(behavior));
+        cmp.setTag("items", inventory.serializeNBT());
+        cmp.setTag("output", output.serializeNBT());
     }
 
     @Override
     public void readCustomBytes(ByteBuf buf) {
         if (CommonUtilMethods.hasNullSignature(buf)) behavior = null;
         else behavior = AssemblyBehaviors.getBehaviors().get(CommonUtilMethods.readString(buf));
+        inventory.deserializeNBT(CommonUtilMethods.readTag(buf));
+        output.deserializeNBT(CommonUtilMethods.readTag(buf));
     }
 
     @Override
@@ -117,6 +128,8 @@ public class TileAssemblyTable extends TileMod implements ITickable {
             CommonUtilMethods.writeNonnullSignature(buf);
             CommonUtilMethods.writeString(buf, AssemblyBehaviors.getBehaviors().inverse().get(behavior));
         }
+        CommonUtilMethods.writeTag(buf, inventory.serializeNBT());
+        CommonUtilMethods.writeTag(buf, output.serializeNBT());
     }
 
     @Override
@@ -128,7 +141,8 @@ public class TileAssemblyTable extends TileMod implements ITickable {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getCapability(@NotNull Capability<T> capability, @NotNull EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (facing == EnumFacing.DOWN ? (T) output : (T) inventory) : super.getCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ?
+                (facing == EnumFacing.DOWN ? (T) output : (T) inventory) : super.getCapability(capability, facing);
     }
 
     @NotNull
@@ -224,7 +238,6 @@ public class TileAssemblyTable extends TileMod implements ITickable {
         for (IAssemblyBehavior recipe : AssemblyBehaviors.getBehaviors().values()) {
             if (recipe.canAccept(color, inventory)) {
                 craftingTime = 0;
-                CapsUtils.clearInventory(inventory);
                 behavior = recipe;
                 break;
             }
