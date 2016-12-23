@@ -34,20 +34,6 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
     public void handleBeam(Beam beam) {
         super.handleBeam(beam);
 
-        if (!world.isBlockPowered(pos) && world.isBlockIndirectlyGettingPowered(pos) == 0) {
-            beams.clear();
-            return;
-        }
-
-        boolean add = true;
-        for (Beam oldBeam : beams)
-            if (oldBeam.doBeamsMatch(beam)) add = false;
-        if (add) {
-            beams.add(beam);
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-            markDirty();
-        }
-
         for (int i = 0; i < 4; i++) {
 
             double radius = 5, rotX = ThreadLocalRandom.current().nextDouble(0, 360), rotZ = ThreadLocalRandom.current().nextDouble(0, 360);
@@ -74,12 +60,7 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 
     @Override
     public void update() {
-        if (!checkTick()) return;
-
-        if (world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) != 0) {
-            tick += 5;
-            if (tick >= 360) tick = 0;
-        } else beams.clear();
+        super.update();
 
         if (handlers.isEmpty()) return;
 

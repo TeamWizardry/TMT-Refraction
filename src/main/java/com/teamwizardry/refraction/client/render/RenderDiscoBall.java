@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.modes.BeamMode;
 import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
 import com.teamwizardry.refraction.common.tile.TileDiscoBall;
@@ -96,13 +97,15 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
                     ball, 1.0F, 1, 1, 1);
 
         if (te.getWorld().isBlockIndirectlyGettingPowered(te.getPos()) > 0
-                || te.getWorld().isBlockPowered(te.getPos()) && te.beams.size() > 0) {
-            GlStateManager.translate(0.5, 0.25, 0.5);
-            for (Beam beam : te.beams) {
-                StarRenderHelper.renderStar(beam.color.getRGB(), 0.2f, 0.2f, 0.2f, beam.slope.hashCode());
-                StarRenderHelper.renderStar(beam.color.brighter().getRGB(), 0.1f, 0.1f, 0.1f, beam.slope.hashCode() + beam.slope.hashCode());
-            }
-            GlStateManager.translate(-0.5, -0.25, -0.5);
+                || te.getWorld().isBlockPowered(te.getPos())) {
+            for (BeamMode mode : te.beamData.keySet())
+                for (Beam beam : te.beamData.get(mode)) {
+
+                    GlStateManager.translate(0.5, 0.25, 0.5);
+                    StarRenderHelper.renderStar(beam.color.getRGB(), 0.2f, 0.2f, 0.2f, beam.slope.hashCode());
+                    StarRenderHelper.renderStar(beam.color.brighter().getRGB(), 0.1f, 0.1f, 0.1f, beam.slope.hashCode() + beam.slope.hashCode());
+                    GlStateManager.translate(-0.5, -0.25, -0.5);
+                }
         }
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
