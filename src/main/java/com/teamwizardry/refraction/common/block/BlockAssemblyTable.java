@@ -66,10 +66,9 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 			if (heldItem != null && heldItem.stackSize > 0) {
 				ItemStack stack = heldItem.copy();
 				stack.stackSize = 1;
-				--heldItem.stackSize;
 				for (int i = 0; i < table.inventory.getSlots(); i++)
-					if (table.inventory.getStackInSlot(i) == null) {
-						table.inventory.insertItem(i, stack, false);
+					if (table.inventory.insertItem(i, stack, false) != stack) {
+						--heldItem.stackSize;
 						break;
 					}
 				playerIn.openContainer.detectAndSendChanges();

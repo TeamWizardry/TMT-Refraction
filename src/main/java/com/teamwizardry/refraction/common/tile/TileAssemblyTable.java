@@ -80,6 +80,11 @@ public class TileAssemblyTable extends TileMod implements ITickable {
         }
 
         @Override
+        protected int getStackLimit(int slot, ItemStack stack) {
+            return 1;
+        }
+
+        @Override
         protected void onContentsChanged(int slot) {
             markDirty();
         }
