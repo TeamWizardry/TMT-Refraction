@@ -45,11 +45,10 @@ public class RenderAssemblyTable extends TileEntitySpecialRenderer<TileAssemblyT
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(0.5F, 0.575F, 0.5F);
 			GlStateManager.rotate(angles[i] + (float) time, 0F, 1F, 0F);
-			GlStateManager.translate(0.325F, 0F, 0.25F);
+			GlStateManager.translate(0.125F, 0F, 0.25F);
 			GlStateManager.rotate(22.5F, 0F, 1F, 0F);
 			GlStateManager.translate(0D, 0.0375 * Math.sin((time + i * 10) / 5D), 0F);
-			GlStateManager.rotate(90F, 0F, 0F, 1F);
-			GlStateManager.scale(0.5, 0.5, 0.5);
+			GlStateManager.rotate(90F, 1F, 0F, 0F);
 			ItemStack stack = te.inventory.getStackInSlot(i);
 			Minecraft mc = Minecraft.getMinecraft();
 			if (stack != null) {

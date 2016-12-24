@@ -46,6 +46,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
     @Nullable
     public IAssemblyBehavior behavior;
 
+    @NotNull
     public ItemStackHandler output = new ItemStackHandler(1) {
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
@@ -64,6 +65,7 @@ public class TileAssemblyTable extends TileMod implements ITickable {
         }
     };
 
+    @NotNull
     public ItemStackHandler inventory = new ItemStackHandler(54) {
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
