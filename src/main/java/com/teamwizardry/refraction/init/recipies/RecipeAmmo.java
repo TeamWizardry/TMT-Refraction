@@ -56,9 +56,9 @@ public class RecipeAmmo implements IRecipe {
         ItemStack stack = ammoConsumer.copy();
 
         UUID uuid = ItemNBTHelper.getUUID(stack, "uuid", false);
-
         ItemNBTHelper.setUUID(stack, "uuid", uuid);
         IAmmoConsumer.setDurability(stack, 1000);
+
         if (ammo.getTagCompound() != null && ammo.getTagCompound().hasKey("color"))
             ItemNBTHelper.setInt(stack, "color", ItemNBTHelper.getInt(ammo, "color", 0));
 

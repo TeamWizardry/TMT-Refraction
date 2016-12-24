@@ -1,7 +1,8 @@
 package com.teamwizardry.refraction.common.core;
 
+import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.client.render.GunOverlay;
+import com.teamwizardry.refraction.api.IAmmoConsumer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -11,6 +12,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -21,7 +23,7 @@ import java.util.UUID;
  */
 public class AmmoSaveHandler {
 
-    public static final GunOverlay INSTANCE = new GunOverlay();
+    public static final AmmoSaveHandler INSTANCE = new AmmoSaveHandler();
     private static final String DURABILITY = Constants.MOD_ID + "-durability";
     public static HashMap<UUID, Integer> durabilities = new HashMap<>();
 
@@ -34,7 +36,7 @@ public class AmmoSaveHandler {
     }
 
     @Nonnull
-    public static AmmoSaveHandler.DurabilityData getSaveData() {
+    private static AmmoSaveHandler.DurabilityData getSaveData() {
         World world = DimensionManager.getWorld(0);
         if (world == null || world.getMapStorage() == null)
             return new AmmoSaveHandler.DurabilityData();
@@ -59,6 +61,14 @@ public class AmmoSaveHandler {
     public void unload(WorldEvent.Unload event) {
         getSaveData();
         markDirty();
+    }
+
+    @SubscribeEvent
+    public void pickup(PlayerEvent.ItemPickupEvent event) {
+        if (event.pickedUp.getEntityItem().getItem() instanceof IAmmoConsumer
+                && ItemNBTHelper.getUUID(event.pickedUp.getEntityItem(), "uuid", true) != null
+                && ItemNBTHelper.getInt(event.pickedUp.getEntityItem(), "durability", -1) > 0)
+            durabilities.put(ItemNBTHelper.getUUID(event.pickedUp.getEntityItem(), "uuid", false), ItemNBTHelper.getInt(event.pickedUp.getEntityItem(), "durability", -1));
     }
 
     public static class DurabilityData extends WorldSavedData {
