@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.core.AmmoSaveHandler;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
@@ -27,10 +28,19 @@ public class GunOverlay {
 
     public static final GunOverlay INSTANCE = new GunOverlay();
 
-    private static final Texture texBox = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/gunbar/gun_box.png"));
-    private static final Texture texVignette = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/gunbar/gun_vignette.png"));
-    private static final Sprite sprBox = texBox.getSprite("box", 28, 135);
-    private static final Sprite sprVignette = texVignette.getSprite("box", 28, 135);
+    private static Texture texBox;
+    private static Texture texVignette;
+    private static Sprite sprBox;
+    private static Sprite sprVignette;
+
+    static {
+        Utils.HANDLER.runIfClient(() -> {
+            texBox = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/gunbar/gun_box.png"));
+            texVignette = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/gunbar/gun_vignette.png"));
+            sprBox = texBox.getSprite("box", 28, 135);
+            sprVignette = texVignette.getSprite("box", 28, 135);
+        });
+    }
 
     public GunOverlay() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -77,7 +87,6 @@ public class GunOverlay {
                     GlStateManager.translate(28, -1, 0);
                     texVignette.bind();
                     sprVignette.drawClipped(ClientTickHandler.getTicks(), 0, 0, width, 135);
-                    //GlStateManager.rotate(-180, 0, 0, 1);
                 }
             }
 
