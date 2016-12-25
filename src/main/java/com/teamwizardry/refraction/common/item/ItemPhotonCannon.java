@@ -61,7 +61,16 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer {
         if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("color")) {
             Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
             ItemStack ammo = IAmmoConsumer.findAmmo((EntityPlayer) playerIn, color);
-            if (ammo == null) return;
+            if (ammo == null) {
+                if (((EntityPlayer) playerIn).world.isRemote)
+                    ((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+                return;
+            }
+            if (ammo.getItemDamage() <= 0) {
+                if (((EntityPlayer) playerIn).world.isRemote)
+                    ((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+                return;
+            }
             ammo.setItemDamage(ammo.getItemDamage() - 1);
 
             boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
@@ -78,10 +87,7 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer {
                     .enableParticleBeginning()
                     .enableParticleEnd();
             beam.spawn();
-        } else {
-            if (((EntityPlayer) playerIn).world.isRemote) {
-                ((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
-            }
-        }
+        } else if (((EntityPlayer) playerIn).world.isRemote)
+            ((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
     }
 }

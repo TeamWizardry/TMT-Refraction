@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.librarianlib.client.gui.GuiBase;
 import com.teamwizardry.librarianlib.client.gui.GuiComponent;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
+import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
@@ -15,10 +16,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,144 +100,46 @@ public class GuiAmmoSelector extends GuiBase {
         });
         getMainComponents().add(ammoConsumerComp);
 
+        double slice = 2 * Math.PI / ammoList.size();
         for (ItemStack ammo : ammoList) {
             Color color = new Color(ItemNBTHelper.getInt(ammo, "color", 0xFFFFF));
 
-            ComponentVoid ammoComp = new ComponentVoid(0, 0);
+            new ButtonMixin<>(background, () -> {
+            });
+
+            double radius = 200, size = 0.3;
+            int slot = ammoList.indexOf(ammo);
+            double angle = slice * slot;
+            float newX = (float) ((-sprBackground.getHeight() / 2) + radius * Math.cos(angle));
+            float newY = (float) ((-sprBackground.getHeight() / 2) + radius * Math.sin(angle));
+
+            ComponentVoid ammoComp = new ComponentVoid((int) (newX * size), (int) (newY * size), (int) (sprBackground.getWidth() * size), (int) (sprBackground.getHeight() * size));
             ammoComp.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
                 GlStateManager.pushMatrix();
                 GlStateManager.enableRescaleNormal();
                 GlStateManager.enableBlend();
+                GlStateManager.enableAlpha();
 
-                // TODO: Draw colored triangle sections here.
-                // TODO: OR draw colored circles.
+                GlStateManager.scale(size, size, size);
+                GlStateManager.color((float) (color.getRed() / 255.0), (float) (color.getGreen() / 255.0), (float) (color.getBlue() / 255.0));
+                texBackground.bind();
+                sprBackground.draw((int) ClientTickHandler.getPartialTicks(), newX, newY);
 
+                GlStateManager.color(1, 1, 1);
+                GlStateManager.disableAlpha();
                 GlStateManager.disableBlend();
                 GlStateManager.disableRescaleNormal();
                 GlStateManager.popMatrix();
+            });
+            ammoComp.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event) -> {
+                mc.player.sendChatMessage(".");
+                ItemNBTHelper.setInt(ammoConsumer, "color", ItemNBTHelper.getInt(ammo, "color", 0xFFFFF));
             });
 
             getMainComponents().add(ammoComp);
 
         }
 
-    }
-
-    // COPIED PSI CODE
-    private static float mouseAngle(int x, int y, int mx, int my) {
-        Vector2f baseVec = new Vector2f(1F, 0F);
-        Vector2f mouseVec = new Vector2f(mx - x, my - y);
-
-        float ang = (float) (Math.acos(Vector2f.dot(baseVec, mouseVec) / (baseVec.length() * mouseVec.length())) * (180F / Math.PI));
-        return my < y ? 360F - ang : ang;
-    }
-
-    @Override
-    public void drawScreen(int mx, int my, float partialTicks) {
-        super.drawScreen(mx, my, partialTicks);
-
-        // COPIED PSI CODE
-
-        /*GlStateManager.pushMatrix();
-        GlStateManager.disableTexture2D();
-
-        int x = width / 2;
-        int y = height / 2;
-        int maxRadius = 80;
-
-        float angle = mouseAngle(x, y, mx, my);
-
-        int highlight = 5;
-
-        GlStateManager.enableBlend();
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        int segments = slots.size();
-        float totalDeg = 0;
-        float degPer = 360F / segments;
-
-        for (int seg = 0; seg < segments; seg++) {
-            boolean mouseInSector = angle > totalDeg && angle < totalDeg + degPer;
-            float radius = Math.max(0F, Math.min((timeIn + partialTicks - seg * 6F / segments) * 40F, maxRadius));
-
-            GL11.glBegin(GL11.GL_TRIANGLE_FAN);
-
-            float gs = 0.25F;
-            if (seg % 2 == 0) gs += 0.1F;
-            float r = gs;
-            float g = gs;
-            float b = gs;
-            float a = 0.4F;
-
-            if (ammoConsumer != null) {
-                Color color = new Color(ItemNBTHelper.getInt(ammoConsumer, "color", 0xFFFFF));
-                r = color.getRed() / 255F;
-                g = color.getGreen() / 255F;
-                b = color.getBlue() / 255F;
-            }
-
-            GlStateManager.color(r, g, b, a);
-            GL11.glVertex2i(x, y);
-
-            totalDeg += degPer;
-
-            GL11.glVertex2i(x, y);
-            GL11.glEnd();
-
-            if (mouseInSector) radius -= highlight;
-        }
-
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-        GlStateManager.enableTexture2D();
-
-        float stime = 5F;
-        float fract = Math.min(stime, timeIn + partialTicks) / stime;
-        float s = 3F * fract;
-        GlStateManager.enableRescaleNormal();
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        RenderHelper.enableGUIStandardItemLighting();
-
-        if (ammoConsumer != null && ammoList.size() > 0) {
-            int xs = width / 2 - 18 * ammoList.size() / 2;
-            int ys = height / 2;
-
-            for (int i = 0; i < ammoList.size(); i++) {
-                float yoff = 25F + maxRadius;
-                if (i == selectedSlot)
-                    yoff += 5F;
-
-                GlStateManager.translate(0, -yoff * fract, 0F);
-                mc.getRenderItem().renderItemAndEffectIntoGUI(ammoList.get(i), xs + i * 18, ys);
-                GlStateManager.translate(0, yoff * fract, 0F);
-            }
-
-        }
-
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.disableBlend();
-        GlStateManager.disableRescaleNormal();
-
-        GlStateManager.popMatrix();*/
-    }
-
-    @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-
-        // COPIED PSI CODE
-        if (ammoConsumer != null && ammoList.size() > 0) {
-            if (mouseButton == 0) {
-                selectedSlot++;
-                if (selectedSlot >= ammoList.size())
-                    selectedSlot = 0;
-            } else if (mouseButton == 1) {
-                selectedSlot--;
-                if (selectedSlot < 0)
-                    selectedSlot = ammoList.size() - 1;
-            }
-
-            ItemNBTHelper.setInt(ammoConsumer, "color", ItemNBTHelper.getInt(ammoList.get(selectedSlot), "color", 0xFFFFF));
-        }
     }
 
     @Override
