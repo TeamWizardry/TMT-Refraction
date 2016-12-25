@@ -13,7 +13,6 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 public class CraftingRecipes {
 	public static void init() {
         GameRegistry.addRecipe(new RecipeScrewDriver());
-        GameRegistry.addRecipe(new RecipeAmmo());
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.LENS), "AAA", 'A', "blockGlass"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.LASER), "AAA", "BCB", "ADA", 'A', Items.IRON_INGOT, 'B', ModBlocks.REFLECTIVE_ALLOY_BLOCK, 'D', Items.REDSTONE));

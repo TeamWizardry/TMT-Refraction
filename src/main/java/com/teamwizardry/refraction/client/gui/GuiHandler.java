@@ -17,6 +17,7 @@ public class GuiHandler implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		if (ID == 0) return new GuiBook();
+		if (ID == 1) return new GuiAmmoSelector();
 		return null;
 	}
 }

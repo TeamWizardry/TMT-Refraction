@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
+import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.beam.Beam;
@@ -14,8 +15,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 
 /**
@@ -49,13 +50,6 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer {
     }
 
     @Override
-    public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player) {
-        ItemNBTHelper.setInt(item, "durability", IAmmoConsumer.getDurability(item));
-        IAmmoConsumer.removeDurability(item);
-        return true;
-    }
-
-    @Override
     @Nullable
     public ItemStack onItemUseFinish(@NotNull ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
         return stack;
@@ -63,31 +57,30 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer {
 
     @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
+        if (!(playerIn instanceof EntityPlayer)) return;
         if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("color")) {
-            if (IAmmoConsumer.hasDurability(stack)) {
-                if (IAmmoConsumer.getDurability(stack) <= 0) {
-                    IAmmoConsumer.removeDurability(stack);
-                    return;
-                }
-                IAmmoConsumer.setDurability(stack, IAmmoConsumer.getDurability(stack) - 1);
+            Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
+            ItemStack ammo = IAmmoConsumer.findAmmo((EntityPlayer) playerIn, color);
+            if (ammo == null) return;
+            ammo.setItemDamage(ammo.getItemDamage() - 1);
 
-                Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
+            boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
+            Vec3d cross = playerIn.getLook(1).crossProduct(new Vec3d(0, playerIn.getEyeHeight(), 0)).normalize().scale(playerIn.width / 2);
+            if (!handMod) cross = cross.scale(-1);
+            Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
 
-                boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
-                Vec3d cross = playerIn.getLook(1).crossProduct(new Vec3d(0, playerIn.getEyeHeight(), 0)).normalize().scale(playerIn.width / 2);
-                if (!handMod) cross = cross.scale(-1);
-                Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
-
-                stack.damageItem(1, playerIn);
-                Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), color)
-                        .setMode(new ModeGun())
-                        .setUUIDToSkip(playerIn.getUniqueID())
-                        .setCaster(playerIn)
-                        .setRange(30)
-                        .enableParticleBeginning()
-                        .enableParticleEnd();
-                beam.spawn();
-
+            stack.damageItem(1, playerIn);
+            Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), color)
+                    .setMode(new ModeGun())
+                    .setUUIDToSkip(playerIn.getUniqueID())
+                    .setCaster(playerIn)
+                    .setRange(30)
+                    .enableParticleBeginning()
+                    .enableParticleEnd();
+            beam.spawn();
+        } else {
+            if (((EntityPlayer) playerIn).world.isRemote) {
+                ((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
             }
         }
     }

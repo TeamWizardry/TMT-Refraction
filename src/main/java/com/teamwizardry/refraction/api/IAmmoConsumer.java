@@ -1,29 +1,66 @@
 package com.teamwizardry.refraction.api;
 
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
-import com.teamwizardry.refraction.common.core.AmmoSaveHandler;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by LordSaad.
  */
 public interface IAmmoConsumer {
 
-    static void setDurability(ItemStack stack, int durability) {
-        AmmoSaveHandler.durabilities.put(ItemNBTHelper.getUUID(stack, "uuid", false), durability);
-        AmmoSaveHandler.markDirty();
+    @NotNull
+    static List<ItemStack> findAllAmmo(EntityPlayer player) {
+        List<ItemStack> stacks = new ArrayList<>();
+        if (isAmmo(player.getHeldItem(EnumHand.OFF_HAND))) {
+            stacks.add(player.getHeldItem(EnumHand.OFF_HAND));
+        }
+        if (isAmmo(player.getHeldItem(EnumHand.MAIN_HAND))) {
+            stacks.add(player.getHeldItem(EnumHand.MAIN_HAND));
+        }
+        for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
+            ItemStack itemstack = player.inventory.getStackInSlot(i);
+
+            if (isAmmo(itemstack)) stacks.add(itemstack);
+        }
+
+        return stacks;
     }
 
-    static void removeDurability(ItemStack stack) {
-        AmmoSaveHandler.durabilities.remove(ItemNBTHelper.getUUID(stack, "uuid", false));
-        AmmoSaveHandler.markDirty();
+    @Nullable
+    static ItemStack findAmmo(EntityPlayer player, Color color) {
+        if (isAmmo(player.getHeldItem(EnumHand.OFF_HAND), color)) {
+            return player.getHeldItem(EnumHand.OFF_HAND);
+        } else if (isAmmo(player.getHeldItem(EnumHand.MAIN_HAND), color)) {
+            return player.getHeldItem(EnumHand.MAIN_HAND);
+        } else {
+            for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
+                ItemStack itemstack = player.inventory.getStackInSlot(i);
+
+                if (isAmmo(itemstack, color)) return itemstack;
+            }
+            return null;
+        }
     }
 
-    static int getDurability(ItemStack stack) {
-        return AmmoSaveHandler.durabilities.get(ItemNBTHelper.getUUID(stack, "uuid", false));
+    static boolean isAmmo(@Nullable ItemStack stack) {
+        return stack != null
+                && stack.getItem() instanceof IAmmo
+                && stack.hasTagCompound()
+                && stack.getTagCompound().hasKey("color");
     }
 
-    static boolean hasDurability(ItemStack stack) {
-        return AmmoSaveHandler.durabilities.containsKey(ItemNBTHelper.getUUID(stack, "uuid", false));
+    static boolean isAmmo(@Nullable ItemStack stack, Color color) {
+        return stack != null
+                && stack.getItem() instanceof IAmmo
+                && stack.hasTagCompound()
+                && stack.getTagCompound().hasKey("color")
+                && Utils.doColorsMatchNoAlpha(color, new Color(stack.getTagCompound().getInteger("color")));
     }
 }

@@ -4,8 +4,8 @@ import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.common.core.AmmoSaveHandler;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -19,7 +19,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
-import java.util.UUID;
 
 /**
  * Created by LordSaad.
@@ -64,7 +63,6 @@ public class GunOverlay {
             GlStateManager.translate(posX, posY / 2, 0);
             GlStateManager.color(1f, 1f, 1f);
 
-
             NBTTagCompound compound = stack.getTagCompound();
             if (compound != null) {
                 if (compound.hasKey("color")) {
@@ -74,10 +72,9 @@ public class GunOverlay {
                     Color color = new Color(compound.getInteger("color"));
                     GlStateManager.color(color.getRed(), color.getGreen(), color.getBlue());
 
-                    UUID uuid = compound.getUniqueId("uuid");
                     int width = 0;
-                    if (AmmoSaveHandler.durabilities.containsKey(uuid))
-                        width = AmmoSaveHandler.durabilities.get(uuid) * 28 / 1000;
+                    ItemStack ammo = IAmmoConsumer.findAmmo(Minecraft.getMinecraft().player);
+                    if (ammo != null) width = ammo.getItemDamage() * 28 / ammo.getMaxDamage();
 
                     texVignette.bind();
                     GlStateManager.translate(-posX, -posY / 2, 0);

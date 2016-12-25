@@ -62,6 +62,10 @@ public final class Utils {
         }
     }
 
+	public static boolean doColorsMatchNoAlpha(Color color1, Color color2) {
+		return color1.getRed() == color2.getRed() && color1.getGreen() == color2.getGreen() && color1.getBlue() == color2.getBlue();
+	}
+
 	public static Color mixColors(Color color1, Color color2, double percent) {
 		double inverse_percent = 1.0 - percent;
 		double redPart = color1.getRed() * percent + color2.getRed() * inverse_percent;

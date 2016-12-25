@@ -11,5 +11,6 @@ public class ItemLightCartridge extends ItemMod implements IAmmo {
     public ItemLightCartridge() {
         super("light_cartridge");
         setMaxStackSize(1);
+        setMaxDamage(1000);
     }
 }
