@@ -142,17 +142,19 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
         Utils.HANDLER.runIfClient(() -> {
             particle1 = new ParticleBuilder(3);
-            particle1.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
+            particle1.setRender(new ResourceLocation(Constants.MOD_ID, "particles/star"));
             particle1.disableRandom();
             particle1.disableMotionCalculation();
-            particle1.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 5));
+            particle1.setAlphaFunction(new InterpFadeInOut(0f, 1f));
+            particle1.setScale(ThreadLocalRandom.current().nextFloat() * 2);
+            particle1.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 10));
 
             particle2 = new ParticleBuilder(ThreadLocalRandom.current().nextInt(20, 100));
             particle2.setRender(new ResourceLocation(Constants.MOD_ID, "particles/lens_flare_1"));
             particle2.disableRandom();
             particle2.disableMotionCalculation();
             particle2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ThreadLocalRandom.current().nextInt(10, 15)));
-            particle2.setAlphaFunction(new InterpFadeInOut((float) ThreadLocalRandom.current().nextDouble(0.1, 0.5), (float) ThreadLocalRandom.current().nextDouble(0.1, 0.5)));
+            particle2.setAlphaFunction(new InterpFadeInOut((float) ThreadLocalRandom.current().nextDouble(0, 1), (float) ThreadLocalRandom.current().nextDouble(0, 1)));
             particle2.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 2.5));
         });
     }

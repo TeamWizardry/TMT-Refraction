@@ -88,6 +88,7 @@ public class GuiAmmoSelector extends GuiBase {
             GlStateManager.enableRescaleNormal();
             GlStateManager.enableBlend();
             RenderHelper.enableStandardItemLighting();
+            GlStateManager.color(1, 1, 1);
 
             GlStateManager.scale(scale, scale, scale);
             GlStateManager.translate(-8, -8, 0);
