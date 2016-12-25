@@ -45,7 +45,22 @@ public class RenderGrenade extends RenderSnowball<EntityGrenade> {
             GlStateManager.popMatrix();
         }
 
-        if (entity.explosionTimer > 0) {
+        if (entity.life > 0) {
+            ParticleBuilder glitter = new ParticleBuilder(ThreadLocalRandom.current().nextInt(10, 30));
+            glitter.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
+            glitter.setColor(color);
+            glitter.setAlphaFunction(new InterpFadeInOut(0.0f, 1.0f));
+
+            ParticleSpawner.spawn(glitter, entity.world, new StaticInterp<>(entity.getPositionVector()), 15, 0, (i, build) -> {
+                Random random = new Random();
+                glitter.setScale(random.nextFloat());
+                glitter.addMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.1, 0.1),
+                        ThreadLocalRandom.current().nextDouble(-0.05, 0.05),
+                        ThreadLocalRandom.current().nextDouble(-0.1, 0.1)));
+            });
+        }
+
+        if (entity.life <= 0 && entity.explosionTimer > 0) {
             ParticleBuilder glitter = new ParticleBuilder(ThreadLocalRandom.current().nextInt(10, 30));
             glitter.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
             glitter.setAlphaFunction(new InterpFadeInOut(0.0f, 1.0f));
