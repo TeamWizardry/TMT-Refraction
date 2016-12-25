@@ -520,7 +520,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
                     flag = false;
                     break;
                 }
-                if (armor.getItem() instanceof IReflectiveArmor) {
+                if (!(armor.getItem() instanceof IReflectiveArmor)) {
                     flag = false;
                     break;
                 }
