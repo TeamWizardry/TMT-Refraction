@@ -33,7 +33,7 @@ public class GuiAmmoSelector extends GuiBase {
 
     private int timeIn = 0;
 
-    private int controlSlot;
+    private int selectedSlot;
 
     private ItemStack ammoConsumer;
     private List<Integer> slots = new ArrayList<>();
@@ -61,7 +61,7 @@ public class GuiAmmoSelector extends GuiBase {
             // TODO: What also should happen is that it starts from color(0,0,0) and finish at (1,1,1)
             float maxTime = 8F;
             float fract = Math.min(maxTime, (timeIn + ClientTickHandler.getPartialTicks())) / maxTime;
-            float scale = 2F * fract;
+            float scale = 1.5F * fract;
             GlStateManager.pushMatrix();
             GlStateManager.enableRescaleNormal();
             GlStateManager.enableBlend();
@@ -84,7 +84,7 @@ public class GuiAmmoSelector extends GuiBase {
             // TODO: What also should happen is that it starts from color(0,0,0) and finish at (1,1,1)
             float maxTime = 5F;
             float fract = Math.min(maxTime, (timeIn + ClientTickHandler.getPartialTicks())) / maxTime;
-            float scale = 4F * fract;
+            float scale = 3F * fract;
             GlStateManager.pushMatrix();
             GlStateManager.enableRescaleNormal();
             GlStateManager.enableBlend();
@@ -204,7 +204,7 @@ public class GuiAmmoSelector extends GuiBase {
 
             for (int i = 0; i < ammoList.size(); i++) {
                 float yoff = 25F + maxRadius;
-                if (i == controlSlot)
+                if (i == selectedSlot)
                     yoff += 5F;
 
                 GlStateManager.translate(0, -yoff * fract, 0F);
@@ -228,16 +228,16 @@ public class GuiAmmoSelector extends GuiBase {
         // COPIED PSI CODE
         if (ammoConsumer != null && ammoList.size() > 0) {
             if (mouseButton == 0) {
-                controlSlot++;
-                if (controlSlot >= ammoList.size())
-                    controlSlot = 0;
+                selectedSlot++;
+                if (selectedSlot >= ammoList.size())
+                    selectedSlot = 0;
             } else if (mouseButton == 1) {
-                controlSlot--;
-                if (controlSlot < 0)
-                    controlSlot = ammoList.size() - 1;
+                selectedSlot--;
+                if (selectedSlot < 0)
+                    selectedSlot = ammoList.size() - 1;
             }
 
-            ItemNBTHelper.setInt(ammoConsumer, "color", ItemNBTHelper.getInt(ammoList.get(controlSlot), "color", 0xFFFFF));
+            ItemNBTHelper.setInt(ammoConsumer, "color", ItemNBTHelper.getInt(ammoList.get(selectedSlot), "color", 0xFFFFF));
         }
     }
 

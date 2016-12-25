@@ -73,7 +73,7 @@ public class GunOverlay {
                     GlStateManager.color(color.getRed(), color.getGreen(), color.getBlue());
 
                     int width = 0;
-                    ItemStack ammo = IAmmoConsumer.findAmmo(Minecraft.getMinecraft().player);
+                    ItemStack ammo = IAmmoConsumer.findAmmo(Minecraft.getMinecraft().player, color);
                     if (ammo != null) width = ammo.getItemDamage() * 28 / ammo.getMaxDamage();
 
                     texVignette.bind();
