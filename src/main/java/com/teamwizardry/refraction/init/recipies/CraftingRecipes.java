@@ -32,6 +32,6 @@ public class CraftingRecipes {
         GameRegistry.addShapelessRecipe(new ItemStack(ModItems.BOOK), ModItems.LASER_PEN, Items.BOOK);
 
         if (!ConfigValues.DISABLE_PHOTON_CANNON)
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.PHOTON_CANNON), "AB ", "CDB", "ECA", 'A', ModBlocks.OPTIC_FIBER, 'B', ModBlocks.MIRROR, 'C', ModItems.REFLECTIVE_ALLOY, 'D', ModBlocks.ELECTRON_EXCITER, 'E', ModBlocks.SENSOR));
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.PHOTON_CANNON), " BA", "CDB", "EC ", 'A', ModBlocks.LENS, 'B', ModBlocks.MIRROR, 'C', ModItems.REFLECTIVE_ALLOY, 'D', ModBlocks.ELECTRON_EXCITER, 'E', ModBlocks.SENSOR));
     }
 }

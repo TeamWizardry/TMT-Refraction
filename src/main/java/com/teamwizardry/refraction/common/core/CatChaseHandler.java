@@ -20,7 +20,7 @@ public class CatChaseHandler {
 	@SubscribeEvent
 	public void spawn(EntityJoinWorldEvent event) {
 		if (event.getEntity() instanceof EntityOcelot) {
-			((EntityOcelot) event.getEntity()).targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityLaserPointer>(((EntityOcelot) event.getEntity()), EntityLaserPointer.class, true, true));
+			((EntityOcelot) event.getEntity()).targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(((EntityOcelot) event.getEntity()), EntityLaserPointer.class, true, true));
 		}
 	}
 }
