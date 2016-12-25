@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.api.beam;
 
 import com.google.common.collect.HashMultimap;
+import com.teamwizardry.refraction.api.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -58,11 +59,11 @@ public class EffectTracker {
     public static Effect getEffect(Beam beam) {
         Color color = beam.color;
 
-        double closestDist = getColorDistance(color, Color.WHITE);
+        double closestDist = Utils.getColorDistance(color, Color.WHITE);
         Effect closestColor = null;
 
         for (Effect effect : effectRegistry) {
-            double dist = getColorDistance(color, effect.getColor());
+            double dist = Utils.getColorDistance(color, effect.getColor());
             if (dist < closestDist) {
                 closestDist = dist;
                 closestColor = effect;
@@ -70,18 +71,6 @@ public class EffectTracker {
         }
 
         return closestColor == null ? null : closestColor.copy().setBeam(beam).setPotency(beam.color.getAlpha());
-    }
-
-    private static double getColorDistance(Color one, Color two) {
-        if (one == null || two == null) return Double.MAX_VALUE;
-        double meanRed = (one.getRed() + two.getRed()) / 2.0;
-        int r = one.getRed() - two.getRed();
-        int g = one.getGreen() - two.getGreen();
-        int b = one.getBlue() - two.getBlue();
-        double weightR = 2 + meanRed / 256;
-        double weightG = 4;
-        double weightB = 2 + (255 - meanRed) / 256;
-        return weightR * r * r + weightG * g * g + weightB * b * b;
     }
 
     public static void registerEffect(Effect effect) {

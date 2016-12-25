@@ -1,9 +1,17 @@
 package com.teamwizardry.refraction.common.block;
 
-import java.awt.Color;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
+import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.PosUtils;
+import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
+import com.teamwizardry.refraction.common.effect.EffectAttract;
+import com.teamwizardry.refraction.common.effect.EffectDisperse;
+import com.teamwizardry.refraction.common.tile.TileElectronExciter;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -22,16 +30,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.PosUtils;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
-import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
-import com.teamwizardry.refraction.common.tile.TileElectronExciter;
-import com.teamwizardry.refraction.init.ModBlocks;
+
+import java.awt.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Saad on 8/16/2016.
@@ -63,6 +66,7 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
         return null;
     }
 
+    @NotNull
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         if (placer.rotationPitch > 45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.UP);
@@ -74,30 +78,33 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
     @Override
     public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
         if (beam.mode instanceof ModeEffect && beam.effect != null) {
-            if (beam.effect.getColor().equals(Color.CYAN)) {
-                EnumFacing block = world.getBlockState(pos).getValue(FACING);
-                if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
-                    TileElectronExciter exciter = getTE(world, pos);
-                    exciter.expire = Constants.SOURCE_TIMER;
-                    exciter.hasCardinalBeam = true;
-
-                    boolean pass = false;
-                    for (EnumFacing facing : EnumFacing.VALUES) {
-                        if (facing != block || facing != block.getOpposite()) {
-                            TileElectronExciter neighbor = getTE(world, pos.offset(facing));
-                            if (neighbor != null)
-                                if (neighbor.hasCardinalBeam && world.getBlockState(pos.offset(facing)).getValue(FACING) == block) {
-                                    pass = true;
-                                    break;
-                                }
+            if (beam.effect instanceof EffectAttract) {
+                if (beam.color.getAlpha() > 128) {
+                    EnumFacing block = world.getBlockState(pos).getValue(FACING);
+                    if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
+                        TileElectronExciter exciter = getTE(world, pos);
+                        if (exciter != null) {
+                            exciter.expire = Constants.SOURCE_TIMER;
+                            exciter.hasCardinalBeam = true;
                         }
-                    }
+                        boolean pass = false;
+                        for (EnumFacing facing : EnumFacing.VALUES) {
+                            if (facing != block || facing != block.getOpposite()) {
+                                TileElectronExciter neighbor = getTE(world, pos.offset(facing));
+                                if (neighbor != null)
+                                    if (neighbor.hasCardinalBeam && world.getBlockState(pos.offset(facing)).getValue(FACING) == block) {
+                                        pass = true;
+                                        break;
+                                    }
+                            }
+                        }
 
-                    if (pass && world.isAirBlock(pos.offset(block)))
-                        world.setBlockState(pos.offset(block), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
-                    return true;
+                        if (pass && world.isAirBlock(pos.offset(block)))
+                            world.setBlockState(pos.offset(block), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
+                        return true;
+                    }
                 }
-            } else if (beam.effect.getColor().equals(Color.MAGENTA)) {
+            } else if (beam.effect instanceof EffectDisperse) {
                 EnumFacing block = world.getBlockState(pos).getValue(FACING);
                 if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
 

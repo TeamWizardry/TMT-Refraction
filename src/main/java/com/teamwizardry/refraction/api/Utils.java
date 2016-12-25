@@ -62,14 +62,6 @@ public final class Utils {
         }
     }
 
-	public static float[] RGBToHSV(Color color) {
-		return Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
-	}
-
-	public static Color HSVToRGB(float[] hsbvals) {
-		return new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
-	}
-
 	public static Color mixColors(Color color1, Color color2, double percent) {
 		double inverse_percent = 1.0 - percent;
 		double redPart = color1.getRed() * percent + color2.getRed() * inverse_percent;
@@ -134,7 +126,7 @@ public final class Utils {
 				for (ItemStack orestack : OreDictionary.getOres(OreDictionary.getOreName(oreID)))
 				{
 					ItemStack cstack = orestack.copy();
-					
+
 					if (cstack.getItemDamage() == 32767)
 						cstack.setItemDamage(stack.getItemDamage());
 					if (stack.isItemEqual(cstack))
@@ -155,4 +147,16 @@ public final class Utils {
 		list.addAll(stacks);
 		return list;
 	}
+
+    public static double getColorDistance(Color one, Color two) {
+        if (one == null || two == null) return Double.MAX_VALUE;
+        double meanRed = (one.getRed() + two.getRed()) / 2.0;
+        int r = one.getRed() - two.getRed();
+        int g = one.getGreen() - two.getGreen();
+        int b = one.getBlue() - two.getBlue();
+        double weightR = 2 + meanRed / 256;
+        double weightG = 4;
+        double weightB = 2 + (255 - meanRed) / 256;
+        return weightR * r * r + weightG * g * g + weightB * b * b;
+    }
 }

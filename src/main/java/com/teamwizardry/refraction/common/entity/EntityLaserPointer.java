@@ -18,6 +18,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
@@ -50,8 +51,8 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 	}
 
 	@Override
-	protected void damageEntity(DamageSource damageSrc, float damageAmount) {
-		// noop
+    protected void damageEntity(@NotNull DamageSource damageSrc, float damageAmount) {
+        // noop
 	}
 
 	@Override
@@ -100,7 +101,8 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
         return player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
     }
 
-	@Override
+    @NotNull
+    @Override
 	public EnumHandSide getPrimaryHand() {
 		return null;
 	}
@@ -112,7 +114,8 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		this.dataManager.register(HAND_HIT, false);
 	}
 
-	@Override
+    @NotNull
+    @Override
 	public Iterable<ItemStack> getArmorInventoryList() {
 		return ImmutableList.of();
 	}
@@ -143,9 +146,12 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		boolean b = player == null || player.get() == null;
 		buffer.writeBoolean(b);
 		if (!b) {
-			buffer.writeLong(player.get().getPersistentID().getMostSignificantBits());
-			buffer.writeLong(player.get().getPersistentID().getLeastSignificantBits());
-		}
+            EntityPlayer p = player.get();
+            if (p != null) {
+                buffer.writeLong(p.getPersistentID().getMostSignificantBits());
+                buffer.writeLong(p.getPersistentID().getLeastSignificantBits());
+            }
+        }
 	}
 
 	@Override

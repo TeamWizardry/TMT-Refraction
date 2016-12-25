@@ -15,7 +15,7 @@ import com.teamwizardry.refraction.api.raytrace.EntityTrace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -512,10 +512,18 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // ENTITY REFLECTING
         if (trace.typeOfHit == RayTraceResult.Type.ENTITY && trace.entityHit instanceof EntityLivingBase) {
             EntityLivingBase entity = (EntityLivingBase) trace.entityHit;
-            if (entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null
-                    && entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null
-                    && entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null
-                    && entity.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null)
+            boolean flag = true;
+            for (ItemStack armor : entity.getArmorInventoryList()) {
+                if (armor == null) {
+                    flag = false;
+                    break;
+                }
+                if (armor.getItem() instanceof IReflectiveArmor) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
                 createSimilarBeam(entity.getLook(1)).setUUIDToSkip(entity.getUniqueID()).enableParticleBeginning().spawn();
         }
         // ENTITY REFLECTING
@@ -557,12 +565,12 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
     @Override
     public boolean equals(Object other) {
-    	return super.equals(other);
+        return super.equals(other);
     }
 
     @Override
     public int hashCode() {
-    	return super.hashCode();
+        return super.hashCode();
     }
 
     @Override

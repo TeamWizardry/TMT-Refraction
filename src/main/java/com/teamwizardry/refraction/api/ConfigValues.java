@@ -13,13 +13,13 @@ public final class ConfigValues {
 	public static int BEAM_RANGE;
 	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "distance_loss", comment = "The factor to multiply the potency - distance by.", defaultValue = 1)
 	public static int DISTANCE_LOSS;
-    @ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "solar_strength", comment = "This will specify the strength the sun will provide to gravityProtection like the magnifier. Max: 255", defaultValue = 16)
+    @ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "solar_strength", comment = "This will specify the strength the sun will provide to magnifiers. Max: 255", defaultValue = 16)
     public static int SOLAR_ALPHA;
-    @ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "glowstone_strength", comment = "This will specify the strength glowstone will provide to gravityProtection like the laser. Max: 255 ", defaultValue = 64)
+    @ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "glowstone_strength", comment = "This will specify the strength glowstone will provide to the glowstone laser. Max: 255 ", defaultValue = 64)
     public static int GLOWSTONE_ALPHA;
 	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "electric_strength", comment = "This will specify the strength electricity will provide to the Electric Laser. Max: 255 ", defaultValue = 64)
 	public static int ELECTRIC_ALPHA;
-    @ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "glowstone_fuel_expire_delay", comment = "Change this and it'll set how long glowstone fuel will last in gravityProtection like the laser", defaultValue = 500)
+    @ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "glowstone_fuel_expire_delay", comment = "Change this and it'll set how long glowstone fuel will last in the glowstone powered laser", defaultValue = 500)
     public static int GLOWSTONE_FUEL_EXPIRE_DELAY;
 	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "max_tesla_for_electric_laser", comment = "Change this and it'll set how much tesla can be stored in the Electric Laser", defaultValue = 100000)
 	public static int MAX_TESLA;
@@ -27,8 +27,8 @@ public final class ConfigValues {
 	public static int TESLA_PER_TICK;
 	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_particle_life", comment = "Change this and it'll set how long beams will stay. Higher numbers will make beams feel laggier but they just VISUALLY stay longer. This is useful if you have terrible TPS issues and/or beams exciterPos flickering for whatever reason.", defaultValue = 3)
 	public static int BEAM_PARTICLE_LIFE;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "disco_ball_beam_bounce_limit", comment = "The disco ball's beams have a bounce/reflecting limit of 4 times. This is to prevent tps drops. This number is kind of a sweet spot in an enclosed cube of reflective alloy gravityProtection. If you set it to a higher value, it will reflect a lot more beams but will drop your tps if you cannot handleBeam it.", defaultValue = 2)
-	public static int DISCO_BALL_BEAM_BOUNCE_LIMIT;
+    @ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "disco_ball_beam_bounce_limit", comment = "The disco ball's beams have a bounce/reflecting limit of 4 times. This is to prevent tps drops. This number is kind of a sweet spot in an enclosed cube of reflective alloy blocks. If you set it to a higher value, it will reflect a lot more beams but will drop your tps if you cannot handleBeam it.", defaultValue = 2)
+    public static int DISCO_BALL_BEAM_BOUNCE_LIMIT;
 	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_bounce_limit", comment = "The amount of times a beam is allowed to bounce or reflect MAXIMUM. If this number is decreased, beams will stop after reflecting or bouncing for that amount of times. This is mainly a safety check against trapped infinitely bouncing beams.", defaultValue = 50)
 	public static int BEAM_BOUNCE_LIMIT;
 	@ConfigPropertyDouble(modid = Constants.MOD_ID, category = "general", id = "player_beam_reflect_strength_division", comment = "When a player wearing full reflective alloy armor stands infront of a beam, it will reflect the beam but divide it's strength by this amount.", defaultValue = 1.4)
