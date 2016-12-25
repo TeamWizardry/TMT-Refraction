@@ -7,6 +7,7 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.modes.ModeGun;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -71,6 +72,7 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer {
                     ((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
                 return;
             }
+            Minecraft.getMinecraft().player.sendChatMessage(ammo.getItemDamage() + "");
             ammo.setItemDamage(ammo.getItemDamage() - 1);
 
             boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;

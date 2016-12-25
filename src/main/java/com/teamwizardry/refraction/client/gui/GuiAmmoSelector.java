@@ -105,9 +105,6 @@ public class GuiAmmoSelector extends GuiBase {
         for (ItemStack ammo : ammoList) {
             Color color = new Color(ItemNBTHelper.getInt(ammo, "color", 0xFFFFF));
 
-            new ButtonMixin<>(background, () -> {
-            });
-
             double radius = 200, size = 0.3;
             int slot = ammoList.indexOf(ammo);
             double angle = slice * slot;
@@ -115,6 +112,8 @@ public class GuiAmmoSelector extends GuiBase {
             float newY = (float) ((-sprBackground.getHeight() / 2) + radius * Math.sin(angle));
 
             ComponentVoid ammoComp = new ComponentVoid((int) (newX * size), (int) (newY * size), (int) (sprBackground.getWidth() * size), (int) (sprBackground.getHeight() * size));
+            new ButtonMixin<>(ammoComp, () -> {
+            });
             ammoComp.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
                 GlStateManager.pushMatrix();
                 GlStateManager.enableRescaleNormal();
@@ -133,7 +132,6 @@ public class GuiAmmoSelector extends GuiBase {
                 GlStateManager.popMatrix();
             });
             ammoComp.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event) -> {
-                mc.player.sendChatMessage(".");
                 ItemNBTHelper.setInt(ammoConsumer, "color", ItemNBTHelper.getInt(ammo, "color", 0xFFFFF));
             });
 
