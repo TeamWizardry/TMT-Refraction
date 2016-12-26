@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.common.tile.TileBuilder;
@@ -42,6 +43,8 @@ public class BlockBuilder extends BlockModContainer implements IBeamHandler {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (worldIn.isRemote)
+            playerIn.openGui(Refraction.instance, 2, playerIn.world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
         return true;
     }
 

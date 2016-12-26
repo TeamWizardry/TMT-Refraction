@@ -15,7 +15,8 @@ import net.minecraft.item.ItemStack;
 public class RenderAssemblyTable extends TileEntitySpecialRenderer<TileAssemblyTable> {
 
 	public void renderTileEntityAt(TileAssemblyTable te, double x, double y, double z, float partialTicks, int destroyStage) {
-		GlStateManager.translate(x, y, z);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, z);
 
 		double time = ClientTickHandler.getTicksInGame() + partialTicks;
 
@@ -56,5 +57,6 @@ public class RenderAssemblyTable extends TileEntitySpecialRenderer<TileAssemblyT
 			}
 			GlStateManager.popMatrix();
 		}
-	}
+        GlStateManager.popMatrix();
+    }
 }

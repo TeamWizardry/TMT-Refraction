@@ -147,9 +147,4 @@ public class GuiAmmoSelector extends GuiBase {
         timeIn++;
     }
 
-    @Override
-    public boolean doesGuiPauseGame() {
-        return true;
-    }
-
 }

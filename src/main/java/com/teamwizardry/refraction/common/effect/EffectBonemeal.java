@@ -32,7 +32,7 @@ public class EffectBonemeal extends Effect {
     public void runEntity(World world, Entity entity, int potency) {
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
-            player.getFoodStats().setFoodSaturationLevel((float) (player.getFoodStats().getSaturationLevel() + 0.5));
+            player.getFoodStats().addStats(1, 0.5f);
         }
     }
 
