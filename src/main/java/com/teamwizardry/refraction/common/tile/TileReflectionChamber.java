@@ -43,26 +43,27 @@ public class TileReflectionChamber extends MultipleBeamTile implements ITickable
 
 			List<Vec3d> angles = new ArrayList<>();
 			int red = 0, green = 0, blue = 0, alpha = 0;
-			int redCount = 0, blueCount = 0, greenCount = 0;
 
 			for (Beam beam : beamSet) {
 				Color color = beam.color;
 
-				if (color.getRed() > 0) redCount++;
-				if (color.getGreen() > 0) greenCount++;
-				if (color.getBlue() > 0) blueCount++;
-
-				red += color.getRed();
-				green += color.getGreen();
-				blue += color.getBlue();
+				double colorCount = 0;
+				if (color.getRed() > 0) colorCount++;
+				if (color.getGreen() > 0) colorCount++;
+				if (color.getBlue() > 0) colorCount++;
+				if (colorCount <= 0) continue;
+				
+				red += color.getRed() * color.getAlpha() / 255F / colorCount;
+				green += color.getGreen() * color.getAlpha() / 255F / colorCount;
+				blue += color.getBlue() * color.getAlpha() / 255F / colorCount;
 
 				alpha += color.getAlpha();
 
 				angles.add(beam.slope);
 			}
-			if (redCount > 0) red = Math.min(red / redCount, 255);
-			if (greenCount > 0) green = Math.min(green / greenCount, 255);
-			if (blueCount > 0) blue = Math.min(blue / blueCount, 255);
+			red = Math.min(red / beamSet.size(), 255);
+			green = Math.min(green / beamSet.size(), 255);
+			blue = Math.min(blue / beamSet.size(), 255);
 
 			float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
 			Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
