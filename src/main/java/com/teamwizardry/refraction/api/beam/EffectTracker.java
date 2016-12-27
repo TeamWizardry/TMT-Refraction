@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.api.beam;
 
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -13,7 +14,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
 import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -62,13 +62,18 @@ public class EffectTracker {
         double closestDist = Utils.getColorDistance(color, Color.WHITE);
         Effect closestColor = null;
 
-        for (Effect effect : effectRegistry) {
-            double dist = Utils.getColorDistance(color, effect.getColor());
-            if (dist < closestDist) {
-                closestDist = dist;
-                closestColor = effect;
-            }
-        }
+		for (Effect effect : effectRegistry)
+		{
+			if (beam.mode == BeamModeRegistry.NONE || beam.mode == effect.getRequiredBeamMode())
+			{
+				double dist = Utils.getColorDistance(color, effect.getColor());
+				if (dist < closestDist)
+				{
+					closestDist = dist;
+					closestColor = effect;
+				}
+			}
+		}
 
         return closestColor == null ? null : closestColor.copy().setBeam(beam).setPotency(beam.color.getAlpha());
     }

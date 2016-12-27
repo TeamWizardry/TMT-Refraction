@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import net.minecraft.util.math.MathHelper;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +56,13 @@ public class GuiAmmoSelector extends GuiBase {
 
         ComponentVoid background = new ComponentVoid(0, 0);
         background.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
-            // TODO: start from a scale of 1/1.5, then scale it up FAST then slow it down as it
-            // TODO: reaches it's full size (which should be doubled because the image is small.
-            // TODO: What also should happen is that it starts from color(0,0,0) and finish at (1,1,1)
-            float maxTime = 8F;
-            float fract = Math.min(maxTime, (timeIn + ClientTickHandler.getPartialTicks())) / maxTime;
-            float scale = 1.5F * fract;
+        	/*
+        	 * TODO: Starting from a scale of 1/1.5, then scale up (fast then slow) as it reaches 2x size
+        	 * Scale color similarly, from (0, 0, 0) to (1, 1, 1)
+             */
+        	float maxTime = 8;
+        	float time = Math.min(maxTime, timeIn + ClientTickHandler.getPartialTicks()) / maxTime;
+        	float scale = maxTime * MathHelper.sin(time * (float) Math.PI / maxTime) / 1.5F;
             GlStateManager.pushMatrix();
             GlStateManager.enableRescaleNormal();
             GlStateManager.enableBlend();
@@ -78,9 +80,13 @@ public class GuiAmmoSelector extends GuiBase {
 
         ComponentVoid ammoConsumerComp = new ComponentVoid(0, 0);
         ammoConsumerComp.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
-            // TODO: start from a scale of 9, then scale it up FAST then slow it down as it
-            // TODO: reaches it's full size (which should be doubled because the image is small.
-            // TODO: What also should happen is that it starts from color(0,0,0) and finish at (1,1,1)
+        	/*
+        	 * TODO: Starting from a scale of 9, then scale up (fast then slow) as it reaches 2x size
+        	 * Scale color similarl, from (0, 0, 0) to (1, 1, 1)
+        	 */
+//        	float maxTime = 5;
+//        	float time = Math.min(maxTime, timeIn + ClientTickHandler.getPartialTicks()) / maxTime;
+//        	float scale = maxTime * MathHelper.sin(time * (float) Math.PI / maxTime) / 1.5F;
             float maxTime = 5F;
             float fract = Math.min(maxTime, (timeIn + ClientTickHandler.getPartialTicks())) / maxTime;
             float scale = 3F * fract;
