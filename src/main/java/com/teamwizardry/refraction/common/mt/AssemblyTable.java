@@ -30,9 +30,14 @@ public class AssemblyTable {
 		MineTweakerAPI.apply(new Add(name, new AssemblyRecipe(MTRefractionPlugin.toStack(output), minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, MTRefractionPlugin.toObjects(input))));
 	}
 
+	@ZenMethod
+	public static void remove(IItemStack output) {
+		MineTweakerAPI.apply(new Remove(MTRefractionPlugin.toStack(output)));
+	}
+
 	private static class Add implements IUndoableAction {
-		private String name;
 		private final AssemblyRecipe recipe;
+		private String name;
 
 		public Add(String name, AssemblyRecipe recipe) {
 			this.name = name;
@@ -68,11 +73,6 @@ public class AssemblyTable {
 		public void undo() {
 			AssemblyBehaviors.getBehaviors().remove("zen:" + name);
 		}
-	}
-
-	@ZenMethod
-	public static void remove(IItemStack output) {
-		MineTweakerAPI.apply(new Remove(MTRefractionPlugin.toStack(output)));
 	}
 
 	private static class Remove implements IUndoableAction {

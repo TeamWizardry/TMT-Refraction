@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
-import com.teamwizardry.refraction.api.recipe.AssemblyRecipe;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.api.recipe.AssemblyRecipe;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -30,8 +30,8 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 	private static Sprite
 			BAR = texture.getSprite("bar", 64, 8),
 			OUTLINE = texture.getSprite("outline", 34 * 2, 12),
-            SLOT = texture.getSprite("slotcomp", 18, 18);
-    private ArrayList<ItemStack> inputs = new ArrayList<>();
+			SLOT = texture.getSprite("slotcomp", 18, 18);
+	private ArrayList<ItemStack> inputs = new ArrayList<>();
 	private ArrayList<ItemStack> outputs = new ArrayList<>();
 	private List<FluidStack> fluidInputs = ImmutableList.of();
 	private List<FluidStack> fluidOutputs = ImmutableList.of();

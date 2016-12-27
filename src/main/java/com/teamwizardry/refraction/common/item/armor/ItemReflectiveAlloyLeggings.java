@@ -18,27 +18,27 @@ import net.minecraft.world.World;
  */
 public class ItemReflectiveAlloyLeggings extends ItemModArmor implements IReflectiveArmor {
 
-    public ItemReflectiveAlloyLeggings() {
-        super("ref_alloy_leggings", ArmorMaterial.GOLD, EntityEquipmentSlot.LEGS);
-        setMaxStackSize(1);
-        setMaxDamage(0);
-    }
+	public ItemReflectiveAlloyLeggings() {
+		super("ref_alloy_leggings", ArmorMaterial.GOLD, EntityEquipmentSlot.LEGS);
+		setMaxStackSize(1);
+		setMaxDamage(0);
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        ItemStack itemstack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		ItemStack itemstack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
 
-        if (itemstack == null) {
-            playerIn.setItemStackToSlot(EntityEquipmentSlot.LEGS, itemStackIn.copy());
-            itemStackIn.stackSize = 0;
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
-        } else {
-            return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
-        }
-    }
+		if (itemstack == null) {
+			playerIn.setItemStackToSlot(EntityEquipmentSlot.LEGS, itemStackIn.copy());
+			itemStackIn.stackSize = 0;
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+		} else {
+			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+		}
+	}
 
-    @Override
-    public final String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        return new ResourceLocation(Constants.MOD_ID, "textures/items/reflective_alloy_leggings.png").toString();
-    }
+	@Override
+	public final String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+		return new ResourceLocation(Constants.MOD_ID, "textures/items/reflective_alloy_leggings.png").toString();
+	}
 }

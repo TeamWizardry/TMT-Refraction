@@ -47,8 +47,8 @@ public class LaserRenderer {
 		GlStateManager.pushMatrix();
 		GlStateManager.pushAttrib();
 
-        EntityPlayer rootPlayer = Minecraft.getMinecraft().player;
-        double x = rootPlayer.lastTickPosX + (rootPlayer.posX - rootPlayer.lastTickPosX) * event.getPartialTicks();
+		EntityPlayer rootPlayer = Minecraft.getMinecraft().player;
+		double x = rootPlayer.lastTickPosX + (rootPlayer.posX - rootPlayer.lastTickPosX) * event.getPartialTicks();
 		double y = rootPlayer.lastTickPosY + (rootPlayer.posY - rootPlayer.lastTickPosY) * event.getPartialTicks();
 		double z = rootPlayer.lastTickPosZ + (rootPlayer.posZ - rootPlayer.lastTickPosZ) * event.getPartialTicks();
 		GlStateManager.translate(-x, -y, -z);

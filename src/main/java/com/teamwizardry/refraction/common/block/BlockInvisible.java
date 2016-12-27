@@ -14,41 +14,41 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BlockInvisible extends BlockMod {
 
-    public BlockInvisible() {
-        super("invisible", Material.IRON);
-    }
+	public BlockInvisible() {
+		super("invisible", Material.IRON);
+	}
 
-    @Override
-    public boolean isCollidable() {
-        return false;
-    }
+	@Override
+	public boolean isCollidable() {
+		return false;
+	}
 
-    @Nullable
-    @Override
-    public ItemBlock createItemForm() {
-        return null;
-    }
+	@Nullable
+	@Override
+	public ItemBlock createItemForm() {
+		return null;
+	}
 
-    @Override
-    public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return 0;
-    }
+	@Override
+	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return 0;
+	}
 
-    @Override
-    @Deprecated
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.INVISIBLE;
-    }
+	@Override
+	@Deprecated
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.INVISIBLE;
+	}
 
-    @Override
-    @Deprecated
-    public boolean isFullBlock(IBlockState state) {
-        return false;
-    }
+	@Override
+	@Deprecated
+	public boolean isFullBlock(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	@Deprecated
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 }

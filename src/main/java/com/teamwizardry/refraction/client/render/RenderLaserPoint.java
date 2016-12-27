@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class RenderLaserPoint extends Render<EntityLaserPointer> {
 
-    ResourceLocation loc = new ResourceLocation(Constants.MOD_ID, "textures/laser_dot.png");
+	ResourceLocation loc = new ResourceLocation(Constants.MOD_ID, "textures/laser_dot.png");
 
 	public RenderLaserPoint(RenderManager renderManager) {
 		super(renderManager);

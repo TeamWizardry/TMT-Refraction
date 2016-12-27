@@ -26,111 +26,111 @@ import java.util.List;
  */
 public class BlockInvisibleRedstone extends BlockModContainer {
 
-    public static final PropertyInteger POWER = PropertyInteger.create("power", 0, 15);
+	public static final PropertyInteger POWER = PropertyInteger.create("power", 0, 15);
 
-    public BlockInvisibleRedstone() {
-        super("invisible_redstone", Material.AIR);
+	public BlockInvisibleRedstone() {
+		super("invisible_redstone", Material.AIR);
 
-        setDefaultState(getDefaultState().withProperty(POWER, 0));
-    }
+		setDefaultState(getDefaultState().withProperty(POWER, 0));
+	}
 
-    @Override
-    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return false;
-    }
+	@Override
+	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return false;
+	}
 
-    @Nullable
-    @Override
-    public ItemBlock createItemForm() {
-        return null;
-    }
+	@Nullable
+	@Override
+	public ItemBlock createItemForm() {
+		return null;
+	}
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(POWER, meta);
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(POWER, meta);
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(POWER);
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(POWER);
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, POWER);
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, POWER);
+	}
 
-    @Nullable
-    @Override
-    public IProperty<?>[] getIgnoredProperties() {
-        return new IProperty[]{POWER};
-    }
+	@Nullable
+	@Override
+	public IProperty<?>[] getIgnoredProperties() {
+		return new IProperty[]{POWER};
+	}
 
-    @Override
-    public boolean getWeakChanges(IBlockAccess world, BlockPos pos) {
-        return true;
-    }
+	@Override
+	public boolean getWeakChanges(IBlockAccess world, BlockPos pos) {
+		return true;
+	}
 
-    @Override
-    @Deprecated
-    public boolean canProvidePower(IBlockState state) {
-        return true;
-    }
+	@Override
+	@Deprecated
+	public boolean canProvidePower(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    @Deprecated
-    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return blockState.getValue(POWER);
-    }
+	@Override
+	@Deprecated
+	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return blockState.getValue(POWER);
+	}
 
-    @Override
-    public boolean isCollidable() {
-        return false;
-    }
+	@Override
+	public boolean isCollidable() {
+		return false;
+	}
 
-    @Nullable
-    @Override
-    @Deprecated
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
-        return Block.NULL_AABB;
-    }
+	@Nullable
+	@Override
+	@Deprecated
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+		return Block.NULL_AABB;
+	}
 
-    @Override
-    @Deprecated
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
-    }
+	@Override
+	@Deprecated
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+	}
 
-    @Override
-    public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) {
-        return true;
-    }
+	@Override
+	public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) {
+		return true;
+	}
 
-    @Override
-    public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return 0;
-    }
+	@Override
+	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return 0;
+	}
 
-    @Override
-    @Deprecated
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.INVISIBLE;
-    }
+	@Override
+	@Deprecated
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.INVISIBLE;
+	}
 
-    @Override
-    @Deprecated
-    public boolean isFullBlock(IBlockState state) {
-        return false;
-    }
+	@Override
+	@Deprecated
+	public boolean isFullBlock(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	@Deprecated
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState iBlockState) {
-        return new TileInvisibleRedstone();
-    }
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
+		return new TileInvisibleRedstone();
+	}
 }

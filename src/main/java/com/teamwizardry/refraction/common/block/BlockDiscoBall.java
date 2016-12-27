@@ -26,6 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 /**
@@ -50,8 +51,8 @@ public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
 	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null)
-            ((TileDiscoBall) te).handleBeam(beam);
-        return true;
+			((TileDiscoBall) te).handleBeam(beam);
+		return true;
 	}
 
 	@Override
@@ -86,8 +87,8 @@ public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
 	}
 
 	@Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getStateFromMeta(meta).withProperty(FACING, facing);
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getStateFromMeta(meta).withProperty(FACING, facing);
 	}
 
 	@Override

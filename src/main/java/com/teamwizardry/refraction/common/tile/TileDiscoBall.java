@@ -32,120 +32,120 @@ import java.util.concurrent.ThreadLocalRandom;
 @TileRegister("disco_ball")
 public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 
-    @Save
-    public double tick = 0;
-    @NotNull
-    public Set<Color> colors = new HashSet<>();
-    @NotNull
-    private HashMap<Beam, Integer> beamlifes = new HashMap<>();
+	@Save
+	public double tick = 0;
+	@NotNull
+	public Set<Color> colors = new HashSet<>();
+	@NotNull
+	private HashMap<Beam, Integer> beamlifes = new HashMap<>();
 
-    @Nullable
-    private Matrix4 matrix;
+	@Nullable
+	private Matrix4 matrix;
 
-    @Override
-    public void readCustomNBT(NBTTagCompound compound) {
-        super.readCustomNBT(compound);
+	@Override
+	public void readCustomNBT(NBTTagCompound compound) {
+		super.readCustomNBT(compound);
 
-        colors.clear();
-        NBTTagList array = compound.getTagList("colors", Constants.NBT.TAG_INT);
-        for (int i = 0; i < array.tagCount(); i++)
-            colors.add(new Color(array.getIntAt(i)));
-    }
+		colors.clear();
+		NBTTagList array = compound.getTagList("colors", Constants.NBT.TAG_INT);
+		for (int i = 0; i < array.tagCount(); i++)
+			colors.add(new Color(array.getIntAt(i)));
+	}
 
-    @Override
-    public void writeCustomNBT(NBTTagCompound compound, boolean sync) {
-        super.writeCustomNBT(compound, sync);
+	@Override
+	public void writeCustomNBT(NBTTagCompound compound, boolean sync) {
+		super.writeCustomNBT(compound, sync);
 
-        if (!colors.isEmpty()) {
-            NBTTagList array = new NBTTagList();
-            for (Color color : colors) array.appendTag(new NBTTagInt(color.getRGB()));
-            compound.setTag("colors", array);
-        }
-    }
+		if (!colors.isEmpty()) {
+			NBTTagList array = new NBTTagList();
+			for (Color color : colors) array.appendTag(new NBTTagInt(color.getRGB()));
+			compound.setTag("colors", array);
+		}
+	}
 
-    @Override
-    public void handleBeam(Beam beam) {
-        if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) return;
-        if (beam.customName.equals("disco_ball_beam")) return;
-        if (beamlifes.size() > 20) return;
+	@Override
+	public void handleBeam(Beam beam) {
+		if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) return;
+		if (beam.customName.equals("disco_ball_beam")) return;
+		if (beamlifes.size() > 20) return;
 
-        this.beams.add(beam);
+		this.beams.add(beam);
 
-        boolean flag = true;
-        for (Color color : colors)
-            if (color.getRGB() == beam.color.getRGB()) {
-                flag = false;
-                break;
-            }
-        if (flag) {
-            colors.add(beam.color);
-            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-        }
+		boolean flag = true;
+		for (Color color : colors)
+			if (color.getRGB() == beam.color.getRGB()) {
+				flag = false;
+				break;
+			}
+		if (flag) {
+			colors.add(beam.color);
+			world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+		}
 
-        markDirty();
+		markDirty();
 
-        double radius = 5, rotX = ThreadLocalRandom.current().nextDouble(0, 360), rotZ = ThreadLocalRandom.current().nextDouble(0, 360);
-        int x = (int) (radius * MathHelper.cos((float) Math.toRadians(rotX)));
-        int z = (int) (radius * MathHelper.sin((float) Math.toRadians(rotZ)));
+		double radius = 5, rotX = ThreadLocalRandom.current().nextDouble(0, 360), rotZ = ThreadLocalRandom.current().nextDouble(0, 360);
+		int x = (int) (radius * MathHelper.cos((float) Math.toRadians(rotX)));
+		int z = (int) (radius * MathHelper.sin((float) Math.toRadians(rotZ)));
 
-        Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
+		Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
 
-        Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getDirectionVec()).scale(0.2));
+		Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getDirectionVec()).scale(0.2));
 
-        Beam subBeam = beam.createSimilarBeam(center, dest)
-                .setColor(new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / ThreadLocalRandom.current().nextDouble(2, 4))))
-                .setAllowedBounceTimes(ConfigValues.DISCO_BALL_BEAM_BOUNCE_LIMIT)
-                .setName("disco_ball_beam");
-        beamlifes.put(subBeam, 20);
-    }
+		Beam subBeam = beam.createSimilarBeam(center, dest)
+				.setColor(new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / ThreadLocalRandom.current().nextDouble(2, 4))))
+				.setAllowedBounceTimes(ConfigValues.DISCO_BALL_BEAM_BOUNCE_LIMIT)
+				.setName("disco_ball_beam");
+		beamlifes.put(subBeam, 20);
+	}
 
-    @NotNull
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
-    }
+	@NotNull
+	@SideOnly(Side.CLIENT)
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return INFINITE_EXTENT_AABB;
+	}
 
-    @Override
-    public void update() {
-        super.update();
-        if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) {
-            purge();
-            return;
-        }
+	@Override
+	public void update() {
+		super.update();
+		if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) {
+			purge();
+			return;
+		}
 
-        tick += 5;
-        if (tick >= 360) {
-            tick = 0;
-            colors.clear();
-            markDirty();
-        }
+		tick += 5;
+		if (tick >= 360) {
+			tick = 0;
+			colors.clear();
+			markDirty();
+		}
 
-        if (beamlifes.isEmpty()) {
-            purge();
-            return;
-        }
+		if (beamlifes.isEmpty()) {
+			purge();
+			return;
+		}
 
-        Set<Beam> copy = new HashSet<>(beamlifes.keySet());
+		Set<Beam> copy = new HashSet<>(beamlifes.keySet());
 
-        copy.forEach(beam -> {
-            if (beamlifes.get(beam) > 0)
-                beamlifes.put(beam, beamlifes.get(beam) - 1);
-            else {
-                beamlifes.remove(beam);
-                return;
-            }
+		copy.forEach(beam -> {
+			if (beamlifes.get(beam) > 0)
+				beamlifes.put(beam, beamlifes.get(beam) - 1);
+			else {
+				beamlifes.remove(beam);
+				return;
+			}
 
-            if (matrix == null) {
-                matrix = new Matrix4();
-                matrix.rotate(Math.toRadians(5), new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getOpposite().getDirectionVec()));
-            }
+			if (matrix == null) {
+				matrix = new Matrix4();
+				matrix.rotate(Math.toRadians(5), new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getOpposite().getDirectionVec()));
+			}
 
-            Vec3d slope = matrix.apply(beam.slope);
+			Vec3d slope = matrix.apply(beam.slope);
 
-            beam.setSlope(slope).spawn();
-        });
+			beam.setSlope(slope).spawn();
+		});
 
-        purge();
-    }
+		purge();
+	}
 }

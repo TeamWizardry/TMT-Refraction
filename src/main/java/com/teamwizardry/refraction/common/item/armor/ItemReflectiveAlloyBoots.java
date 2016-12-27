@@ -18,27 +18,27 @@ import net.minecraft.world.World;
  */
 public class ItemReflectiveAlloyBoots extends ItemModArmor implements IReflectiveArmor {
 
-    public ItemReflectiveAlloyBoots() {
-        super("ref_alloy_boots", ArmorMaterial.GOLD, EntityEquipmentSlot.FEET);
-        setMaxStackSize(1);
-        setMaxDamage(0);
-    }
+	public ItemReflectiveAlloyBoots() {
+		super("ref_alloy_boots", ArmorMaterial.GOLD, EntityEquipmentSlot.FEET);
+		setMaxStackSize(1);
+		setMaxDamage(0);
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        ItemStack itemstack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.FEET);
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		ItemStack itemstack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.FEET);
 
-        if (itemstack == null) {
-            playerIn.setItemStackToSlot(EntityEquipmentSlot.FEET, itemStackIn.copy());
-            itemStackIn.stackSize = 0;
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
-        } else {
-            return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
-        }
-    }
+		if (itemstack == null) {
+			playerIn.setItemStackToSlot(EntityEquipmentSlot.FEET, itemStackIn.copy());
+			itemStackIn.stackSize = 0;
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+		} else {
+			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+		}
+	}
 
-    @Override
-    public final String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        return new ResourceLocation(Constants.MOD_ID, "textures/items/reflective_alloy_boots.png").toString();
-    }
+	@Override
+	public final String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+		return new ResourceLocation(Constants.MOD_ID, "textures/items/reflective_alloy_boots.png").toString();
+	}
 }

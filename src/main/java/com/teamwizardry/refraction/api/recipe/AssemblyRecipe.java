@@ -51,10 +51,9 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 				this.recipe.add(new ItemStack((Item) obj));
 			} else if (obj instanceof Block) {
 				this.recipe.add(new ItemStack((Block) obj));
-			}else if (obj instanceof String) {
+			} else if (obj instanceof String) {
 				List<ItemStack> oreDicts = OreDictionary.getOres((String) obj);
-				if (oreDicts == null || oreDicts.size() <= 0)
-				{
+				if (oreDicts == null || oreDicts.size() <= 0) {
 					LibrarianLog.INSTANCE.warn("Invalid OreDict entry " + obj + " in recipe for " + result.getDisplayName());
 					continue;
 				}

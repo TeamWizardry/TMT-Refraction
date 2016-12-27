@@ -25,7 +25,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 
-    private IBakedModel modelArms, modelMirror;
+	private IBakedModel modelArms, modelMirror;
 
 	public RenderMirror() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -47,8 +47,8 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 			modelArms = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 					location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 		}
-        if (modelMirror == null) {
-            try {
+		if (modelMirror == null) {
+			try {
 				model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID, "block/mirror_head"));
 			} catch (Exception e) {
 				e.printStackTrace();

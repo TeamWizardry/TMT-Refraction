@@ -17,27 +17,27 @@ import java.awt.*;
  */
 public class EffectBonemeal extends Effect {
 
-    @Override
-    public int getChance(int potency) {
-        return potency == 0 ? 0 : 12750 / potency;
-    }
+	@Override
+	public int getChance(int potency) {
+		return potency == 0 ? 0 : 12750 / potency;
+	}
 
-    @Override
-    public void runBlock(World world, BlockPos pos, int potency) {
-        if (world.getBlockState(pos).getBlock() instanceof IGrowable)
-            ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos);
-    }
+	@Override
+	public void runBlock(World world, BlockPos pos, int potency) {
+		if (world.getBlockState(pos).getBlock() instanceof IGrowable)
+			ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos);
+	}
 
-    @Override
-    public void runEntity(World world, Entity entity, int potency) {
-        if (entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entity;
-            player.getFoodStats().addStats(1, 0.5f);
-        }
-    }
+	@Override
+	public void runEntity(World world, Entity entity, int potency) {
+		if (entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+			player.getFoodStats().addStats(1, 0.5f);
+		}
+	}
 
-    @Override
-    public Color getColor() {
-        return Color.GREEN;
-    }
+	@Override
+	public Color getColor() {
+		return Color.GREEN;
+	}
 }

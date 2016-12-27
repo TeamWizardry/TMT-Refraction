@@ -16,8 +16,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
 import net.minecraft.util.math.MathHelper;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,59 +27,59 @@ import java.util.List;
  */
 public class GuiAmmoSelector extends GuiBase {
 
-    private static final ResourceLocation background = new ResourceLocation(Constants.MOD_ID, "textures/gui/ammo_recharge.png");
-    private static final Texture texBackground = new Texture(background);
-    private static final Sprite sprBackground = texBackground.getSprite("bg", 128, 128);
+	private static final ResourceLocation background = new ResourceLocation(Constants.MOD_ID, "textures/gui/ammo_recharge.png");
+	private static final Texture texBackground = new Texture(background);
+	private static final Sprite sprBackground = texBackground.getSprite("bg", 128, 128);
 
-    private int timeIn = 0;
+	private int timeIn = 0;
 
-    private int selectedSlot;
+	private int selectedSlot;
 
-    private ItemStack ammoConsumer;
-    private List<Integer> slots = new ArrayList<>();
-    private List<ItemStack> ammoList = new ArrayList<>();
+	private ItemStack ammoConsumer;
+	private List<Integer> slots = new ArrayList<>();
+	private List<ItemStack> ammoList = new ArrayList<>();
 
-    public GuiAmmoSelector() {
-        super(0, 0);
-        mc = Minecraft.getMinecraft();
-        ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
+	public GuiAmmoSelector() {
+		super(0, 0);
+		mc = Minecraft.getMinecraft();
+		ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
 
-        int posX = res.getScaledWidth();
-        int posY = res.getScaledHeight();
+		int posX = res.getScaledWidth();
+		int posY = res.getScaledHeight();
 
-        if (mc.player.getActiveItemStack() == null) return;
-        if (!(mc.player.getActiveItemStack().getItem() instanceof IAmmoConsumer)) return;
+		if (mc.player.getActiveItemStack() == null) return;
+		if (!(mc.player.getActiveItemStack().getItem() instanceof IAmmoConsumer)) return;
 
-        ammoConsumer = mc.player.getActiveItemStack();
-        ammoList = IAmmoConsumer.findAllAmmo(mc.player);
-        for (int i = 0; i < ammoList.size(); i++) slots.add(i);
+		ammoConsumer = mc.player.getActiveItemStack();
+		ammoList = IAmmoConsumer.findAllAmmo(mc.player);
+		for (int i = 0; i < ammoList.size(); i++) slots.add(i);
 
-        ComponentVoid background = new ComponentVoid(0, 0);
-        background.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
-        	/*
+		ComponentVoid background = new ComponentVoid(0, 0);
+		background.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
+			/*
         	 * TODO: Starting from a scale of 1/1.5, then scale up (fast then slow) as it reaches 2x size
         	 * Scale color similarly, from (0, 0, 0) to (1, 1, 1)
              */
-        	float maxTime = 8;
-        	float time = Math.min(maxTime, timeIn + ClientTickHandler.getPartialTicks()) / maxTime;
-        	float scale = maxTime * MathHelper.sin(time * (float) Math.PI / maxTime) / 1.5F;
-            GlStateManager.pushMatrix();
-            GlStateManager.enableRescaleNormal();
-            GlStateManager.enableBlend();
+			float maxTime = 8;
+			float time = Math.min(maxTime, timeIn + ClientTickHandler.getPartialTicks()) / maxTime;
+			float scale = maxTime * MathHelper.sin(time * (float) Math.PI / maxTime) / 1.5F;
+			GlStateManager.pushMatrix();
+			GlStateManager.enableRescaleNormal();
+			GlStateManager.enableBlend();
 
-            GlStateManager.scale(scale, scale, scale);
-            GlStateManager.translate(-sprBackground.getWidth() / 2, -sprBackground.getHeight() / 2, 0);
-            texBackground.bind();
-            sprBackground.draw((int) ClientTickHandler.getPartialTicks(), 0, 0);
+			GlStateManager.scale(scale, scale, scale);
+			GlStateManager.translate(-sprBackground.getWidth() / 2, -sprBackground.getHeight() / 2, 0);
+			texBackground.bind();
+			sprBackground.draw((int) ClientTickHandler.getPartialTicks(), 0, 0);
 
-            GlStateManager.disableBlend();
-            GlStateManager.disableRescaleNormal();
-            GlStateManager.popMatrix();
-        });
-        getMainComponents().add(background);
+			GlStateManager.disableBlend();
+			GlStateManager.disableRescaleNormal();
+			GlStateManager.popMatrix();
+		});
+		getMainComponents().add(background);
 
-        ComponentVoid ammoConsumerComp = new ComponentVoid(0, 0);
-        ammoConsumerComp.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
+		ComponentVoid ammoConsumerComp = new ComponentVoid(0, 0);
+		ammoConsumerComp.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
         	/*
         	 * TODO: Starting from a scale of 9, then scale up (fast then slow) as it reaches 2x size
         	 * Scale color similarl, from (0, 0, 0) to (1, 1, 1)
@@ -87,70 +87,70 @@ public class GuiAmmoSelector extends GuiBase {
 //        	float maxTime = 5;
 //        	float time = Math.min(maxTime, timeIn + ClientTickHandler.getPartialTicks()) / maxTime;
 //        	float scale = maxTime * MathHelper.sin(time * (float) Math.PI / maxTime) / 1.5F;
-            float maxTime = 5F;
-            float fract = Math.min(maxTime, (timeIn + ClientTickHandler.getPartialTicks())) / maxTime;
-            float scale = 3F * fract;
-            GlStateManager.pushMatrix();
-            GlStateManager.enableRescaleNormal();
-            GlStateManager.enableBlend();
-            RenderHelper.enableStandardItemLighting();
-            GlStateManager.color(1, 1, 1);
+			float maxTime = 5F;
+			float fract = Math.min(maxTime, (timeIn + ClientTickHandler.getPartialTicks())) / maxTime;
+			float scale = 3F * fract;
+			GlStateManager.pushMatrix();
+			GlStateManager.enableRescaleNormal();
+			GlStateManager.enableBlend();
+			RenderHelper.enableStandardItemLighting();
+			GlStateManager.color(1, 1, 1);
 
-            GlStateManager.scale(scale, scale, scale);
-            GlStateManager.translate(-8, -8, 0);
-            mc.getRenderItem().renderItemAndEffectIntoGUI(ammoConsumer, 0, 0);
+			GlStateManager.scale(scale, scale, scale);
+			GlStateManager.translate(-8, -8, 0);
+			mc.getRenderItem().renderItemAndEffectIntoGUI(ammoConsumer, 0, 0);
 
-            RenderHelper.disableStandardItemLighting();
-            GlStateManager.disableBlend();
-            GlStateManager.disableRescaleNormal();
-            GlStateManager.popMatrix();
-        });
-        getMainComponents().add(ammoConsumerComp);
+			RenderHelper.disableStandardItemLighting();
+			GlStateManager.disableBlend();
+			GlStateManager.disableRescaleNormal();
+			GlStateManager.popMatrix();
+		});
+		getMainComponents().add(ammoConsumerComp);
 
-        double slice = 2 * Math.PI / ammoList.size();
-        for (ItemStack ammo : ammoList) {
-            Color color = new Color(ItemNBTHelper.getInt(ammo, "color", 0xFFFFF));
+		double slice = 2 * Math.PI / ammoList.size();
+		for (ItemStack ammo : ammoList) {
+			Color color = new Color(ItemNBTHelper.getInt(ammo, "color", 0xFFFFF));
 
-            double radius = 200, size = 0.3;
-            int slot = ammoList.indexOf(ammo);
-            double angle = slice * slot;
-            float newX = (float) ((-sprBackground.getHeight() / 2) + radius * Math.cos(angle));
-            float newY = (float) ((-sprBackground.getHeight() / 2) + radius * Math.sin(angle));
+			double radius = 200, size = 0.3;
+			int slot = ammoList.indexOf(ammo);
+			double angle = slice * slot;
+			float newX = (float) ((-sprBackground.getHeight() / 2) + radius * Math.cos(angle));
+			float newY = (float) ((-sprBackground.getHeight() / 2) + radius * Math.sin(angle));
 
-            ComponentVoid ammoComp = new ComponentVoid((int) (newX * size), (int) (newY * size), (int) (sprBackground.getWidth() * size), (int) (sprBackground.getHeight() * size));
-            new ButtonMixin<>(ammoComp, () -> {
-            });
-            ammoComp.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
-                GlStateManager.pushMatrix();
-                GlStateManager.enableRescaleNormal();
-                GlStateManager.enableBlend();
-                GlStateManager.enableAlpha();
+			ComponentVoid ammoComp = new ComponentVoid((int) (newX * size), (int) (newY * size), (int) (sprBackground.getWidth() * size), (int) (sprBackground.getHeight() * size));
+			new ButtonMixin<>(ammoComp, () -> {
+			});
+			ammoComp.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
+				GlStateManager.pushMatrix();
+				GlStateManager.enableRescaleNormal();
+				GlStateManager.enableBlend();
+				GlStateManager.enableAlpha();
 
-                GlStateManager.scale(size, size, size);
-                GlStateManager.color((float) (color.getRed() / 255.0), (float) (color.getGreen() / 255.0), (float) (color.getBlue() / 255.0));
-                texBackground.bind();
-                sprBackground.draw((int) ClientTickHandler.getPartialTicks(), newX, newY);
+				GlStateManager.scale(size, size, size);
+				GlStateManager.color((float) (color.getRed() / 255.0), (float) (color.getGreen() / 255.0), (float) (color.getBlue() / 255.0));
+				texBackground.bind();
+				sprBackground.draw((int) ClientTickHandler.getPartialTicks(), newX, newY);
 
-                GlStateManager.color(1, 1, 1);
-                GlStateManager.disableAlpha();
-                GlStateManager.disableBlend();
-                GlStateManager.disableRescaleNormal();
-                GlStateManager.popMatrix();
-            });
-            ammoComp.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event) -> {
-                ItemNBTHelper.setInt(ammoConsumer, "color", ItemNBTHelper.getInt(ammo, "color", 0xFFFFF));
-            });
+				GlStateManager.color(1, 1, 1);
+				GlStateManager.disableAlpha();
+				GlStateManager.disableBlend();
+				GlStateManager.disableRescaleNormal();
+				GlStateManager.popMatrix();
+			});
+			ammoComp.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event) -> {
+				ItemNBTHelper.setInt(ammoConsumer, "color", ItemNBTHelper.getInt(ammo, "color", 0xFFFFF));
+			});
 
-            getMainComponents().add(ammoComp);
+			getMainComponents().add(ammoComp);
 
-        }
+		}
 
-    }
+	}
 
-    @Override
-    public void updateScreen() {
-        super.updateScreen();
-        timeIn++;
-    }
+	@Override
+	public void updateScreen() {
+		super.updateScreen();
+		timeIn++;
+	}
 
 }

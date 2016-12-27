@@ -25,71 +25,71 @@ import java.awt.*;
  */
 public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer {
 
-    public ItemPhotonCannon() {
-        super("photon_cannon");
-        setMaxStackSize(1);
-        addPropertyOverride(new ResourceLocation(Constants.MOD_ID, "firing"),
-                (stack, worldIn, entityIn) -> entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F);
-    }
+	public ItemPhotonCannon() {
+		super("photon_cannon");
+		setMaxStackSize(1);
+		addPropertyOverride(new ResourceLocation(Constants.MOD_ID, "firing"),
+				(stack, worldIn, entityIn) -> entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F);
+	}
 
-    @NotNull
-    @Override
-    public EnumAction getItemUseAction(ItemStack stack) {
-        return EnumAction.BOW;
-    }
+	@NotNull
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack) {
+		return EnumAction.BOW;
+	}
 
-    @NotNull
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(@NotNull ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        playerIn.setActiveHand(hand);
-        return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
-    }
+	@NotNull
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(@NotNull ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		playerIn.setActiveHand(hand);
+		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
+	}
 
-    @Override
-    public int getMaxItemUseDuration(ItemStack stack) {
-        return 1000;
-    }
+	@Override
+	public int getMaxItemUseDuration(ItemStack stack) {
+		return 1000;
+	}
 
-    @Override
-    @Nullable
-    public ItemStack onItemUseFinish(@NotNull ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-        return stack;
-    }
+	@Override
+	@Nullable
+	public ItemStack onItemUseFinish(@NotNull ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
+		return stack;
+	}
 
-    @Override
-    public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
-        if (!(playerIn instanceof EntityPlayer)) return;
-        if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("color")) {
-            Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
-            ItemStack ammo = IAmmoConsumer.findAmmo((EntityPlayer) playerIn, color);
-            if (ammo == null) {
-                if (((EntityPlayer) playerIn).world.isRemote)
-                    ((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
-                return;
-            }
-            if (ammo.getItemDamage() <= 0) {
-                if (((EntityPlayer) playerIn).world.isRemote)
-                    ((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
-                return;
-            }
-            Minecraft.getMinecraft().player.sendChatMessage(ammo.getItemDamage() + "");
-            ammo.setItemDamage(ammo.getItemDamage() - 1);
+	@Override
+	public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
+		if (!(playerIn instanceof EntityPlayer)) return;
+		if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("color")) {
+			Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
+			ItemStack ammo = IAmmoConsumer.findAmmo((EntityPlayer) playerIn, color);
+			if (ammo == null) {
+				if (((EntityPlayer) playerIn).world.isRemote)
+					((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+				return;
+			}
+			if (ammo.getItemDamage() <= 0) {
+				if (((EntityPlayer) playerIn).world.isRemote)
+					((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+				return;
+			}
+			Minecraft.getMinecraft().player.sendChatMessage(ammo.getItemDamage() + "");
+			ammo.setItemDamage(ammo.getItemDamage() - 1);
 
-            boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
-            Vec3d cross = playerIn.getLook(1).crossProduct(new Vec3d(0, playerIn.getEyeHeight(), 0)).normalize().scale(playerIn.width / 2);
-            if (!handMod) cross = cross.scale(-1);
-            Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
+			boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
+			Vec3d cross = playerIn.getLook(1).crossProduct(new Vec3d(0, playerIn.getEyeHeight(), 0)).normalize().scale(playerIn.width / 2);
+			if (!handMod) cross = cross.scale(-1);
+			Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
 
-            stack.damageItem(1, playerIn);
-            Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), color)
-                    .setMode(new ModeGun())
-                    .setUUIDToSkip(playerIn.getUniqueID())
-                    .setCaster(playerIn)
-                    .setRange(30)
-                    .enableParticleBeginning()
-                    .enableParticleEnd();
-            beam.spawn();
-        } else if (((EntityPlayer) playerIn).world.isRemote)
-            ((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
-    }
+			stack.damageItem(1, playerIn);
+			Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), color)
+					.setMode(new ModeGun())
+					.setUUIDToSkip(playerIn.getUniqueID())
+					.setCaster(playerIn)
+					.setRange(30)
+					.enableParticleBeginning()
+					.enableParticleEnd();
+			beam.spawn();
+		} else if (((EntityPlayer) playerIn).world.isRemote)
+			((EntityPlayer) playerIn).openGui(Refraction.instance, 1, ((EntityPlayer) playerIn).world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+	}
 }

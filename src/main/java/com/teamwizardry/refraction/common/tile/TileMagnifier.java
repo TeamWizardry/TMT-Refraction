@@ -1,13 +1,5 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.awt.Color;
-import net.minecraft.block.BlockStainedGlass;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.refraction.api.ConfigValues;
@@ -16,6 +8,15 @@ import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import com.teamwizardry.refraction.init.ModBlocks;
+import net.minecraft.block.BlockStainedGlass;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+
+import java.awt.*;
 
 /**
  * Created by LordSaad44
@@ -60,7 +61,7 @@ public class TileMagnifier extends TileMod implements ITickable {
 				Vec3d dir = new Vec3d(0, -1, 0);
 				Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), ConfigValues.SOLAR_ALPHA);
 
-                new Beam(world, center, dir, color).setMode(BeamModeRegistry.EFFECT).enableParticleBeginning().spawn();
+				new Beam(world, center, dir, color).setMode(BeamModeRegistry.EFFECT).enableParticleBeginning().spawn();
 
 				return;
 			}
@@ -103,8 +104,8 @@ public class TileMagnifier extends TileMod implements ITickable {
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);
 
-                new Beam(world, center, dir, color).enableParticleBeginning().spawn();
-            }
+				new Beam(world, center, dir, color).enableParticleBeginning().spawn();
+			}
 		}
 	}
 }

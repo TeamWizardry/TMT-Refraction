@@ -26,52 +26,52 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class EffectBurn extends Effect {
 
-    public static Set<BlockPos> burnedTileTracker = new HashSet<>();
+	public static Set<BlockPos> burnedTileTracker = new HashSet<>();
 
-    @Override
-    public int getChance(int potency) {
-        return potency == 0 ? 0 : 2550 / potency;
-    }
+	@Override
+	public int getChance(int potency) {
+		return potency == 0 ? 0 : 2550 / potency;
+	}
 
-    @Override
-    public void runBlock(World world, BlockPos pos, int potency) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile != null && (tile instanceof IInventory || tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))) {
-            if (!burnedTileTracker.contains(pos)) burnedTileTracker.add(pos);
-            return;
-        }
+	@Override
+	public void runBlock(World world, BlockPos pos, int potency) {
+		TileEntity tile = world.getTileEntity(pos);
+		if (tile != null && (tile instanceof IInventory || tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))) {
+			if (!burnedTileTracker.contains(pos)) burnedTileTracker.add(pos);
+			return;
+		}
 
-        EnumFacing facing = beam.trace.sideHit;
-        if (facing != null) {
-            BlockPos newPos = pos.offset(facing);
-            IBlockState state = world.getBlockState(newPos);
-            if (state.getBlock() == Blocks.AIR)
-                world.setBlockState(newPos, Blocks.FIRE.getDefaultState());
-        }
-    }
+		EnumFacing facing = beam.trace.sideHit;
+		if (facing != null) {
+			BlockPos newPos = pos.offset(facing);
+			IBlockState state = world.getBlockState(newPos);
+			if (state.getBlock() == Blocks.AIR)
+				world.setBlockState(newPos, Blocks.FIRE.getDefaultState());
+		}
+	}
 
-    @Override
-    public void runEntity(World world, Entity entity, int potency) {
-        boolean pass = true;
-        if (entity instanceof EntityItem) {
-            EntityItem item = (EntityItem) entity;
-            if (FurnaceRecipes.instance().getSmeltingResult(item.getEntityItem()) != null) {
-                if (ThreadLocalRandom.current().nextInt(100) == 0) {
-                    ItemStack result = FurnaceRecipes.instance().getSmeltingResult(item.getEntityItem());
-                    EntityItem cooked = new EntityItem(world, item.posX, item.posY, item.posZ);
-                    cooked.dropItem(result.getItem(), 1);
-                    cooked.isImmuneToFire();
-                    cooked.setNoPickupDelay();
-                    item.getEntityItem().stackSize--;
-                }
-                pass = false;
-            }
-        }
-        if (pass) entity.setFire(potency);
-    }
+	@Override
+	public void runEntity(World world, Entity entity, int potency) {
+		boolean pass = true;
+		if (entity instanceof EntityItem) {
+			EntityItem item = (EntityItem) entity;
+			if (FurnaceRecipes.instance().getSmeltingResult(item.getEntityItem()) != null) {
+				if (ThreadLocalRandom.current().nextInt(100) == 0) {
+					ItemStack result = FurnaceRecipes.instance().getSmeltingResult(item.getEntityItem());
+					EntityItem cooked = new EntityItem(world, item.posX, item.posY, item.posZ);
+					cooked.dropItem(result.getItem(), 1);
+					cooked.isImmuneToFire();
+					cooked.setNoPickupDelay();
+					item.getEntityItem().stackSize--;
+				}
+				pass = false;
+			}
+		}
+		if (pass) entity.setFire(potency);
+	}
 
-    @Override
-    public Color getColor() {
-        return Color.RED;
-    }
+	@Override
+	public Color getColor() {
+		return Color.RED;
+	}
 }

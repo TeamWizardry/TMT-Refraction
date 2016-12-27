@@ -5,13 +5,13 @@ package com.teamwizardry.refraction.api.beam.modes;
  */
 public class ModeGravity extends ModeEffect {
 
-    @Override
-    public String getName() {
-        return "gravity";
-    }
+	@Override
+	public String getName() {
+		return "gravity";
+	}
 
-    @Override
-    public boolean runSpecialEffects() {
-        return false;
-    }
+	@Override
+	public boolean runSpecialEffects() {
+		return false;
+	}
 }

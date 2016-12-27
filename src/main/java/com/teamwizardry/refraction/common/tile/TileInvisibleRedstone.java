@@ -11,12 +11,12 @@ import net.minecraft.util.ITickable;
 @TileRegister("invisible_redstone")
 public class TileInvisibleRedstone extends TileMod implements ITickable {
 
-    @Save
-    public int expiry = 5;
+	@Save
+	public int expiry = 5;
 
-    @Override
-    public void update() {
-        if (expiry > 0) expiry--;
-        else world.setBlockToAir(pos);
-    }
+	@Override
+	public void update() {
+		if (expiry > 0) expiry--;
+		else world.setBlockToAir(pos);
+	}
 }

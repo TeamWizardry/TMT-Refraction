@@ -27,61 +27,61 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class EffectDisperse extends Effect {
 
-    private static Function0<Object> ItemHandler = MethodHandleHelper.wrapperForStaticGetter(EntityItem.class, "c", "field_184533_c", "ITEM");
-    @SuppressWarnings("unchecked")
-    private static DataParameter<Optional<ItemStack>> ITEM = (DataParameter<Optional<ItemStack>>) ItemHandler.invoke();
+	private static Function0<Object> ItemHandler = MethodHandleHelper.wrapperForStaticGetter(EntityItem.class, "c", "field_184533_c", "ITEM");
+	@SuppressWarnings("unchecked")
+	private static DataParameter<Optional<ItemStack>> ITEM = (DataParameter<Optional<ItemStack>>) ItemHandler.invoke();
 
-    @Override
-    public EffectType getType() {
-        return EffectType.BEAM;
-    }
+	@Override
+	public EffectType getType() {
+		return EffectType.BEAM;
+	}
 
-    private void setEntityMotion(Entity entity, double potency) {
-        Vec3d pullDir;
-        if (beam.finalLoc == null) return;
-        pullDir = beam.finalLoc.subtract(beam.initLoc).normalize();
+	private void setEntityMotion(Entity entity, double potency) {
+		Vec3d pullDir;
+		if (beam.finalLoc == null) return;
+		pullDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 
-        entity.setNoGravity(true);
-        entity.motionX = pullDir.xCoord * potency / 255.0;
-        entity.motionY = pullDir.yCoord * potency / 255.0;
-        entity.motionZ = pullDir.zCoord * potency / 255.0;
-        entity.fallDistance = 0;
-    }
+		entity.setNoGravity(true);
+		entity.motionX = pullDir.xCoord * potency / 255.0;
+		entity.motionY = pullDir.yCoord * potency / 255.0;
+		entity.motionZ = pullDir.zCoord * potency / 255.0;
+		entity.fallDistance = 0;
+	}
 
-    @Override
-    public void runEntity(World world, Entity entity, int potency) {
-        setEntityMotion(entity, potency);
-        EffectTracker.gravityReset.put(entity, 30);
+	@Override
+	public void runEntity(World world, Entity entity, int potency) {
+		setEntityMotion(entity, potency);
+		EffectTracker.gravityReset.put(entity, 30);
 
-        if (entity instanceof EntityPlayer)
-            ((EntityPlayer) entity).velocityChanged = true;
-        if (entity instanceof EntityItem) {
+		if (entity instanceof EntityPlayer)
+			((EntityPlayer) entity).velocityChanged = true;
+		if (entity instanceof EntityItem) {
 
-            ItemStack itemstack = entity.getDataManager().get(ITEM).orNull();
-            if (itemstack == null) return;
+			ItemStack itemstack = entity.getDataManager().get(ITEM).orNull();
+			if (itemstack == null) return;
 
-            for (BlockPos pos : BlockPos.getAllInBoxMutable(entity.getPosition().add(-1, -1, -1), entity.getPosition().add(1, 1, 1))) {
-                TileEntity tileEntity = world.getTileEntity(pos);
+			for (BlockPos pos : BlockPos.getAllInBoxMutable(entity.getPosition().add(-1, -1, -1), entity.getPosition().add(1, 1, 1))) {
+				TileEntity tileEntity = world.getTileEntity(pos);
 
-                if (tileEntity == null) continue;
-                if (!EffectBurn.burnedTileTracker.contains(beam.trace.getBlockPos())) continue;
-                EffectBurn.burnedTileTracker.remove(beam.trace.getBlockPos());
-                if (ThreadLocalRandom.current().nextInt(potency > 0 ? 2550 / potency : 1) != 0) return;
+				if (tileEntity == null) continue;
+				if (!EffectBurn.burnedTileTracker.contains(beam.trace.getBlockPos())) continue;
+				EffectBurn.burnedTileTracker.remove(beam.trace.getBlockPos());
+				if (ThreadLocalRandom.current().nextInt(potency > 0 ? 2550 / potency : 1) != 0) return;
 
-                if (!tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))
-                    continue;
+				if (!tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))
+					continue;
 
-                IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit);
+				IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit);
 
-                ItemStack newStack = ItemHandlerHelper.insertItem(handler, ((EntityItem) entity).getEntityItem(), false);
-                if (newStack == null || newStack.stackSize == 0) entity.setDead();
-                ((EntityItem) entity).setEntityItemStack(newStack);
-            }
-        }
-    }
+				ItemStack newStack = ItemHandlerHelper.insertItem(handler, ((EntityItem) entity).getEntityItem(), false);
+				if (newStack == null || newStack.stackSize == 0) entity.setDead();
+				((EntityItem) entity).setEntityItemStack(newStack);
+			}
+		}
+	}
 
-    @Override
-    public Color getColor() {
-        return Color.MAGENTA;
-    }
+	@Override
+	public Color getColor() {
+		return Color.MAGENTA;
+	}
 }

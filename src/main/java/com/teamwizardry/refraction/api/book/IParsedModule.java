@@ -10,9 +10,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface IParsedModule {
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+	FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
 
-    @SuppressWarnings("rawtypes")
+	@SuppressWarnings("rawtypes")
 	@NotNull
-    GuiComponent getComponent();
+	GuiComponent getComponent();
 }

@@ -26,11 +26,11 @@ public class ModBlocks {
 	public static BlockTranslocator TRANSLOCATOR;
 	public static BlockAXYZ AXYZ;
 	public static BlockElectricLaser ELECTRIC_LASER;
-    public static BlockSolarPanel SOLAR_PANEL;
+	public static BlockSolarPanel SOLAR_PANEL;
 	public static BlockFilter FILTER;
 	public static BlockInvisible INVISIBLE;
 	public static BlockInvisibleRedstone INVISIBLE_REDSTONE;
-    public static BlockBuilder BUILDER;
+	public static BlockBuilder BUILDER;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -53,11 +53,11 @@ public class ModBlocks {
 		AXYZ = new BlockAXYZ();
 		FILTER = new BlockFilter();
 		ELECTRIC_LASER = new BlockElectricLaser();
-        //SOLAR_PANEL = new BlockSolarPanel();
-        INVISIBLE = new BlockInvisible();
+		//SOLAR_PANEL = new BlockSolarPanel();
+		INVISIBLE = new BlockInvisible();
 		INVISIBLE_REDSTONE = new BlockInvisibleRedstone();
-        BUILDER = new BlockBuilder();
-    }
+		BUILDER = new BlockBuilder();
+	}
 
 	public static void initModels() {
 		ASSEMBLY_TABLE.initModel();

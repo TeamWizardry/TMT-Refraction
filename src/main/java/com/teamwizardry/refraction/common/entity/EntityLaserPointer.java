@@ -51,8 +51,8 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 	}
 
 	@Override
-    protected void damageEntity(@NotNull DamageSource damageSrc, float damageAmount) {
-        // noop
+	protected void damageEntity(@NotNull DamageSource damageSrc, float damageAmount) {
+		// noop
 	}
 
 	@Override
@@ -98,11 +98,11 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		Vec3d vec3d = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord, player.posZ + cross.zCoord);
 		Vec3d vec3d1 = this.getVectorForRotation(player.rotationPitch, player.rotationYawHead);
 		Vec3d vec3d2 = vec3d.addVector(vec3d1.xCoord * blockReachDistance, vec3d1.yCoord * blockReachDistance, vec3d1.zCoord * blockReachDistance);
-        return player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
-    }
+		return player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
+	}
 
-    @NotNull
-    @Override
+	@NotNull
+	@Override
 	public EnumHandSide getPrimaryHand() {
 		return null;
 	}
@@ -114,8 +114,8 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		this.dataManager.register(HAND_HIT, false);
 	}
 
-    @NotNull
-    @Override
+	@NotNull
+	@Override
 	public Iterable<ItemStack> getArmorInventoryList() {
 		return ImmutableList.of();
 	}
@@ -146,12 +146,12 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		boolean b = player == null || player.get() == null;
 		buffer.writeBoolean(b);
 		if (!b) {
-            EntityPlayer p = player.get();
-            if (p != null) {
-                buffer.writeLong(p.getPersistentID().getMostSignificantBits());
-                buffer.writeLong(p.getPersistentID().getLeastSignificantBits());
-            }
-        }
+			EntityPlayer p = player.get();
+			if (p != null) {
+				buffer.writeLong(p.getPersistentID().getMostSignificantBits());
+				buffer.writeLong(p.getPersistentID().getLeastSignificantBits());
+			}
+		}
 	}
 
 	@Override
@@ -159,7 +159,7 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		boolean b = buffer.readBoolean();
 		if (!b) {
 			UUID uuid = new UUID(buffer.readLong(), buffer.readLong());
-            player = new WeakReference<>(world.getPlayerEntityByUUID(uuid));
-        }
+			player = new WeakReference<>(world.getPlayerEntityByUUID(uuid));
+		}
 	}
 }

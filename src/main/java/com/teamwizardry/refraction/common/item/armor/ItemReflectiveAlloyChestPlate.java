@@ -18,27 +18,27 @@ import net.minecraft.world.World;
  */
 public class ItemReflectiveAlloyChestPlate extends ItemModArmor implements IReflectiveArmor {
 
-    public ItemReflectiveAlloyChestPlate() {
-        super("ref_alloy_chestplate", ArmorMaterial.GOLD, EntityEquipmentSlot.CHEST);
-        setMaxStackSize(1);
-        setMaxDamage(0);
-    }
+	public ItemReflectiveAlloyChestPlate() {
+		super("ref_alloy_chestplate", ArmorMaterial.GOLD, EntityEquipmentSlot.CHEST);
+		setMaxStackSize(1);
+		setMaxDamage(0);
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        ItemStack itemstack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		ItemStack itemstack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 
-        if (itemstack == null) {
-            playerIn.setItemStackToSlot(EntityEquipmentSlot.CHEST, itemStackIn.copy());
-            itemStackIn.stackSize = 0;
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
-        } else {
-            return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
-        }
-    }
+		if (itemstack == null) {
+			playerIn.setItemStackToSlot(EntityEquipmentSlot.CHEST, itemStackIn.copy());
+			itemStackIn.stackSize = 0;
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+		} else {
+			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+		}
+	}
 
-    @Override
-    public final String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        return new ResourceLocation(Constants.MOD_ID, "textures/items/reflective_alloy_chestplate.png").toString();
-    }
+	@Override
+	public final String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+		return new ResourceLocation(Constants.MOD_ID, "textures/items/reflective_alloy_chestplate.png").toString();
+	}
 }

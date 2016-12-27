@@ -17,27 +17,27 @@ import net.minecraft.util.math.BlockPos;
 @TileRegister("electron_exciter")
 public class TileElectronExciter extends TileMod implements ITickable {
 
-    @Save
-    public int expire;
-    @Save
-    public boolean hasCardinalBeam = false;
+	@Save
+	public int expire;
+	@Save
+	public boolean hasCardinalBeam = false;
 
-    @Override
-    public void update() {
-        if (world.isRemote) return;
-        if (expire > 0) expire--;
-        else {
-            hasCardinalBeam = false;
-            IBlockState state = world.getBlockState(pos);
-            EnumFacing facing = state.getValue(BlockElectronExciter.FACING);
-            int size = 1;
-            while (size < ConfigValues.BEAM_RANGE) {
-                BlockPos bridgePos = pos.offset(facing, size);
-                if (world.getBlockState(bridgePos).getBlock() == ModBlocks.LIGHT_BRIDGE) {
-                    world.setBlockToAir(bridgePos);
-                    size++;
-                } else break;
-            }
-        }
-    }
+	@Override
+	public void update() {
+		if (world.isRemote) return;
+		if (expire > 0) expire--;
+		else {
+			hasCardinalBeam = false;
+			IBlockState state = world.getBlockState(pos);
+			EnumFacing facing = state.getValue(BlockElectronExciter.FACING);
+			int size = 1;
+			while (size < ConfigValues.BEAM_RANGE) {
+				BlockPos bridgePos = pos.offset(facing, size);
+				if (world.getBlockState(bridgePos).getBlock() == ModBlocks.LIGHT_BRIDGE) {
+					world.setBlockToAir(bridgePos);
+					size++;
+				} else break;
+			}
+		}
+	}
 }

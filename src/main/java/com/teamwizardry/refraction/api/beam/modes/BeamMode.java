@@ -5,8 +5,8 @@ package com.teamwizardry.refraction.api.beam.modes;
  */
 public interface BeamMode {
 
-    String getName();
+	String getName();
 
-    boolean runSpecialEffects();
+	boolean runSpecialEffects();
 
 }

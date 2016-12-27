@@ -1,7 +1,16 @@
 package com.teamwizardry.refraction.common.tile;
 
-import java.awt.Color;
-import java.util.concurrent.ThreadLocalRandom;
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
+import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
+import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
+import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
+import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.PosUtils;
+import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -15,17 +24,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
-import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
-import com.teamwizardry.refraction.api.ConfigValues;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.PosUtils;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+
+import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44
@@ -62,7 +63,7 @@ public class TileLaser extends TileMod implements ITickable {
 			ParticleSpawner.spawn(glitter, world, new StaticInterp<>(center), 2);
 
 			Color color = new Color(255, 255, 255, ConfigValues.GLOWSTONE_ALPHA);
-            new Beam(world, center, vec, color).setMode(BeamModeRegistry.EFFECT).spawn();
+			new Beam(world, center, vec, color).setMode(BeamModeRegistry.EFFECT).spawn();
 
 			if (tick < ConfigValues.GLOWSTONE_FUEL_EXPIRE_DELAY) tick++;
 			else {

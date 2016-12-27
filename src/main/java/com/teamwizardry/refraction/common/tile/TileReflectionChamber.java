@@ -28,56 +28,56 @@ import java.util.Set;
 @TileRegister("reflection_chamber")
 public class TileReflectionChamber extends MultipleBeamTile implements ITickable {
 
-    @NotNull
-    @SideOnly(Side.CLIENT)
-    @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
-    }
+	@NotNull
+	@SideOnly(Side.CLIENT)
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return INFINITE_EXTENT_AABB;
+	}
 
-    @Override
-    public void update() {
-        super.update();
-        for (BeamMode mode : beamData.keySet()) {
-            Set<Beam> beamSet = beamData.get(mode);
+	@Override
+	public void update() {
+		super.update();
+		for (BeamMode mode : beamData.keySet()) {
+			Set<Beam> beamSet = beamData.get(mode);
 
-            List<Vec3d> angles = new ArrayList<>();
-            int red = 0, green = 0, blue = 0, alpha = 0;
-            int redCount = 0, blueCount = 0, greenCount = 0;
+			List<Vec3d> angles = new ArrayList<>();
+			int red = 0, green = 0, blue = 0, alpha = 0;
+			int redCount = 0, blueCount = 0, greenCount = 0;
 
-            for (Beam beam : beamSet) {
-                Color color = beam.color;
+			for (Beam beam : beamSet) {
+				Color color = beam.color;
 
-                if (color.getRed() > 0) redCount++;
-                if (color.getGreen() > 0) greenCount++;
-                if (color.getBlue() > 0) blueCount++;
+				if (color.getRed() > 0) redCount++;
+				if (color.getGreen() > 0) greenCount++;
+				if (color.getBlue() > 0) blueCount++;
 
-                red += color.getRed();
-                green += color.getGreen();
-                blue += color.getBlue();
+				red += color.getRed();
+				green += color.getGreen();
+				blue += color.getBlue();
 
-                alpha += color.getAlpha();
+				alpha += color.getAlpha();
 
-                angles.add(beam.slope);
-            }
-            if (redCount > 0) red = Math.min(red / redCount, 255);
-            if (greenCount > 0) green = Math.min(green / greenCount, 255);
-            if (blueCount > 0) blue = Math.min(blue / blueCount, 255);
+				angles.add(beam.slope);
+			}
+			if (redCount > 0) red = Math.min(red / redCount, 255);
+			if (greenCount > 0) green = Math.min(green / greenCount, 255);
+			if (blueCount > 0) blue = Math.min(blue / blueCount, 255);
 
-            float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
-            Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
-            color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
+			float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
+			Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
+			color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
 
-            Vec3d outputDir = RotationHelper.averageDirection(angles);
+			Vec3d outputDir = RotationHelper.averageDirection(angles);
 
-            Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), outputDir, color).setMode(mode);
-            EnumFacing facing = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
-            IBlockState state = world.getBlockState(pos.offset(facing));
-            if (state.getBlock() == ModBlocks.OPTIC_FIBER && state.getValue(BlockOpticFiber.FACING).contains(facing))
-                beam.setSlope(PosUtils.getVecFromFacing(facing)).spawn();
-            else beam.spawn();
-        }
+			Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), outputDir, color).setMode(mode);
+			EnumFacing facing = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
+			IBlockState state = world.getBlockState(pos.offset(facing));
+			if (state.getBlock() == ModBlocks.OPTIC_FIBER && state.getValue(BlockOpticFiber.FACING).contains(facing))
+				beam.setSlope(PosUtils.getVecFromFacing(facing)).spawn();
+			else beam.spawn();
+		}
 
-        purge();
-    }
+		purge();
+	}
 }

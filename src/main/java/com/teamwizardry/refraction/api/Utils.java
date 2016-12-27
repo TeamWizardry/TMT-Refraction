@@ -24,43 +24,43 @@ public final class Utils {
 	public static IInternalHandler HANDLER = new DummyInternalHandler();
 
 	public static Color getColorFromDyeEnum(EnumDyeColor dye) {
-        switch (dye) {
-            case WHITE:
-                return Color.WHITE;
-            case ORANGE:
-                return Color.ORANGE;
-            case MAGENTA:
-                return Color.MAGENTA;
-            case LIGHT_BLUE:
-                return new Color(0xadd8e6);
-            case YELLOW:
-                return Color.YELLOW;
-            case LIME:
-                return new Color(0x32cd32);
-            case PINK:
-                return Color.PINK;
-            case GRAY:
-                return Color.GRAY;
-            case SILVER:
-                return new Color(0xd3d3d3);
-            case CYAN:
-                return Color.CYAN;
-            case PURPLE:
-                return new Color(0xa020f0);
-            case BLUE:
-                return Color.BLUE;
-            case BROWN:
-                return new Color(0x8b4513);
-            case GREEN:
-                return Color.GREEN;
-            case RED:
-                return Color.RED;
-            case BLACK:
-                return Color.BLACK;
-            default:
-                return Color.WHITE;
-        }
-    }
+		switch (dye) {
+			case WHITE:
+				return Color.WHITE;
+			case ORANGE:
+				return Color.ORANGE;
+			case MAGENTA:
+				return Color.MAGENTA;
+			case LIGHT_BLUE:
+				return new Color(0xadd8e6);
+			case YELLOW:
+				return Color.YELLOW;
+			case LIME:
+				return new Color(0x32cd32);
+			case PINK:
+				return Color.PINK;
+			case GRAY:
+				return Color.GRAY;
+			case SILVER:
+				return new Color(0xd3d3d3);
+			case CYAN:
+				return Color.CYAN;
+			case PURPLE:
+				return new Color(0xa020f0);
+			case BLUE:
+				return Color.BLUE;
+			case BROWN:
+				return new Color(0x8b4513);
+			case GREEN:
+				return Color.GREEN;
+			case RED:
+				return Color.RED;
+			case BLACK:
+				return Color.BLACK;
+			default:
+				return Color.WHITE;
+		}
+	}
 
 	public static boolean doColorsMatchNoAlpha(Color color1, Color color2) {
 		return color1.getRed() == color2.getRed() && color1.getGreen() == color2.getGreen() && color1.getBlue() == color2.getBlue();
@@ -108,12 +108,9 @@ public final class Utils {
 		return inputsMissing.isEmpty();
 	}
 
-	public static boolean itemEquals(ItemStack stack, Object stack2)
-	{
-		if (stack2 instanceof String)
-		{
-			for (ItemStack orestack : OreDictionary.getOres((String) stack2))
-			{
+	public static boolean itemEquals(ItemStack stack, Object stack2) {
+		if (stack2 instanceof String) {
+			for (ItemStack orestack : OreDictionary.getOres((String) stack2)) {
 				ItemStack cstack = orestack.copy();
 
 				if (cstack.getItemDamage() == 32767)
@@ -122,13 +119,9 @@ public final class Utils {
 					return true;
 			}
 
-		}
-		else if (stack2 instanceof ItemStack)
-		{
-			for (int oreID : OreDictionary.getOreIDs((ItemStack) stack2))
-			{
-				for (ItemStack orestack : OreDictionary.getOres(OreDictionary.getOreName(oreID)))
-				{
+		} else if (stack2 instanceof ItemStack) {
+			for (int oreID : OreDictionary.getOreIDs((ItemStack) stack2)) {
+				for (ItemStack orestack : OreDictionary.getOres(OreDictionary.getOreName(oreID))) {
 					ItemStack cstack = orestack.copy();
 
 					if (cstack.getItemDamage() == 32767)
@@ -152,15 +145,15 @@ public final class Utils {
 		return list;
 	}
 
-    public static double getColorDistance(Color one, Color two) {
-        if (one == null || two == null) return Double.MAX_VALUE;
-        double meanRed = (one.getRed() + two.getRed()) / 2.0;
-        int r = one.getRed() - two.getRed();
-        int g = one.getGreen() - two.getGreen();
-        int b = one.getBlue() - two.getBlue();
-        double weightR = 2 + meanRed / 256;
-        double weightG = 4;
-        double weightB = 2 + (255 - meanRed) / 256;
-        return weightR * r * r + weightG * g * g + weightB * b * b;
-    }
+	public static double getColorDistance(Color one, Color two) {
+		if (one == null || two == null) return Double.MAX_VALUE;
+		double meanRed = (one.getRed() + two.getRed()) / 2.0;
+		int r = one.getRed() - two.getRed();
+		int g = one.getGreen() - two.getGreen();
+		int b = one.getBlue() - two.getBlue();
+		double weightR = 2 + meanRed / 256;
+		double weightG = 4;
+		double weightB = 2 + (255 - meanRed) / 256;
+		return weightR * r * r + weightG * g * g + weightB * b * b;
+	}
 }

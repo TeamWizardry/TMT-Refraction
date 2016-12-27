@@ -33,8 +33,8 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		OBJLoader.INSTANCE.addDomain(Constants.MOD_ID);
 		LaserRenderer.INSTANCE.getClass();
 		ScrewdriverOverlay.INSTANCE.getClass();
-        GunOverlay.INSTANCE.getClass();
-        EventHandlerClient.INSTANCE.getClass(); // ditto
+		GunOverlay.INSTANCE.getClass();
+		EventHandlerClient.INSTANCE.getClass(); // ditto
 		ModBlocks.initModels();
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityLaserPointer.class, RenderLaserPoint::new);
@@ -56,8 +56,8 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 
 	@Override
 	public World getWorld() {
-        return Minecraft.getMinecraft().world;
-    }
+		return Minecraft.getMinecraft().world;
+	}
 
 	@Override
 	public void onResourceManagerReload(IResourceManager resourceManager) {

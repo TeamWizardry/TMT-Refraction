@@ -42,257 +42,257 @@ import java.util.List;
  */
 public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 
-    public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
+	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
-    public BlockPrism() {
-        super("prism", Material.GLASS);
-        setHardness(1F);
-        setSoundType(SoundType.GLASS);
-    }
+	public BlockPrism() {
+		super("prism", Material.GLASS);
+		setHardness(1F);
+		setSoundType(SoundType.GLASS);
+	}
 
-    @Override
-    public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
-        IBlockState state = world.getBlockState(pos);
+	@Override
+	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
+		IBlockState state = world.getBlockState(pos);
 
-        for (Beam beam : beams) {
-            int sum = beam.color.getRed() + beam.color.getBlue() + beam.color.getGreen();
-            double red = beam.color.getAlpha() * beam.color.getRed() / sum;
-            double green = beam.color.getAlpha() * beam.color.getGreen() / sum;
-            double blue = beam.color.getAlpha() * beam.color.getBlue() / sum;
+		for (Beam beam : beams) {
+			int sum = beam.color.getRed() + beam.color.getBlue() + beam.color.getGreen();
+			double red = beam.color.getAlpha() * beam.color.getRed() / sum;
+			double green = beam.color.getAlpha() * beam.color.getGreen() / sum;
+			double blue = beam.color.getAlpha() * beam.color.getBlue() / sum;
 
-            Vec3d hitPos = beam.finalLoc;
+			Vec3d hitPos = beam.finalLoc;
 
-            if (beam.color.getRed() != 0)
-                fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.RED_IOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam);
-            if (beam.color.getGreen() != 0)
-                fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GREEN_IOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam);
-            if (beam.color.getBlue() != 0)
-                fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.BLUE_IOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam);
-        }
-    }
+			if (beam.color.getRed() != 0)
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.RED_IOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam);
+			if (beam.color.getGreen() != 0)
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GREEN_IOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam);
+			if (beam.color.getBlue() != 0)
+				fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.BLUE_IOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam);
+		}
+	}
 
-    private void fireColor(World world, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, Beam beam) {
-        BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, world, pos, hitPos.subtract(ref), hitPos.add(ref));
-        assert r != null;
-        Vec3d normal = r.data;
-        ref = refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.GLASS_IOR + IORMod, ref, normal).normalize();
-        hitPos = r.hitVec;
+	private void fireColor(World world, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Color color, Beam beam) {
+		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, world, pos, hitPos.subtract(ref), hitPos.add(ref));
+		assert r != null;
+		Vec3d normal = r.data;
+		ref = refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.GLASS_IOR + IORMod, ref, normal).normalize();
+		hitPos = r.hitVec;
 
-        for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) {
 
-            r = collisionRayTraceLaser(state, world, pos, hitPos.add(ref), hitPos);
-            // trace backward so we don't hit hitPos first
+			r = collisionRayTraceLaser(state, world, pos, hitPos.add(ref), hitPos);
+			// trace backward so we don't hit hitPos first
 
-            assert r != null;
-            normal = r.data.scale(-1);
-            Vec3d oldRef = ref;
-            ref = refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
-            if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
-                ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
-                break;
-            }
-            showBeam(world, hitPos, r.hitVec, color);
-            hitPos = r.hitVec;
-        }
+			assert r != null;
+			normal = r.data.scale(-1);
+			Vec3d oldRef = ref;
+			ref = refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
+			if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
+				ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
+				break;
+			}
+			showBeam(world, hitPos, r.hitVec, color);
+			hitPos = r.hitVec;
+		}
 
-        beam.createSimilarBeam(hitPos, ref, color).enableParticleBeginning().spawn();
-    }
+		beam.createSimilarBeam(hitPos, ref, color).enableParticleBeginning().spawn();
+	}
 
-    private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {
-        double r = from / to, c = -normal.dotProduct(vec);
-        return vec.scale(r).add(normal.scale((r * c) - Math.sqrt(1 - (r * r) * (1 - (c * c)))));
-    }
+	private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {
+		double r = from / to, c = -normal.dotProduct(vec);
+		return vec.scale(r).add(normal.scale((r * c) - Math.sqrt(1 - (r * r) * (1 - (c * c)))));
+	}
 
-    private void showBeam(World world, Vec3d start, Vec3d end, Color color) {
-        PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
-                new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
-    }
+	private void showBeam(World world, Vec3d start, Vec3d end, Color color) {
+		PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
+				new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
+	}
 
-    @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getStateFromMeta(meta).withProperty(FACING, placer.getHorizontalFacing());
-    }
+	@Override
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getStateFromMeta(meta).withProperty(FACING, placer.getHorizontalFacing());
+	}
 
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
-        TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
-    }
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
+	}
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getIndex();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(FACING).getIndex();
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING);
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, FACING);
+	}
 
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.TRANSLUCENT;
-    }
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.TRANSLUCENT;
+	}
 
-    @Override
-    public IBlockState withRotation(IBlockState state, Rotation rot) {
-        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
-    }
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	}
 
-    @Override
-    public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
-    }
+	@Override
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
+	}
 
-    @Override
-    public boolean isFullyOpaque(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isFullyOpaque(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isBlockNormalCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isBlockNormalCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isFullBlock(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isFullBlock(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-        return false;
-    }
+	@Override
+	public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+		return false;
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return false;
+	}
 
-    @Override
-    public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
+	@Override
+	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
 
-        EnumFacing facing = blockState.getValue(FACING);
+		EnumFacing facing = blockState.getValue(FACING);
 
-        Matrix4 matrixA = new Matrix4();
-        Matrix4 matrixB = new Matrix4();
+		Matrix4 matrixA = new Matrix4();
+		Matrix4 matrixB = new Matrix4();
 //		matrixA.translate(new Vec3d(-0.5, -0.5, -0.5));
 //		matrixB.translate(new Vec3d(0.5, 0.5, 0.5));
-        switch (facing) {
-            case UP:
-            case DOWN:
-            case EAST:
-                break;
-            case NORTH:
-                matrixA.rotate(Math.toRadians(270), new Vec3d(0, -1, 0));
-                matrixB.rotate(Math.toRadians(270), new Vec3d(0, 1, 0));
-                break;
-            case SOUTH:
-                matrixA.rotate(Math.toRadians(90), new Vec3d(0, -1, 0));
-                matrixB.rotate(Math.toRadians(90), new Vec3d(0, 1, 0));
-                break;
-            case WEST:
-                matrixA.rotate(Math.toRadians(180), new Vec3d(0, -1, 0));
-                matrixB.rotate(Math.toRadians(180), new Vec3d(0, 1, 0));
-                break;
-        }
+		switch (facing) {
+			case UP:
+			case DOWN:
+			case EAST:
+				break;
+			case NORTH:
+				matrixA.rotate(Math.toRadians(270), new Vec3d(0, -1, 0));
+				matrixB.rotate(Math.toRadians(270), new Vec3d(0, 1, 0));
+				break;
+			case SOUTH:
+				matrixA.rotate(Math.toRadians(90), new Vec3d(0, -1, 0));
+				matrixB.rotate(Math.toRadians(90), new Vec3d(0, 1, 0));
+				break;
+			case WEST:
+				matrixA.rotate(Math.toRadians(180), new Vec3d(0, -1, 0));
+				matrixB.rotate(Math.toRadians(180), new Vec3d(0, 1, 0));
+				break;
+		}
 //		matrixA.translate(new Vec3d(0.5, 0.5, 0.5));
 //		matrixB.translate(new Vec3d(-0.5, -0.5, -0.5));
 
-        Vec3d
-                a = new Vec3d(0.001, 0.001, 0), // This needs to be offset
-                b = new Vec3d(1, 0.001, 0.5),
-                c = new Vec3d(0.001, 0.001, 1), // and this too. Just so that blue refracts in ALL cases
-                A = a.addVector(0, 0.998, 0),
-                B = b.addVector(0, 0.998, 0), // these y offsets are to fix translocation issues
-                C = c.addVector(0, 0.998, 0);
+		Vec3d
+				a = new Vec3d(0.001, 0.001, 0), // This needs to be offset
+				b = new Vec3d(1, 0.001, 0.5),
+				c = new Vec3d(0.001, 0.001, 1), // and this too. Just so that blue refracts in ALL cases
+				A = a.addVector(0, 0.998, 0),
+				B = b.addVector(0, 0.998, 0), // these y offsets are to fix translocation issues
+				C = c.addVector(0, 0.998, 0);
 
-        Tri[] tris = new Tri[]{
-                new Tri(a, b, c),
-                new Tri(A, C, B),
+		Tri[] tris = new Tri[]{
+				new Tri(a, b, c),
+				new Tri(A, C, B),
 
-                new Tri(a, c, C),
-                new Tri(a, C, A),
+				new Tri(a, c, C),
+				new Tri(a, C, A),
 
-                new Tri(a, A, B),
-                new Tri(a, B, b),
+				new Tri(a, A, B),
+				new Tri(a, B, b),
 
-                new Tri(b, B, C),
-                new Tri(b, C, c),
-        };
+				new Tri(b, B, C),
+				new Tri(b, C, c),
+		};
 
-        Vec3d start = matrixA.apply(startRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
-        Vec3d end = matrixA.apply(endRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
+		Vec3d start = matrixA.apply(startRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
+		Vec3d end = matrixA.apply(endRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
 
-        Tri hitTri = null;
-        Vec3d hit = null;
-        double shortestSq = Double.POSITIVE_INFINITY;
+		Tri hitTri = null;
+		Vec3d hit = null;
+		double shortestSq = Double.POSITIVE_INFINITY;
 
-        for (Tri tri : tris) {
-            Vec3d v = tri.trace(start, end);
-            if (v != null) {
-                double distSq = start.subtract(v).lengthSquared();
-                if (distSq < shortestSq) {
-                    hit = v;
-                    shortestSq = distSq;
-                    hitTri = tri;
-                }
-            }
-        }
+		for (Tri tri : tris) {
+			Vec3d v = tri.trace(start, end);
+			if (v != null) {
+				double distSq = start.subtract(v).lengthSquared();
+				if (distSq < shortestSq) {
+					hit = v;
+					shortestSq = distSq;
+					hitTri = tri;
+				}
+			}
+		}
 
-        if (hit == null)
-            return null;
+		if (hit == null)
+			return null;
 
-        return new RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
-    }
+		return new RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
+	}
 
-    public static class RayTraceResultData<T> extends RayTraceResult {
+	public static class RayTraceResultData<T> extends RayTraceResult {
 
-        public T data;
+		public T data;
 
-        public RayTraceResultData(Vec3d hitVecIn, EnumFacing sideHitIn, BlockPos blockPosIn) {
-            this(RayTraceResult.Type.BLOCK, hitVecIn, sideHitIn, blockPosIn);
-        }
+		public RayTraceResultData(Vec3d hitVecIn, EnumFacing sideHitIn, BlockPos blockPosIn) {
+			this(RayTraceResult.Type.BLOCK, hitVecIn, sideHitIn, blockPosIn);
+		}
 
-        public RayTraceResultData(Vec3d hitVecIn, EnumFacing sideHitIn) {
-            this(RayTraceResult.Type.BLOCK, hitVecIn, sideHitIn, BlockPos.ORIGIN);
-        }
+		public RayTraceResultData(Vec3d hitVecIn, EnumFacing sideHitIn) {
+			this(RayTraceResult.Type.BLOCK, hitVecIn, sideHitIn, BlockPos.ORIGIN);
+		}
 
-        public RayTraceResultData(Entity entityIn) {
-            this(entityIn, new Vec3d(entityIn.posX, entityIn.posY, entityIn.posZ));
-        }
+		public RayTraceResultData(Entity entityIn) {
+			this(entityIn, new Vec3d(entityIn.posX, entityIn.posY, entityIn.posZ));
+		}
 
-        public RayTraceResultData(RayTraceResult.Type typeIn, Vec3d hitVecIn, EnumFacing sideHitIn, BlockPos blockPosIn) {
-            super(typeIn, hitVecIn, sideHitIn, blockPosIn);
-        }
+		public RayTraceResultData(RayTraceResult.Type typeIn, Vec3d hitVecIn, EnumFacing sideHitIn, BlockPos blockPosIn) {
+			super(typeIn, hitVecIn, sideHitIn, blockPosIn);
+		}
 
-        public RayTraceResultData(Entity entityHitIn, Vec3d hitVecIn) {
-            super(entityHitIn, hitVecIn);
-        }
+		public RayTraceResultData(Entity entityHitIn, Vec3d hitVecIn) {
+			super(entityHitIn, hitVecIn);
+		}
 
-        public RayTraceResultData<T> data(T data) {
-            this.data = data;
-            return this;
-        }
+		public RayTraceResultData<T> data(T data) {
+			this.data = data;
+			return this;
+		}
 
-    }
+	}
 }
