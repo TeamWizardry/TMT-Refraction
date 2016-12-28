@@ -35,9 +35,9 @@ public class EffectAttract extends Effect {
 		if (beam.finalLoc != null) {
 			pullDir = beam.initLoc.subtract(beam.finalLoc).normalize();
 			entity.setNoGravity(true);
-			entity.motionX = pullDir.xCoord * potency / 255.0;
-			entity.motionY = Math.max(-0.25, pullDir.yCoord * potency / 255.0);
-			entity.motionZ = pullDir.zCoord * potency / 255.0;
+			entity.motionX = pullDir.xCoord * potency / 255.0 * 2;
+			entity.motionY = pullDir.yCoord * potency / 255.0 * 2;
+			entity.motionZ = pullDir.zCoord * potency / 255.0 * 2;
 			entity.fallDistance = 0;
 		}
 	}

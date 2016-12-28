@@ -20,6 +20,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -74,9 +75,10 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 		}
 	}
 
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-		if (world.isRemote && (Minecraft.getMinecraft().currentScreen != null))
+    @NotNull
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(@NotNull ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+        if (world.isRemote && (Minecraft.getMinecraft().currentScreen != null))
 			return new ActionResult<>(EnumActionResult.FAIL, stack);
 		else {
 			player.setActiveHand(hand);
@@ -84,7 +86,8 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 		}
 	}
 
-	@Override
+    @NotNull
+    @Override
 	public EnumAction getItemUseAction(ItemStack stack) {
 		if (ItemNBTHelper.getInt(stack, "color", -1) == -1) return EnumAction.NONE;
 		return EnumAction.BOW;

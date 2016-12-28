@@ -42,9 +42,9 @@ public class EffectDisperse extends Effect {
 		pullDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 
 		entity.setNoGravity(true);
-		entity.motionX = pullDir.xCoord * potency / 255.0;
-		entity.motionY = pullDir.yCoord * potency / 255.0;
-		entity.motionZ = pullDir.zCoord * potency / 255.0;
+		entity.motionX = pullDir.xCoord * potency / 255.0 * 2;
+		entity.motionY = pullDir.yCoord * potency / 255.0 * 2;
+		entity.motionZ = pullDir.zCoord * potency / 255.0 * 2;
 		entity.fallDistance = 0;
 	}
 

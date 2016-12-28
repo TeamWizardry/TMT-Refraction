@@ -380,7 +380,8 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
 	}
 
 	private void showBeam(World world, Vec3d start, Vec3d end, Color color) {
-		PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
+        if (!world.isRemote)
+            PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
 				new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
 	}
 

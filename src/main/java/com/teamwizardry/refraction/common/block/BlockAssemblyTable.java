@@ -55,9 +55,10 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 	}
 
 	@Override
-	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
-		getTE(world, pos).handle(beams);
-	}
+    public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+        getTE(world, pos).handleBeam(beam);
+        return true;
+    }
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {

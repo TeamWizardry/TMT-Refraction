@@ -91,7 +91,6 @@ public class TileSplitter extends TileMod implements ITickable {
 
 	@Override
 	public void update() {
-		if (world.isRemote) return;
 		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((rotPrevX - rotDestX) / 2.0), 15)),
 				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((rotPrevY - rotDestY) / 2.0), 15));
 		double worldTimeTransition = (world.getTotalWorldTime() - worldTime);
