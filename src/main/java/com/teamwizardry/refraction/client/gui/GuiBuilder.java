@@ -23,21 +23,33 @@ public class GuiBuilder extends GuiBase {
     private static final Texture texSpriteSheet = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/builder/builder_sheet.png"));
     private static final Sprite sprScreen = texScreen.getSprite("bg", 256, 256);
     private static final Sprite sprBorder = texBorder.getSprite("bg", 276, 276);
-    private static final Sprite sprRightSelected = texSpriteSheet.getSprite("right_selected", 16, 16);
-    private static final Sprite sprLeftSelected = texSpriteSheet.getSprite("left_selected", 16, 16);
-    private static final Sprite sprNormal = texSpriteSheet.getSprite("normal", 16, 16);
+    private static final Sprite sprTileRightSelected = texSpriteSheet.getSprite("tile_right_selected", 16, 16);
+    private static final Sprite sprTileLeftSelected = texSpriteSheet.getSprite("tile_left_selected", 16, 16);
+    private static final Sprite sprTileNormal = texSpriteSheet.getSprite("tile_normal", 16, 16);
+    private static final Sprite sprIconDirect = texSpriteSheet.getSprite("icon_direct", 16, 16);
+    private static final Sprite sprIconRegionSelection = texSpriteSheet.getSprite("icon_region_selection", 16, 16);
+    private static final Sprite sprTabMode = texSpriteSheet.getSprite("tab_mode", 16, 16);
 
-    public Type[][] grid = new Type[16][16];
+    public TileType[][] grid = new TileType[16][16];
+    public Mode selectedMode;
 
     public GuiBuilder() {
         super(0, 0);
 
         for (int i = 0; i < grid.length; i++)
             for (int j = 0; j < grid.length; j++) {
-                grid[i][j] = Type.NORMAL;
+                grid[i][j] = TileType.NORMAL;
             }
 
-        ComponentList list = new ComponentList(0, 0);
+        ComponentList leftBar = new ComponentList(-LeftSidebar.sliderExtendedSprite.getWidth(), -sprBorder.getHeight() / 2);
+
+        LeftSidebar modeComp = new LeftSidebar(leftBar, "Selection Modes", sprTabMode, false);
+        modeComp.listComp.setMarginLeft(5);
+        modeComp.listComp.add(new ModeSelector(modeComp.listComp, this, Mode.DIRECT, "Set Tiles Directly", sprIconDirect, true).component);
+        modeComp.listComp.add(new ModeSelector(modeComp.listComp, this, Mode.SELECT, "Select Regions", sprIconRegionSelection, false).component);
+        leftBar.add(modeComp.component);
+
+        getMainComponents().add(leftBar);
 
         // BORDER //
         ComponentSprite compBorder = new ComponentSprite(sprBorder,
@@ -59,14 +71,15 @@ public class GuiBuilder extends GuiBase {
             int x = pos.getXi() / 16;
             int y = pos.getYi() / 16;
             if (x < grid.length && y < grid.length)
-                if (grid[x][y] == Type.NORMAL) grid[x][y] = Type.PLACED;
-                else grid[x][y] = Type.NORMAL;
+                if (grid[x][y] == TileType.NORMAL) {
+                    grid[x][y] = TileType.PLACED;
+                } else grid[x][y] = TileType.NORMAL;
         });
 
         compScreen.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
             for (int i = 0; i < grid.length; i++)
                 for (int j = 0; j < grid.length; j++) {
-                    Type box = grid[i][j];
+                    TileType box = grid[i][j];
 
                     GlStateManager.pushMatrix();
                     GlStateManager.enableAlpha();
@@ -75,24 +88,22 @@ public class GuiBuilder extends GuiBase {
                     GlStateManager.disableLighting();
 
                     texSpriteSheet.bind();
-                    if (box == Type.PLACED) {
-                        sprNormal.draw((int) ClientTickHandler.getPartialTicks(),
+                    if (box == TileType.PLACED) {
+                        sprTileNormal.draw((int) ClientTickHandler.getPartialTicks(),
                                 event.getComponent().getPos().getXi() + i * 16,
                                 event.getComponent().getPos().getYi() + j * 16);
-                    } else if (box == Type.LEFT_SELECTED) {
-                        sprLeftSelected.draw((int) ClientTickHandler.getPartialTicks(),
+                    } else if (box == TileType.LEFT_SELECTED) {
+                        sprTileLeftSelected.draw((int) ClientTickHandler.getPartialTicks(),
                                 event.getComponent().getPos().getXi() + i * 16,
                                 event.getComponent().getPos().getYi() + j * 16);
-                    } else if (box == Type.RIGHT_SELECTED) {
-                        sprRightSelected.draw((int) ClientTickHandler.getPartialTicks(),
+                    } else if (box == TileType.RIGHT_SELECTED) {
+                        sprTileRightSelected.draw((int) ClientTickHandler.getPartialTicks(),
                                 event.getComponent().getPos().getXi() + i * 16,
                                 event.getComponent().getPos().getYi() + j * 16);
                     }
 
                     GlStateManager.enableLighting();
                     GlStateManager.disableTexture2D();
-                    GlStateManager.disableBlend();
-                    GlStateManager.disableAlpha();
                     GlStateManager.popMatrix();
                 }
         });
@@ -106,7 +117,11 @@ public class GuiBuilder extends GuiBase {
         return false;
     }
 
-    private enum Type {
+    private enum TileType {
         NORMAL, LEFT_SELECTED, RIGHT_SELECTED, PLACED
+    }
+
+    public enum Mode {
+        DIRECT, SELECT
     }
 }

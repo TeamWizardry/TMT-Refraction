@@ -44,8 +44,8 @@ public class BlockBuilder extends BlockModContainer implements IBeamHandler {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (worldIn.isRemote)
-			playerIn.openGui(Refraction.instance, 2, playerIn.world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
-		return true;
+            playerIn.openGui(Refraction.instance, 1, playerIn.world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+        return true;
 	}
 
 	@Override
