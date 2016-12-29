@@ -58,7 +58,7 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer {
 
     @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
-        if (GuiScreen.isAltKeyDown()) return;
+        if (playerIn.isSneaking()) return;
 
         World world = playerIn.getEntityWorld();
 

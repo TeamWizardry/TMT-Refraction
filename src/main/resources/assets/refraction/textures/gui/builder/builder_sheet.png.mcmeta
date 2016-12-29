@@ -1,0 +1,11 @@
+{
+	"spritesheet":{
+		"textureWidth":16,
+		"textureHeight":48,
+		"sprites":{
+			"right_selected":[0, 0, 16, 16],
+			"left_selected":[16, 0, 16, 16],
+			"normal":[32, 0, 16, 16]
+		}
+	}
+}

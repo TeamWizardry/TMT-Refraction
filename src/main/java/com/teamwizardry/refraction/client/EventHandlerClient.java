@@ -7,7 +7,6 @@ import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.network.PacketAmmoColorChange;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.MouseEvent;
@@ -42,7 +41,7 @@ public class EventHandlerClient {
 
     @SubscribeEvent
     public void onMouseEvent(MouseEvent event) {
-        if (event.getDwheel() != 0 && GuiScreen.isAltKeyDown()) {
+        if (event.getDwheel() != 0 && Minecraft.getMinecraft().player.isSneaking()) {
             ItemStack stack = Minecraft.getMinecraft().player.getHeldItemMainhand();
             if (stack != null && stack.getItem() instanceof IAmmoConsumer) {
 

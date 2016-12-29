@@ -9,7 +9,6 @@ import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.Item;
@@ -69,7 +68,7 @@ public class GunOverlay {
         int posY = res.getScaledHeight();
 
 
-        if (GuiScreen.isAltKeyDown()) {
+        if (Minecraft.getMinecraft().player.isSneaking()) {
             List<ItemStack> ammoList = IAmmoConsumer.findAllAmmo(Minecraft.getMinecraft().player);
             Set<Color> colorSet = ammoList.stream().map(ammo -> new Color(ItemNBTHelper.getInt(ammo, "color", 0xFFFFF), true)).collect(Collectors.toSet());
             List<Color> colors = new ArrayList<>(colorSet);
