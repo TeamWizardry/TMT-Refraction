@@ -33,6 +33,24 @@ public interface IAmmoConsumer {
 		return stacks;
 	}
 
+	@NotNull
+	static List<ItemStack> findAllAmmo(EntityPlayer player, Color color) {
+		List<ItemStack> stacks = new ArrayList<>();
+		if (isAmmo(player.getHeldItem(EnumHand.OFF_HAND), color)) {
+			stacks.add(player.getHeldItem(EnumHand.OFF_HAND));
+		}
+		if (isAmmo(player.getHeldItem(EnumHand.MAIN_HAND), color)) {
+			stacks.add(player.getHeldItem(EnumHand.MAIN_HAND));
+		}
+		for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
+			ItemStack itemstack = player.inventory.getStackInSlot(i);
+
+			if (isAmmo(itemstack, color)) stacks.add(itemstack);
+		}
+
+		return stacks;
+	}
+
 	@Nullable
 	static ItemStack findAmmo(EntityPlayer player, Color color) {
 		if (isAmmo(player.getHeldItem(EnumHand.OFF_HAND), color)) {
@@ -53,7 +71,8 @@ public interface IAmmoConsumer {
 		return stack != null
 				&& stack.getItem() instanceof IAmmo
 				&& stack.hasTagCompound()
-				&& stack.getTagCompound().hasKey("color");
+				&& stack.getTagCompound().hasKey("color")
+				&& stack.getItemDamage() <= stack.getMaxDamage() - 1;
 	}
 
 	static boolean isAmmo(@Nullable ItemStack stack, Color color) {
@@ -61,6 +80,7 @@ public interface IAmmoConsumer {
 				&& stack.getItem() instanceof IAmmo
 				&& stack.hasTagCompound()
 				&& stack.getTagCompound().hasKey("color")
+				&& stack.getItemDamage() < stack.getMaxDamage() - 1
 				&& Utils.doColorsMatchNoAlpha(color, new Color(stack.getTagCompound().getInteger("color")));
 	}
 }

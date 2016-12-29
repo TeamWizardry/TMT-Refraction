@@ -92,11 +92,7 @@ public class TileAssemblyTable extends MultipleBeamTile implements ITickable {
         }
     };
     @Save
-    private int craftingTime = 0;
-
-    public int getCraftingTime() {
-        return craftingTime;
-    }
+    public int craftingTime = 0;
 
     @Override
     public void readCustomNBT(NBTTagCompound cmp) {

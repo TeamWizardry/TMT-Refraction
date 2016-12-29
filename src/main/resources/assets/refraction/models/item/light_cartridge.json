@@ -1,6 +1,7 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "refraction:items/light_cartridge"
+    "layer0": "refraction:items/light_cartridge",
+    "layer1": "refraction:items/light_cartridge_streak"
   }
 }

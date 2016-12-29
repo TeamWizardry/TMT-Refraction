@@ -1,0 +1,9 @@
+{
+	"spritesheet":{
+		"textureWidth":16,
+		"textureHeight":16,
+		"sprites":{
+			"box":[0, 0, 16, 16]
+		}
+	}
+}

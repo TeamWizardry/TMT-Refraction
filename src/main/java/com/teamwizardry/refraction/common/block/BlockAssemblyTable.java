@@ -66,8 +66,8 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 			TileAssemblyTable table = getTE(worldIn, pos);
 
 			if (table.behavior != null) {
-				boolean allowedToEdit = table.behavior.canEditItems(table.inventory, table.output, table.getCraftingTime());
-				if (allowedToEdit)
+                boolean allowedToEdit = table.behavior.canEditItems(table.inventory, table.output, table.craftingTime);
+                if (allowedToEdit)
 					table.behavior = null;
 				else return true;
 			}

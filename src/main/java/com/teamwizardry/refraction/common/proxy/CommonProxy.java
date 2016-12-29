@@ -14,6 +14,7 @@ import com.teamwizardry.refraction.common.core.EventHandler;
 import com.teamwizardry.refraction.common.effect.EffectGravity;
 import com.teamwizardry.refraction.common.mt.MTRefractionPlugin;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
+import com.teamwizardry.refraction.common.network.PacketAmmoColorChange;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.init.*;
 import com.teamwizardry.refraction.init.recipies.CraftingRecipes;
@@ -58,7 +59,8 @@ public class CommonProxy {
 		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
 		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
 		PacketHandler.register(PacketAXYZMarks.class, Side.CLIENT);
-	}
+        PacketHandler.register(PacketAmmoColorChange.class, Side.SERVER);
+    }
 
 	public void init(FMLInitializationEvent event) {
 		CraftingRecipes.init();
