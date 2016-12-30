@@ -85,7 +85,6 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer {
                 .setUUIDToSkip(playerIn.getUniqueID())
                 .setCaster(playerIn)
                 .setRange(30)
-                .enableParticleBeginning()
                 .enableParticleEnd();
         beam.spawn();
     }

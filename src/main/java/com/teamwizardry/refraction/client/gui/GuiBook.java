@@ -35,7 +35,7 @@ public class GuiBook extends GuiBase {
 	int selectedPage = 0;
 
 	GuiBook() {
-		super(0, 0);
+		super(232, 323);
 
 		ComponentVoid mainComponent = new ComponentVoid(width / 2, height / 2, 256, 256);
 
