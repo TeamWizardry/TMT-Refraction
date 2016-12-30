@@ -56,6 +56,7 @@ item.refraction:ref_alloy_leggings.name=Reflective Braces
 item.refraction:ref_alloy_boots.name=Reflective Boots
 item.refraction:photon_cannon.name=Photon Cannon
 item.refraction:book.name=Information Tablet
+item.refraction:light_cartridge.name=Light Cartridge
 
 simple_name.refraction:mirror=&7Mirror
 simple_name.refraction:splitter=&7Splitter
