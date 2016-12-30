@@ -97,6 +97,7 @@ public final class Utils {
 		for (ItemStack i : items) {
 			for (int j = 0; j < inputsMissing.size(); j++) {
 				Object inp = inputsMissing.get(j);
+				if (inp == null) continue;
 				if (inp instanceof ItemStack && ((ItemStack) inp).getItemDamage() == 32767)
 					((ItemStack) inp).setItemDamage(i.getItemDamage());
 				if (itemEquals(i, inp)) {
