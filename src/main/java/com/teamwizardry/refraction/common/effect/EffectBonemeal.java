@@ -19,7 +19,7 @@ public class EffectBonemeal extends Effect {
 
 	@Override
 	public int getChance(int potency) {
-		return potency == 0 ? 0 : 12750 / potency;
+		return potency == 0 ? 0 : 1275 / potency;
 	}
 
 	@Override

@@ -1,30 +1,26 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpColorFade;
-import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.CommonUtilMethods;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
-import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
-import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
 import com.teamwizardry.refraction.api.MultipleBeamTile;
 import com.teamwizardry.refraction.api.beam.modes.BeamMode;
 import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
 import com.teamwizardry.refraction.api.recipe.AssemblyBehaviors;
 import com.teamwizardry.refraction.api.recipe.IAssemblyBehavior;
+import com.teamwizardry.refraction.common.network.PacketAssemblyDoneParticles;
+import com.teamwizardry.refraction.common.network.PacketAssemblyProgressParticles;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -35,7 +31,6 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by LordSaad44
@@ -164,50 +159,14 @@ public class TileAssemblyTable extends MultipleBeamTile implements ITickable {
         Color color = mergeColors(colors);
 
         if (behavior != null) {
-            if (behavior.tick(color, inventory, output, craftingTime++)) {
-                if (world.isRemote) {
-                    ParticleBuilder builder = new ParticleBuilder(5);
-                    builder.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
-                    builder.setColorFunction(new InterpColorFade(Color.RED, 1, 255, 1));
-                    builder.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
-                    ParticleSpawner.spawn(builder, world, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(20, 40), 0, (aFloat, particleBuilder) -> {
-                        double radius = 0.3;
-                        double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
-                        double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
-                        double r = (u > 1) ? 2 - u : u;
-                        double x1 = r * Math.cos(t), z1 = r * Math.sin(t);
-                        builder.setPositionOffset(new Vec3d(x1, ThreadLocalRandom.current().nextDouble(-0.3, 0.3), z1));
-                        builder.setScale(ThreadLocalRandom.current().nextFloat());
-                        builder.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.01, 0.01) / 10,
-                                ThreadLocalRandom.current().nextDouble(0.001, 0.01) / 10,
-                                ThreadLocalRandom.current().nextDouble(-0.01, 0.01) / 10));
-                        builder.setLifetime(ThreadLocalRandom.current().nextInt(30, 50));
-                    });
-                }
-            } else {
+            if (behavior.tick(color, inventory, output, craftingTime++))
+                PacketHandler.NETWORK.sendToAllAround(new PacketAssemblyProgressParticles(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 30));
+            else {
                 EventAssemblyTableCraft eventAssemblyTableCraft = new EventAssemblyTableCraft(world, pos, output.getStackInSlot(0));
                 MinecraftForge.EVENT_BUS.post(eventAssemblyTableCraft);
                 behavior = null;
 
-                if (world.isRemote) {
-                    ParticleBuilder builder = new ParticleBuilder(1);
-                    builder.setAlphaFunction(new InterpFadeInOut(0.1f, 0.3f));
-                    builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
-                    builder.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
-                    ParticleSpawner.spawn(builder, world, new StaticInterp<>(new Vec3d(getPos().getX() + 0.5, getPos().getY() + 1.25, getPos().getZ() + 0.5)), ThreadLocalRandom.current().nextInt(200, 300), 0, (aFloat, particleBuilder) -> {
-                        double radius = 0.1;
-                        double t = 2 * Math.PI * ThreadLocalRandom.current().nextDouble(-radius, radius);
-                        double u = ThreadLocalRandom.current().nextDouble(-radius, radius) + ThreadLocalRandom.current().nextDouble(-radius, radius);
-                        double r = (u > 1) ? 2 - u : u;
-                        double x1 = r * Math.cos(t), z1 = r * Math.sin(t);
-                        builder.setPositionOffset(new Vec3d(x1, ThreadLocalRandom.current().nextDouble(-0.1, 0.1), z1));
-                        builder.setScale(ThreadLocalRandom.current().nextFloat());
-                        builder.setMotion(new Vec3d(ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
-                                ThreadLocalRandom.current().nextDouble(-0.01, 0.01),
-                                ThreadLocalRandom.current().nextDouble(-0.01, 0.01)));
-                        builder.setLifetime(ThreadLocalRandom.current().nextInt(20, 80));
-                    });
-                }
+                PacketHandler.NETWORK.sendToAllAround(new PacketAssemblyDoneParticles(pos), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 30));
             }
             markDirty();
             return;

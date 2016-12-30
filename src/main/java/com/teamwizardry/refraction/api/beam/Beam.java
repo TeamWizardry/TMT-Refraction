@@ -1,23 +1,20 @@
 package com.teamwizardry.refraction.api.beam;
 
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleBuilder;
-import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
-import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.refraction.api.ConfigValues;
-import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect.EffectType;
 import com.teamwizardry.refraction.api.beam.modes.BeamMode;
 import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
 import com.teamwizardry.refraction.api.raytrace.EntityTrace;
+import com.teamwizardry.refraction.common.network.PacketBeamParticle1;
+import com.teamwizardry.refraction.common.network.PacketBeamParticle2;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -26,8 +23,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -132,36 +128,12 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      */
     public String customName = "";
 
-    /**
-     * The physical particle that will spawn at the beginning or end
-     */
-    @SideOnly(Side.CLIENT)
-    private ParticleBuilder particle1, particle2;
-
     public Beam(@NotNull World world, @NotNull Vec3d initLoc, @NotNull Vec3d slope, @NotNull Color color) {
         this.world = world;
         this.initLoc = initLoc;
         this.slope = slope;
         this.finalLoc = slope.normalize().scale(128).add(initLoc);
         this.color = color;
-
-        if (world.isRemote) {
-            particle1 = new ParticleBuilder(3);
-            particle1.setRender(new ResourceLocation(Constants.MOD_ID, "particles/star"));
-            particle1.disableRandom();
-            particle1.disableMotionCalculation();
-            particle1.setAlphaFunction(new InterpFadeInOut(0f, 1f));
-            particle1.setScale(ThreadLocalRandom.current().nextFloat() * 2);
-            particle1.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 10));
-
-            particle2 = new ParticleBuilder(ThreadLocalRandom.current().nextInt(20, 100));
-            particle2.setRender(new ResourceLocation(Constants.MOD_ID, "particles/lens_flare_1"));
-            particle2.disableRandom();
-            particle2.disableMotionCalculation();
-            particle2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ThreadLocalRandom.current().nextInt(10, 15)));
-            particle2.setAlphaFunction(new InterpFadeInOut((float) ThreadLocalRandom.current().nextDouble(0, 1), (float) ThreadLocalRandom.current().nextDouble(0, 1)));
-            particle2.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 2.5));
-        }
     }
 
     public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color) {
@@ -451,6 +423,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
      * Will spawn the final complete beam.
      */
     public void spawn() {
+        if (world.isRemote) return;
         if (color.getAlpha() <= 1) return;
         if (bouncedTimes > allowedBounceTimes) return;
 
@@ -498,22 +471,19 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // Effect handling
         if (mode instanceof ModeEffect && effect != null) {
             if (effect.getType() == EffectType.BEAM)
-                if (!world.isRemote)
-                    EffectTracker.addEffect(world, this);
+                EffectTracker.addEffect(world, this);
 
-                else if (pass) {
-                    if (effect.getType() == EffectType.SINGLE) {
-                        if (trace.typeOfHit != RayTraceResult.Type.MISS) {
-                            if (!world.isRemote)
-                                EffectTracker.addEffect(world, trace.hitVec, effect);
+            else if (pass) {
+                if (effect.getType() == EffectType.SINGLE) {
+                    if (trace.typeOfHit != RayTraceResult.Type.MISS) {
+                        EffectTracker.addEffect(world, trace.hitVec, effect);
 
-                        } else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
-                            BlockPos pos = trace.getBlockPos();
-                            if (!world.isRemote)
-                                EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
-                        }
+                    } else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+                        BlockPos pos = trace.getBlockPos();
+                        EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
                     }
                 }
+            }
         }
         // EFFECT HANDLING
 
@@ -537,25 +507,22 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         // ENTITY REFLECTING
 
         // Particle packet sender
-        if (!world.isRemote)
-            Utils.HANDLER.fireLaserPacket(this);
+        Utils.HANDLER.fireLaserPacket(this);
 
-        if (world.isRemote) {
-            // PARTICLES
-            if (enableParticleBeginning) {
-                if (ThreadLocalRandom.current().nextInt(10) == 0)
-                    ParticleSpawner.spawn(particle1, world, new StaticInterp<>(initLoc), 1);
-                if (ThreadLocalRandom.current().nextInt(100) == 0)
-                    ParticleSpawner.spawn(particle2, world, new StaticInterp<>(initLoc), 1);
-            }
-            if (trace.hitVec != null && enableParticleEnd) {
-                if (ThreadLocalRandom.current().nextInt(10) == 0)
-                    ParticleSpawner.spawn(particle1, world, new StaticInterp<>(trace.hitVec), 1);
-                if (ThreadLocalRandom.current().nextInt(100) == 0)
-                    ParticleSpawner.spawn(particle2, world, new StaticInterp<>(trace.hitVec), 1);
-            }
-            // PARTICLES
+        // PARTICLES
+        if (enableParticleBeginning) {
+            if (ThreadLocalRandom.current().nextInt(10) == 0)
+                PacketHandler.NETWORK.sendToAllAround(new PacketBeamParticle1(initLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 30));
+            if (ThreadLocalRandom.current().nextInt(100) == 0)
+                PacketHandler.NETWORK.sendToAllAround(new PacketBeamParticle2(initLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 30));
         }
+        if (trace.hitVec != null && enableParticleEnd) {
+            if (ThreadLocalRandom.current().nextInt(10) == 0)
+                PacketHandler.NETWORK.sendToAllAround(new PacketBeamParticle1(finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), finalLoc.xCoord, finalLoc.yCoord, finalLoc.zCoord, 30));
+            if (ThreadLocalRandom.current().nextInt(100) == 0)
+                PacketHandler.NETWORK.sendToAllAround(new PacketBeamParticle2(finalLoc, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), finalLoc.xCoord, finalLoc.yCoord, finalLoc.zCoord, 30));
+        }
+        // PARTICLES
     }
 
     private boolean recast() {

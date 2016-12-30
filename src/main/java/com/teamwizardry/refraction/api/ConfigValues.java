@@ -25,7 +25,7 @@ public final class ConfigValues {
 	public static int MAX_TESLA;
 	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_electricity_per_tick", comment = "Change this and it'll set how much tesla/tick is required to feed the Electric Laser", defaultValue = 50)
 	public static int TESLA_PER_TICK;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_particle_life", comment = "Change this and it'll set how long beams will stay. Higher numbers will make beams feel laggier but they just VISUALLY stay longer. This is useful if you have terrible TPS issues and/or beams exciterPos flickering for whatever reason.", defaultValue = 3)
+	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_particle_life", comment = "Change this and it'll set how long beams will stay. Higher numbers will make beams feel laggier but they just VISUALLY stay longer. This is useful if you have terrible TPS issues and/or beams exciterPos flickering for whatever reason.", defaultValue = 8)
 	public static int BEAM_PARTICLE_LIFE;
 	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "disco_ball_beam_bounce_limit", comment = "The disco ball's beams have a bounce/reflecting limit of 4 times. This is to prevent tps drops. This number is kind of a sweet spot in an enclosed cube of reflective alloy blocks. If you set it to a higher value, it will reflect a lot more beams but will drop your tps if you cannot handleBeam it.", defaultValue = 2)
 	public static int DISCO_BALL_BEAM_BOUNCE_LIMIT;
