@@ -166,8 +166,96 @@
       ]
     },
     {
+      "icon": "refraction:textures/items/laser_pointer.png",
+      "title": "Items",
+      "subpages": [
+        {
+          "title": "Screwdriver",
+          "text": [
+            "You've already supposedly read and used the [recipe:refraction:screw_driver], but to recap:",
+            "",
+            "",
+            "Right click the air to increment it's angle. Shift right click to decrement.",
+            "",
+            "Right click the top or bottom of a mirror/splitter to rotate it around the y-axis. Shift right click to reverse the rotation",
+            "",
+            "",
+            "Right click the sides of a mirror/splitter to rotate it around the x-axis. Shift right click to reverse the rotation.",
+            "",
+            "Setting the angle and placing the screwdriver in a dispenser facing a mirror then powering it (INDIRECTLY - read warning) ",
+            "will change the mirror's angle as if you right clicked it on the face the dispenser is hitting.",
+            "",
+            "",
+            "To invert the dispenser as if it's shift right clicking the screw driver, put the screwdriver into a crafting gird.",
+            "the output of the recipe will be an 'inverted' screwdriver that will do what you want on dispensers and vice versa to reinvert it.",
+            "",
+            "&c&l[!] WARNING [!]&r Powering a dispenser with a screwdriver with a direct line of redstone power to adjust a mirror might seem glitchy. This is because",
+            "powering a mirror will set it's angle to it's 'powered' state and vice versa. To fix this, simply power the dispenser INDIRECTLY through a block."
+          ]
+        },
+        {
+          "title": "Reflective Alloy",
+          "text": [
+            "You've already seen the [recipe:refraction:reflective_alloy] ingots, but what you didn't know is that it has a block variation.",
+            "",
+            "The block form of this alloy will reflect/bounce all beams that intersect with it in the cardinal direction hit.",
+            "",
+            "",
+            "In a way, it's sort of a cheap precisionless mirror. This block is considered as great protection against volatile or dangerous beams.",
+            "",
+            "",
+            "You can also craft reflective alloy armor with this ingot. Each piece will decrease the potency of any beam effect that hits you. A full set wont completely negate effects, but you will become a walking mirror. IE: Beams will literally bounce and reflect off of you in the direction you face."
+          ]
+        },
+        {
+          "title": "Laser Pen",
+          "text": [
+            "KAT LAZORS."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/laser_pen.png",
+              "title": "Laser Pen"
+            }
+          ]
+        },
+        {
+          "title": "Photon Grenades",
+          "text": [
+            "When placed into an assembly table with any beam hitting it, it will infuse the grenade with that color.",
+            "When thrown, the grenade will explode violently with the color (taking into account the original strength as well)"
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/photon_grenade.png",
+              "title": "Photon Grenade"
+            }
+          ]
+        },
+        {
+          "title": "Photon Cannon",
+          "text": [
+            "The [recipe:photon_cannon] is a gun that continuously fires a beam provided you have a [recipe:light_cartridge] in your inventory.",
+            "",
+            "When holding the gun, the bar on the right side of your HUD will show up indicating the fuel or amount of ammo left in the loaded cartridge.",
+            "",
+            "You can hold multiple cartridges in your inventory at once. To swap which color the gun will use, hold the gun, then scroll while sneaking. You will flip through the colors and can stop at any one to choose the color desired.",
+            "",
+            "",
+            "It is worth noting that the hud on the right, indicating fuel or amount of energy left per color, is a sum of all the cartridges with the same color available in your inventory."
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/photon_grenade.png",
+              "title": "Photon Grenade"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "icon": "refraction:textures/items/disco_ball.png",
-      "title": "Items & Blocks",
+      "title": "Blocks",
       "subpages": [
         {
           "title": "Laser",
@@ -197,30 +285,6 @@
           ]
         },
         {
-          "title": "Screwdriver",
-          "text": [
-            "You've already supposedly read and used the [recipe:refraction:screw_driver], but to recap:",
-            "",
-            "",
-            "Right click the air to increment it's angle. Shift right click to decrement.",
-            "",
-            "Right click the top or bottom of a mirror/splitter to rotate it around the y-axis. Shift right click to reverse the rotation",
-            "",
-            "",
-            "Right click the sides of a mirror/splitter to rotate it around the x-axis. Shift right click to reverse the rotation.",
-            "",
-            "Setting the angle and placing the screwdriver in a dispenser facing a mirror then powering it (INDIRECTLY - read warning) ",
-            "will change the mirror's angle as if you right clicked it on the face the dispenser is hitting.",
-            "",
-            "",
-            "To invert the dispenser as if it's shift right clicking the screw driver, put the screwdriver into a crafting gird.",
-            "the output of the recipe will be an 'inverted' screwdriver that will do what you want on dispensers and vice versa to reinvert it.",
-            "",
-            "&c&l[!] WARNING [!]&r Powering a dispenser with a screwdriver with a direct line of redstone power to adjust a mirror might seem glitchy. This is because",
-            "powering a mirror will set it's angle to it's 'powered' state and vice versa. To fix this, simply power the dispenser INDIRECTLY through a block."
-          ]
-        },
-        {
           "title": "Mirrors / Splitter",
           "text": [
             "This [recipe:refraction:splitter] block is a half-mirror. It has the same properties as a mirror, but instead of reflecting a beam directly",
@@ -232,20 +296,6 @@
               "image": "refraction:textures/gui/tabletimages/splitter.png",
               "title": "Splitter"
             }
-          ]
-        },
-        {
-          "title": "Reflective Alloy",
-          "text": [
-            "You've already seen the [recipe:refraction:reflective_alloy] ingots, but what you didn't know is that it has a block variation.",
-            "",
-            "The block form of this alloy will reflect/bounce all beams that intersect with it in the cardinal direction hit.",
-            "",
-            "",
-            "In a way, it's sort of a cheap precisionless mirror. This block is considered as great protection against volatile or dangerous beams.",
-            "",
-            "",
-            "You can also craft reflective alloy armor with this ingot. Each piece will decrease the potency of any beam effect that hits you. A full set wont completely negate effects, but you will become a walking mirror. IE: Beams will literally bounce and reflect off of you in the direction you face."
           ]
         },
         {
@@ -324,31 +374,6 @@
           ]
         },
         {
-          "title": "Laser Pen",
-          "text": [
-            "KAT LAZORS."
-          ],
-          "extra": [
-            {
-              "image": "refraction:textures/gui/tabletimages/laser_pen.png",
-              "title": "Laser Pen"
-            }
-          ]
-        },
-        {
-          "title": "Photon Grenades",
-          "text": [
-            "When placed into an assembly table with any beam hitting it, it will infuse the grenade with that color.",
-            "When thrown, the grenade will explode violently with the color (taking into account the original strength as well)"
-          ],
-          "extra": [
-            {
-              "image": "refraction:textures/gui/tabletimages/photon_grenade.png",
-              "title": "Photon Grenade"
-            }
-          ]
-        },
-        {
           "title": "Electron Exciter",
           "text": [
             "Our friends at aperture science have provided us with their amazing technology of hard light bridges!",
@@ -404,13 +429,13 @@
         {
           "title": "Inventory Management",
           "text": [
-            "You might wonder if there's a way to extract and insert items to and from inventories using light. Well... There is!",
+            "You might be wondering if there's a way to extract and insert items to and from inventories using light. Well... There is!",
             "",
             "",
             "The disperse (magenta) and attract (cyan) effects can insert and extract items to and from inventories respectively.",
             "",
-            "The actual process however, is a bit crude... You see... You have to kinda... Burn a hole into the inventory with a burn beam first",
-            "A laser pointing at the inventory will then extract or insert the items through that hole. So you must point a burn beam on the inventory desired.",
+            "The actual process however, is a bit crude... You see... You have to kinda... Burn a hole into the inventory with a burn beam first.",
+            " A laser pointing at the inventory will then extract or insert the items through that hole. So you must point a burn beam on the inventory desired.",
             "",
             "",
             "Physics is beautiful, isn't it?"
@@ -420,6 +445,21 @@
               "image": "refraction:textures/gui/tabletimages/insert_extract.png",
               "title": "Insert & Extract"
             }
+          ]
+        },
+        {
+          "title": "Gravity Beam",
+          "text": [
+            "The gravity beam is a very dangerous beam. To acquire it, you point a disperse (magenta) beam in an electron exciter, and any adjacent electron exciters will output the gravity beam,",
+            "",
+            "",
+            "The gravity beam will completely nullify an entity's gravity. But that's not the interesting/dangerous part!",
+            "",
+            "The block a gravity beam touches will completely protect the block from taking any form of damage. Not only that, but it will also completely prevent players from interacting with the block.",
+            "",
+            "Chests will not be openable, for example, and you will not be able to place a block against a gravity beam protected block.",
+            "",
+            "However, if a block that is not a tile entity nor a reflective alloy block has an air block below it, the gravity beam will make the block fall."
           ]
         }
       ]
