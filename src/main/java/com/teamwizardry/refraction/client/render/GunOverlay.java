@@ -1,9 +1,13 @@
 package com.teamwizardry.refraction.client.render;
 
-import java.awt.Color;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
+import com.teamwizardry.librarianlib.client.sprite.Sprite;
+import com.teamwizardry.librarianlib.client.sprite.Texture;
+import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.IAmmoConsumer;
+import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -20,14 +24,11 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
-import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
-import com.teamwizardry.librarianlib.client.sprite.Sprite;
-import com.teamwizardry.librarianlib.client.sprite.Texture;
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.IAmmoConsumer;
-import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.init.ModItems;
+
+import java.awt.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -93,7 +94,6 @@ public class GunOverlay {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableAlpha();
 			GlStateManager.enableBlend();
-			GlStateManager.disableCull();
 			GlStateManager.disableTexture2D();
 			GlStateManager.translate(posX / 2, posY / 2, 0);
 			
@@ -107,18 +107,17 @@ public class GunOverlay {
 				{
 					int currentRadius = SELECTOR_RADIUS + (gunColor.equals(color) ? SELECTOR_SHIFT : 0);
 					float currentAngle = i * anglePerSegment + angle;
-					vb.pos((currentRadius + SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle), (currentRadius + SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
-					vb.pos((currentRadius + SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle + anglePerSegment), (currentRadius + SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle + anglePerSegment), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
-					vb.pos((currentRadius - SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle + anglePerSegment), (currentRadius - SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle + anglePerSegment), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
-					vb.pos((currentRadius - SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle), (currentRadius - SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
-				}
-				tess.draw();
+                    vb.pos((currentRadius - SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle), (currentRadius - SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+                    vb.pos((currentRadius - SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle + anglePerSegment), (currentRadius - SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle + anglePerSegment), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+                    vb.pos((currentRadius + SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle + anglePerSegment), (currentRadius + SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle + anglePerSegment), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+                    vb.pos((currentRadius + SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle), (currentRadius + SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+                }
+                tess.draw();
 				
 				angle += anglePerColor;
 			}
 			
 			GlStateManager.enableTexture2D();
-			GlStateManager.enableCull();
 			GlStateManager.disableBlend();
 			GlStateManager.disableAlpha();
 			GlStateManager.popMatrix();
