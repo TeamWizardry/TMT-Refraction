@@ -53,8 +53,10 @@ public class LeftSidebar {
 
         background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
             if (background.hasTag("selected")) {
-                listComp.setVisible(true);
-                listComp.setEnabled(true);
+                if(listComp.getChildren().size() > 0) {
+                    listComp.setVisible(true);
+                    listComp.setEnabled(true);
+                }
                 background.setSprite(sliderExtendedSprite);
                 background.setSize(new Vec2d(sliderExtendedSprite.getWidth(), sliderExtendedSprite.getHeight()));
                 background.setPos(new Vec2d(-sliderExtendedSprite.getWidth(), 0));
