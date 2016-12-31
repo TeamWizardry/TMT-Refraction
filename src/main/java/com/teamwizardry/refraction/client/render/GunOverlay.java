@@ -1,5 +1,25 @@
 package com.teamwizardry.refraction.client.render;
 
+import java.awt.Color;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.opengl.GL11;
 import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
@@ -8,22 +28,6 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.init.ModItems;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 /**
@@ -32,23 +36,24 @@ import java.util.stream.Collectors;
 public class GunOverlay {
 
     public static final GunOverlay INSTANCE = new GunOverlay();
+    
+    private static final int SELECTOR_RADIUS = 30;
+	private static final int SELECTOR_WIDTH = 10;
+	private static final int SELECTOR_SHIFT = 3;
+	private static final float SELECTOR_ALPHA = 0.7F;
 
     private static Texture texBox;
     private static Texture texHandleVignette;
-    private static Texture texPallete;
     private static Sprite sprBox;
     private static Sprite sprHandleVignette;
-    private static Sprite sprPallete;
 
     static {
         Utils.HANDLER.runIfClient(() -> {
             texBox = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/ammoselector/gun_box.png"));
             texHandleVignette = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/ammoselector/gun_vignette.png"));
-            texPallete = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/ammoselector/pallete.png"));
 
             sprBox = texBox.getSprite("box", 28, 135);
             sprHandleVignette = texHandleVignette.getSprite("box", 28, 135);
-            sprPallete = texPallete.getSprite("box", 16, 16);
         });
     }
 
@@ -67,35 +72,58 @@ public class GunOverlay {
         int posX = res.getScaledWidth();
         int posY = res.getScaledHeight();
 
+        NBTTagCompound compound = stack.getTagCompound();
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        if (player.isSneaking()) {
+            List<ItemStack> ammoList = IAmmoConsumer.findAllAmmo(player);
+            Set<Color> colors = new HashSet<>();
+            for (ItemStack item : ammoList)
+            	colors.add(new Color(ItemNBTHelper.getInt(item, "color", 0xFFFFFF)));
 
-        if (Minecraft.getMinecraft().player.isSneaking()) {
-            List<ItemStack> ammoList = IAmmoConsumer.findAllAmmo(Minecraft.getMinecraft().player);
-            Set<Color> colorSet = ammoList.stream().map(ammo -> new Color(ItemNBTHelper.getInt(ammo, "color", 0xFFFFF), true)).collect(Collectors.toSet());
-            List<Color> colors = new ArrayList<>(colorSet);
+            int numSegmentsPerArc = (int) Math.ceil(360d / colors.size());
+			float anglePerColor = (float) (2 * Math.PI / colors.size());
+			float anglePerSegment = anglePerColor / (numSegmentsPerArc);
+			float angle = 0;
+			
+			Color gunColor = Color.WHITE;
+			if (compound != null)
+				if (compound.hasKey("color"))
+					gunColor = new Color(compound.getInteger("color"));
 
-            for (Color color : colors) {
-                // TODO: COLOR WHEEL HERE
-
-                double slice = 2 * Math.PI / ammoList.size();
-                double radius = 30;
-                int slot = colors.indexOf(color);
-                double angle = slice * slot;
-                float newX = (float) (-4 + radius * Math.cos(angle));
-                float newY = (float) (-4 + radius * Math.sin(angle));
-
-                GlStateManager.pushMatrix();
-                GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
-                GlStateManager.translate(posX / 2, posY / 2, 0);
-                GlStateManager.translate(newX, newY, 0);
-                GlStateManager.scale(0.5, 0.5, 0.5);
-                GlStateManager.color(color.getRed() / 255, color.getGreen() / 255, color.getBlue() / 255);
-                texPallete.bind();
-                sprPallete.draw((int) ClientTickHandler.getPartialTicks(), 0, 0);
-
-                GlStateManager.popMatrix();
-            }
+			GlStateManager.pushMatrix();
+			GlStateManager.enableAlpha();
+			GlStateManager.enableBlend();
+			GlStateManager.disableCull();
+			GlStateManager.disableTexture2D();
+			GlStateManager.translate(posX / 2, posY / 2, 0);
+			
+			Tessellator tess = Tessellator.getInstance();
+			VertexBuffer vb = tess.getBuffer();
+			for (Color color : colors)
+			{
+				float[] colorVals = color.getRGBColorComponents(null);
+				vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+				for (int i = 0; i < numSegmentsPerArc; i++)
+				{
+					int currentRadius = SELECTOR_RADIUS + (gunColor.equals(color) ? SELECTOR_SHIFT : 0);
+					float currentAngle = i * anglePerSegment + angle;
+					vb.pos((currentRadius + SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle), (currentRadius + SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+					vb.pos((currentRadius + SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle + anglePerSegment), (currentRadius + SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle + anglePerSegment), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+					vb.pos((currentRadius - SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle + anglePerSegment), (currentRadius - SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle + anglePerSegment), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+					vb.pos((currentRadius - SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle), (currentRadius - SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+				}
+				tess.draw();
+				
+				angle += anglePerColor;
+			}
+			
+			GlStateManager.enableTexture2D();
+			GlStateManager.enableCull();
+			GlStateManager.disableBlend();
+			GlStateManager.disableAlpha();
+			GlStateManager.popMatrix();
         }
+        
 
         // RIGHT SIDEBAR //
         GlStateManager.pushMatrix();
@@ -104,7 +132,6 @@ public class GunOverlay {
         GlStateManager.translate(posX, posY / 2, 0);
         GlStateManager.color(1f, 1f, 1f);
 
-        NBTTagCompound compound = stack.getTagCompound();
         if (compound != null) {
             if (compound.hasKey("color")) {
                 texBox.bind();

@@ -9,11 +9,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
-
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,6 +38,11 @@ public class EffectBurn extends Effect {
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && (tile instanceof IInventory || tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))) {
 			if (!burnedTileTracker.contains(pos)) burnedTileTracker.add(pos);
+			if (potency > 128 && tile instanceof TileEntityFurnace)
+			{
+				((TileEntityFurnace) tile).setField(0, potency);
+				((TileEntityFurnace) tile).setField(1, 255);
+			}
 			return;
 		}
 

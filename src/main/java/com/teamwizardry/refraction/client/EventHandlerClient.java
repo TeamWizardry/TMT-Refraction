@@ -58,10 +58,20 @@ public class EventHandlerClient {
                     }
                 if (slot == -1) slot = 0;
 
-                if (event.getDwheel() > 0 && colors.size() - 1 >= slot + 1)
-                    PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(slot + 1)));
-                else if (event.getDwheel() < 0 && slot - 1 >= 0)
-                    PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(slot - 1)));
+                if (event.getDwheel() > 0)
+                {
+                	if (colors.size() - 1 >= slot + 1)
+                		PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(slot + 1)));
+                	else
+                		PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(0)));
+                }
+                else if (event.getDwheel() < 0)
+                {
+                	if (slot - 1 >= 0)
+                		PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(slot - 1)));
+                	else
+                		PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(colors.size() - 1)));
+                }
                 event.setCanceled(true);
             }
         }
