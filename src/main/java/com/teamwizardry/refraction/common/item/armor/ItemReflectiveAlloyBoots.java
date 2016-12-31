@@ -31,14 +31,14 @@ public class ItemReflectiveAlloyBoots extends ItemModArmor implements IReflectiv
 		if (itemstack == null) {
 			playerIn.setItemStackToSlot(EntityEquipmentSlot.FEET, itemStackIn.copy());
 			itemStackIn.stackSize = 0;
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
-		} else {
-			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
-		}
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
+        } else {
+            return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
+        }
 	}
 
 	@Override
 	public final String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-		return new ResourceLocation(Constants.MOD_ID, "textures/items/reflective_alloy_boots.png").toString();
-	}
+        return new ResourceLocation(Constants.MOD_ID, "textures/models/ref_alloy_1.png").toString();
+    }
 }

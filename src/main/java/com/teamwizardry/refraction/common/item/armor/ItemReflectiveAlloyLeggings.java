@@ -31,14 +31,14 @@ public class ItemReflectiveAlloyLeggings extends ItemModArmor implements IReflec
 		if (itemstack == null) {
 			playerIn.setItemStackToSlot(EntityEquipmentSlot.LEGS, itemStackIn.copy());
 			itemStackIn.stackSize = 0;
-			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+			return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 		} else {
-			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+			return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
 		}
 	}
 
 	@Override
 	public final String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-		return new ResourceLocation(Constants.MOD_ID, "textures/items/reflective_alloy_leggings.png").toString();
+		return new ResourceLocation(Constants.MOD_ID, "textures/models/ref_alloy_2.png").toString();
 	}
 }
