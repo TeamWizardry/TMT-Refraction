@@ -34,4 +34,11 @@ public class ModItems {
 		BOOTS = new ItemArmorReflectiveAlloy("ref_alloy_boots", EntityEquipmentSlot.FEET);
 		LIGHT_CARTRIDGE = new ItemLightCartridge();
 	}
+
+	public static void initModels() {
+		HELMET.initModel();
+		CHESTPLATE.initModel();
+		LEGGINGS.initModel();
+		BOOTS.initModel();
+	}
 }

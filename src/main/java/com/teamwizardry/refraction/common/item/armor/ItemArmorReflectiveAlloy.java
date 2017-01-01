@@ -3,14 +3,17 @@ package com.teamwizardry.refraction.common.item.armor;
 import com.teamwizardry.librarianlib.common.base.item.ItemModArmor;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.IReflectiveArmor;
+import com.teamwizardry.refraction.client.render.armor.ModelReflectiveAlloy;
 import com.teamwizardry.refraction.client.render.armor.ModelReflectiveArmorHolder;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ItemArmorReflectiveAlloy extends ItemModArmor implements IReflectiveArmor {
 
-    private static final ModelReflectiveArmorHolder model = new ModelReflectiveArmorHolder();
+    public static ModelReflectiveArmorHolder holder = new ModelReflectiveArmorHolder();
 
     public ItemArmorReflectiveAlloy(String name, EntityEquipmentSlot slot) {
         super(name, ArmorMaterial.IRON, slot);
@@ -28,11 +31,16 @@ public class ItemArmorReflectiveAlloy extends ItemModArmor implements IReflectiv
         setMaxDamage(300);
     }
 
+    @SideOnly(Side.CLIENT)
+    public void initModel() {
+        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+    }
+
     @NotNull
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped armorModel) {
-        armorModel = model;
+        armorModel = new ModelReflectiveAlloy(armorSlot);
         armorModel.bipedHead.showModel = armorSlot == EntityEquipmentSlot.HEAD;
         armorModel.bipedHeadwear.showModel = armorSlot == EntityEquipmentSlot.HEAD;
         armorModel.bipedBody.showModel = armorSlot == EntityEquipmentSlot.CHEST || armorSlot == EntityEquipmentSlot.LEGS;
