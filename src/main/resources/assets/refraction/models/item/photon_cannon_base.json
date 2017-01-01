@@ -1,7 +1,8 @@
 {
   "__comment": "Copyright (c) InsomniaKitten 2016",
   "textures": {
-  "texture": "refraction:items/photon_cannon_base"
+    "texture": "refraction:items/photon_cannon_base",
+    "overlay": "refraction:items/photon_cannon_overlay"
   },
   "elements": [
   {
@@ -158,6 +159,1084 @@
   ],
   "faces": { "up": { "uv": [ 1.5, 11, 2, 11.5 ], "texture": "#texture" }, "north": { "uv": [ 2, 9.75, 2.5, 10 ], "texture": "#texture" }, "south": { "uv": [ 1.5, 10, 2, 10.25 ], "texture": "#texture" }, "west": { "uv": [ 1.5, 11.25, 2, 11.5 ], "texture": "#texture" }, "east": { "uv": [ 1.5, 11.25, 2, 11.5 ], "texture": "#texture" }
   }
-  }
+  },
+    {
+      "__comment": "barrel_1",
+      "from": [
+        6.5,
+        4.5,
+        0
+      ],
+      "to": [
+        9.5,
+        8.5,
+        11.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            1.5,
+            4,
+            3,
+            10
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            0,
+            4,
+            1.5,
+            9.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            4.5,
+            4,
+            6,
+            6
+          ],
+          "texture": "#overlay",
+          "cullface": "north",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            3,
+            4,
+            4.5,
+            6
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            5.5,
+            4
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            2.5,
+            0,
+            8,
+            2
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "barrel_2",
+      "from": [
+        7,
+        5,
+        11.5
+      ],
+      "to": [
+        9,
+        8,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            4,
+            6,
+            5,
+            8.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            3,
+            6,
+            4,
+            8.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            5,
+            6,
+            6,
+            7.5
+          ],
+          "texture": "#overlay",
+          "cullface": "south",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            5.75,
+            2.25,
+            8,
+            3.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            0,
+            0.25,
+            2.25,
+            1.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "grip_front_1",
+      "from": [
+        7.5,
+        1.5,
+        3.5
+      ],
+      "to": [
+        8.5,
+        4.5,
+        5.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            10.25,
+            0.5,
+            11.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            0,
+            9.750001,
+            0.5,
+            11.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            0,
+            9.750001,
+            0.5,
+            11.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            6.5,
+            5.5,
+            7.5,
+            7
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            6,
+            4,
+            7,
+            5.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "grip_front_2",
+      "from": [
+        7.5,
+        2.5,
+        3
+      ],
+      "to": [
+        8.5,
+        4.5,
+        3.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            11,
+            0.5,
+            11.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            0,
+            9.750001,
+            0.5,
+            10.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            6.25,
+            5.5,
+            6.5,
+            6.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            7,
+            4,
+            7.25,
+            5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "grip_front_3",
+      "from": [
+        7.5,
+        4,
+        2.5
+      ],
+      "to": [
+        8.5,
+        4.5,
+        3
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            11,
+            0.5,
+            11.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            0,
+            9.75,
+            0.5,
+            10
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            6,
+            5.5,
+            6.25,
+            5.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            7.25,
+            4,
+            7.5,
+            4.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "grip_rear_1",
+      "from": [
+        7.5,
+        2.5,
+        13.5
+      ],
+      "to": [
+        8.5,
+        5,
+        15.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            9.750001,
+            0.5,
+            10.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            0,
+            9.75,
+            0.5,
+            11
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            0,
+            10,
+            0.5,
+            11.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            5.5,
+            10.25,
+            6.5,
+            11.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            3,
+            8.500001,
+            4,
+            9.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "grip_rear_2",
+      "from": [
+        7.5,
+        2,
+        10
+      ],
+      "to": [
+        8.5,
+        3,
+        13.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0.5,
+            10,
+            1,
+            11.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            0.5,
+            9.749999,
+            1,
+            11.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            0,
+            9.749999,
+            0.5,
+            10.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            2,
+            10,
+            3,
+            10.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            4,
+            11.25,
+            5.5,
+            11.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            4,
+            9.500001,
+            5.5,
+            10
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "grip_rear_3",
+      "from": [
+        7.5,
+        4.5,
+        11.5
+      ],
+      "to": [
+        8.5,
+        5,
+        13.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            1,
+            10,
+            1.5,
+            11
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            4.5,
+            10.25,
+            5.5,
+            10.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            4,
+            8.500001,
+            5,
+            8.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "grip_rear_4",
+      "from": [
+        7.5,
+        3,
+        9.5
+      ],
+      "to": [
+        8.5,
+        3.5,
+        11
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0.5,
+            11.25,
+            1,
+            12
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            1,
+            10.75,
+            2,
+            11.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            1.5,
+            10,
+            2,
+            10.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            1.5,
+            10,
+            2,
+            10.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            3.5,
+            11,
+            4.25,
+            11.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            5.25,
+            9.250001,
+            6,
+            9.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "grip_rear_5",
+      "from": [
+        7.5,
+        3.5,
+        9
+      ],
+      "to": [
+        8.5,
+        4.5,
+        10.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            9.75,
+            1,
+            10.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            0,
+            9.749999,
+            0.5,
+            10.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            1,
+            10,
+            1.5,
+            10.5
+          ],
+          "texture": "#overlay"
+        },
+        "west": {
+          "uv": [
+            3.25,
+            10.5,
+            4,
+            11
+          ],
+          "texture": "#overlay",
+          "tintindex": 1,
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            5.5,
+            8.750001,
+            6.25,
+            9.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1,
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "grip_rear_6",
+      "from": [
+        7.5,
+        2.5,
+        9.5
+      ],
+      "to": [
+        8.5,
+        3,
+        10
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            2,
+            10.25,
+            2.5,
+            10.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            7.5,
+            9.5,
+            8.5,
+            10
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            1,
+            9.999999,
+            1.5,
+            10.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            7.5,
+            13,
+            8.5,
+            13.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            6.25,
+            11.25,
+            6.5,
+            11.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            3,
+            9.499999,
+            3.25,
+            9.749998
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "grip_rear_7",
+      "from": [
+        7.5,
+        2,
+        13.5
+      ],
+      "to": [
+        8.5,
+        2.5,
+        15
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            1,
+            11.25,
+            2,
+            12
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            8,
+            13.5,
+            9,
+            15
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            7,
+            13.5,
+            8,
+            14
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            3.75,
+            11.5,
+            4.25,
+            11.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            5.5,
+            11.5,
+            6.25,
+            11.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            3.25,
+            9.750001,
+            4,
+            10
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "trigger_1",
+      "from": [
+        7.5,
+        4,
+        12
+      ],
+      "to": [
+        8.5,
+        4.5,
+        13.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            9.749999,
+            0.5,
+            10.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            1,
+            10,
+            1.5,
+            10.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            4.75,
+            10.5,
+            5.5,
+            10.75
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            4,
+            8.750001,
+            4.75,
+            9.000002
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "trigger_2",
+      "from": [
+        7.5,
+        3.5,
+        12.5
+      ],
+      "to": [
+        8.5,
+        4,
+        13.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            9.750001,
+            0.5,
+            10.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            2,
+            10.25,
+            2.5,
+            10.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            5,
+            10.75,
+            5.5,
+            11
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            4,
+            8.999999,
+            4.5,
+            9.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "trigger_3",
+      "from": [
+        7.5,
+        3,
+        13
+      ],
+      "to": [
+        8.5,
+        3.5,
+        13.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            10.25,
+            0.5,
+            10.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            4,
+            9.250001,
+            4.25,
+            9.500002
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            5.25,
+            11,
+            5.5,
+            11.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "sight_1",
+      "from": [
+        7.5,
+        8,
+        12
+      ],
+      "to": [
+        8.5,
+        9,
+        13.5
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            9.75,
+            0.5,
+            10.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            2,
+            10,
+            2.5,
+            10.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            0,
+            10.75,
+            0.5,
+            11.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            1,
+            11,
+            1.75,
+            11.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            1.75,
+            11,
+            2.5,
+            11.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "__comment": "sight_2",
+      "from": [
+        7.5,
+        9,
+        12
+      ],
+      "to": [
+        8.5,
+        9.5,
+        13
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            1.5,
+            11,
+            2,
+            11.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            2,
+            9.75,
+            2.5,
+            10
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            1.5,
+            10,
+            2,
+            10.25
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            1.5,
+            11.25,
+            2,
+            11.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            1.5,
+            11.25,
+            2,
+            11.5
+          ],
+          "texture": "#overlay",
+          "tintindex": 1
+        }
+      }
+    }
   ]
 }

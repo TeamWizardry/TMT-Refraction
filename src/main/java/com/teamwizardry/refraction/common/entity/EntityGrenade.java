@@ -89,12 +89,12 @@ public class EntityGrenade extends EntityThrowable {
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        //color = new Color(compound.getInteger("color"), true);
+        applyColor(new Color(compound.getInteger("color")));
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        //compound.setInteger("color", color.getRGB());
+        compound.setInteger("color", getDataManager().get(DATA_COLOR));
     }
 }

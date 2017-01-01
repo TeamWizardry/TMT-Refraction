@@ -1,10 +1,8 @@
 package com.teamwizardry.refraction.init;
 
 import com.teamwizardry.refraction.common.item.*;
-import com.teamwizardry.refraction.common.item.armor.ItemReflectiveAlloyBoots;
-import com.teamwizardry.refraction.common.item.armor.ItemReflectiveAlloyChestPlate;
-import com.teamwizardry.refraction.common.item.armor.ItemReflectiveAlloyHelmet;
-import com.teamwizardry.refraction.common.item.armor.ItemReflectiveAlloyLeggings;
+import com.teamwizardry.refraction.common.item.armor.ItemArmorReflectiveAlloy;
+import net.minecraft.inventory.EntityEquipmentSlot;
 
 /**
  * Created by LordSaad44
@@ -17,10 +15,10 @@ public class ModItems {
 	public static ItemBook BOOK;
 	public static ItemGrenade GRENADE;
 	public static ItemPhotonCannon PHOTON_CANNON;
-	public static ItemReflectiveAlloyHelmet HELMET;
-	public static ItemReflectiveAlloyChestPlate CHESTPLATE;
-	public static ItemReflectiveAlloyLeggings LEGGINGS;
-	public static ItemReflectiveAlloyBoots BOOTS;
+	public static ItemArmorReflectiveAlloy HELMET;
+	public static ItemArmorReflectiveAlloy CHESTPLATE;
+	public static ItemArmorReflectiveAlloy LEGGINGS;
+	public static ItemArmorReflectiveAlloy BOOTS;
 	public static ItemLightCartridge LIGHT_CARTRIDGE;
 
 	public static void init() {
@@ -30,10 +28,10 @@ public class ModItems {
 		BOOK = new ItemBook();
 		GRENADE = new ItemGrenade();
 		PHOTON_CANNON = new ItemPhotonCannon();
-		HELMET = new ItemReflectiveAlloyHelmet();
-		CHESTPLATE = new ItemReflectiveAlloyChestPlate();
-		LEGGINGS = new ItemReflectiveAlloyLeggings();
-		BOOTS = new ItemReflectiveAlloyBoots();
+		HELMET = new ItemArmorReflectiveAlloy("ref_alloy_helmet", EntityEquipmentSlot.HEAD);
+		CHESTPLATE = new ItemArmorReflectiveAlloy("ref_alloy_chestplate", EntityEquipmentSlot.CHEST);
+		LEGGINGS = new ItemArmorReflectiveAlloy("ref_alloy_leggings", EntityEquipmentSlot.LEGS);
+		BOOTS = new ItemArmorReflectiveAlloy("ref_alloy_boots", EntityEquipmentSlot.FEET);
 		LIGHT_CARTRIDGE = new ItemLightCartridge();
 	}
 }

@@ -56,7 +56,7 @@ public class ModBlocks {
 		//SOLAR_PANEL = new BlockSolarPanel();
 		INVISIBLE = new BlockInvisible();
 		INVISIBLE_REDSTONE = new BlockInvisibleRedstone();
-        //BUILDER = new BlockBuilder();
+        BUILDER = new BlockBuilder();
     }
 
 	public static void initModels() {

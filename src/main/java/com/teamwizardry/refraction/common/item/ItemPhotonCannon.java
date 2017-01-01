@@ -1,11 +1,14 @@
 package com.teamwizardry.refraction.common.item;
 
+import com.teamwizardry.librarianlib.client.util.ColorUtils;
+import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import kotlin.jvm.functions.Function2;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +25,7 @@ import java.awt.*;
 /**
  * Created by LordSaad.
  */
-public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer {
+public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemColorProvider {
 
     public ItemPhotonCannon() {
         super("photon_cannon");
@@ -87,5 +90,21 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer {
                 .setRange(30)
                 .enableParticleEnd();
         beam.spawn();
+    }
+
+    @Nullable
+    @Override
+    public Function2<ItemStack, Integer, Integer> getItemColorFunction() {
+        return (stack, tintIndex) -> (tintIndex == 1 ? getColor(stack).getRGB() : 0xFFFFFF);
+    }
+
+    private Color getColor(ItemStack stack) {
+        Color c = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF));
+        float[] comps = c.getRGBComponents(null);
+        c = new Color(
+                (float) Math.max(comps[0] - 0.12, 0),
+                (float) Math.max(comps[1] - 0.12, 0),
+                (float) Math.max(comps[2] - 0.12, 0));
+        return ColorUtils.pulseColor(c);
     }
 }

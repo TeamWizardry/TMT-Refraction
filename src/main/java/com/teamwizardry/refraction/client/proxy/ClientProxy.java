@@ -10,6 +10,8 @@ import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
@@ -17,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -26,49 +29,58 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  */
 public class ClientProxy extends CommonProxy implements IResourceManagerReloadListener {
 
-	@Override
-	public void preInit(FMLPreInitializationEvent event) {
-		super.preInit(event);
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
 
-		OBJLoader.INSTANCE.addDomain(Constants.MOD_ID);
-		LaserRenderer.INSTANCE.getClass();
-		ScrewdriverOverlay.INSTANCE.getClass();
-		GunOverlay.INSTANCE.getClass();
-		EventHandlerClient.INSTANCE.getClass(); // ditto
-		ModBlocks.initModels();
+        OBJLoader.INSTANCE.addDomain(Constants.MOD_ID);
+        LaserRenderer.INSTANCE.getClass();
+        ScrewdriverOverlay.INSTANCE.getClass();
+        GunOverlay.INSTANCE.getClass();
+        EventHandlerClient.INSTANCE.getClass(); // ditto
+        ModBlocks.initModels();
 
-		RenderingRegistry.registerEntityRenderingHandler(EntityLaserPointer.class, RenderLaserPoint::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, manager -> new RenderGrenade(manager, ModItems.GRENADE, Minecraft.getMinecraft().getRenderItem()));
-	}
+        RenderingRegistry.registerEntityRenderingHandler(EntityLaserPointer.class, RenderLaserPoint::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, manager -> new RenderGrenade(manager, ModItems.GRENADE, Minecraft.getMinecraft().getRenderItem()));
+    }
 
-	@Override
-	public void postInit(FMLPostInitializationEvent event) {
-		super.postInit(event);
-		if (Minecraft.getMinecraft().getResourceManager() instanceof IReloadableResourceManager)
-			((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
+    @Override
+    public void init(FMLInitializationEvent event) {
+        RenderItem render = Minecraft.getMinecraft().getRenderItem();
+        render.getItemModelMesher().register(ModItems.HELMET, 0, new ModelResourceLocation(Constants.MOD_ID + ":" + ModItems.HELMET.getUnlocalizedName().substring(5), "inventory"));
+        render.getItemModelMesher().register(ModItems.CHESTPLATE, 0, new ModelResourceLocation(Constants.MOD_ID + ":" + ModItems.CHESTPLATE.getUnlocalizedName().substring(5), "inventory"));
+        render.getItemModelMesher().register(ModItems.LEGGINGS, 0, new ModelResourceLocation(Constants.MOD_ID + ":" + ModItems.LEGGINGS.getUnlocalizedName().substring(5), "inventory"));
+        render.getItemModelMesher().register(ModItems.BOOTS, 0, new ModelResourceLocation(Constants.MOD_ID + ":" + ModItems.BOOTS.getUnlocalizedName().substring(5), "inventory"));
+    }
 
-	}
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        super.postInit(event);
+        if (Minecraft.getMinecraft().getResourceManager() instanceof IReloadableResourceManager)
+            ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
 
-	@Override
-	public void runIfClient(ClientRunnable runnable) {
-		runnable.run();
-	}
+    }
 
-	@Override
-	public World getWorld() {
-		return Minecraft.getMinecraft().world;
-	}
+    @Override
+    public void runIfClient(ClientRunnable runnable) {
+        runnable.run();
+    }
 
-	@Override
-	public void onResourceManagerReload(IResourceManager resourceManager) {
-		MinecraftForge.EVENT_BUS.post(new ResourceReloadEvent(resourceManager));
-	}
+    @Override
+    public World getWorld() {
+        return Minecraft.getMinecraft().world;
+    }
 
-	public static class ResourceReloadEvent extends Event {
-		public final IResourceManager resourceManager;
+    @Override
+    public void onResourceManagerReload(IResourceManager resourceManager) {
+        MinecraftForge.EVENT_BUS.post(new ResourceReloadEvent(resourceManager));
+    }
 
-		public ResourceReloadEvent(IResourceManager manager) {
-			resourceManager = manager;
-		}
-	}
+    public static class ResourceReloadEvent extends Event {
+        public final IResourceManager resourceManager;
+
+        public ResourceReloadEvent(IResourceManager manager) {
+            resourceManager = manager;
+        }
+    }
 }
