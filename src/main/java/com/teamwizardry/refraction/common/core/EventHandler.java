@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.core;
 
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
@@ -11,6 +12,7 @@ import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.common.block.BlockLens;
 import com.teamwizardry.refraction.common.block.BlockPrism;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
+import com.teamwizardry.refraction.common.network.PacketLaserDisplayTick;
 import com.teamwizardry.refraction.init.ModAchievements;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockStainedGlass;
@@ -27,6 +29,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -205,5 +208,12 @@ public class EventHandler {
     public void breakBlock(BlockEvent.BreakEvent event) {
         if (event.getWorld().getBlockState(event.getPos()).getBlock() == ModBlocks.LIGHT_BRIDGE)
             event.setCanceled(true);
+    }
+    
+    @SubscribeEvent
+    public void tick(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            PacketHandler.NETWORK.sendToAll(new PacketLaserDisplayTick());
+        }
     }
 }

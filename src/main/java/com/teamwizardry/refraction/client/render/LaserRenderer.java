@@ -70,14 +70,18 @@ public class LaserRenderer {
 	@SubscribeEvent
 	public void tick(TickEvent.ClientTickEvent event) {
 		if (event.phase == TickEvent.Phase.START) {
-			lasers.entrySet().removeIf((e) -> {
-				if (e.getValue() <= 0) return true;
-				else {
-					e.setValue(e.getValue() - 1);
-					return false;
-				}
-			});
+//			update();
 		}
+	}
+	
+	public void update() {
+		lasers.entrySet().removeIf((e) -> {
+			if (e.getValue() <= 0) return true;
+			else {
+				e.setValue(e.getValue() - 1);
+				return false;
+			}
+		});
 	}
 
 	public static class LaserRenderInfo {

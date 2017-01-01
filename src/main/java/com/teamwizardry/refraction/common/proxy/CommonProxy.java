@@ -62,6 +62,7 @@ public class CommonProxy {
 		PacketHandler.register(PacketBeamParticle1.class, Side.CLIENT);
 		PacketHandler.register(PacketBeamParticle2.class, Side.CLIENT);
 		PacketHandler.register(PacketAmmoColorChange.class, Side.SERVER);
+		PacketHandler.register(PacketLaserDisplayTick.class, Side.CLIENT);
 	}
 
 	public void init(FMLInitializationEvent event) {
