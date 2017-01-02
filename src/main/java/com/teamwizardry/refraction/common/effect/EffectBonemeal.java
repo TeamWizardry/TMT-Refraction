@@ -19,12 +19,12 @@ public class EffectBonemeal extends Effect {
 
 	@Override
 	public int getChance(int potency) {
-		return potency == 0 ? 0 : 1275 / potency;
-	}
+        return potency == 0 ? 0 : 2550 / potency;
+    }
 
 	@Override
-	public void runBlock(World world, BlockPos pos, int potency) {
-		if (world.getBlockState(pos).getBlock() instanceof IGrowable)
+    public void runFinalBlock(World world, BlockPos pos, int potency) {
+        if (world.getBlockState(pos).getBlock() instanceof IGrowable)
 			ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos);
 	}
 
