@@ -3,13 +3,18 @@ package com.teamwizardry.refraction.api;
 import com.google.common.collect.Lists;
 import com.teamwizardry.refraction.api.internal.DummyInternalHandler;
 import com.teamwizardry.refraction.api.internal.IInternalHandler;
+import net.minecraft.block.Block;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -156,5 +161,22 @@ public final class Utils {
 		double weightG = 4;
 		double weightB = 2 + (255 - meanRed) / 256;
 		return weightR * r * r + weightG * g * g + weightB * b * b;
+	}
+
+	@Nullable
+	public static ItemStack getStackFromString(String itemId) {
+		ResourceLocation location = new ResourceLocation(itemId);
+		ItemStack stack = null;
+
+		if (ForgeRegistries.ITEMS.containsKey(location)) {
+			Item item = ForgeRegistries.ITEMS.getValue(location);
+			if (item != null) stack = new ItemStack(item);
+
+		} else if (ForgeRegistries.BLOCKS.containsKey(location)) {
+			Block block = ForgeRegistries.BLOCKS.getValue(location);
+			if (block != null) stack = new ItemStack(block);
+
+		}
+		return stack;
 	}
 }

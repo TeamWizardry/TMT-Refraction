@@ -1,9 +1,7 @@
 package com.teamwizardry.refraction.api.internal;
 
 import com.teamwizardry.refraction.api.beam.Beam;
-import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * @author WireSegal
@@ -13,9 +11,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface IInternalHandler {
 	void fireLaserPacket(@NotNull Beam beam);
-
-	@Nullable
-	ItemStack getStackFromString(@NotNull String string);
 
 	void runIfClient(@NotNull ClientRunnable runnable);
 }

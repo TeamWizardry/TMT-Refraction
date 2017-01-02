@@ -72,7 +72,7 @@ public class EffectPlace extends Effect {
 			fakePlayer = FakePlayerFactory.get((WorldServer) world, new GameProfile(UUID.randomUUID(), "Refraction Place Effect"));
 		fakePlayer.setSneaking(true);
 
-		fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, chosenStack, EnumHand.MAIN_HAND, beam.trace.getBlockPos().offset(beam.trace.sideHit), beam.trace.sideHit, 0, 0, 0);
+        fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, chosenStack, EnumHand.MAIN_HAND, beam.trace.getBlockPos().offset(beam.trace.sideHit), beam.trace.sideHit, 0, 0, 0);
 	}
 
 	@Override

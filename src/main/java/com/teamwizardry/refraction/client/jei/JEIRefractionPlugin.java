@@ -9,11 +9,7 @@ import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -26,22 +22,6 @@ import java.util.List;
 public class JEIRefractionPlugin extends BlankModPlugin {
 
 	public static IJeiRuntime jeiRuntime;
-
-	public static ItemStack getStackFromString(String itemId) {
-		ResourceLocation location = new ResourceLocation(itemId);
-		ItemStack stack = null;
-
-		if (ForgeRegistries.ITEMS.containsKey(location)) {
-			Item item = ForgeRegistries.ITEMS.getValue(location);
-			if (item != null) stack = new ItemStack(item);
-
-		} else if (ForgeRegistries.BLOCKS.containsKey(location)) {
-			Block block = ForgeRegistries.BLOCKS.getValue(location);
-			if (block != null) stack = new ItemStack(block);
-
-		}
-		return stack;
-	}
 
 	public static IRecipeLayoutDrawable getDrawableFromItem(ItemStack stack) {
 		if (stack != null) {
