@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.client.render.armor;
+package com.teamwizardry.refraction.client.render;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
