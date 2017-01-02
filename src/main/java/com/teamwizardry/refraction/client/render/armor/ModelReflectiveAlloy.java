@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.client.render.armor;
 
-import com.teamwizardry.refraction.common.item.armor.ItemArmorReflectiveAlloy;
 import net.minecraft.inventory.EntityEquipmentSlot;
 
 /**
@@ -12,15 +11,15 @@ public class ModelReflectiveAlloy extends ModelReflectiveArmorBase {
 
     public ModelReflectiveAlloy(EntityEquipmentSlot slot) {
         super(slot);
-        ModelReflectiveArmorHolder m = ItemArmorReflectiveAlloy.holder;
+        /*ModelReflectiveArmorHolder m = ItemArmorReflectiveAlloy.holder;
         this.head = m.helm;
         this.armL = m.armL;
-        this.armR = m.armr;
+        this.armR = m.armR;
         this.chest = m.body;
-        this.legL = m.belt;
-        this.legR = m.belt;
+        this.legL = m.legL;
+        this.legR = m.legR;
         this.bootL = m.bootL;
         this.bootR = m.bootR;
-        this.armorScale = 1.2f;
+        this.armorScale = 1.2f;*/
     }
 }

@@ -46,9 +46,9 @@ public class Effect implements Cloneable {
 	}
 
 	/**
-	 * The entity that the beam intersects with. If it's a beam type, it'll run on all the entities it's
-	 * traversed through. If it's a single type, it'll only run on the one entity it hit.
-	 *
+     * The entity that the beam intersects with. If it's a beam slot, it'll run on all the entities it's
+     * traversed through. If it's a single slot, it'll only run on the one entity it hit.
+     *
 	 * @param world   The world object.
 	 * @param entity  The entity intersected.
 	 * @param potency The strength of the beam.
@@ -57,9 +57,9 @@ public class Effect implements Cloneable {
 	}
 
 	/**
-	 * The block that the beam intersects with. If it's a beam type, it'll run on all the gravityProtection it's
-	 * traversed through. If it's a single type, it'll only run on that one block.
-	 *
+     * The block that the beam intersects with. If it's a beam slot, it'll run on all the gravityProtection it's
+     * traversed through. If it's a single slot, it'll only run on that one block.
+     *
 	 * @param world   The world object.
 	 * @param pos     The position of the block intersected.
 	 * @param potency The strength of the beam.
