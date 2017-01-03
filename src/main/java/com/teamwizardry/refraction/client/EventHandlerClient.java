@@ -46,6 +46,11 @@ public class EventHandlerClient {
             if (stack != null && stack.getItem() instanceof IAmmoConsumer) {
 
                 List<ItemStack> ammoList = IAmmoConsumer.findAllAmmo(Minecraft.getMinecraft().player);
+                if (ammoList.size() <= 0)
+                {
+                	event.setCanceled(true);
+                	return;
+                }
                 Set<Color> colorSet = ammoList.stream().map(ammo -> new Color(ItemNBTHelper.getInt(ammo, "color", 0xFFFFF), true)).collect(Collectors.toSet());
                 List<Color> colors = new ArrayList<>(colorSet);
 
