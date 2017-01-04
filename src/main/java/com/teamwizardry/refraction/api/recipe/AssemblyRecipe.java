@@ -63,7 +63,7 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 	}
 
 	public AssemblyRecipe(ItemStack result, Color one, Color two, Object... items) {
-		this(result, one.getRed(), one.getBlue(), one.getGreen(), one.getAlpha(), two.getRed(), two.getGreen(), two.getBlue(), two.getAlpha(), items);
+		this(result, one.getRed(), one.getGreen(), one.getBlue(), one.getAlpha(), two.getRed(), two.getGreen(), two.getBlue(), two.getAlpha(), items);
 	}
 
 	public ArrayList<ItemStack> getRecipe() {

@@ -15,7 +15,6 @@ public class CraftingRecipes {
 		GameRegistry.addRecipe(new RecipeScrewDriver());
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.LENS, 3), "AAA", 'A', "blockGlass"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.LASER), "AAA", "BCB", "ADA", 'A', Items.IRON_INGOT, 'B', ModBlocks.REFLECTIVE_ALLOY_BLOCK, 'D', Items.REDSTONE));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.REFLECTIVE_ALLOY, 2), Items.IRON_INGOT, Items.GOLD_INGOT));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.ASSEMBLY_TABLE), "ABA", "A A", "AAA", 'A', "ingotIron", 'B', ModBlocks.LENS));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.MAGNIFIER), "ABA", "A A", "A A", 'A', "ingotIron", 'B', ModBlocks.LENS));

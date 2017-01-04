@@ -11,22 +11,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
  * Created by Saad on 10/12/2016.
  */
+@SuppressWarnings("rawtypes")
 public class AssemblyTableRecipeCategory implements IRecipeCategory {
 
 	public static final String UID = Constants.MOD_ID + ".assembly_table";
 	private final IDrawable background;
 	private final String localizedName;
-	private float hover = (float) (Math.random() * Math.PI * 2.0D);
-	private float transitionTimeX = 0, transitionTimeMaxX = 100;
-	private int tick = 0;
-	private boolean forwards = true;
+//	private float hover = (float) (Math.random() * Math.PI * 2.0D);
+//	private float transitionTimeX = 0, transitionTimeMaxX = 100;
+//	private int tick = 0;
+//	private boolean forwards = true;
 
 	public AssemblyTableRecipeCategory(IGuiHelper guiHelper) {
 		background = guiHelper.createBlankDrawable(180, 180);
@@ -65,7 +65,6 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 	public void drawAnimations(@Nonnull Minecraft minecraft) {
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
 		if (!(recipeWrapper instanceof AssemblyTableRecipeWrapper)) return;
