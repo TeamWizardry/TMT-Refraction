@@ -8,6 +8,7 @@ import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.BeamHitEvent;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.common.block.BlockLens;
 import com.teamwizardry.refraction.common.block.BlockPrism;
@@ -114,7 +115,7 @@ public class EventHandler {
                 }
             }
 
-            beam.createSimilarBeam(hitPos, ref, color).enableParticleBeginning().spawn();
+            beam.createSimilarBeam(hitPos, ref, color).setMode(BeamModeRegistry.NONE).enableParticleBeginning().spawn();
         }
     }
 
