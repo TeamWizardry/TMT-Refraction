@@ -35,7 +35,7 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper
 	private static final int CENTER_X = 91;
 	private static final int CENTER_Y = 91;
 	
-	private ArrayList<ItemStack> inputs = new ArrayList<>();
+	private ArrayList<Object> inputs = new ArrayList<>();
 	private ArrayList<ItemStack> outputs = new ArrayList<>();
 	private List<FluidStack> fluidInputs = ImmutableList.of();
 	private List<FluidStack> fluidOutputs = ImmutableList.of();

@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class ColorConsumingBehavior implements IAssemblyBehavior {
 
-	private final ArrayList<ItemStack> recipe;
+	private final ArrayList<Object> recipe;
 
 	private final ItemStack result;
 
@@ -45,12 +45,12 @@ public class ColorConsumingBehavior implements IAssemblyBehavior {
 					LibrarianLog.INSTANCE.warn("Invalid OreDict entry " + obj + " in recipe for " + result.getDisplayName());
 					continue;
 				}
-				this.recipe.add(OreDictionary.getOres((String) obj).get(0));
+				this.recipe.add(OreDictionary.getOres((String) obj));
 			}
 		}
 	}
 
-	public ArrayList<ItemStack> getRecipe() {
+	public ArrayList<Object> getRecipe() {
 		return recipe;
 	}
 
@@ -61,7 +61,7 @@ public class ColorConsumingBehavior implements IAssemblyBehavior {
 	@Override
 	public boolean canAccept(Color color, IItemHandler items) {
 		return recipe.size() == CapsUtils.getOccupiedSlotCount(items) &&
-				Utils.matchItemStackLists(CapsUtils.getListOfItems(items), Utils.getListOfObjects(recipe));
+				Utils.matchItemStackLists(CapsUtils.getListOfItems(items), recipe);
 	}
 
 	@Override

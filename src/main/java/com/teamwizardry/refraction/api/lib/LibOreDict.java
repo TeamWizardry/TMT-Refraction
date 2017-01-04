@@ -10,6 +10,7 @@ public final class LibOreDict {
 	}
 
 	public static final String REFLECTIVE_ALLOY = "ingotReflectiveAlloy";
+	public static final String REFLECTIVE_ALLOY_BLOCK = "blockReflectiveAlloy";
 	public static final String LENS = "lensGlass";
 	public static final String OPTIC_FIBER = "opticFiber";
 	public static final String TRANSLOCATOR = "laserTranslocator";

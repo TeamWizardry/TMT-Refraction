@@ -1,6 +1,8 @@
 package com.teamwizardry.refraction.client.jei;
 
-import com.teamwizardry.refraction.api.Constants;
+import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -11,8 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.teamwizardry.refraction.api.Constants;
 
 /**
  * Created by Saad on 10/12/2016.
@@ -65,6 +66,7 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 	public void drawAnimations(@Nonnull Minecraft minecraft) {
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
 		if (!(recipeWrapper instanceof AssemblyTableRecipeWrapper)) return;
@@ -78,7 +80,13 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 			int newX = (int) (82 + 50 * Math.cos(angle));
 			int newY = (int) (82 + 50 * Math.sin(angle));
 			recipeLayout.getItemStacks().init(index, true, newX, newY);
-			recipeLayout.getItemStacks().set(index, (ItemStack) wrapper.getInputs().get(i));
+			Object obj = wrapper.getInputs().get(i);
+			if (obj == null)
+				continue;
+			if (obj instanceof ItemStack)
+				recipeLayout.getItemStacks().set(index, (ItemStack) obj);
+			if (obj instanceof List)
+				recipeLayout.getItemStacks().set(index, (List<ItemStack>) obj);
 			index++;
 		}
 
@@ -86,6 +94,7 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 		recipeLayout.getItemStacks().set(index, (ItemStack) wrapper.getOutputs().get(0));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setRecipe(@NotNull IRecipeLayout recipeLayout, @NotNull IRecipeWrapper recipeWrapper, @NotNull IIngredients ingredients) {
 		if (!(recipeWrapper instanceof AssemblyTableRecipeWrapper)) return;
@@ -99,7 +108,13 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 			int newX = (int) (82 + 50 * Math.cos(angle));
 			int newY = (int) (82 + 50 * Math.sin(angle));
 			recipeLayout.getItemStacks().init(index, true, newX, newY);
-			recipeLayout.getItemStacks().set(index, (ItemStack) wrapper.getInputs().get(i));
+			Object obj = wrapper.getInputs().get(i);
+			if (obj == null)
+				continue;
+			if (obj instanceof ItemStack)
+				recipeLayout.getItemStacks().set(index, (ItemStack) obj);
+			if (obj instanceof List)
+				recipeLayout.getItemStacks().set(index, (List<ItemStack>) obj);
 			index++;
 		}
 

@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.api;
 
-import com.google.common.collect.Lists;
-import com.teamwizardry.refraction.api.internal.DummyInternalHandler;
-import com.teamwizardry.refraction.api.internal.IInternalHandler;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -15,10 +15,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.Nullable;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import com.teamwizardry.refraction.api.internal.DummyInternalHandler;
+import com.teamwizardry.refraction.api.internal.IInternalHandler;
 
 /**
  * Created by Saad on 10/9/2016.
@@ -100,11 +98,25 @@ public final class Utils {
 	public static boolean matchItemStackLists(List<ItemStack> items, List<Object> required) {
 		List<Object> inputsMissing = new ArrayList<>(required);
 		for (ItemStack i : items) {
+			loop:
 			for (int j = 0; j < inputsMissing.size(); j++) {
 				Object inp = inputsMissing.get(j);
 				if (inp == null) continue;
-				if (inp instanceof ItemStack && ((ItemStack) inp).getItemDamage() == 32767)
+				if (inp instanceof ItemStack && ((ItemStack) inp).getItemDamage() == OreDictionary.WILDCARD_VALUE)
 					((ItemStack) inp).setItemDamage(i.getItemDamage());
+				if (inp instanceof List)
+				{
+					for (Object obj : (List<?>) inp)
+					{
+						if (obj instanceof ItemStack && ((ItemStack) obj).getItemDamage() == OreDictionary.WILDCARD_VALUE)
+							((ItemStack) obj).setItemDamage(i.getItemDamage());
+						if (itemEquals(i, obj))
+						{
+							inputsMissing.remove(j);
+							break loop;
+						}
+					}
+				}
 				if (itemEquals(i, inp)) {
 					inputsMissing.remove(j);
 					break;
@@ -143,12 +155,6 @@ public final class Utils {
 
 	public static boolean simpleAreStacksEqual(ItemStack stack, ItemStack stack2) {
 		return stack.getItem() == stack2.getItem() && stack.getItemDamage() == stack2.getItemDamage();
-	}
-
-	public static List<Object> getListOfObjects(List<ItemStack> stacks) {
-		List<Object> list = Lists.newArrayList();
-		list.addAll(stacks);
-		return list;
 	}
 
 	public static double getColorDistance(Color one, Color two) {

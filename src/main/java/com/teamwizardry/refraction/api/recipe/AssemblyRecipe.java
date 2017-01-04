@@ -16,10 +16,12 @@ import java.util.List;
 
 /**
  * Created by LordSaad44
+ * <p>
+ * All items stored as an {@code ItemStack} or {@code ArrayList<ItemStack>}
  */
 public class AssemblyRecipe implements IAssemblyBehavior {
 
-	private final ArrayList<ItemStack> recipe;
+	private final ArrayList<Object> recipe;
 	private final int minRed, minGreen, minBlue, minStrength;
 	private final int maxRed, maxGreen, maxBlue, maxStrength;
 	private final Color minColor, maxColor;
@@ -57,7 +59,7 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 					LibrarianLog.INSTANCE.warn("Invalid OreDict entry " + obj + " in recipe for " + result.getDisplayName());
 					continue;
 				}
-				this.recipe.add(OreDictionary.getOres((String) obj).get(0));
+				this.recipe.add(OreDictionary.getOres((String) obj));
 			}
 		}
 	}
@@ -66,7 +68,7 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 		this(result, one.getRed(), one.getGreen(), one.getBlue(), one.getAlpha(), two.getRed(), two.getGreen(), two.getBlue(), two.getAlpha(), items);
 	}
 
-	public ArrayList<ItemStack> getRecipe() {
+	public ArrayList<Object> getRecipe() {
 		return recipe;
 	}
 
@@ -93,7 +95,7 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 				color.getBlue() >= minBlue &&
 				color.getAlpha() <= maxStrength &&
 				color.getAlpha() >= minStrength &&
-				Utils.matchItemStackLists(CapsUtils.getListOfItems(items), Utils.getListOfObjects(recipe));
+				Utils.matchItemStackLists(CapsUtils.getListOfItems(items), recipe);
 	}
 
 	@Override

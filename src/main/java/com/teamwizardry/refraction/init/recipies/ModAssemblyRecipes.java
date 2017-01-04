@@ -16,82 +16,45 @@ import static com.teamwizardry.refraction.api.recipe.AssemblyBehaviors.register;
 public class ModAssemblyRecipes {
 
 	public static void init() {
-		register("disco", new ItemStack(ModBlocks.DISCO_BALL),
-				new Color(0xA6FF00BE, true), new Color(0xCCDC00FF, true),
-				"gemDiamond", "gemDiamond", "gemDiamond", "gemDiamond",
-				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
 
+		// T0
 		register("mirror", new ItemStack(ModBlocks.MIRROR),
-				new Color(0x01FFFFFF, true), new Color(0xB3FFFFFF, true),
+				new Color(255, 255, 255, 1), new Color(255, 255, 255, 64),
 				Blocks.GLASS_PANE, Blocks.GLASS_PANE, Blocks.GLASS_PANE,
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
 
+		// T1
 		register("prism", new ItemStack(ModBlocks.PRISM),
-				new Color(0x1AFFFFFF, true), new Color(0xB3FFFFFF, true),
+				new Color(255, 255, 255, 17), new Color(255, 255, 255, 64),
 				LENS, LENS, LENS, LENS, LENS, LENS);
 
-		register("splitter", new ItemStack(ModBlocks.SPLITTER),
-				new Color(0x4D00FF00, true), new Color(0x8800FF00, true),
-				LENS, LENS, LENS,
-				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
-
-		register("laser", new ItemStack(ModBlocks.LASER),
-				new Color(0xB3FF3200, true), new Color(0xD9FF0032, true),
-				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,
-				"blockIron",
-				"dustRedstone", "dustRedstone", "dustRedstone",
-				"dustGlowstone",
-				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
-				LENS, LENS, LENS);
-
+		// T2
 		register("reflection_chamber", new ItemStack(ModBlocks.REF_CHAMBER),
-				new Color(0x59FF6400, true), new Color(0xB3FF0096, true),
+				new Color(255, 96, 0, 32), new Color(255, 160, 0, 64),
 				LENS, LENS, LENS, LENS, LENS, LENS,
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
 				"ingotIron", "ingotIron", "ingotIron");
-
-		register("electron_exciter", new ItemStack(ModBlocks.ELECTRON_EXCITER),
-				new Color(0xE600FFFF, true), new Color(0xFF00FF64, true),
-				LENS, LENS, LENS, LENS, LENS, LENS,
-				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
-				new ItemStack(ModBlocks.SPLITTER),
-				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER);
-
-		register("optic_fiber", new ItemStack(ModBlocks.OPTIC_FIBER, 4),
-				new Color(0xA60000FF, true), new Color(0xCCFF0080, true),
+		register("splitter", new ItemStack(ModBlocks.SPLITTER),
+				new Color(0, 255, 0, 16), new Color(0, 255, 0, 32),
 				LENS, LENS, LENS,
-				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
-				"gemDiamond", "gemDiamond");
-
+				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
 		register("spectrometer", new ItemStack(ModBlocks.SPECTROMETER),
-				new Color(0x59FFFFFF, true), new Color(0xB3FFFFFF, true),
+				new Color(255, 255, 255, 49), new Color(255, 255, 255, 96),
 				LENS, LENS, LENS, LENS, LENS, LENS,
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
 				"gemDiamond", "gemDiamond",
 				"dyeBlue", "dyeBlue",
 				"dyeLime", "dyeLime",
 				"dyeRed", "dyeRed");
-
 		register("sensor", new ItemStack(ModBlocks.SENSOR),
-				new Color(0x40FF3200, true), new Color(0xB3FF0032, true),
+				new Color(255, 96, 0, 32), new Color(255, 160, 0, 64),
 				LENS, LENS, LENS, LENS, LENS, LENS,
 				"dustRedstone", "dustRedstone", "dustRedstone",
 				"gemDiamond", "gemDiamond");
 
-		register("translocator", new ItemStack(ModBlocks.TRANSLOCATOR, 4),
-				new Color(0xA60000FF, true), new Color(0xCCFF0080, true),
-				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,
-				"enderpearl",
-				"ingotIron");
-
-		register("axyz", new ItemStack(ModBlocks.AXYZ),
-				new Color(0xC87000DF, true), new Color(0xFF9020FF, true),
-				TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR,
-				Blocks.CHORUS_FLOWER,
-				Blocks.PISTON, Blocks.PISTON);
-
+		// T3
 		register("electric_laser", new ItemStack(ModBlocks.ELECTRIC_LASER),
-				new Color(0xB30000FF, true), new Color(0xD900FFFF, true),
+				new Color(0, 96, 255, 54), new Color(0, 160, 255, 128),
 				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,
 				"blockIron",
 				"dustRedstone", "dustRedstone", "dustRedstone",
@@ -99,8 +62,46 @@ public class ModAssemblyRecipes {
 				OreDictionary.doesOreNameExist("ingotPlatinum") ? "ingotPlatinum" : "gemLapis",
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
 				LENS, LENS, LENS);
+		register("laser", new ItemStack(ModBlocks.LASER),
+				new Color(255, 64, 64, 81), new Color(255, 106, 106, 192),
+				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,
+				"blockIron",
+				"dustRedstone", "dustRedstone", "dustRedstone",
+				"dustGlowstone",
+				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
+				LENS, LENS, LENS);
+		register("disco", new ItemStack(ModBlocks.DISCO_BALL),
+				new Color(255, 0, 255, 54), new Color(255, 0, 255, 128),
+				"gemDiamond", "gemDiamond", "gemDiamond", "gemDiamond",
+				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
+		register("optic_fiber", new ItemStack(ModBlocks.OPTIC_FIBER, 4),
+				new Color(96, 0, 255, 54), new Color(160, 0, 255, 128),
+				LENS, LENS, LENS,
+				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
+				"gemDiamond", "gemDiamond");
+
+		// T4
+		register("translocator", new ItemStack(ModBlocks.TRANSLOCATOR, 4),
+				new Color(255, 0, 96, 128), new Color(255, 0, 160, 255),
+				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,
+				"enderpearl",
+				"ingotIron");
+		register("electron_exciter", new ItemStack(ModBlocks.ELECTRON_EXCITER),
+				new Color(0, 255, 96, 128), new Color(0, 255, 160, 255),
+				LENS, LENS, LENS, LENS, LENS, LENS,
+				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
+				new ItemStack(ModBlocks.SPLITTER),
+				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER);
 
 
+		// T5
+		register("axyz", new ItemStack(ModBlocks.AXYZ),
+				new Color(96, 1, 255, 225), new Color(160, 64, 255, 255),
+				TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR,
+				Blocks.CHORUS_FLOWER,
+				Blocks.PISTON, Blocks.PISTON);
+
+		// Other
 		register("ammo", new ColorConsumingBehavior(new ItemStack(ModItems.LIGHT_CARTRIDGE), new ItemStack(ModItems.LIGHT_CARTRIDGE)));
 		register("grenade", new ColorConsumingBehavior(new ItemStack(ModItems.GRENADE), new ItemStack(ModItems.GRENADE)));
 	}

@@ -53,6 +53,7 @@ public class ModBlocks {
 		OreDictionary.registerOre(LibOreDict.OPTIC_FIBER, OPTIC_FIBER);
 		CREATIVE_LASER = new BlockCreativeLaser();
 		REFLECTIVE_ALLOY_BLOCK = new BlockReflectiveAlloyBlock();
+		OreDictionary.registerOre(LibOreDict.REFLECTIVE_ALLOY_BLOCK, REFLECTIVE_ALLOY_BLOCK);
 		TRANSLOCATOR = new BlockTranslocator();
 		OreDictionary.registerOre(LibOreDict.TRANSLOCATOR, TRANSLOCATOR);
 		AXYZ = new BlockAXYZ();
