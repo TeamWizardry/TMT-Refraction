@@ -26,7 +26,7 @@ public class OptionFill extends LeftSidebar {
                          i < (first.getXi() < second.getXi() ? second.getXi() : first.getXi()) + 1; i++)
                         for (int j = first.getYi() < second.getYi() ? first.getYi() : second.getYi();
                              j < (first.getYi() < second.getYi() ? second.getYi() : first.getYi()) + 1; j++)
-                            builder.grid[i][j] = type;
+                            builder.grid[builder.selectedLayer][i][j] = type;
             }
         }));
     }

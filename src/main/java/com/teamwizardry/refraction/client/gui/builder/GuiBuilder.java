@@ -33,14 +33,17 @@ public class GuiBuilder extends GuiBase {
     private static final Sprite sprIconRegionSelection = texSpriteSheet.getSprite("icon_region_selection", 16, 16);
     private static final Sprite sprTabMode = texSpriteSheet.getSprite("tab_mode", 16, 16);
 
-    public TileType[][] grid = new TileType[16][16];
+    public TileType[][][] grid = new TileType[16][16][16];
+    public int selectedLayer = 0;
     public Mode selectedMode;
 
     public GuiBuilder() {
         super(sprBorder.getWidth() + LeftSidebar.sliderExtendedSprite.getWidth() * 2, sprBorder.getHeight());
 
         for (int i = 0; i < grid.length; i++)
-            for (int j = 0; j < grid.length; j++) grid[i][j] = TileType.EMPTY;
+            for (int j = 0; j < grid.length; j++)
+                for (int k = 0; k < grid.length; k++)
+                    grid[i][j][k] = TileType.EMPTY;
 
         ComponentList leftBar = new ComponentList(LeftSidebar.sliderExtendedSprite.getWidth(), 0);
 
@@ -80,28 +83,28 @@ public class GuiBuilder extends GuiBase {
             int y = pos.getYi() / 16;
             if (x < grid.length && y < grid.length)
                 if (selectedMode == Mode.DIRECT)
-                    if (grid[x][y] == TileType.EMPTY)
-                        grid[x][y] = TileType.PLACED;
-                    else grid[x][y] = TileType.EMPTY;
+                    if (grid[selectedLayer][x][y] == TileType.EMPTY)
+                        grid[selectedLayer][x][y] = TileType.PLACED;
+                    else grid[selectedLayer][x][y] = TileType.EMPTY;
                 else if (selectedMode == Mode.SELECT) {
-                    if (grid[x][y] == TileType.EMPTY)
+                    if (grid[selectedLayer][x][y] == TileType.EMPTY)
                         if (event.getButton() == EnumMouseButton.LEFT) {
                             Vec2d left = getTile(TileType.LEFT_SELECTED);
-                            if (left != null) grid[left.getXi()][left.getYi()] = TileType.EMPTY;
-                            grid[x][y] = TileType.LEFT_SELECTED;
+                            if (left != null) grid[selectedLayer][left.getXi()][left.getYi()] = TileType.EMPTY;
+                            grid[selectedLayer][x][y] = TileType.LEFT_SELECTED;
                         } else {
                             Vec2d left = getTile(TileType.RIGHT_SELECTED);
-                            if (left != null) grid[left.getXi()][left.getYi()] = TileType.EMPTY;
-                            grid[x][y] = TileType.RIGHT_SELECTED;
+                            if (left != null) grid[selectedLayer][left.getXi()][left.getYi()] = TileType.EMPTY;
+                            grid[selectedLayer][x][y] = TileType.RIGHT_SELECTED;
                         }
-                    else grid[x][y] = TileType.EMPTY;
+                    else grid[selectedLayer][x][y] = TileType.EMPTY;
                 }
         });
 
         compScreen.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
             for (int i = 0; i < grid.length; i++)
                 for (int j = 0; j < grid.length; j++) {
-                    TileType box = grid[i][j];
+                    TileType box = grid[selectedLayer][i][j];
 
                     GlStateManager.pushMatrix();
                     GlStateManager.enableAlpha();
@@ -140,7 +143,7 @@ public class GuiBuilder extends GuiBase {
     }
 
     public boolean hasTile(TileType type) {
-        for (TileType[] x : grid)
+        for (TileType[] x : grid[selectedLayer])
             for (TileType tileType : x)
                 if (tileType == type) return true;
         return false;
@@ -150,7 +153,7 @@ public class GuiBuilder extends GuiBase {
     public Vec2d getTile(TileType type) {
         for (int i = 0; i < grid.length; i++)
             for (int j = 0; j < grid.length; j++)
-                if (grid[i][j] == type) return new Vec2d(i, j);
+                if (grid[selectedLayer][i][j] == type) return new Vec2d(i, j);
         return null;
     }
 
