@@ -6,6 +6,7 @@ import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.common.block.BlockSpectrometer;
 import com.teamwizardry.refraction.common.tile.TileSpectrometer;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -25,6 +26,9 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 	private static Sprite BAR_SPRITE = texture.getSprite("bar", 1, 1);
 
 	public void renderTileEntityAt(TileSpectrometer te, double x, double y, double z, float partialTicks, int destroyStage) {
+		IBlockState state = te.getWorld().getBlockState(te.getPos());
+		if (state.getBlock() != ModBlocks.SPECTROMETER)
+			return;
 		EnumFacing value = te.getWorld().getBlockState(te.getPos()).getValue(BlockSpectrometer.FACING);
 
 		double r = (te.currentColor.getRed() / 255.0);
