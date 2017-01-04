@@ -1,6 +1,8 @@
 package com.teamwizardry.refraction.init;
 
+import com.teamwizardry.refraction.api.lib.LibOreDict;
 import com.teamwizardry.refraction.common.block.*;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by LordSaad44
@@ -35,6 +37,7 @@ public class ModBlocks {
 	public static void init() {
 		MIRROR = new BlockMirror();
 		LENS = new BlockLens();
+		OreDictionary.registerOre(LibOreDict.LENS, LENS);
 		MAGNIFIER = new BlockMagnifier();
 		DISCO_BALL = new BlockDiscoBall();
 		ASSEMBLY_TABLE = new BlockAssemblyTable();
@@ -47,9 +50,11 @@ public class ModBlocks {
 		SENSOR = new BlockSensor();
 		SPECTROMETER = new BlockSpectrometer();
 		OPTIC_FIBER = new BlockOpticFiber();
+		OreDictionary.registerOre(LibOreDict.OPTIC_FIBER, OPTIC_FIBER);
 		CREATIVE_LASER = new BlockCreativeLaser();
 		REFLECTIVE_ALLOY_BLOCK = new BlockReflectiveAlloyBlock();
 		TRANSLOCATOR = new BlockTranslocator();
+		OreDictionary.registerOre(LibOreDict.TRANSLOCATOR, TRANSLOCATOR);
 		AXYZ = new BlockAXYZ();
 		FILTER = new BlockFilter();
 		ELECTRIC_LASER = new BlockElectricLaser();

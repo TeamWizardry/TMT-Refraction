@@ -1,8 +1,10 @@
 package com.teamwizardry.refraction.init;
 
+import com.teamwizardry.refraction.api.lib.LibOreDict;
 import com.teamwizardry.refraction.common.item.*;
 import com.teamwizardry.refraction.common.item.armor.ItemArmorReflectiveAlloy;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by LordSaad44
@@ -25,6 +27,7 @@ public class ModItems {
 		LASER_PEN = new ItemLaserPen();
 		SCREW_DRIVER = new ItemScrewDriver();
 		REFLECTIVE_ALLOY = new ItemReflectiveAlloy();
+		OreDictionary.registerOre(LibOreDict.REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
 		BOOK = new ItemBook();
 		GRENADE = new ItemGrenade();
 		PHOTON_CANNON = new ItemPhotonCannon();
