@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.client.gui;
+package com.teamwizardry.refraction.client.gui.tablet;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.client.gui;
+package com.teamwizardry.refraction.client.gui.tablet;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -34,7 +34,7 @@ public class GuiBook extends GuiBase {
 	public ArrayList<Page> pages = new ArrayList<>();
 	int selectedPage = 0;
 
-	GuiBook() {
+	public GuiBook() {
 		super(232, 323);
 
 		ComponentVoid mainComponent = new ComponentVoid(width / 2, height / 2, 256, 256);

@@ -1,6 +1,7 @@
-package com.teamwizardry.refraction.client.gui;
+package com.teamwizardry.refraction.client.gui.builder;
 
 import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
+import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.client.gui.GuiBase;
 import com.teamwizardry.librarianlib.client.gui.GuiComponent;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentList;
@@ -10,8 +11,10 @@ import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.client.gui.builder.regionoptions.OptionFill;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by LordSaad.
@@ -34,19 +37,24 @@ public class GuiBuilder extends GuiBase {
     public Mode selectedMode;
 
     public GuiBuilder() {
-        super(0, 0);
+        super(sprBorder.getWidth() + LeftSidebar.sliderExtendedSprite.getWidth() * 2, sprBorder.getHeight());
 
         for (int i = 0; i < grid.length; i++)
-            for (int j = 0; j < grid.length; j++) {
-                grid[i][j] = TileType.NORMAL;
-            }
+            for (int j = 0; j < grid.length; j++) grid[i][j] = TileType.EMPTY;
 
-        ComponentList leftBar = new ComponentList(-LeftSidebar.sliderExtendedSprite.getWidth(), -sprBorder.getHeight() / 2);
+        ComponentList leftBar = new ComponentList(LeftSidebar.sliderExtendedSprite.getWidth(), 0);
 
-        LeftSidebar modeComp = new LeftSidebar(leftBar, "Selection Modes", sprTabMode, false);
+        LeftSidebar modeComp = new LeftSidebar(leftBar, "Selection Modes", sprTabMode, true, true);
         modeComp.listComp.setMarginLeft(5);
         modeComp.listComp.add(new ModeSelector(modeComp.listComp, this, Mode.DIRECT, "Set Tiles Directly", sprIconDirect, true).component);
-        modeComp.listComp.add(new ModeSelector(modeComp.listComp, this, Mode.SELECT, "Select Regions", sprIconRegionSelection, false).component);
+
+        ComponentList selectRegionOptions = new ComponentList(0, 0);
+        selectRegionOptions.add(new OptionFill(this, selectRegionOptions, "Fill", sprIconDirect, TileType.PLACED).component);
+        selectRegionOptions.add(new OptionFill(this, selectRegionOptions, "Clear", sprIconDirect, TileType.EMPTY).component);
+
+        ModeSelector selectRegionComp = new ModeSelector(modeComp.listComp, this, Mode.SELECT, "Select Regions", sprIconRegionSelection, false);
+        selectRegionComp.listComp.add(selectRegionOptions);
+        modeComp.listComp.add(selectRegionComp.component);
         leftBar.add(modeComp.component);
 
         getMainComponents().add(leftBar);
@@ -71,9 +79,23 @@ public class GuiBuilder extends GuiBase {
             int x = pos.getXi() / 16;
             int y = pos.getYi() / 16;
             if (x < grid.length && y < grid.length)
-                if (grid[x][y] == TileType.NORMAL) {
-                    grid[x][y] = TileType.PLACED;
-                } else grid[x][y] = TileType.NORMAL;
+                if (selectedMode == Mode.DIRECT)
+                    if (grid[x][y] == TileType.EMPTY)
+                        grid[x][y] = TileType.PLACED;
+                    else grid[x][y] = TileType.EMPTY;
+                else if (selectedMode == Mode.SELECT) {
+                    if (grid[x][y] == TileType.EMPTY)
+                        if (event.getButton() == EnumMouseButton.LEFT) {
+                            Vec2d left = getTile(TileType.LEFT_SELECTED);
+                            if (left != null) grid[left.getXi()][left.getYi()] = TileType.EMPTY;
+                            grid[x][y] = TileType.LEFT_SELECTED;
+                        } else {
+                            Vec2d left = getTile(TileType.RIGHT_SELECTED);
+                            if (left != null) grid[left.getXi()][left.getYi()] = TileType.EMPTY;
+                            grid[x][y] = TileType.RIGHT_SELECTED;
+                        }
+                    else grid[x][y] = TileType.EMPTY;
+                }
         });
 
         compScreen.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
@@ -117,8 +139,23 @@ public class GuiBuilder extends GuiBase {
         return false;
     }
 
-    private enum TileType {
-        NORMAL, LEFT_SELECTED, RIGHT_SELECTED, PLACED
+    public boolean hasTile(TileType type) {
+        for (TileType[] x : grid)
+            for (TileType tileType : x)
+                if (tileType == type) return true;
+        return false;
+    }
+
+    @Nullable
+    public Vec2d getTile(TileType type) {
+        for (int i = 0; i < grid.length; i++)
+            for (int j = 0; j < grid.length; j++)
+                if (grid[i][j] == type) return new Vec2d(i, j);
+        return null;
+    }
+
+    public enum TileType {
+        EMPTY, LEFT_SELECTED, RIGHT_SELECTED, PLACED
     }
 
     public enum Mode {

@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.client.gui;
+package com.teamwizardry.refraction.client.gui.builder;
 
 import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.client.gui.GuiComponent;
@@ -28,7 +28,7 @@ public class LeftSidebar {
     public ComponentSprite component;
     public ComponentList listComp;
 
-    public LeftSidebar(ComponentList list, String title, Sprite icon, boolean defaultSelected) {
+    public LeftSidebar(ComponentList list, String title, Sprite icon, boolean defaultSelected, boolean selectable) {
         this.title = title;
         this.icon = icon;
 
@@ -53,9 +53,12 @@ public class LeftSidebar {
 
         background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
             if (background.hasTag("selected")) {
-                if(listComp.getChildren().size() > 0) {
+                if (listComp.getChildren().size() > 0) {
                     listComp.setVisible(true);
                     listComp.setEnabled(true);
+                } else {
+                    listComp.setVisible(false);
+                    listComp.setEnabled(false);
                 }
                 background.setSprite(sliderExtendedSprite);
                 background.setSize(new Vec2d(sliderExtendedSprite.getWidth(), sliderExtendedSprite.getHeight()));
@@ -71,15 +74,16 @@ public class LeftSidebar {
             }
         });
 
-        background.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
-            if (event.getButton() == EnumMouseButton.LEFT) {
-                if (!background.hasTag("selected")) {
-                    background.addTag("selected");
-                    for (GuiComponent component : list.getChildren())
-                        if (component != background) component.removeTag("selected");
+        if (selectable)
+            background.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
+                if (event.getButton() == EnumMouseButton.LEFT) {
+                    if (!background.hasTag("selected")) {
+                        background.addTag("selected");
+                        for (GuiComponent component : list.getChildren())
+                            if (component != background) component.removeTag("selected");
+                    }
                 }
-            }
-        }));
+            }));
         component = background;
     }
 }
