@@ -11,6 +11,8 @@ import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.client.gui.LeftSidebar;
+import com.teamwizardry.refraction.client.gui.RightSidebar;
 import com.teamwizardry.refraction.client.gui.builder.regionoptions.OptionFill;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
@@ -32,22 +34,26 @@ public class GuiBuilder extends GuiBase {
     private static final Sprite sprIconDirect = texSpriteSheet.getSprite("icon_direct", 16, 16);
     private static final Sprite sprIconRegionSelection = texSpriteSheet.getSprite("icon_region_selection", 16, 16);
     private static final Sprite sprTabMode = texSpriteSheet.getSprite("tab_mode", 16, 16);
+    private static final Sprite sprArrowUp = texSpriteSheet.getSprite("arrow_up", 16, 16);
+    private static final Sprite sprArrowDown = texSpriteSheet.getSprite("arrow_down", 16, 16);
+    private static final Sprite sprLayers = texSpriteSheet.getSprite("layers", 16, 16);
 
     public TileType[][][] grid = new TileType[16][16][16];
     public int selectedLayer = 0;
     public Mode selectedMode;
 
     public GuiBuilder() {
-        super(sprBorder.getWidth() + LeftSidebar.sliderExtendedSprite.getWidth() * 2, sprBorder.getHeight());
+        super(sprBorder.getWidth() + LeftSidebar.leftExtended.getWidth() * 2, sprBorder.getHeight());
 
         for (int i = 0; i < grid.length; i++)
             for (int j = 0; j < grid.length; j++)
                 for (int k = 0; k < grid.length; k++)
                     grid[i][j][k] = TileType.EMPTY;
 
-        ComponentList leftBar = new ComponentList(LeftSidebar.sliderExtendedSprite.getWidth(), 0);
+        // LEFT //
+        ComponentList leftSidebar = new ComponentList(LeftSidebar.leftExtended.getWidth(), 0);
 
-        LeftSidebar modeComp = new LeftSidebar(leftBar, "Selection Modes", sprTabMode, true, true);
+        LeftSidebar modeComp = new LeftSidebar(leftSidebar, "Selection Modes", sprTabMode, true, true);
         modeComp.listComp.setMarginLeft(5);
         modeComp.listComp.add(new ModeSelector(modeComp.listComp, this, Mode.DIRECT, "Set Tiles Directly", sprIconDirect, true).component);
 
@@ -58,9 +64,22 @@ public class GuiBuilder extends GuiBase {
         ModeSelector selectRegionComp = new ModeSelector(modeComp.listComp, this, Mode.SELECT, "Select Regions", sprIconRegionSelection, false);
         selectRegionComp.listComp.add(selectRegionOptions);
         modeComp.listComp.add(selectRegionComp.component);
-        leftBar.add(modeComp.component);
+        leftSidebar.add(modeComp.component);
 
-        getMainComponents().add(leftBar);
+        getMainComponents().add(leftSidebar);
+        // LEFT //
+
+        // RIGHT //
+        ComponentList rightSidebar = new ComponentList(sprBorder.getWidth() * 2 - 11, 0);
+
+        RightSidebar layers = new RightSidebar(rightSidebar, "Layers", sprLayers, false, true);
+        LayerSelector layerUp = new LayerSelector(this, rightSidebar, "Layer Up", sprArrowUp, true);
+        LayerSelector layerDown = new LayerSelector(this, rightSidebar, "Layer Down", sprArrowDown, false);
+        layers.listComp.add(layerUp.component, layerDown.component);
+
+        rightSidebar.add(layers.component);
+        getMainComponents().add(rightSidebar);
+        // RIGHT //
 
         // BORDER //
         ComponentSprite compBorder = new ComponentSprite(sprBorder,
@@ -131,8 +150,41 @@ public class GuiBuilder extends GuiBase {
                     GlStateManager.disableTexture2D();
                     GlStateManager.popMatrix();
                 }
-        });
 
+            for (int i = 0; i < grid.length; i++)
+                for (int j = 0; j < grid.length; j++) {
+                    if (selectedLayer - 1 >= 0) {
+                        TileType box = grid[selectedLayer - 1][i][j];
+
+                        GlStateManager.pushMatrix();
+                        GlStateManager.enableAlpha();
+                        GlStateManager.enableBlend();
+                        GlStateManager.enableTexture2D();
+                        GlStateManager.disableLighting();
+
+                        GlStateManager.color(1, 1, 1, 0.3f);
+
+                        texSpriteSheet.bind();
+                        if (box == TileType.PLACED) {
+                            sprTileNormal.draw((int) ClientTickHandler.getPartialTicks(),
+                                    event.getComponent().getPos().getXi() + i * 16,
+                                    event.getComponent().getPos().getYi() + j * 16);
+                        } else if (box == TileType.LEFT_SELECTED) {
+                            sprTileLeftSelected.draw((int) ClientTickHandler.getPartialTicks(),
+                                    event.getComponent().getPos().getXi() + i * 16,
+                                    event.getComponent().getPos().getYi() + j * 16);
+                        } else if (box == TileType.RIGHT_SELECTED) {
+                            sprTileRightSelected.draw((int) ClientTickHandler.getPartialTicks(),
+                                    event.getComponent().getPos().getXi() + i * 16,
+                                    event.getComponent().getPos().getYi() + j * 16);
+                        }
+
+                        GlStateManager.enableLighting();
+                        GlStateManager.disableTexture2D();
+                        GlStateManager.popMatrix();
+                    }
+                }
+        });
         getMainComponents().add(compScreen);
         // SCREEN //
     }

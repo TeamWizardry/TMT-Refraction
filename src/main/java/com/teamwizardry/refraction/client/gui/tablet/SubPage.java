@@ -8,12 +8,9 @@ import com.teamwizardry.librarianlib.client.gui.GuiComponent;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
-import com.teamwizardry.librarianlib.client.sprite.Sprite;
-import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
-import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.book.TextAdapter;
-import net.minecraft.util.ResourceLocation;
+import com.teamwizardry.refraction.client.gui.LeftSidebar;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
@@ -23,11 +20,6 @@ import java.util.List;
  * Created by LordSaad.
  */
 public class SubPage {
-
-	private static final ResourceLocation sliderLoc = new ResourceLocation(Constants.MOD_ID, "textures/gui/slider_2.png");
-	public static final Sprite sliderSprite = new Texture(sliderLoc).getSprite("slider", 120, 18);
-	private static final ResourceLocation sliderExtendedLoc = new ResourceLocation(Constants.MOD_ID, "textures/gui/slider_2_extended.png");
-	public static final Sprite sliderExtendedSprite = new Texture(sliderExtendedLoc).getSprite("slider", 125, 18);
 
 	public Page page;
 	public String title, text = "";
@@ -52,8 +44,8 @@ public class SubPage {
 			text = adapter.convertLinesToString();
 		}
 
-		ComponentSprite background = new ComponentSprite(sliderSprite, 0, 0, sliderSprite.getWidth(), sliderSprite.getHeight());
-		background.addTag(id);
+        ComponentSprite background = new ComponentSprite(LeftSidebar.leftNormal, 0, 0, LeftSidebar.leftNormal.getWidth(), LeftSidebar.leftNormal.getHeight());
+        background.addTag(id);
 
 		ComponentText titleComp = new ComponentText(10, 9, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
 		background.add(titleComp);
@@ -71,17 +63,17 @@ public class SubPage {
 			}
 
 			if (isSelected) {
-				background.setSprite(sliderExtendedSprite);
-				int x = Page.sliderExtendedSprite.getWidth() - sliderExtendedSprite.getWidth();
-				background.setPos(new Vec2d(x, 20 + 20 * id));
-				background.setSize(new Vec2d(sliderExtendedSprite.getWidth(), sliderExtendedSprite.getHeight()));
-				titleComp.getText().setValue(TextFormatting.ITALIC + title);
+                background.setSprite(LeftSidebar.leftExtended);
+                int x = LeftSidebar.leftExtended.getWidth() - LeftSidebar.leftExtended.getWidth();
+                background.setPos(new Vec2d(x, 20 + 20 * id));
+                background.setSize(new Vec2d(LeftSidebar.leftExtended.getWidth(), LeftSidebar.leftExtended.getHeight()));
+                titleComp.getText().setValue(TextFormatting.ITALIC + title);
 			} else {
-				background.setSprite(sliderSprite);
-				int x = Page.sliderExtendedSprite.getWidth() - sliderSprite.getWidth();
-				background.setPos(new Vec2d(x, 20 + 20 * id));
-				background.setSize(new Vec2d(sliderSprite.getWidth(), sliderSprite.getHeight()));
-				titleComp.getText().setValue(title);
+                background.setSprite(LeftSidebar.leftNormal);
+                int x = LeftSidebar.leftExtended.getWidth() - LeftSidebar.leftNormal.getWidth();
+                background.setPos(new Vec2d(x, 20 + 20 * id));
+                background.setSize(new Vec2d(LeftSidebar.leftNormal.getWidth(), LeftSidebar.leftNormal.getHeight()));
+                titleComp.getText().setValue(title);
 			}
 		});
 

@@ -5,8 +5,8 @@ import com.teamwizardry.librarianlib.client.gui.components.ComponentList;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
+import com.teamwizardry.refraction.client.gui.LeftSidebar;
 import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
-import com.teamwizardry.refraction.client.gui.builder.LeftSidebar;
 
 /**
  * Created by LordSaad.

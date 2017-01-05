@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.client.gui.builder;
+package com.teamwizardry.refraction.client.gui;
 
 import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.client.gui.GuiComponent;
@@ -18,10 +18,9 @@ import net.minecraft.util.text.TextFormatting;
  */
 public class LeftSidebar {
 
-    private static final ResourceLocation sliderLoc = new ResourceLocation(Constants.MOD_ID, "textures/gui/slider_1.png");
-    private static final Sprite sliderSprite = new Texture(sliderLoc).getSprite("slider", 130, 18);
-    private static final ResourceLocation sliderExtendedLoc = new ResourceLocation(Constants.MOD_ID, "textures/gui/slider_1_extended.png");
-    public static final Sprite sliderExtendedSprite = new Texture(sliderExtendedLoc).getSprite("slider", 135, 18);
+    private static final Texture sliderSheet = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/slider_sheet.png"));
+    public static final Sprite leftNormal = sliderSheet.getSprite("left_normal", 130, 18);
+    public static final Sprite leftExtended = sliderSheet.getSprite("left_extended", 135, 18);
 
     public String title;
     public Sprite icon;
@@ -32,7 +31,7 @@ public class LeftSidebar {
         this.title = title;
         this.icon = icon;
 
-        ComponentSprite background = new ComponentSprite(sliderSprite, 0, 0);
+        ComponentSprite background = new ComponentSprite(leftNormal, 0, 0);
         background.setMarginBottom(2);
         background.setMarginLeft(list.getMarginLeft());
         if (defaultSelected) background.addTag("selected");
@@ -44,7 +43,7 @@ public class LeftSidebar {
         titleComp.setOutOfFlow(true);
         background.add(titleComp);
 
-        ComponentList listComp = new ComponentList(sliderExtendedSprite.getWidth(), sliderSprite.getHeight() + 2);
+        ComponentList listComp = new ComponentList(leftExtended.getWidth(), leftExtended.getHeight() + 2);
         background.add(listComp);
         this.listComp = listComp;
 
@@ -60,16 +59,16 @@ public class LeftSidebar {
                     listComp.setVisible(false);
                     listComp.setEnabled(false);
                 }
-                background.setSprite(sliderExtendedSprite);
-                background.setSize(new Vec2d(sliderExtendedSprite.getWidth(), sliderExtendedSprite.getHeight()));
-                background.setPos(new Vec2d(-sliderExtendedSprite.getWidth(), 0));
+                background.setSprite(leftExtended);
+                background.setSize(new Vec2d(leftExtended.getWidth(), leftExtended.getHeight()));
+                background.setPos(new Vec2d(-leftExtended.getWidth(), 0));
                 titleComp.getText().setValue(TextFormatting.ITALIC + title);
             } else {
                 listComp.setVisible(false);
                 listComp.setEnabled(false);
-                background.setSprite(sliderSprite);
-                background.setSize(new Vec2d(sliderSprite.getWidth(), sliderSprite.getHeight()));
-                background.setPos(new Vec2d(-sliderSprite.getWidth(), 0));
+                background.setSprite(leftNormal);
+                background.setSize(new Vec2d(leftNormal.getWidth(), leftNormal.getHeight()));
+                background.setPos(new Vec2d(-leftNormal.getWidth(), 0));
                 titleComp.getText().setValue(title);
             }
         });

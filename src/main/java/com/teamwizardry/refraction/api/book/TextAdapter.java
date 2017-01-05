@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentSlot;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
 import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.client.gui.RightSidebar;
 import com.teamwizardry.refraction.client.gui.tablet.ExtraSidebar;
 import com.teamwizardry.refraction.client.gui.tablet.SubPage;
 import net.minecraft.client.Minecraft;
@@ -61,7 +62,7 @@ public class TextAdapter {
                                     ExtraSidebar extraSidebar = new ExtraSidebar(subPage, id++, null, ExtraSidebar.SidebarType.RECIPE);
                                     extraSidebar.title = stack.getDisplayName().length() > 17 ? stack.getDisplayName().substring(0, 17) + "..." : stack.getDisplayName();
                                     extraSidebar.contentComp = new ComponentVoid(0, 0);
-                                    extraSidebar.slotcomp = new ComponentSlot(ExtraSidebar.extraSliderSprite.getWidth() - 16 - 8, 1);
+                                    extraSidebar.slotcomp = new ComponentSlot(RightSidebar.rightExtended.getWidth() - 16 - 8, 1);
                                     extraSidebar.slotcomp.getStack().setValue(stack);
                                     extraSidebars.add(extraSidebar.init());
                                 }

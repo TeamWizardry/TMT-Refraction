@@ -9,9 +9,9 @@ import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
-import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.client.gui.RightSidebar;
 import com.teamwizardry.refraction.client.jei.JEIRefractionPlugin;
 import mezz.jei.api.IRecipeRegistry;
 import mezz.jei.api.gui.IRecipeLayoutDrawable;
@@ -31,10 +31,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ExtraSidebar {
 
-    private static final ResourceLocation extraSlider = new ResourceLocation(Constants.MOD_ID, "textures/gui/extra_slider.png");
-    public static final Sprite extraSliderSprite = new Texture(extraSlider).getSprite("slider", 130, 18);
-    private static final ResourceLocation extraSliderImage = new ResourceLocation(Constants.MOD_ID, "textures/gui/extra_slider_image.png");
-    public static final Sprite extraSliderImageSprite = new Texture(extraSliderImage).getSprite("slider", 135, 100);
     @NotNull
     private final SidebarType sidebarType;
     public int id = 0;
@@ -69,12 +65,12 @@ public class ExtraSidebar {
     }
 
     public ExtraSidebar init() {
-        int x = SubPage.sliderExtendedSprite.getWidth() + GuiBook.BACKGROUND_SPRITE.getWidth() - 14;
-        ComponentSprite background = new ComponentSprite(extraSliderSprite, x, 0, extraSliderSprite.getWidth(), extraSliderSprite.getHeight());
+        int x = RightSidebar.rightNormal.getWidth() + GuiBook.BACKGROUND_SPRITE.getWidth() - 14;
+        ComponentSprite background = new ComponentSprite(RightSidebar.rightNormal, x, 0, RightSidebar.rightNormal.getWidth(), RightSidebar.rightNormal.getHeight());
         background.addTag(id);
 
         if (sidebarType == SidebarType.IMAGE && image != null) {
-            ComponentSprite imageComp = new ComponentSprite(this.image, extraSliderSprite.getWidth() - this.image.getWidth(), 1, 16, 16);
+            ComponentSprite imageComp = new ComponentSprite(this.image, RightSidebar.rightNormal.getWidth() - this.image.getWidth(), 1, 16, 16);
             new ButtonMixin<>(imageComp, () -> {
             });
             imageComp.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
@@ -83,7 +79,7 @@ public class ExtraSidebar {
                     imageComp.setPos(new Vec2d(32, 20));
                 } else {
                     imageComp.setSize(new Vec2d(16, 16));
-                    imageComp.setPos(new Vec2d(extraSliderSprite.getWidth() - imageComp.getSize().getXi() - 8, 1));
+                    imageComp.setPos(new Vec2d(RightSidebar.rightNormal.getWidth() - imageComp.getSize().getXi() - 8, 1));
                 }
             });
             background.add(imageComp);
@@ -107,15 +103,15 @@ public class ExtraSidebar {
             }
 
             if (isSelected) {
-                background.setSprite(extraSliderImageSprite);
+                background.setSprite(RightSidebar.rightLarge);
                 background.setPos(new Vec2d(x, (20 * id) - (subPage.id * 20) - (subPage.page.id * 20) - 20));
-                background.setSize(new Vec2d(extraSliderImageSprite.getWidth(), extraSliderImageSprite.getHeight()));
+                background.setSize(new Vec2d(RightSidebar.rightLarge.getWidth(), RightSidebar.rightLarge.getHeight()));
             } else {
-                background.setSprite(extraSliderSprite);
+                background.setSprite(RightSidebar.rightNormal);
                 if (subPage.selectedExtraID < id && subPage.extraSidebars.get(subPage.selectedExtraID).isSelected)
-                    background.setPos(new Vec2d(x, (20 * id) - (subPage.id * 20) - (subPage.page.id * 20) + (extraSliderImageSprite.getHeight()) - 38));
+                    background.setPos(new Vec2d(x, (20 * id) - (subPage.id * 20) - (subPage.page.id * 20) + (RightSidebar.rightLarge.getHeight()) - 38));
                 else background.setPos(new Vec2d(x, (20 * id) - (subPage.id * 20) - (subPage.page.id * 20) - 20));
-                background.setSize(new Vec2d(extraSliderSprite.getWidth(), extraSliderSprite.getHeight()));
+                background.setSize(new Vec2d(RightSidebar.rightNormal.getWidth(), RightSidebar.rightNormal.getHeight()));
             }
         });
 
