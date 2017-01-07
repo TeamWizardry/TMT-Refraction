@@ -2,6 +2,8 @@ package com.teamwizardry.refraction.init;
 
 import com.teamwizardry.refraction.api.lib.LibOreDict;
 import com.teamwizardry.refraction.common.block.*;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
@@ -28,7 +30,6 @@ public class ModBlocks {
 	public static BlockTranslocator TRANSLOCATOR;
 	public static BlockAXYZ AXYZ;
 	public static BlockElectricLaser ELECTRIC_LASER;
-	public static BlockSolarPanel SOLAR_PANEL;
 	public static BlockFilter FILTER;
 	public static BlockInvisible INVISIBLE;
 	public static BlockInvisibleRedstone INVISIBLE_REDSTONE;
@@ -65,6 +66,7 @@ public class ModBlocks {
         BUILDER = new BlockBuilder();
     }
 
+	@SideOnly(Side.CLIENT)
 	public static void initModels() {
 		ASSEMBLY_TABLE.initModel();
 		DISCO_BALL.initModel();

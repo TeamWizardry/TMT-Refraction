@@ -62,8 +62,6 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemCol
 
     @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
-        World world = playerIn.getEntityWorld();
-
         if (!(playerIn instanceof EntityPlayer)) return;
 
         if (stack.getTagCompound() == null) return;
