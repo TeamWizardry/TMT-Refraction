@@ -73,6 +73,12 @@ public class GuiBuilder extends GuiBase {
         ComponentList rightSidebar = new ComponentList(sprBorder.getWidth() * 2 - 11, 0);
 
         RightSidebar layers = new RightSidebar(rightSidebar, "Layers", sprLayers, false, true);
+        layers.listComp.setMarginLeft(-5);
+
+        layers.component.BUS.hook(GuiComponent.ComponentTickEvent.class, componentTickEvent -> {
+            layers.title = "Layers - Current: " + selectedLayer;
+        });
+
         LayerSelector layerUp = new LayerSelector(this, rightSidebar, "Layer Up", sprArrowUp, true);
         LayerSelector layerDown = new LayerSelector(this, rightSidebar, "Layer Down", sprArrowDown, false);
         layers.listComp.add(layerUp.component, layerDown.component);

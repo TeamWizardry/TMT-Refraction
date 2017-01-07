@@ -25,6 +25,7 @@ import java.awt.*;
 /**
  * Created by LordSaad.
  */
+@SuppressWarnings("MethodCallSideOnly")
 public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemColorProvider {
 
     public ItemPhotonCannon() {
@@ -65,18 +66,21 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemCol
 
         if (!(playerIn instanceof EntityPlayer)) return;
 
-        if (!world.isRemote && stack.getTagCompound() == null) return;
+        if (stack.getTagCompound() == null) return;
 
-        if (!world.isRemote && !stack.getTagCompound().hasKey("color")) return;
+        if (!stack.getTagCompound().hasKey("color")) return;
 
         Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
         ItemStack ammo = IAmmoConsumer.findAmmo((EntityPlayer) playerIn, color);
 
-        if (!world.isRemote && ammo == null) return;
+        if (ammo == null) return;
 
-        if (!world.isRemote && ammo.getItemDamage() >= ammo.getMaxDamage() - 1) return;
+        if (ammo.getItemDamage() >= ammo.getMaxDamage() - 1) return;
 
-        if (!world.isRemote) ammo.setItemDamage(ammo.getItemDamage() + 1);
+        if (ItemNBTHelper.getInt(ammo, "color", 0xFFFFFF) != color.getRGB())
+            ItemNBTHelper.setInt(stack, "color", ItemNBTHelper.getInt(ammo, "color", 0xFFFFFF));
+
+        ammo.setItemDamage(ammo.getItemDamage() + 1);
 
         boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
         Vec3d cross = playerIn.getLook(1).crossProduct(new Vec3d(0, playerIn.getEyeHeight(), 0)).normalize().scale(playerIn.width / 2);
