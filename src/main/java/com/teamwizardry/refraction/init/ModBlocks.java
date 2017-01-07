@@ -60,7 +60,6 @@ public class ModBlocks {
 		AXYZ = new BlockAXYZ();
 		FILTER = new BlockFilter();
 		ELECTRIC_LASER = new BlockElectricLaser();
-		//SOLAR_PANEL = new BlockSolarPanel();
 		INVISIBLE = new BlockInvisible();
 		INVISIBLE_REDSTONE = new BlockInvisibleRedstone();
         BUILDER = new BlockBuilder();
