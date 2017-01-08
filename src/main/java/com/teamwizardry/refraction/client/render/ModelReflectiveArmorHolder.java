@@ -97,7 +97,7 @@ public class ModelReflectiveArmorHolder extends ModelBiped {
         this.arml1 = new ModelRenderer(this, 18, 40);
         this.arml1.mirror = true;
         this.arml1.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.arml1.addBox(-1.0F, 6.0F, -2.0F, 4, 4, 4, 0.0255F);
+        this.arml1.addBox(-1.0F, 6.5F, -2.0F, 4, 4, 4, 0.0255F);
         this.helm = new ModelRenderer(this, 0, 0);
         this.helm.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.helm.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 0.255F);
@@ -112,7 +112,7 @@ public class ModelReflectiveArmorHolder extends ModelBiped {
         this.legr2.addBox(-2.5F, 4.0F, -1.5F, 1, 5, 3, 0.0255F);
         this.armr1 = new ModelRenderer(this, 18, 40);
         this.armr1.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.armr1.addBox(-3.0F, 6.0F, -2.0F, 4, 4, 4, 0.0255F);
+        this.armr1.addBox(-3.0F, 6.5F, -2.0F, 4, 4, 4, 0.0255F);
         this.legL.addChild(this.legl2);
         this.armR.addChild(this.armr2);
         this.armL.addChild(this.arml3);
