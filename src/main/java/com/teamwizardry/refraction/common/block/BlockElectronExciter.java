@@ -34,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -206,6 +207,11 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, UP, LEFT, RIGHT, DOWN);
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
 	}
 
 	@Override

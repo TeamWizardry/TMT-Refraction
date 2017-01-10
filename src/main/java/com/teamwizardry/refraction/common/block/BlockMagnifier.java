@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by LordSaad44
@@ -61,5 +62,10 @@ public class BlockMagnifier extends BlockModContainer implements IBeamHandler {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileMagnifier();
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
 	}
 }

@@ -32,9 +32,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author WireSegal
@@ -170,5 +172,17 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 			Vec3d slope = beam.slope.normalize().scale(15.0 / 16.0);
 			beam.createSimilarBeam(PosUtils.getSideCenter(pos, dir).add(slope), PosUtils.getVecFromFacing(dir)).spawn();
 		} else beam.createSimilarBeam(PosUtils.getSideCenter(pos, dir), PosUtils.getVecFromFacing(dir)).spawn();
+	}
+
+	@Override
+	public boolean isToolEffective(String type, @NotNull IBlockState state) {
+		return Objects.equals(type, "pickaxe") || Objects.equals(type, "screwdriver");
+	}
+
+	@Nullable
+	@Override
+	@SuppressWarnings("NullableProblems")
+	public String getHarvestTool(@NotNull IBlockState state) {
+		return "pickaxe";
 	}
 }

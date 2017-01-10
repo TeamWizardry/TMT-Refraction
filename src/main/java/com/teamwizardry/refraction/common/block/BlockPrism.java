@@ -36,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by LordSaad44
@@ -271,6 +272,11 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
             return null;
 
         return new RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
+    }
+
+    @Override
+    public boolean isToolEffective(String type, IBlockState state) {
+        return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
     }
 
     public static class RayTraceResultData<T> extends RayTraceResult {

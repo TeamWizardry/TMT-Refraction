@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -165,5 +166,10 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileSplitter();
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
 	}
 }

@@ -327,6 +327,18 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
 		};
 	}
 
+	@Override
+	public boolean isToolEffective(String type, @NotNull IBlockState state) {
+		return Objects.equals(type, "pickaxe") || Objects.equals(type, "screwdriver");
+	}
+
+	@Nullable
+	@Override
+	@SuppressWarnings("NullableProblems")
+	public String getHarvestTool(@NotNull IBlockState state) {
+		return "pickaxe";
+	}
+
 	public static class WorldData extends WorldSavedData {
 
 		private static final String ID = Constants.MOD_ID + "-LaserRelayPairs";

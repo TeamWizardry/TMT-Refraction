@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -212,5 +213,17 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 			world.notifyNeighborsOfStateExcept(pos.offset(facing), this, facing.getOpposite());
 		world.scheduleUpdate(pos, this, 20);
 		return false;
+	}
+
+	@Override
+	public boolean isToolEffective(String type, @NotNull IBlockState state) {
+		return Objects.equals(type, "pickaxe");
+	}
+
+	@Nullable
+	@Override
+	@SuppressWarnings("NullableProblems")
+	public String getHarvestTool(@NotNull IBlockState state) {
+		return "pickaxe";
 	}
 }

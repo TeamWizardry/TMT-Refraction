@@ -29,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by LordSaad44
@@ -92,5 +93,10 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 		beam.initLoc.subtract(slope);
 		beam.finalLoc.subtract(slope);
 		beam.spawn();
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
 	}
 }

@@ -8,6 +8,7 @@ import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Saad on 10/16/2016.
@@ -71,5 +73,10 @@ public class BlockReflectiveAlloyBlock extends BlockMod implements IBeamHandler 
         Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
         beam.createSimilarBeam(outgoingLoc, outgoingDir, c).enableParticleBeginning().spawn();
         return true;
+    }
+
+    @Override
+    public boolean isToolEffective(String type, IBlockState state) {
+        return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
     }
 }

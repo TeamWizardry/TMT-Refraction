@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by LordSaad44
@@ -127,6 +128,11 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 	public boolean shouldEmit(@NotNull World world, @NotNull BlockPos pos) {
 		TileLaser laser = (TileLaser) world.getTileEntity(pos);
 		return !(world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) && laser != null && laser.inventory.getStackInSlot(0) != null && laser.inventory.getStackInSlot(0).stackSize > 0;
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
 	}
 
 	@Override

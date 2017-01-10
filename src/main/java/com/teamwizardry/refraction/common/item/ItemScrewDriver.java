@@ -7,14 +7,13 @@ import com.teamwizardry.refraction.api.IPrecision;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -41,7 +40,15 @@ public class ItemScrewDriver extends ItemMod {
 
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		Block block = worldIn.getBlockState(pos).getBlock();
+		IBlockState state = worldIn.getBlockState(pos);
+		Block block = state.getBlock();
+
+		if (block.isToolEffective("screwdriver", state) && playerIn.isSneaking()) {
+			block.dropBlockAsItem(worldIn, pos, state, 0);
+			worldIn.setBlockToAir(pos);
+			worldIn.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, 1, 1);
+			return EnumActionResult.SUCCESS;
+		}
 
 		if (block instanceof IPrecision) {
 			((IPrecision) block).adjust(worldIn, pos, stack, playerIn.isSneaking(), facing);

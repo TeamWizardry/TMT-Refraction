@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Saad on 9/10/2016.
@@ -99,5 +100,10 @@ public class BlockSpectrometer extends BlockModContainer implements IBeamHandler
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileSpectrometer();
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
 	}
 }

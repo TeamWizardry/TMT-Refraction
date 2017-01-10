@@ -27,9 +27,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static net.minecraft.util.EnumFacing.*;
@@ -392,5 +394,17 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
+	}
+
+	@Override
+	public boolean isToolEffective(String type, @NotNull IBlockState state) {
+		return Objects.equals(type, "pickaxe") || Objects.equals(type, "screwdriver");
+	}
+
+	@Nullable
+	@Override
+	@SuppressWarnings("NullableProblems")
+	public String getHarvestTool(@NotNull IBlockState state) {
+		return "pickaxe";
 	}
 }
