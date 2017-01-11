@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by LordSaad44
@@ -119,5 +120,10 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileAssemblyTable();
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
 	}
 }

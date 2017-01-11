@@ -217,7 +217,7 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 
 	@Override
 	public boolean isToolEffective(String type, @NotNull IBlockState state) {
-		return Objects.equals(type, "pickaxe");
+		return Objects.equals(type, "pickaxe") || Objects.equals(type, "screwdriver");
 	}
 
 	@Nullable

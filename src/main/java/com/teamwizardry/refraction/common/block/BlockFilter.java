@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by LordSaad44
@@ -125,6 +126,11 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 	@Override
 	public Function4<IBlockState, IBlockAccess, BlockPos, Integer, Integer> getBlockColorFunction() {
 		return (state, worldIn, pos, tintIndex) -> state.getValue(TYPE).color;
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
 	}
 
 	public enum EnumFilterType implements IStringSerializable {

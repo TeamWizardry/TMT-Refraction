@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Saad on 10/6/2016.
@@ -91,5 +92,10 @@ public class BlockCreativeLaser extends BlockModContainer implements IBeamImmune
 	@Override
 	public boolean isImmune(@NotNull World world, @NotNull BlockPos pos) {
 		return true;
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
 	}
 }
