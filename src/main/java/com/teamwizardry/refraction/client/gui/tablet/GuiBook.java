@@ -33,7 +33,8 @@ public class GuiBook extends GuiBase {
 	private static Sprite BACKGROUND_HANDLE_SPRITE = BACKGROUND_HANDLE_TEXTURE.getSprite("bg", 232, 323);
 	private static Texture BACKGROUND_BOOTUP_TEXTURE = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/book_background_bootup.png"));
 	public static Sprite BACKGROUND_BOOTUP_SPRITE = BACKGROUND_BOOTUP_TEXTURE.getSprite("bg", 232, 323);
-	private static Sprite scaleSprite = new Sprite(new ResourceLocation("textures/gui/scale_icon.png"));
+	private static Texture scaleTex = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/scale_icon.png"));
+	private static Sprite scaleSprite = scaleTex.getSprite("icon", 16, 16);
 
 	@NotNull
 	public ArrayList<Page> pages = new ArrayList<>();
