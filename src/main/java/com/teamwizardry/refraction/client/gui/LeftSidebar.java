@@ -21,6 +21,8 @@ public class LeftSidebar {
     private static final Texture sliderSheet = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/slider_sheet.png"));
     public static final Sprite leftNormal = sliderSheet.getSprite("left_normal", 130, 18);
     public static final Sprite leftExtended = sliderSheet.getSprite("left_extended", 135, 18);
+    public static final Sprite leftArrow = sliderSheet.getSprite("left_arrow", 16, 10);
+    public static final Sprite rightArrow = sliderSheet.getSprite("right_arrow", 16, 10);
 
     public String title;
     public Sprite icon;

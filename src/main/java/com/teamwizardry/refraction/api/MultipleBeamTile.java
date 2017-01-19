@@ -69,10 +69,11 @@ public class MultipleBeamTile extends TileMod implements ITickable {
             blue += color.getBlue() * color.getAlpha() / 255F / colorCount;
             alpha += color.getAlpha();
         }
-        red = Math.min(red / colors.size(), 255);
-        green = Math.min(green / colors.size(), 255);
-        blue = Math.min(blue / colors.size(), 255);
-
+	    if (!colors.isEmpty()) {
+		    red = Math.min(red / colors.size(), 255);
+		    green = Math.min(green / colors.size(), 255);
+		    blue = Math.min(blue / colors.size(), 255);
+	    }
         float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
         Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));

@@ -26,6 +26,7 @@ public class SubPage {
 	public boolean isSelected = false;
 	public int id, selectedExtraID = 0;
 	public List<ExtraSidebar> extraSidebars = new ArrayList<>();
+	public List<String> textPages = new ArrayList<>();
 	private ComponentSprite component;
 	private JsonObject object;
 	private TextAdapter adapter;
@@ -44,8 +45,23 @@ public class SubPage {
 			text = adapter.convertLinesToString();
 		}
 
-        ComponentSprite background = new ComponentSprite(LeftSidebar.leftNormal, 0, 0, LeftSidebar.leftNormal.getWidth(), LeftSidebar.leftNormal.getHeight());
-        background.addTag(id);
+		int letterCount = 0;
+		String builder = "";
+		for (String word : text.split(" ")) {
+			word = word.trim();
+			if (letterCount < 950) {
+				letterCount += word.length();
+				builder += " " + word;
+			} else {
+				textPages.add(builder.trim());
+				builder = "";
+				letterCount = 0;
+			}
+		}
+		textPages.add(builder);
+
+		ComponentSprite background = new ComponentSprite(LeftSidebar.leftNormal, 0, 0, LeftSidebar.leftNormal.getWidth(), LeftSidebar.leftNormal.getHeight());
+		background.addTag(id);
 
 		ComponentText titleComp = new ComponentText(10, 9, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
 		background.add(titleComp);
@@ -63,23 +79,24 @@ public class SubPage {
 			}
 
 			if (isSelected) {
-                background.setSprite(LeftSidebar.leftExtended);
-                int x = LeftSidebar.leftExtended.getWidth() - LeftSidebar.leftExtended.getWidth();
-                background.setPos(new Vec2d(x, 20 + 20 * id));
-                background.setSize(new Vec2d(LeftSidebar.leftExtended.getWidth(), LeftSidebar.leftExtended.getHeight()));
-                titleComp.getText().setValue(TextFormatting.ITALIC + title);
+				background.setSprite(LeftSidebar.leftExtended);
+				int x = LeftSidebar.leftExtended.getWidth() - LeftSidebar.leftExtended.getWidth();
+				background.setPos(new Vec2d(x + 5, 20 + 20 * id));
+				background.setSize(new Vec2d(LeftSidebar.leftExtended.getWidth(), LeftSidebar.leftExtended.getHeight()));
+				titleComp.getText().setValue(TextFormatting.ITALIC + title);
 			} else {
-                background.setSprite(LeftSidebar.leftNormal);
-                int x = LeftSidebar.leftExtended.getWidth() - LeftSidebar.leftNormal.getWidth();
-                background.setPos(new Vec2d(x, 20 + 20 * id));
-                background.setSize(new Vec2d(LeftSidebar.leftNormal.getWidth(), LeftSidebar.leftNormal.getHeight()));
-                titleComp.getText().setValue(title);
+				background.setSprite(LeftSidebar.leftNormal);
+				int x = LeftSidebar.leftExtended.getWidth() - LeftSidebar.leftNormal.getWidth();
+				background.setPos(new Vec2d(x + 5, 20 + 20 * id));
+				background.setSize(new Vec2d(LeftSidebar.leftNormal.getWidth(), LeftSidebar.leftNormal.getHeight()));
+				titleComp.getText().setValue(title);
 			}
 		});
 
 		background.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
 			if (event.getButton() == EnumMouseButton.LEFT) {
 				if (!isSelected) {
+					page.pageNB = 0;
 					for (SubPage subPage : page.subPages) subPage.isSelected = false;
 					isSelected = true;
 					page.selectedSubPage = id;
