@@ -26,6 +26,9 @@ public class GuiBuilder extends GuiBase {
     private static final Texture texScreen = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/builder/screen.png"));
     private static final Texture texBorder = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/builder/border.png"));
     private static final Texture texSpriteSheet = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/builder/builder_sheet.png"));
+    public static final Sprite sprArrowUp = texSpriteSheet.getSprite("arrow_up", 16, 16);
+    public static final Sprite sprArrowDown = texSpriteSheet.getSprite("arrow_down", 16, 16);
+    public static final Sprite sprLayers = texSpriteSheet.getSprite("layers", 16, 16);
     private static final Sprite sprScreen = texScreen.getSprite("bg", 256, 256);
     private static final Sprite sprBorder = texBorder.getSprite("bg", 276, 276);
     private static final Sprite sprTileRightSelected = texSpriteSheet.getSprite("tile_right_selected", 16, 16);
@@ -34,10 +37,6 @@ public class GuiBuilder extends GuiBase {
     private static final Sprite sprIconDirect = texSpriteSheet.getSprite("icon_direct", 16, 16);
     private static final Sprite sprIconRegionSelection = texSpriteSheet.getSprite("icon_region_selection", 16, 16);
     private static final Sprite sprTabMode = texSpriteSheet.getSprite("tab_mode", 16, 16);
-    private static final Sprite sprArrowUp = texSpriteSheet.getSprite("arrow_up", 16, 16);
-    private static final Sprite sprArrowDown = texSpriteSheet.getSprite("arrow_down", 16, 16);
-    private static final Sprite sprLayers = texSpriteSheet.getSprite("layers", 16, 16);
-
     public TileType[][][] grid = new TileType[16][16][16];
     public int selectedLayer = 0;
     public Mode selectedMode;

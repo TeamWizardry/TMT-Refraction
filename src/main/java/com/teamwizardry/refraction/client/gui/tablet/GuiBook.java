@@ -5,12 +5,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.teamwizardry.librarianlib.LibrarianLib;
 import com.teamwizardry.librarianlib.client.gui.GuiBase;
+import com.teamwizardry.librarianlib.client.gui.GuiComponent;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
+import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,20 +33,21 @@ public class GuiBook extends GuiBase {
 	private static Sprite BACKGROUND_HANDLE_SPRITE = BACKGROUND_HANDLE_TEXTURE.getSprite("bg", 232, 323);
 	private static Texture BACKGROUND_BOOTUP_TEXTURE = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/book_background_bootup.png"));
 	public static Sprite BACKGROUND_BOOTUP_SPRITE = BACKGROUND_BOOTUP_TEXTURE.getSprite("bg", 232, 323);
+	private static Sprite scaleSprite = new Sprite(new ResourceLocation("textures/gui/scale_icon.png"));
 
 	@NotNull
 	public ArrayList<Page> pages = new ArrayList<>();
 	int selectedPage = 0;
 
 	public GuiBook() {
-		super(232, 323);
+		super(232, 300);
 
-		ComponentVoid mainComponent = new ComponentVoid(width / 2, height / 2, 256, 256);
+		ComponentVoid mainComponent = new ComponentVoid(width / 2, height / 2, 232, 323);
 
 		// BOOK BACKGROUND
 		ComponentSprite background = new ComponentSprite(BACKGROUND_SPRITE,
-				(getGuiWidth() / 2) - (BACKGROUND_SPRITE.getWidth() / 2),
-				(getGuiHeight() / 2) - (BACKGROUND_SPRITE.getHeight() / 2));
+				(getGuiWidth() / 2) - (BACKGROUND_HANDLE_SPRITE.getWidth() / 2),
+				(getGuiHeight() / 2) - (BACKGROUND_HANDLE_SPRITE.getHeight() / 2));
 		mainComponent.add(background);
 
 		// BOOK HANDLE
@@ -80,8 +85,27 @@ public class GuiBook extends GuiBase {
 		}
 		for (Page page : pages) background.add(page.getComponent());
 
+		// SCALE CONTROL
+		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
+		Vec2d res = new Vec2d(resolution.getScaledWidth(), resolution.getScaledHeight());
+		ComponentSprite icon = new ComponentSprite(scaleSprite, res.getXi() - 16, res.getYi() / 2, 16, 16);
+		icon.BUS.hook(GuiComponent.MouseClickEvent.class, mouseClickEvent -> {
+			mainComponent.setChildScale(1);
+		});
+		ComponentSprite increase = new ComponentSprite(GuiBuilder.sprArrowUp, res.getXi() - 16, res.getYi() / 2 - 16, 16, 16);
+		increase.BUS.hook(GuiComponent.MouseClickEvent.class, mouseClickEvent -> {
+			mainComponent.setChildScale(mainComponent.getChildScale() + 0.1);
+		});
+		ComponentSprite decrease = new ComponentSprite(GuiBuilder.sprArrowDown, res.getXi() - 16, res.getYi() / 2 + 16, 16, 16);
+		decrease.BUS.hook(GuiComponent.MouseClickEvent.class, mouseClickEvent -> {
+			if (mainComponent.getChildScale() > 0.1)
+				mainComponent.setChildScale(mainComponent.getChildScale() - 0.1);
+		});
+
+		getFullscreenComponents().add(icon, increase, decrease);
+		// SCALE CONTROL
+
 		getMainComponents().add(mainComponent);
-		getMainComponents().setSize(getMainComponents().getSize().mul(1 / 2));
 	}
 
 	@Override
