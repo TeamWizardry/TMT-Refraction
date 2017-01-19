@@ -61,7 +61,7 @@ public class ColorConsumingBehavior implements IAssemblyBehavior {
 	@Override
 	public boolean canAccept(Color color, IItemHandler items) {
 		return recipe.size() == CapsUtils.getOccupiedSlotCount(items) &&
-				Utils.matchItemStackLists(CapsUtils.getListOfItems(items), recipe);
+				Utils.matchItemLists(CapsUtils.getListOfItems(items), recipe);
 	}
 
 	@Override

@@ -1,8 +1,7 @@
 package com.teamwizardry.refraction.api;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
+import com.teamwizardry.refraction.api.internal.DummyInternalHandler;
+import com.teamwizardry.refraction.api.internal.IInternalHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -15,8 +14,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.Nullable;
-import com.teamwizardry.refraction.api.internal.DummyInternalHandler;
-import com.teamwizardry.refraction.api.internal.IInternalHandler;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Saad on 10/9/2016.
@@ -104,14 +105,11 @@ public final class Utils {
 				if (inp == null) continue;
 				if (inp instanceof ItemStack && ((ItemStack) inp).getItemDamage() == OreDictionary.WILDCARD_VALUE)
 					((ItemStack) inp).setItemDamage(i.getItemDamage());
-				if (inp instanceof List)
-				{
-					for (Object obj : (List<?>) inp)
-					{
+				if (inp instanceof List) {
+					for (Object obj : (List<?>) inp) {
 						if (obj instanceof ItemStack && ((ItemStack) obj).getItemDamage() == OreDictionary.WILDCARD_VALUE)
 							((ItemStack) obj).setItemDamage(i.getItemDamage());
-						if (itemEquals(i, obj))
-						{
+						if (itemEquals(i, obj)) {
 							inputsMissing.remove(j);
 							break loop;
 						}
@@ -125,6 +123,62 @@ public final class Utils {
 		}
 		return inputsMissing.isEmpty();
 	}
+
+	public static boolean matchItemLists(List<ItemStack> items, List<Object> required) {
+		List<Object> inputsMissing = new ArrayList<>(required);
+		for (ItemStack i : items) {
+			loop:
+			for (int j = 0; j < inputsMissing.size(); j++) {
+				Object inp = inputsMissing.get(j);
+				if (inp == null) continue;
+				if (inp instanceof ItemStack && ((ItemStack) inp).getItemDamage() == OreDictionary.WILDCARD_VALUE)
+					((ItemStack) inp).setItemDamage(i.getItemDamage());
+				if (inp instanceof List) {
+					for (Object obj : (List<?>) inp) {
+						if (obj instanceof ItemStack && ((ItemStack) obj).getItemDamage() == OreDictionary.WILDCARD_VALUE)
+							((ItemStack) obj).setItemDamage(i.getItemDamage());
+						if (itemEqualsItemsOnly(i, obj)) {
+							inputsMissing.remove(j);
+							break loop;
+						}
+					}
+				}
+				if (itemEqualsItemsOnly(i, inp)) {
+					inputsMissing.remove(j);
+					break;
+				}
+			}
+		}
+		return inputsMissing.isEmpty();
+	}
+
+	public static boolean itemEqualsItemsOnly(ItemStack stack, Object stack2) {
+		if (stack2 instanceof String) {
+			for (ItemStack orestack : OreDictionary.getOres((String) stack2)) {
+				ItemStack cstack = orestack.copy();
+
+				if (cstack.getItemDamage() == 32767)
+					cstack.setItemDamage(stack.getItemDamage());
+				if (stack.isItemEqual(cstack))
+					return true;
+			}
+
+		} else if (stack2 instanceof ItemStack) {
+			for (int oreID : OreDictionary.getOreIDs((ItemStack) stack2)) {
+				for (ItemStack orestack : OreDictionary.getOres(OreDictionary.getOreName(oreID))) {
+					ItemStack cstack = orestack.copy();
+
+					if (cstack.getItemDamage() == 32767)
+						cstack.setItemDamage(stack.getItemDamage());
+					if (stack.isItemEqual(cstack))
+						return true;
+				}
+			}
+			return simpleAreItemsEqual(stack, (ItemStack) stack2);
+		}
+		return false;
+	}
+
 
 	public static boolean itemEquals(ItemStack stack, Object stack2) {
 		if (stack2 instanceof String) {
@@ -151,6 +205,10 @@ public final class Utils {
 			return simpleAreStacksEqual(stack, (ItemStack) stack2);
 		}
 		return false;
+	}
+
+	public static boolean simpleAreItemsEqual(ItemStack stack, ItemStack stack2) {
+		return stack.getItem() == stack2.getItem();
 	}
 
 	public static boolean simpleAreStacksEqual(ItemStack stack, ItemStack stack2) {
