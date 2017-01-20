@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.item;
 
+import com.google.common.collect.Sets;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.librarianlib.common.util.MethodHandleHelper;
@@ -19,6 +20,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Set;
 
 import static com.teamwizardry.refraction.api.IPrecision.Helper.*;
 
@@ -43,7 +47,7 @@ public class ItemScrewDriver extends ItemMod {
 		IBlockState state = worldIn.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (block.isToolEffective("screwdriver", state) && playerIn.isSneaking()) {
+		if (!(block instanceof IPrecision) && block.isToolEffective("screwdriver", state) && playerIn.isSneaking()) {
 			block.dropBlockAsItem(worldIn, pos, state, 0);
 			worldIn.setBlockToAir(pos);
 			worldIn.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, 1, 1);
@@ -89,9 +93,23 @@ public class ItemScrewDriver extends ItemMod {
 		remainingHighlightTicksSetter.invoke(gui, ticks);
 	}
 
+	@NotNull
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 		int i = getRotationIndex(stack);
 		return super.getUnlocalizedName(stack) + "." + i;
+	}
+
+	@Override
+	public float getStrVsBlock(ItemStack stack, IBlockState state) {
+		if (state.getBlock().isToolEffective("screwdriver", state))
+			return 6.0F;
+		return super.getStrVsBlock(stack, state);
+	}
+
+	@NotNull
+	@Override
+	public Set<String> getToolClasses(ItemStack stack) {
+		return Sets.newHashSet("screwdriver");
 	}
 }
