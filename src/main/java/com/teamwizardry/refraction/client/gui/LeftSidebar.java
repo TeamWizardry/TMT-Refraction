@@ -63,14 +63,14 @@ public class LeftSidebar {
                 }
                 background.setSprite(leftExtended);
                 background.setSize(new Vec2d(leftExtended.getWidth(), leftExtended.getHeight()));
-                background.setPos(new Vec2d(-leftExtended.getWidth(), 0));
+                background.setPos(new Vec2d(-leftExtended.getWidth() + (list.getChildren().contains(background) ? 0 : 5), 0));
                 titleComp.getText().setValue(TextFormatting.ITALIC + title);
             } else {
                 listComp.setVisible(false);
                 listComp.setEnabled(false);
                 background.setSprite(leftNormal);
                 background.setSize(new Vec2d(leftNormal.getWidth(), leftNormal.getHeight()));
-                background.setPos(new Vec2d(-leftNormal.getWidth(), 0));
+                background.setPos(new Vec2d(-leftNormal.getWidth() + (list.getChildren().contains(background) ? 5 : 0), 0));
                 titleComp.getText().setValue(title);
             }
         });
