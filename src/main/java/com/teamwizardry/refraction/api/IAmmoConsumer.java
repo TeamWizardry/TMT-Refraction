@@ -70,17 +70,12 @@ public interface IAmmoConsumer {
 	static boolean isAmmo(@Nullable ItemStack stack) {
 		return stack != null
 				&& stack.getItem() instanceof IAmmo
-				&& stack.hasTagCompound()
-				&& stack.getTagCompound().hasKey("color")
-				&& stack.getItemDamage() <= stack.getMaxDamage() - 1;
+				&& ((IAmmo) stack.getItem()).hasColor(stack)
+				&& ((IAmmo) stack.getItem()).drain(stack, 1, true);
 	}
 
 	static boolean isAmmo(@Nullable ItemStack stack, Color color) {
-		return stack != null
-				&& stack.getItem() instanceof IAmmo
-				&& stack.hasTagCompound()
-				&& stack.getTagCompound().hasKey("color")
-				&& stack.getItemDamage() < stack.getMaxDamage() - 1
-				&& Utils.doColorsMatchNoAlpha(color, new Color(stack.getTagCompound().getInteger("color")));
+		return isAmmo(stack)
+				&& Utils.doColorsMatchNoAlpha(color, new Color(((IAmmo) stack.getItem()).getColor(stack)));
 	}
 }

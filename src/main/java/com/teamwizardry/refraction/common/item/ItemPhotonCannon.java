@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.IAmmo;
 import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
@@ -70,15 +71,17 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemCol
 
         Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
         ItemStack ammo = IAmmoConsumer.findAmmo((EntityPlayer) playerIn, color);
-
         if (ammo == null) return;
+        IAmmo ammoItem = (IAmmo) ammo.getItem();
 
-        if (ammo.getItemDamage() >= ammo.getMaxDamage() - 1) return;
+        if (!ammoItem.drain(ammo, 1, true)) return;
 
-        if (ItemNBTHelper.getInt(ammo, "color", 0xFFFFFF) != color.getRGB())
-            ItemNBTHelper.setInt(stack, "color", ItemNBTHelper.getInt(ammo, "color", 0xFFFFFF));
+        int ammoColor = ammoItem.getColor(ammo);
 
-        ammo.setItemDamage(ammo.getItemDamage() + 1);
+        if (ammoColor != color.getRGB())
+            ItemNBTHelper.setInt(stack, "color", ammoColor);
+
+        ammoItem.drain(ammo, 1, false);
 
         boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
         Vec3d cross = playerIn.getLook(1).crossProduct(new Vec3d(0, playerIn.getEyeHeight(), 0)).normalize().scale(playerIn.width / 2);

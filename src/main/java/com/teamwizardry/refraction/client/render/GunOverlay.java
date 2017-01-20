@@ -3,8 +3,8 @@ package com.teamwizardry.refraction.client.render;
 import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.IAmmo;
 import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.init.ModItems;
@@ -78,8 +78,10 @@ public class GunOverlay {
         if (player.isSneaking()) {
             List<ItemStack> ammoList = IAmmoConsumer.findAllAmmo(player);
             Set<Color> colors = new HashSet<>();
-            for (ItemStack item : ammoList)
-            	colors.add(new Color(ItemNBTHelper.getInt(item, "color", 0xFFFFFF)));
+            for (ItemStack item : ammoList) {
+            	IAmmo ammo = (IAmmo) item.getItem();
+				colors.add(new Color(ammo.getColor(item)));
+			}
 
             int numSegmentsPerArc = (int) Math.ceil(360d / colors.size());
 			float anglePerColor = (float) (2 * Math.PI / colors.size());
@@ -141,8 +143,10 @@ public class GunOverlay {
 
                 int width = 0;
                 List<ItemStack> ammoList = IAmmoConsumer.findAllAmmo(Minecraft.getMinecraft().player, color);
-                for (ItemStack ammo : ammoList)
-                    width = Math.min(28, width + (ammo.getMaxDamage() - ammo.getItemDamage()) * 28 / ammo.getMaxDamage());
+                for (ItemStack ammo : ammoList) {
+                	IAmmo ammoItem = (IAmmo) ammo.getItem();
+					width = Math.min(28, width + (int) (ammoItem.remainingPercentage(ammo) * 28));
+				}
 
                 texHandleVignette.bind();
                 GlStateManager.translate(-posX, -posY / 2, 0);

@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.client;
 import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.IAmmo;
 import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.network.PacketAmmoColorChange;
@@ -46,12 +47,11 @@ public class EventHandlerClient {
             if (stack != null && stack.getItem() instanceof IAmmoConsumer) {
 
                 List<ItemStack> ammoList = IAmmoConsumer.findAllAmmo(Minecraft.getMinecraft().player);
-                if (ammoList.size() <= 0)
-                {
-                	event.setCanceled(true);
-                	return;
+                if (ammoList.size() <= 0) {
+                    event.setCanceled(true);
+                    return;
                 }
-                Set<Color> colorSet = ammoList.stream().map(ammo -> new Color(ItemNBTHelper.getInt(ammo, "color", 0xFFFFF), true)).collect(Collectors.toSet());
+                Set<Color> colorSet = ammoList.stream().map(ammo -> new Color(((IAmmo) ammo.getItem()).getColor(ammo), true)).collect(Collectors.toSet());
                 List<Color> colors = new ArrayList<>(colorSet);
 
                 Color gunColor = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
@@ -63,19 +63,16 @@ public class EventHandlerClient {
                     }
                 if (slot == -1) slot = 0;
 
-                if (event.getDwheel() > 0)
-                {
-                	if (colors.size() - 1 >= slot + 1)
-                		PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(slot + 1)));
-                	else
-                		PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(0)));
-                }
-                else if (event.getDwheel() < 0)
-                {
-                	if (slot - 1 >= 0)
-                		PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(slot - 1)));
-                	else
-                		PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(colors.size() - 1)));
+                if (event.getDwheel() > 0) {
+                    if (colors.size() - 1 >= slot + 1)
+                        PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(slot + 1)));
+                    else
+                        PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(0)));
+                } else if (event.getDwheel() < 0) {
+                    if (slot - 1 >= 0)
+                        PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(slot - 1)));
+                    else
+                        PacketHandler.NETWORK.sendToServer(new PacketAmmoColorChange(Minecraft.getMinecraft().player.inventory.getSlotFor(stack), colors.get(colors.size() - 1)));
                 }
                 event.setCanceled(true);
             }
