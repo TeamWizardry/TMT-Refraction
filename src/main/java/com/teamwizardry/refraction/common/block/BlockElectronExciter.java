@@ -10,6 +10,7 @@ import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
 import com.teamwizardry.refraction.common.effect.EffectAttract;
 import com.teamwizardry.refraction.common.effect.EffectDisperse;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
@@ -211,7 +212,7 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 
 	@Override
 	public boolean isToolEffective(String type, IBlockState state) {
-		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
+		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	@Override

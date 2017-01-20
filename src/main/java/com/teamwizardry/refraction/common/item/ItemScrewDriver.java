@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.item;
 
-import com.google.common.collect.Sets;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.librarianlib.common.util.MethodHandleHelper;
@@ -22,8 +21,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
-
 import static com.teamwizardry.refraction.api.IPrecision.Helper.*;
 
 /**
@@ -34,20 +31,24 @@ public class ItemScrewDriver extends ItemMod {
 
 	@SideOnly(Side.CLIENT)
 	private static Function2<GuiIngame, Object, Unit> remainingHighlightTicksSetter;
-
 	private static boolean setUpSetter = false;
+
+	public static final String SCREWDRIVER_TOOL_CLASS = "screwdriver";
+	public static final float EFFICIENCY_ON_PROPER_MATERIAL = 6;
 
 	public ItemScrewDriver() {
 		super("screw_driver");
 		setMaxStackSize(1);
+		setHarvestLevel(SCREWDRIVER_TOOL_CLASS, 3);
 	}
 
+	@NotNull
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		IBlockState state = worldIn.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (!(block instanceof IPrecision) && block.isToolEffective("screwdriver", state) && playerIn.isSneaking()) {
+		if (!(block instanceof IPrecision) && block.isToolEffective(SCREWDRIVER_TOOL_CLASS, state) && playerIn.isSneaking()) {
 			block.dropBlockAsItem(worldIn, pos, state, 0);
 			worldIn.setBlockToAir(pos);
 			worldIn.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, 1, 1);
@@ -70,8 +71,9 @@ public class ItemScrewDriver extends ItemMod {
 		}
 	}
 
+	@NotNull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(@NotNull ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		int ori = getRotationIndex(stack);
 		int i = MathHelper.clamp(playerIn.isSneaking() ? ori - 1 : ori + 1, 0, multipliers.length - 1);
 		if (ori == i)
@@ -102,14 +104,9 @@ public class ItemScrewDriver extends ItemMod {
 
 	@Override
 	public float getStrVsBlock(ItemStack stack, IBlockState state) {
-		if (state.getBlock().isToolEffective("screwdriver", state))
-			return 6.0F;
-		return super.getStrVsBlock(stack, state);
-	}
-
-	@NotNull
-	@Override
-	public Set<String> getToolClasses(ItemStack stack) {
-		return Sets.newHashSet("screwdriver");
+		for (String type : getToolClasses(stack))
+			if (state.getBlock().isToolEffective(type, state))
+				return EFFICIENCY_ON_PROPER_MATERIAL;
+		return 1.0F;
 	}
 }

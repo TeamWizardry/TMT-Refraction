@@ -9,6 +9,7 @@ import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.client.render.RenderSplitter;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -170,6 +171,6 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 
 	@Override
 	public boolean isToolEffective(String type, IBlockState state) {
-		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
+		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 }

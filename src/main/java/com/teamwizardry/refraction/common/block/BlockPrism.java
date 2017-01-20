@@ -10,6 +10,7 @@ import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -276,7 +277,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 
     @Override
     public boolean isToolEffective(String type, IBlockState state) {
-        return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
+        return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
     }
 
     public static class RayTraceResultData<T> extends RayTraceResult {

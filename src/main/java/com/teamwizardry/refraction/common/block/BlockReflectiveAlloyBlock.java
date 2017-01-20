@@ -6,6 +6,7 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -77,6 +78,6 @@ public class BlockReflectiveAlloyBlock extends BlockMod implements IBeamHandler 
 
     @Override
     public boolean isToolEffective(String type, IBlockState state) {
-        return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
+        return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
     }
 }

@@ -8,6 +8,7 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -398,7 +399,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 
 	@Override
 	public boolean isToolEffective(String type, @NotNull IBlockState state) {
-		return Objects.equals(type, "pickaxe") || Objects.equals(type, "screwdriver");
+		return Objects.equals(type, "pickaxe") || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	@Nullable

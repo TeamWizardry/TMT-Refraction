@@ -6,6 +6,7 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.client.render.RenderDiscoBall;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileDiscoBall;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -124,7 +125,7 @@ public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
 
 	@Override
 	public boolean isToolEffective(String type, IBlockState state) {
-		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
+		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	@Nullable

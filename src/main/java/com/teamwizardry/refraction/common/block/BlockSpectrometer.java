@@ -6,6 +6,7 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.client.render.RenderSpectrometer;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileSpectrometer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -104,6 +105,6 @@ public class BlockSpectrometer extends BlockModContainer implements IBeamHandler
 
 	@Override
 	public boolean isToolEffective(String type, IBlockState state) {
-		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
+		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 }

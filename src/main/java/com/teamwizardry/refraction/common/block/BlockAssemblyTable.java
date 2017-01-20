@@ -7,6 +7,7 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.client.render.RenderAssemblyTable;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileAssemblyTable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -124,6 +125,6 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 
 	@Override
 	public boolean isToolEffective(String type, IBlockState state) {
-		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
+		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 }

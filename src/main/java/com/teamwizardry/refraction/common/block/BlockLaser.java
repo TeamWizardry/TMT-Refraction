@@ -6,6 +6,7 @@ import com.teamwizardry.refraction.api.CapsUtils;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.IBeamImmune;
 import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileLaser;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -132,7 +133,7 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 
 	@Override
 	public boolean isToolEffective(String type, IBlockState state) {
-		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
+		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	@Override

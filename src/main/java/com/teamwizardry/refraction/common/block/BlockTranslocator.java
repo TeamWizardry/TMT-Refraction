@@ -11,6 +11,7 @@ import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
 import com.teamwizardry.refraction.common.effect.EffectDisperse;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -176,7 +177,7 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 
 	@Override
 	public boolean isToolEffective(String type, @NotNull IBlockState state) {
-		return Objects.equals(type, "pickaxe") || Objects.equals(type, "screwdriver");
+		return Objects.equals(type, "pickaxe") || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	@Nullable

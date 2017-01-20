@@ -8,6 +8,7 @@ import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.client.render.RenderReflectionChamber;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -97,6 +98,6 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 
 	@Override
 	public boolean isToolEffective(String type, IBlockState state) {
-		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
+		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 }

@@ -7,6 +7,7 @@ import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import kotlin.jvm.functions.Function2;
 import kotlin.jvm.functions.Function4;
 import net.minecraft.block.SoundType;
@@ -130,7 +131,7 @@ public class BlockFilter extends BlockMod implements IBeamHandler, IOpticConnect
 
 	@Override
 	public boolean isToolEffective(String type, IBlockState state) {
-		return super.isToolEffective(type, state) || Objects.equals(type, "screwdriver");
+		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	public enum EnumFilterType implements IStringSerializable {
