@@ -33,7 +33,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import static net.minecraft.util.EnumFacing.*;
 
@@ -165,7 +164,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 	private void spawnBeam(World world, Beam beam, Vec3d loc, EnumFacing dir) {
 		BlockPos newPos = new BlockPos(loc).offset(dir);
 		IBlockState state = world.getBlockState(newPos);
-		Beam newBeam = beam.createSimilarBeam(loc, getFacingVector(dir)).setUUID(UUID.randomUUID());
+		Beam newBeam = beam.createSimilarBeam(loc, getFacingVector(dir));
 		if (state.getBlock() instanceof IOpticConnectable) {
 			((IOpticConnectable) state.getBlock()).handleFiberBeam(world, newPos, newBeam);
 		} else newBeam.spawn();

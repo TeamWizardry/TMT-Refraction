@@ -32,6 +32,8 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 			return;
 		EnumFacing value = te.getWorld().getBlockState(te.getPos()).getValue(BlockSpectrometer.FACING);
 
+		drawNameplate(te, "TEST TEEEEEST", te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), 50);
+
 		double r = (te.currentColor.getRed() / 255.0);
 		double g = (te.currentColor.getGreen() / 255.0);
 		double b = (te.currentColor.getBlue() / 255.0);
@@ -47,6 +49,7 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 
 		GlStateManager.color(1, 1, 1, 1f);
 		GlStateManager.translate(x, y, z + 0.5);
+
 		if (value == EnumFacing.SOUTH) {
 			GlStateManager.translate(0, 0, 0.501);
 		} else if (value == EnumFacing.NORTH) {

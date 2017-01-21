@@ -12,7 +12,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
-import java.util.UUID;
 
 
 /**
@@ -84,8 +83,8 @@ public class TileSplitter extends TileMod implements ITickable {
 			Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
 			Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / 2);
-			beam.createSimilarBeam(outgoingDir).setUUID(UUID.randomUUID()).setColor(c).enableParticleBeginning().spawn();
-			beam.createSimilarBeam(incomingDir).setUUID(UUID.randomUUID()).setColor(c).enableParticleBeginning().spawn();
+			beam.createSimilarBeam(outgoingDir).setColor(c).enableParticleBeginning().spawn();
+			beam.createSimilarBeam(incomingDir).setColor(c).enableParticleBeginning().spawn();
 		}
 	}
 

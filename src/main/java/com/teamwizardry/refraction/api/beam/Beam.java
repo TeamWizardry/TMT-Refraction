@@ -390,11 +390,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
         return this;
     }
 
-    public Beam setUUID(UUID uuid) {
-//        this.uuid = uuid;
-        return this;
-    }
-
     /**
      * Will initialize all variables left to prepare before the beam actually spawns.
      *

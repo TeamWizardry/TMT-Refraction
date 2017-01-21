@@ -28,6 +28,39 @@
           ]
         },
         {
+          "title": "The Rainbow",
+          "text": [
+            "I'm first going to start off by teaching you the very concept and nature of light manipulation, so to start off: Light is made up of 3 primary colors: &c&lRed&r, &a&lGreen&r, and &1&lBlue&r. They are often merged into the familiar phrase '&c&lR&a&lG&1&lB&r'. You will base your color merging knowledge on those 3 primary colors.",
+            "",
+            "Light also has a strength, or in more technical terms is called 'alpha value'. In this mod, we represented this value as the 'white bar' indicating power/strength/amount/alpha or whatever you want to call it.",
+            "",
+            "",
+            "So now we have RGB and A (or RGBA). You start off with a white beam (which we will get to later in [Baby Steps]). A white beam or white color in general is a color mix of all three primary colors. It contains red, green, and blue in equal amounts merged.",
+            "",
+            "You will be basing your work on this knowledge because you want to acquire the many different colors from white beams which will be split (later on).",
+            "",
+            "",
+            "The way we represent the rgb values (in recipes and the spectrometer) is using ratios. So if the spectrometer is showing half red and half blue, it means it doesn't matter 'how much of blue and red in values' you have, it means that you just need a perfectly equal amount of both with respect to each other.",
+            "",
+            "The value that DOES matter and not as a ratio is the white bar which indicates alpha/strength/amount.",
+            "",
+            "You can see the recipe of the [recipe:refraction:reflection_chamber] on the right tab to see an example of the bars viewed in the recipes.",
+            "",
+            "",
+            "&c&l[!] FOR FUTURE REFERENCE [!]&r These values are by DEFAULT unless the modpack author tampered with them:",
+            "",
+            "Solar alpha/strength (used in magnifiers): 16",
+            "",
+            "Glowstone alpha/strength (used in laser blocks): 64"
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/rainbow.png",
+              "title": "RGB"
+            }
+          ]
+        },
+        {
           "title": "Baby Steps",
           "text": [
             "Ok, let's see here... Ah, yes. So you'll first want to make a [recipe:refraction:assembly_table]. This simple block will help you craft everything you need. I will guide you through the steps of its usage when we get to that.",
@@ -93,6 +126,20 @@
             "",
             "",
             "&c&l[!] WARNING [!]&r Do NOT place the prism in front of a beam just yet. Please read the next section before proceeding because the next part can be lethal to both your person and your surroundings if caution is not taken!"
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/prism_splitting.png",
+              "title": "Prism Splitting"
+            }
+          ]
+        },
+        {
+          "title": "Merging",
+          "text": [
+            "Due to much confusion relating to the crafting of blocks, I shall guide you on how to make the [recipe:refraction:reflection_chamber] step by step to help you out.",
+            "",
+            "First of all, you'll want to start off with "
           ],
           "extra": [
             {
@@ -235,7 +282,7 @@
         {
           "title": "Photon Cannon",
           "text": [
-            "The [recipe:photon_cannon] is a gun that continuously fires a beam provided you have a [recipe:light_cartridge] in your inventory.",
+            "The [recipe:refraction:photon_cannon] is a gun that continuously fires a beam provided you have a [recipe:refraction:light_cartridge] in your inventory.",
             "",
             "When holding the gun, the bar on the right side of your HUD will show up indicating the fuel or amount of ammo left in the loaded cartridge.",
             "",
