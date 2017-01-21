@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.client.render;
+package com.teamwizardry.refraction.client.core;
 
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.api.IPrecision;

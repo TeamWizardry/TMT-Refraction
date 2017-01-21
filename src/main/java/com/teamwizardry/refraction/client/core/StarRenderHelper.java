@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.client.render;
+package com.teamwizardry.refraction.client.core;
 
 import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import net.minecraft.client.renderer.GlStateManager;

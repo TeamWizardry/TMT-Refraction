@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.client.fx.particle.ParticleSpawner;
 import com.teamwizardry.librarianlib.client.fx.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.common.util.math.interpolate.StaticInterp;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.client.core.StarRenderHelper;
 import com.teamwizardry.refraction.common.entity.EntityGrenade;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;

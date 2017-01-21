@@ -3,7 +3,7 @@ package com.teamwizardry.refraction.common.item.armor;
 import com.teamwizardry.librarianlib.common.base.item.ItemModArmor;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.IReflectiveArmor;
-import com.teamwizardry.refraction.client.render.ModelReflectiveArmorHolder;
+import com.teamwizardry.refraction.client.core.ModelReflectiveArmorHolder;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;

@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.client.core.HudRenderHelper;
 import com.teamwizardry.refraction.common.block.BlockSpectrometer;
 import com.teamwizardry.refraction.common.tile.TileSpectrometer;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -15,7 +16,11 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Saad on 9/11/2016.
@@ -32,7 +37,12 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 			return;
 		EnumFacing value = te.getWorld().getBlockState(te.getPos()).getValue(BlockSpectrometer.FACING);
 
-		drawNameplate(te, "TEST TEEEEEST", te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), 50);
+		List<String> text = new ArrayList<>();
+		text.add(TextFormatting.RED + "Red: " + te.currentColor.getRed());
+		text.add(TextFormatting.GREEN + "Green: " + te.currentColor.getGreen());
+		text.add(TextFormatting.BLUE + "Blue: " + te.currentColor.getBlue());
+		text.add("Alpha: " + te.currentColor.getAlpha());
+		HudRenderHelper.renderHud(te.getWorld(), value, te.getPos(), x, y, z, text);
 
 		double r = (te.currentColor.getRed() / 255.0);
 		double g = (te.currentColor.getGreen() / 255.0);

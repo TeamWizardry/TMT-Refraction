@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.client.core.RenderLaserUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;

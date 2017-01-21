@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.client.core.StarRenderHelper;
 import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
 import com.teamwizardry.refraction.common.tile.TileDiscoBall;
