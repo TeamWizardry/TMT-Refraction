@@ -1,21 +1,36 @@
 package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.RotationHelper;
+import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.IReflectiveArmor;
+import com.teamwizardry.refraction.api.beam.modes.BeamMode;
+import com.teamwizardry.refraction.client.core.HudRenderHelper;
 import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by TheCodeWarrior
@@ -55,17 +70,48 @@ public class RenderReflectionChamber extends TileEntitySpecialRenderer<TileRefle
 		else
 			GlStateManager.shadeModel(GL11.GL_FLAT);
 
-		RenderHelper.disableStandardItemLighting();
-		GlStateManager.enableBlend();
-
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
+		GlStateManager.enableBlend();
+		GlStateManager.disableLighting();
+		GlStateManager.enableAlpha();
 		if (model != null)
 			Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelBrightnessColor(
 					model, 1.0F, 1, 1, 1);
 		GlStateManager.popMatrix();
 
-		RenderHelper.enableStandardItemLighting();
-		GlStateManager.disableBlend();
+		boolean flag = true;
+		for (ItemStack armor : Minecraft.getMinecraft().player.getArmorInventoryList()) {
+			if (armor == null) {
+				flag = false;
+				break;
+			}
+			if (!(armor.getItem() instanceof IReflectiveArmor)) {
+				flag = false;
+				break;
+			}
+		}
+		if (flag) {
+			List<String> text = new ArrayList<>();
+			if (te.getWorld().isRemote || te.beams.isEmpty()) {
+				Set<Color> colors = new HashSet<>();
+				List<Vec3d> angles = new ArrayList<>();
+
+				for (BeamMode mode : te.beamData.keySet()) {
+					Set<Beam> beamSet = te.beamData.get(mode);
+
+					angles.addAll(beamSet.stream().map(beam -> beam.slope).collect(Collectors.toList()));
+					colors.add(te.mergeColors(mode));
+				}
+				Vec3d outputDir = RotationHelper.averageDirection(angles);
+				EnumFacing facing = EnumFacing.getFacingFromVector((float) outputDir.xCoord, (float) outputDir.yCoord, (float) outputDir.zCoord);
+				Color color = te.mergeColors(colors);
+				text.add(TextFormatting.RED + "Red: " + color.getRed());
+				text.add(TextFormatting.GREEN + "Green: " + color.getGreen());
+				text.add(TextFormatting.BLUE + "Blue: " + color.getBlue());
+				text.add("Strength: " + color.getAlpha());
+				HudRenderHelper.renderHud(te.getWorld(), facing, HudRenderHelper.HudOrientation.HUD_TOPLAYER, te.getPos(), x, y, z, text);
+			}
+		}
 	}
 }

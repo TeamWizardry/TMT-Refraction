@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
@@ -21,6 +20,21 @@ public class HudRenderHelper {
 		HudRenderHelper.HudPlacement hudPlacement = world.isAirBlock(position.up()) ? HudRenderHelper.HudPlacement.HUD_ABOVE : HudRenderHelper.HudPlacement.HUD_ABOVE_FRONT;
 		HudRenderHelper.HudOrientation hudOrientation = HudOrientation.HUD_SOUTH;
 		HudRenderHelper.renderHud(text, hudPlacement, hudOrientation, orientation, x, y, z);
+	}
+
+	public static void renderHud(World world, EnumFacing orientation, HudOrientation hudOrientation, BlockPos position, double x, double y, double z, List<String> text) {
+		HudRenderHelper.HudPlacement hudPlacement = world.isAirBlock(position.up()) ? HudRenderHelper.HudPlacement.HUD_ABOVE : HudRenderHelper.HudPlacement.HUD_ABOVE_FRONT;
+		boolean renderAllSides = false;
+		if (hudOrientation == HudOrientation.HUD_TOPLAYER_HORIZ || hudOrientation == HudOrientation.HUD_TOPLAYER) {
+			if (hudPlacement == HudPlacement.HUD_ABOVE_FRONT)
+				renderAllSides = true;
+		}
+		if (renderAllSides) {
+			HudRenderHelper.renderHud(text, hudPlacement, HudOrientation.HUD_SOUTH, EnumFacing.EAST, x, y, z);
+			HudRenderHelper.renderHud(text, hudPlacement, HudOrientation.HUD_SOUTH, EnumFacing.WEST, x, y, z);
+			HudRenderHelper.renderHud(text, hudPlacement, HudOrientation.HUD_SOUTH, EnumFacing.SOUTH, x, y, z);
+			HudRenderHelper.renderHud(text, hudPlacement, HudOrientation.HUD_SOUTH, EnumFacing.NORTH, x, y, z);
+		} else HudRenderHelper.renderHud(text, hudPlacement, hudOrientation, orientation, x, y, z);
 	}
 
 	public static void renderHud(List<String> messages,
@@ -64,7 +78,6 @@ public class HudRenderHelper {
 		GlStateManager.disableCull();
 		GlStateManager.disableTexture2D();
 		GlStateManager.enableBlend();
-		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 
 		String longest = "";
 		FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
@@ -72,7 +85,7 @@ public class HudRenderHelper {
 			if (fr.getStringWidth(s) > fr.getStringWidth(longest)) longest = s;
 		}
 
-		double width = fr.getStringWidth(longest) / 150.0;
+		double width = fr.getStringWidth(longest) / 180.0;
 		double height = messages.size() / 20.0;
 
 		GlStateManager.translate(0, height, 0.04);
@@ -87,19 +100,26 @@ public class HudRenderHelper {
 		GlStateManager.translate(0, -height, -0.04);
 
 		GlStateManager.enableTexture2D();
-		GlStateManager.translate(0, -height / 2.0, 0);
-
 		RenderHelper.disableStandardItemLighting();
-		Minecraft.getMinecraft().entityRenderer.disableLightmap();
 		GlStateManager.disableBlend();
 		GlStateManager.disableLighting();
+		Minecraft.getMinecraft().entityRenderer.disableLightmap();
 
-		renderText(Minecraft.getMinecraft().fontRendererObj, messages);
+		GlStateManager.translate(-0.5F, 0.5F, 0.05F);
+		float f3 = 0.0075F;
+		GlStateManager.scale(f3 * 1.0f, -f3 * 1.0f, f3);
+
+		for (String s : messages) {
+			fr.drawString(s,
+					(int) ((fr.getStringWidth(longest) / 2) - (fr.getStringWidth(s) / 2.0) + (fr.getStringWidth(longest) / 2)),
+					(int) ((messages.indexOf(s) * fr.FONT_HEIGHT) + (messages.size() * fr.FONT_HEIGHT / 2.0)),
+					0xFFFFFF);
+		}
 
 		Minecraft.getMinecraft().entityRenderer.enableLightmap();
+		RenderHelper.enableStandardItemLighting();
 		GlStateManager.enableLighting();
 		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		GlStateManager.popMatrix();
 	}
@@ -141,14 +161,16 @@ public class HudRenderHelper {
 		int logsize = messages.size();
 		int i = 0;
 		for (String s : messages) {
-			if (i >= logsize - 11) {
-				// Check if this module has enough room
-				if (currenty + height <= 124) {
-					fontrenderer.drawString(fontrenderer.trimStringToWidth(s, 115), 65 - (fontrenderer.getStringWidth(s) / 2), currenty, 0xffffff);
-					currenty += height;
-				}
-			}
+			fontrenderer.drawString(s, 0, fontrenderer.FONT_HEIGHT * i, 0xFFFFFF);
 			i++;
+			//if (i >= logsize - 11) {
+			//	// Check if this module has enough room
+			//	if (currenty + height <= 124) {
+			//		fontrenderer.drawString(fontrenderer.trimStringToWidth(s, 115), 65 - (fontrenderer.getStringWidth(s) / 2), currenty, 0xffffff);
+			//		currenty += height;
+			//	}
+			//}
+			//i++;
 		}
 	}
 
