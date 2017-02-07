@@ -62,8 +62,8 @@ public class ModBlocks {
 		ELECTRIC_LASER = new BlockElectricLaser();
 		INVISIBLE = new BlockInvisible();
 		INVISIBLE_REDSTONE = new BlockInvisibleRedstone();
-        BUILDER = new BlockBuilder();
-    }
+		//BUILDER = new BlockBuilder();
+	}
 
 	@SideOnly(Side.CLIENT)
 	public static void initModels() {

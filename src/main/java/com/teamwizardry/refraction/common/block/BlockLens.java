@@ -100,29 +100,31 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
 
     private void fireColor(World world, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Beam beam) {
         BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, world, pos, hitPos.subtract(ref), hitPos.add(ref));
-        assert r != null;
-        Vec3d normal = r.data;
-        ref = refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.GLASS_IOR + IORMod, ref, normal).normalize();
-        hitPos = r.hitVec;
-
-        for (int i = 0; i < 5; i++) {
-
-            r = collisionRayTraceLaser(state, world, pos, hitPos.add(ref), hitPos);
-            // trace backward so we don't hit hitPos first
-
-            assert r != null;
-            normal = r.data.scale(-1);
-            Vec3d oldRef = ref;
-            ref = refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
-            if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
-                ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
-                break;
-            }
-            showBeam(world, hitPos, r.hitVec, beam.color);
+        if (r != null && r.data != null) {
+            Vec3d normal = r.data;
+            ref = refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.GLASS_IOR + IORMod, ref, normal).normalize();
             hitPos = r.hitVec;
-        }
 
-        beam.createSimilarBeam(hitPos, ref).enableParticleBeginning().spawn();
+            for (int i = 0; i < 5; i++) {
+
+                r = collisionRayTraceLaser(state, world, pos, hitPos.add(ref), hitPos);
+                // trace backward so we don't hit hitPos first
+
+                if (r != null && r.data != null) {
+                    normal = r.data.scale(-1);
+                    Vec3d oldRef = ref;
+                    ref = refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
+                    if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
+                        ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
+                        break;
+                    }
+                    showBeam(world, hitPos, r.hitVec, beam.color);
+                    hitPos = r.hitVec;
+                }
+            }
+
+            beam.createSimilarBeam(hitPos, ref).enableParticleBeginning().spawn();
+        }
     }
 
     @Override

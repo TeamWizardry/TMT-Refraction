@@ -1,11 +1,6 @@
 package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.RotationHelper;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IReflectiveArmor;
-import com.teamwizardry.refraction.api.beam.modes.BeamMode;
-import com.teamwizardry.refraction.client.core.HudRenderHelper;
 import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
 import net.minecraft.client.Minecraft;
@@ -14,23 +9,12 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by TheCodeWarrior
@@ -80,7 +64,7 @@ public class RenderReflectionChamber extends TileEntitySpecialRenderer<TileRefle
 					model, 1.0F, 1, 1, 1);
 		GlStateManager.popMatrix();
 
-		boolean flag = true;
+		/*boolean flag = true;
 		for (ItemStack armor : Minecraft.getMinecraft().player.getArmorInventoryList()) {
 			if (armor == null) {
 				flag = false;
@@ -112,6 +96,6 @@ public class RenderReflectionChamber extends TileEntitySpecialRenderer<TileRefle
 				text.add("Strength: " + color.getAlpha());
 				HudRenderHelper.renderHud(te.getWorld(), facing, HudRenderHelper.HudOrientation.HUD_TOPLAYER, te.getPos(), x, y, z, text);
 			}
-		}
+		}*/
 	}
 }

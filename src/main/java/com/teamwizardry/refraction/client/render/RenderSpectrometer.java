@@ -4,26 +4,18 @@ import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.beam.IReflectiveArmor;
-import com.teamwizardry.refraction.client.core.HudRenderHelper;
 import com.teamwizardry.refraction.common.block.BlockSpectrometer;
 import com.teamwizardry.refraction.common.tile.TileSpectrometer;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Saad on 9/11/2016.
@@ -40,7 +32,7 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 			return;
 		EnumFacing value = te.getWorld().getBlockState(te.getPos()).getValue(BlockSpectrometer.FACING);
 
-		boolean flag = true;
+		/*boolean flag = true;
 		for (ItemStack armor : Minecraft.getMinecraft().player.getArmorInventoryList()) {
 			if (armor == null) {
 				flag = false;
@@ -58,7 +50,7 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 			text.add(TextFormatting.BLUE + "Blue: " + te.currentColor.getBlue());
 			text.add("Strength: " + te.currentColor.getAlpha());
 			HudRenderHelper.renderHud(te.getWorld(), value, te.getPos(), x, y, z, text);
-		}
+		}*/
 
 		double r = (te.currentColor.getRed() / 255.0);
 		double g = (te.currentColor.getGreen() / 255.0);
