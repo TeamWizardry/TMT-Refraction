@@ -71,25 +71,25 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
             if (state.getValue(BlockDiscoBall.FACING) == EnumFacing.UP) {
                 GlStateManager.rotate(180, 1, 0, 0);
                 GlStateManager.translate(0, -1, 0);
-                GlStateManager.rotate((float) te.tick, 0, 1, 0);
+                GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
             } else if (state.getValue(BlockDiscoBall.FACING) == EnumFacing.DOWN) {
-                GlStateManager.rotate((float) te.tick, 0, 1, 0);
+                GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
             } else if (state.getValue(BlockDiscoBall.FACING) == EnumFacing.EAST) {
                 GlStateManager.translate(0.5, 0.5, 0);
                 GlStateManager.rotate(90, 0, 0, 1);
-                GlStateManager.rotate((float) te.tick, 0, 1, 0);
+                GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
             } else if (state.getValue(BlockDiscoBall.FACING) == EnumFacing.WEST) {
                 GlStateManager.translate(-0.5, 0.5, 0);
                 GlStateManager.rotate(-90, 0, 0, 1);
-                GlStateManager.rotate((float) te.tick, 0, 1, 0);
+                GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
             } else if (state.getValue(BlockDiscoBall.FACING) == EnumFacing.NORTH) {
                 GlStateManager.translate(0, 0.5, -0.5);
                 GlStateManager.rotate(90, 1, 0, 0);
-                GlStateManager.rotate((float) te.tick, 0, 1, 0);
+                GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
             } else {
                 GlStateManager.translate(0, 0.5, 0.5);
                 GlStateManager.rotate(-90, 1, 0, 0);
-                GlStateManager.rotate((float) te.tick, 0, 1, 0);
+                GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
             }
         }
 

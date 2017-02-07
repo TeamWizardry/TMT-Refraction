@@ -2,7 +2,6 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
-import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.MultipleBeamTile;
 import com.teamwizardry.refraction.api.beam.Beam;
@@ -32,8 +31,6 @@ import java.util.concurrent.ThreadLocalRandom;
 @TileRegister("disco_ball")
 public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 
-	@Save
-	public double tick = 0;
 	@NotNull
 	public Set<Color> colors = new HashSet<>();
 	@NotNull
@@ -112,13 +109,6 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 		if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) {
 			purge();
 			return;
-		}
-
-		tick += 5;
-		if (tick >= 360) {
-			tick = 0;
-			colors.clear();
-			markDirty();
 		}
 
 		if (beamlifes.isEmpty()) {

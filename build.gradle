@@ -46,20 +46,15 @@ minecraft {
 repositories {
     mavenCentral()
     maven { url "http://dvs1.progwml6.com/files/maven" }
-    maven { url "http://mobiusstrip.eu/maven" }
     maven {
-        name 'tterag maven'
-        url "http://maven.tterrag.com/"
-    }
-    maven {
-	name 'jared maven'
-	url "http://maven.blamejared.com"
+        name 'jared maven'
+        url "http://maven.blamejared.com"
     }
 }
 
 dependencies {
     deobfCompile "mezz.jei:jei_1.10.2:3.13.3.382:api"
-    compile "MineTweaker3:MineTweaker3-API:3.0.14.59"
+    compile "MineTweaker3:MineTweaker3-API:3.0.20.70"
     runtime "mezz.jei:jei_1.10.2:3.13.3.382"
 }
 
@@ -82,8 +77,8 @@ processResources {
     }
 }
 
-idea{
-    module{
+idea {
+    module {
         inheritOutputDirs = false
         outputDir = compileJava.destinationDir
         testOutputDir = compileTestJava.destinationDir
