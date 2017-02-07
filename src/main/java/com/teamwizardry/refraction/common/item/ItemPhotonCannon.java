@@ -76,7 +76,7 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemCol
 
         if (!ammoItem.drain(ammo, 1, true)) return;
 
-        int ammoColor = ammoItem.getColor(ammo);
+        int ammoColor = ammoItem.getInternalColor(ammo);
 
         if (ammoColor != color.getRGB())
             ItemNBTHelper.setInt(stack, "color", ammoColor);

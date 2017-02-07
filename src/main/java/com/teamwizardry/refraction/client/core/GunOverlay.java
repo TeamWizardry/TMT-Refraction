@@ -80,7 +80,7 @@ public class GunOverlay {
             Set<Color> colors = new HashSet<>();
             for (ItemStack item : ammoList) {
             	IAmmo ammo = (IAmmo) item.getItem();
-				colors.add(new Color(ammo.getColor(item)));
+	            colors.add(new Color(ammo.getInternalColor(item)));
 			}
 
             int numSegmentsPerArc = (int) Math.ceil(360d / colors.size());

@@ -51,7 +51,7 @@ public class EventHandlerClient {
                     event.setCanceled(true);
                     return;
                 }
-                Set<Color> colorSet = ammoList.stream().map(ammo -> new Color(((IAmmo) ammo.getItem()).getColor(ammo), true)).collect(Collectors.toSet());
+                Set<Color> colorSet = ammoList.stream().map(ammo -> new Color(((IAmmo) ammo.getItem()).getInternalColor(ammo), true)).collect(Collectors.toSet());
                 List<Color> colors = new ArrayList<>(colorSet);
 
                 Color gunColor = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);

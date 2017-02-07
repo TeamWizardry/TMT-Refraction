@@ -113,6 +113,7 @@ public class EffectPlace extends Effect {
 		if (facing == null) return;
 
 		fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, chosenStack, EnumHand.MAIN_HAND, beam.trace.getBlockPos().offset(facing), facing, 0, 0, 0);
+		if (chosenStack.stackSize <= 0) player.inventory.removeStackFromSlot(player.inventory.getSlotFor(chosenStack));
 	}
 
 	@Override

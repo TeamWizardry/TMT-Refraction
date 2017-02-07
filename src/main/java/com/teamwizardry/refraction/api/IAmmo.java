@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public interface IAmmo {
 	boolean hasColor(@NotNull ItemStack stack);
 
-	int getColor(@NotNull ItemStack stack);
+	int getInternalColor(@NotNull ItemStack stack);
 
 	boolean drain(@NotNull ItemStack stack, int amount, boolean simulate);
 

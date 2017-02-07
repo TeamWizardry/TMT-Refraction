@@ -76,6 +76,6 @@ public interface IAmmoConsumer {
 
 	static boolean isAmmo(@Nullable ItemStack stack, Color color) {
 		return isAmmo(stack)
-				&& Utils.doColorsMatchNoAlpha(color, new Color(((IAmmo) stack.getItem()).getColor(stack)));
+				&& Utils.doColorsMatchNoAlpha(color, new Color(((IAmmo) stack.getItem()).getInternalColor(stack)));
 	}
 }

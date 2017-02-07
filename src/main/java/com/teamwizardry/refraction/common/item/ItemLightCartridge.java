@@ -30,7 +30,7 @@ public class ItemLightCartridge extends ItemMod implements IAmmo, IItemColorProv
 
 	@Override
 	public boolean drain(@NotNull ItemStack stack, int amount, boolean simulate) {
-		if (stack.getMaxDamage() > amount + stack.getItemDamage()) return false;
+		if (stack.getItemDamage() + amount >= stack.getMaxDamage()) return false;
 		if (!simulate) stack.setItemDamage(amount + stack.getItemDamage());
 		return true;
 	}
@@ -40,16 +40,20 @@ public class ItemLightCartridge extends ItemMod implements IAmmo, IItemColorProv
 		return (stack.getMaxDamage() - stack.getItemDamage()) / (float) stack.getMaxDamage();
 	}
 
+	public int getColor(@NotNull ItemStack stack) {
+		Color c = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF));
+		float[] comps = c.getRGBComponents(null);
+		c = new Color(
+				(float) Math.max(comps[0] - 0.12, 0),
+				(float) Math.max(comps[1] - 0.12, 0),
+				(float) Math.max(comps[2] - 0.12, 0));
+		return ColorUtils.pulseColor(c).getRGB();
+	}
+
 	@Override
-    public int getColor(@NotNull ItemStack stack) {
-        Color c = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF));
-        float[] comps = c.getRGBComponents(null);
-        c = new Color(
-                (float) Math.max(comps[0] - 0.12, 0),
-                (float) Math.max(comps[1] - 0.12, 0),
-                (float) Math.max(comps[2] - 0.12, 0));
-        return ColorUtils.pulseColor(c).getRGB();
-    }
+	public int getInternalColor(@NotNull ItemStack stack) {
+		return ItemNBTHelper.getInt(stack, "color", 0xFFFFFF);
+	}
 
     @Nullable
     @Override
