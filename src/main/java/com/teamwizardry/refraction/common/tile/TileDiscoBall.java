@@ -65,7 +65,7 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 		if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) return;
 		if (beam.customName.equals("disco_ball_beam")) return;
 		if (beamlifes.size() > 20) return;
-
+		if (!colors.contains(beam.color)) colors.add(beam.color);
 
 		double radius = 5, rotX = ThreadLocalRandom.current().nextDouble(0, 360), rotZ = ThreadLocalRandom.current().nextDouble(0, 360);
 		int x = (int) (radius * MathHelper.cos((float) Math.toRadians(rotX)));
@@ -80,7 +80,7 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 				.setAllowedBounceTimes(ConfigValues.DISCO_BALL_BEAM_BOUNCE_LIMIT)
 				.setName("disco_ball_beam");
 		beamlifes.put(subBeam, 0);
-		markDirty();
+		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
 	}
 
 	@NotNull
@@ -104,6 +104,8 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 		}
 
 		List<Beam> modes = new ArrayList<>(beamlifes.keySet());
+		boolean match = false;
+		Color colorMatched = null;
 		for (Beam beam : modes) {
 			if (beamlifes.get(beam) >= 20) {
 				beamlifes.remove(beam);
@@ -112,6 +114,19 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 			beamlifes.put(beam, beamlifes.get(beam) + 1);
 			beam.setSlope(matrix.apply(beam.slope));
 			beam.spawn();
+
+			for (Color color : colors)
+				if (color.getRed() != beam.color.getRed()
+						|| color.getGreen() != beam.color.getGreen()
+						|| color.getBlue() != beam.color.getBlue()) {
+					colorMatched = color;
+					match = true;
+					break;
+				}
+		}
+		if (match) {
+			colors.remove(colorMatched);
+			world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
 		}
 
 		purge();

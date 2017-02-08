@@ -1,8 +1,6 @@
 package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.modes.BeamMode;
 import com.teamwizardry.refraction.client.core.StarRenderHelper;
 import com.teamwizardry.refraction.client.proxy.ClientProxy;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
@@ -22,6 +20,8 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 
 /**
  * Created by LordSaad44
@@ -98,13 +98,12 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
 			Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelBrightnessColor(ball, 1.0F, 1, 1, 1);
 
 		if (te.getWorld().isBlockIndirectlyGettingPowered(te.getPos()) > 0 || te.getWorld().isBlockPowered(te.getPos())) {
-			for (BeamMode mode : te.beamData.keySet())
-				for (Beam beam : te.beamData.get(mode)) {
-					GlStateManager.translate(0.5, 0.25, 0.5);
-					StarRenderHelper.renderStar(beam.color.getRGB(), 0.2f, 0.2f, 0.2f, beam.hashCode());
-					StarRenderHelper.renderStar(beam.color.brighter().getRGB(), 0.1f, 0.1f, 0.1f, beam.hashCode() + beam.hashCode());
-					GlStateManager.translate(-0.5, -0.25, -0.5);
-				}
+			for (Color color : te.colors) {
+				GlStateManager.translate(0.5, 0.25, 0.5);
+				StarRenderHelper.renderStar(color.getRGB(), 0.2f, 0.2f, 0.2f, color.hashCode());
+				StarRenderHelper.renderStar(color.brighter().getRGB(), 0.1f, 0.1f, 0.1f, color.hashCode() + color.hashCode());
+				GlStateManager.translate(-0.5, -0.25, -0.5);
+			}
 		}
 		GlStateManager.popMatrix();
 	}
