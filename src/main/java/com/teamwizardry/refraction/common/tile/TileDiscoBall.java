@@ -20,9 +20,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -62,24 +61,11 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 
 	@Override
 	public void handleBeam(Beam beam) {
+		super.handleBeam(beam);
 		if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) return;
 		if (beam.customName.equals("disco_ball_beam")) return;
 		if (beamlifes.size() > 20) return;
 
-		this.beams.add(beam);
-
-		boolean flag = true;
-		for (Color color : colors)
-			if (color.getRGB() == beam.color.getRGB()) {
-				flag = false;
-				break;
-			}
-		if (flag) {
-			colors.add(beam.color);
-			world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-		}
-
-		markDirty();
 
 		double radius = 5, rotX = ThreadLocalRandom.current().nextDouble(0, 360), rotZ = ThreadLocalRandom.current().nextDouble(0, 360);
 		int x = (int) (radius * MathHelper.cos((float) Math.toRadians(rotX)));
@@ -93,7 +79,8 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 				.setColor(new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / ThreadLocalRandom.current().nextDouble(2, 4))))
 				.setAllowedBounceTimes(ConfigValues.DISCO_BALL_BEAM_BOUNCE_LIMIT)
 				.setName("disco_ball_beam");
-		beamlifes.put(subBeam, 20);
+		beamlifes.put(subBeam, 0);
+		markDirty();
 	}
 
 	@NotNull
@@ -111,30 +98,21 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 			return;
 		}
 
-		if (beamlifes.isEmpty()) {
-			purge();
-			return;
+		if (matrix == null) {
+			matrix = new Matrix4();
+			matrix.rotate(Math.toRadians(5), new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getOpposite().getDirectionVec()));
 		}
 
-		Set<Beam> copy = new HashSet<>(beamlifes.keySet());
-
-		copy.forEach(beam -> {
-			if (beamlifes.get(beam) > 0)
-				beamlifes.put(beam, beamlifes.get(beam) - 1);
-			else {
+		List<Beam> modes = new ArrayList<>(beamlifes.keySet());
+		for (Beam beam : modes) {
+			if (beamlifes.get(beam) >= 20) {
 				beamlifes.remove(beam);
-				return;
+				continue;
 			}
-
-			if (matrix == null) {
-				matrix = new Matrix4();
-				matrix.rotate(Math.toRadians(5), new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getOpposite().getDirectionVec()));
-			}
-
-			Vec3d slope = matrix.apply(beam.slope);
-
-			beam.setSlope(slope).spawn();
-		});
+			beamlifes.put(beam, beamlifes.get(beam) + 1);
+			beam.setSlope(matrix.apply(beam.slope));
+			beam.spawn();
+		}
 
 		purge();
 	}

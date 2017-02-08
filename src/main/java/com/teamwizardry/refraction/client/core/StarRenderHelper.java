@@ -24,7 +24,7 @@ public final class StarRenderHelper {
 		if (ticks >= 100)
 			ticks = 200 - ticks - 1;
 
-		float f1 = ticks / 200F;
+		float f1 = (ticks + ClientTickHandler.getPartialTicks()) / 200F;
 		float f2 = 0F;
 		if (f1 > 0.7F)
 			f2 = (f1 - 0.7F) / 0.2F;
