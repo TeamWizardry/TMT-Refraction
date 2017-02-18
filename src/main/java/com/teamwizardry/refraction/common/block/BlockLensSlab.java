@@ -1,48 +1,46 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
+import com.teamwizardry.librarianlib.common.base.block.BlockModSlab;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
-import net.minecraft.block.material.Material;
+import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
+import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by LordSaad.
+ * Created by LordSaad44
  */
-public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
+public class BlockLensSlab extends BlockModSlab implements ILaserTrace, IBeamHandler {
 
-	public BlockLens() {
-		super("lens_block", Material.GLASS);
-		setHardness(1F);
+	public BlockLensSlab() {
+		super("lens", ModBlocks.LENS_BLOCK.getDefaultState());
 	}
 
-	public static Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {
-		double r = from / to, c = -normal.dotProduct(vec);
-		return vec.scale(r).add(normal.scale((r * c) - Math.sqrt(1 - (r * r) * (1 - (c * c)))));
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 
-	public static void showBeam(World world, Vec3d start, Vec3d end, Color color) {
-		if (!world.isRemote)
-			PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
-					new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	@Override
@@ -56,7 +54,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
 		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, world, pos, hitPos.subtract(ref), hitPos.add(ref));
 		if (r != null && r.data != null) {
 			Vec3d normal = r.data;
-			ref = refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.GLASS_IOR + IORMod, ref, normal).normalize();
+			ref = BlockLens.refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.GLASS_IOR + IORMod, ref, normal).normalize();
 			hitPos = r.hitVec;
 
 			for (int i = 0; i < 5; i++) {
@@ -67,12 +65,12 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
 				if (r != null && r.data != null) {
 					normal = r.data.scale(-1);
 					Vec3d oldRef = ref;
-					ref = refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
+					ref = BlockLens.refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
 					if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
 						ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
 						break;
 					}
-					showBeam(world, hitPos, r.hitVec, beam.color);
+					BlockLens.showBeam(world, hitPos, r.hitVec, beam.color);
 					hitPos = r.hitVec;
 				}
 			}
@@ -152,26 +150,5 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
 			return null;
 
 		return new BlockPrism.RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
-	}
-
-	@NotNull
-	@Override
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState blockState) {
-		return false;
-	}
-
-	@Override
-	public boolean isToolEffective(String type, @NotNull IBlockState state) {
-		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 }

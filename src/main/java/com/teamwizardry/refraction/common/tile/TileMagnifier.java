@@ -34,23 +34,23 @@ public class TileMagnifier extends TileMod implements ITickable {
 				&& !world.isRaining()) {
 			for (int y = 1; y < 10; y++) {
 				BlockPos lens = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
-				if (world.getBlockState(lens).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens))
+				if (world.getBlockState(lens).getBlock() != ModBlocks.LENS_SLAB || !world.canBlockSeeSky(lens))
 					continue;
-				if (world.getBlockState(lens.south()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.south()))
+				if (world.getBlockState(lens.south()).getBlock() != ModBlocks.LENS_SLAB || !world.canBlockSeeSky(lens.south()))
 					continue;
-				if (world.getBlockState(lens.north()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.north()))
+				if (world.getBlockState(lens.north()).getBlock() != ModBlocks.LENS_SLAB || !world.canBlockSeeSky(lens.north()))
 					continue;
-				if (world.getBlockState(lens.east()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.east()))
+				if (world.getBlockState(lens.east()).getBlock() != ModBlocks.LENS_SLAB || !world.canBlockSeeSky(lens.east()))
 					continue;
-				if (world.getBlockState(lens.west()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.west()))
+				if (world.getBlockState(lens.west()).getBlock() != ModBlocks.LENS_SLAB || !world.canBlockSeeSky(lens.west()))
 					continue;
-				if (world.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.south().west()))
+				if (world.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS_SLAB || !world.canBlockSeeSky(lens.south().west()))
 					continue;
-				if (world.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.south().east()))
+				if (world.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS_SLAB || !world.canBlockSeeSky(lens.south().east()))
 					continue;
-				if (world.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.north().west()))
+				if (world.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS_SLAB || !world.canBlockSeeSky(lens.north().west()))
 					continue;
-				if (world.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.north().east()))
+				if (world.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS_SLAB || !world.canBlockSeeSky(lens.north().east()))
 					continue;
 				hasLens = true;
 				break;

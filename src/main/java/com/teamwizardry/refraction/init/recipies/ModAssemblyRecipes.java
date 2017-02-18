@@ -6,7 +6,9 @@ import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import java.awt.*;
+
 import static com.teamwizardry.refraction.api.lib.LibOreDict.*;
 import static com.teamwizardry.refraction.api.recipe.AssemblyBehaviors.register;
 
@@ -38,14 +40,6 @@ public class ModAssemblyRecipes {
 				new Color(0, 255, 0, 16), new Color(0, 255, 0, 32),
 				LENS, LENS, LENS,
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
-		register("spectrometer", new ItemStack(ModBlocks.SPECTROMETER),
-				new Color(255, 255, 255, 49), new Color(255, 255, 255, 96),
-				LENS, LENS, LENS, LENS, LENS, LENS,
-				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
-				"gemDiamond", "gemDiamond",
-				"dyeBlue", "dyeBlue",
-				"dyeLime", "dyeLime",
-				"dyeRed", "dyeRed");
 		register("sensor", new ItemStack(ModBlocks.SENSOR),
 				new Color(255, 96, 0, 32), new Color(255, 160, 0, 64),
 				LENS, LENS, LENS, LENS, LENS, LENS,

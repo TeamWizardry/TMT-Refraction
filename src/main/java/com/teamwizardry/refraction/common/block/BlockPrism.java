@@ -2,7 +2,6 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
@@ -11,7 +10,6 @@ import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -30,7 +28,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
@@ -99,17 +96,6 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
 
             beam.createSimilarBeam(hitPos, ref, color).enableParticleBeginning().spawn();
         }
-    }
-
-    private Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {
-        double r = from / to, c = -normal.dotProduct(vec);
-        return vec.scale(r).add(normal.scale((r * c) - Math.sqrt(1 - (r * r) * (1 - (c * c)))));
-    }
-
-    private void showBeam(World world, Vec3d start, Vec3d end, Color color) {
-        if (!world.isRemote)
-            PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
-                    new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
     }
 
     @NotNull

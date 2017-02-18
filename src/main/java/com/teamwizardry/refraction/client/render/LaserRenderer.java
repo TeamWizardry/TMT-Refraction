@@ -63,6 +63,7 @@ public class LaserRenderer {
 			RenderLaserUtil.renderLaser(info.color, info.start, info.end);
 		RenderLaserUtil.finishRenderingLasers();
 		GlStateManager.disableBlend();
+		GlStateManager.disableAlpha();
 
 		GlStateManager.popMatrix();
 		GlStateManager.popAttrib();
