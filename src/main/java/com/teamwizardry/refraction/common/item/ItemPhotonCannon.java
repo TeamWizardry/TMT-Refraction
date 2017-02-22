@@ -9,11 +9,14 @@ import com.teamwizardry.refraction.api.IAmmo;
 import com.teamwizardry.refraction.api.IAmmoConsumer;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
+import com.teamwizardry.refraction.common.block.BlockFilter;
 import kotlin.jvm.functions.Function2;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
@@ -22,6 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by LordSaad.
@@ -41,6 +46,16 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemCol
     public EnumAction getItemUseAction(ItemStack stack) {
         if (ItemNBTHelper.getInt(stack, "color", -1) == -1 || GuiScreen.isAltKeyDown()) return EnumAction.NONE;
         return EnumAction.BOW;
+    }
+
+    @Override
+    public void getSubItems(@NotNull Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+        super.getSubItems(itemIn, tab, subItems);
+        for (BlockFilter.EnumFilterType type : BlockFilter.EnumFilterType.values()) {
+            ItemStack stack = new ItemStack(itemIn);
+            ItemNBTHelper.setInt(stack, "color", type.color);
+            subItems.add(stack);
+        }
     }
 
     @NotNull

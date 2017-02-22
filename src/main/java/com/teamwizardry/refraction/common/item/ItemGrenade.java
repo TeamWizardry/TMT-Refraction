@@ -4,16 +4,19 @@ import com.teamwizardry.librarianlib.client.util.ColorUtils;
 import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
+import com.teamwizardry.refraction.common.block.BlockFilter;
 import com.teamwizardry.refraction.common.entity.EntityGrenade;
 import com.teamwizardry.refraction.init.ModAchievements;
 import kotlin.jvm.functions.Function2;
 import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -24,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.util.List;
 
 import static net.minecraft.item.ItemBow.getArrowVelocity;
 
@@ -111,6 +115,16 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 	@Override
 	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
 		playerIn.addStat(ModAchievements.GRENADE);
+	}
+
+	@Override
+	public void getSubItems(@NotNull Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+		super.getSubItems(itemIn, tab, subItems);
+		for (BlockFilter.EnumFilterType type : BlockFilter.EnumFilterType.values()) {
+			ItemStack stack = new ItemStack(itemIn);
+			ItemNBTHelper.setInt(stack, "color", type.color);
+			subItems.add(stack);
+		}
 	}
 
 	@Nullable

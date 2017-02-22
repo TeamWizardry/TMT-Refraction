@@ -57,7 +57,7 @@ public class ModAssemblyRecipes {
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
 				LENS, LENS, LENS);
 		register("laser", new ItemStack(ModBlocks.LASER),
-				new Color(255, 64, 64, 81), new Color(255, 106, 106, 192),
+				new Color(255, 64, 64, 81), new Color(255, 106, 106, 128),
 				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,
 				"blockIron",
 				"dustRedstone", "dustRedstone", "dustRedstone",

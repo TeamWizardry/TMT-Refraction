@@ -5,12 +5,16 @@ import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider;
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.IAmmo;
+import com.teamwizardry.refraction.common.block.BlockFilter;
 import kotlin.jvm.functions.Function2;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * Created by LordSaad.
@@ -53,6 +57,16 @@ public class ItemLightCartridge extends ItemMod implements IAmmo, IItemColorProv
 	@Override
 	public int getInternalColor(@NotNull ItemStack stack) {
 		return ItemNBTHelper.getInt(stack, "color", 0xFFFFFF);
+	}
+
+	@Override
+	public void getSubItems(@NotNull Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+		super.getSubItems(itemIn, tab, subItems);
+		for (BlockFilter.EnumFilterType type : BlockFilter.EnumFilterType.values()) {
+			ItemStack stack = new ItemStack(itemIn);
+			ItemNBTHelper.setInt(stack, "color", type.color);
+			subItems.add(stack);
+		}
 	}
 
     @Nullable
