@@ -48,16 +48,6 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemCol
         return EnumAction.BOW;
     }
 
-    @Override
-    public void getSubItems(@NotNull Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        super.getSubItems(itemIn, tab, subItems);
-        for (BlockFilter.EnumFilterType type : BlockFilter.EnumFilterType.values()) {
-            ItemStack stack = new ItemStack(itemIn);
-            ItemNBTHelper.setInt(stack, "color", type.color | 0xFF000000);
-            subItems.add(stack);
-        }
-    }
-
     @NotNull
     @Override
     public ActionResult<ItemStack> onItemRightClick(@NotNull ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
@@ -96,7 +86,8 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemCol
         if (ammoColor != color.getRGB())
             ItemNBTHelper.setInt(stack, "color", ammoColor);
 
-        ammoItem.drain(ammo, 1, false);
+        if (!((EntityPlayer) playerIn).capabilities.isCreativeMode)
+            ammoItem.drain(ammo, 1, false);
 
         boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
         Vec3d cross = playerIn.getLook(1).crossProduct(new Vec3d(0, playerIn.getEyeHeight(), 0)).normalize().scale(playerIn.width / 2);
