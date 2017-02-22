@@ -10,11 +10,14 @@ import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.client.render.RenderSplitter;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
+import com.teamwizardry.refraction.common.tile.TileMirror;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -161,6 +164,23 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 		a = a.addVector(0.5, 0.5, 0.5);
 
 		return new RayTraceResult(a.add(new Vec3d(pos)), superResult == null ? EnumFacing.UP : superResult.sideHit, pos);
+	}
+
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		EnumFacing facing = BlockPistonBase.getFacingFromEntity(pos, placer);
+		TileSplitter mirror = getTE(worldIn, pos);
+		if (facing != EnumFacing.UP) {
+			if (facing == EnumFacing.DOWN) {
+				mirror.rotDestX = 180;
+				mirror.rotPrevX = 180;
+			} else {
+				mirror.rotDestX = 90;
+				mirror.rotPrevX = 90;
+				mirror.rotDestY = 360 - facing.getHorizontalAngle();
+				mirror.rotPrevY = 360 - facing.getHorizontalAngle();
+			}
+		}
 	}
 
 	@Nullable
