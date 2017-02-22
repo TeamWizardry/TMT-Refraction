@@ -12,9 +12,11 @@ import com.teamwizardry.refraction.client.render.RenderMirror;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileMirror;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -34,6 +36,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+
+import static net.minecraft.block.BlockDispenser.TRIGGERED;
 
 /**
  * Created by LordSaad44
@@ -167,6 +171,23 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 
 
 		return new RayTraceResult(a.add(new Vec3d(pos)), superResult == null ? EnumFacing.UP : superResult.sideHit, pos);
+	}
+
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		EnumFacing facing = BlockPistonBase.getFacingFromEntity(pos, placer);
+		TileMirror mirror = getTE(worldIn, pos);
+		if (facing != EnumFacing.UP) {
+			if (facing == EnumFacing.DOWN) {
+				mirror.rotDestX = 180;
+				mirror.rotPrevX = 180;
+			} else {
+				mirror.rotDestX = 90;
+				mirror.rotPrevX = 90;
+				mirror.rotDestY = 360 - facing.getHorizontalAngle();
+				mirror.rotPrevY = 360 - facing.getHorizontalAngle();
+			}
+		}
 	}
 
 	@Nullable
