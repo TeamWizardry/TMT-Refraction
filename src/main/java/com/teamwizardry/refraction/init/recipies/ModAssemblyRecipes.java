@@ -27,12 +27,12 @@ public class ModAssemblyRecipes {
 
 		// T1
 		register("prism", new ItemStack(ModBlocks.PRISM),
-				new Color(255, 255, 255, 17), new Color(255, 255, 255, 64),
+				new Color(255, 255, 255, 8), new Color(255, 255, 255, 64),
 				LENS, LENS, LENS, LENS, LENS, LENS);
 
 		// T2
 		register("reflection_chamber", new ItemStack(ModBlocks.REF_CHAMBER),
-				new Color(255, 96, 0, 32), new Color(255, 160, 0, 64),
+				new Color(255, 96, 0, 16), new Color(255, 160, 0, 64),
 				LENS, LENS, LENS, LENS, LENS, LENS,
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
 				"ingotIron", "ingotIron", "ingotIron");
@@ -41,14 +41,14 @@ public class ModAssemblyRecipes {
 				LENS, LENS, LENS,
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
 		register("sensor", new ItemStack(ModBlocks.SENSOR),
-				new Color(255, 96, 0, 32), new Color(255, 160, 0, 64),
+				new Color(255, 96, 0, 16), new Color(255, 160, 0, 64),
 				LENS, LENS, LENS, LENS, LENS, LENS,
 				"dustRedstone", "dustRedstone", "dustRedstone",
 				"gemDiamond", "gemDiamond");
 
 		// T3
 		register("electric_laser", new ItemStack(ModBlocks.ELECTRIC_LASER),
-				new Color(0, 96, 255, 54), new Color(0, 160, 255, 128),
+				new Color(0, 96, 255, 32), new Color(0, 160, 255, 128),
 				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,
 				"blockIron",
 				"dustRedstone", "dustRedstone", "dustRedstone",
@@ -57,7 +57,7 @@ public class ModAssemblyRecipes {
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
 				LENS, LENS, LENS);
 		register("laser", new ItemStack(ModBlocks.LASER),
-				new Color(255, 64, 64, 81), new Color(255, 106, 106, 128),
+				new Color(255, 64, 64, 32), new Color(255, 106, 106, 128),
 				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,
 				"blockIron",
 				"dustRedstone", "dustRedstone", "dustRedstone",
@@ -65,11 +65,11 @@ public class ModAssemblyRecipes {
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
 				LENS, LENS, LENS);
 		register("disco", new ItemStack(ModBlocks.DISCO_BALL),
-				new Color(255, 0, 255, 54), new Color(255, 0, 255, 128),
+				new Color(255, 0, 255, 64), new Color(255, 0, 255, 128),
 				"gemDiamond", "gemDiamond", "gemDiamond", "gemDiamond",
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
 		register("optic_fiber", new ItemStack(ModBlocks.OPTIC_FIBER, 4),
-				new Color(96, 0, 255, 54), new Color(160, 0, 255, 128),
+				new Color(96, 0, 255, 64), new Color(160, 0, 255, 128),
 				LENS, LENS, LENS,
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
 				"gemDiamond", "gemDiamond");
@@ -90,7 +90,7 @@ public class ModAssemblyRecipes {
 
 		// T5
 		register("axyz", new ItemStack(ModBlocks.AXYZ),
-				new Color(96, 1, 255, 225), new Color(160, 64, 255, 255),
+				new Color(96, 1, 255, 200), new Color(160, 64, 255, 255),
 				TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR, TRANSLOCATOR,
 				Blocks.CHORUS_FLOWER,
 				Blocks.PISTON, Blocks.PISTON);

@@ -3,10 +3,10 @@ package com.teamwizardry.refraction.common.tile;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
-import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -21,7 +21,13 @@ public class TileSpectrometer extends TileMod implements ITickable {
 
 	@Save
 	public Color maxColor = new Color(0, 0, 0, 0);
+	@Save
 	public Color currentColor = new Color(0, 0, 0, 0);
+	@Save
+	public Color checking = new Color(0, 0, 0, 0);
+	@Save
+	public double time;
+	public double maxTime = 30;
 	@NotNull
 	private List<Beam> lastTickBeams = new ArrayList<>();
 	@NotNull
@@ -64,10 +70,28 @@ public class TileSpectrometer extends TileMod implements ITickable {
 
 		block:
 		{
+
 			if (currentColor.getRGB() != maxColor.getRGB()) {
-				currentColor = Utils.mixColors(currentColor, maxColor, 0.9);
-				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-				markDirty();
+				if (time < maxTime) {
+					time++;
+
+					double red = Math.abs(maxColor.getRed() - checking.getRed()) * MathHelper.sin((float) ((maxColor.getRed() - checking.getRed()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getRed();
+					double green = Math.abs(maxColor.getGreen() - checking.getGreen()) * MathHelper.sin((float) ((maxColor.getGreen() - checking.getGreen()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getGreen();
+					double blue = Math.abs(maxColor.getBlue() - checking.getBlue()) * MathHelper.sin((float) ((maxColor.getBlue() - checking.getBlue()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getBlue();
+					double alpha = Math.abs(maxColor.getAlpha() - checking.getAlpha()) * MathHelper.sin((float) ((maxColor.getAlpha() - checking.getAlpha()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getAlpha();
+
+					currentColor = new Color((int) red, (int) green, (int) blue, (int) alpha);
+					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+					markDirty();
+
+					//Minecraft.getMinecraft().player.sendChatMessage(time + "");
+				} else {
+					checking = currentColor;
+					time = 0;
+				}
+			} else {
+				checking = currentColor;
+				time = 0;
 			}
 
 			if (beams.isEmpty()) {
@@ -101,11 +125,13 @@ public class TileSpectrometer extends TileMod implements ITickable {
 
 			if (color.getRGB() == maxColor.getRGB()) return;
 			this.maxColor = color;
+			time = 0;
 		}
 
 		lastTickBeams.clear();
 		lastTickBeams.addAll(beams);
 		beams.clear();
+
 		markDirty();
 	}
 }
