@@ -10,6 +10,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -27,11 +28,11 @@ public class TileMirror extends TileMod implements ITickable {
 	public boolean transitionX = false, transitionY = false, powered = false;
 	@Save
 	public long worldTime = 0;
-	public Beam[] beams;
 
 	public TileMirror() {
 	}
 
+	@NotNull
 	@SideOnly(Side.CLIENT)
 	@Override
 	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
@@ -39,7 +40,7 @@ public class TileMirror extends TileMod implements ITickable {
 	}
 
 	public float getRotX() {
-		return rotDestX;
+		return powered ? rotXPowered : rotXUnpowered;
 	}
 
 	public void setRotX(float rotX) {
@@ -53,7 +54,7 @@ public class TileMirror extends TileMod implements ITickable {
 	}
 
 	public float getRotY() {
-		return rotDestY;
+		return powered ? rotYPowered : rotYUnpowered;
 	}
 
 	public void setRotY(float rotY) {
@@ -66,50 +67,55 @@ public class TileMirror extends TileMod implements ITickable {
 		markDirty();
 	}
 
-	public void handle(Beam... beams) {
-		this.beams = beams;
-		if (beams.length == 0) return;
-		if (transitionX || transitionY) return;
+	public void handle(Beam beam) {
+		float x, y;
+		if (powered) {
+			x = rotXPowered;
+			y = rotYPowered;
+		} else {
+			x = rotXUnpowered;
+			y = rotYUnpowered;
+		}
 
 		Matrix4 matrix = new Matrix4();
-		matrix.rotate(Math.toRadians(getRotY()), new Vec3d(0, 1, 0));
-		matrix.rotate(Math.toRadians(getRotX()), new Vec3d(1, 0, 0));
+		matrix.rotate(Math.toRadians(y), new Vec3d(0, 1, 0));
+		matrix.rotate(Math.toRadians(x), new Vec3d(1, 0, 0));
 
 		Vec3d normal = matrix.apply(new Vec3d(0, 1, 0));
 
-		for (Beam beam : beams) {
-			Vec3d incomingDir = beam.finalLoc.subtract(beam.initLoc).normalize();
+		Vec3d incomingDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 
-			if (incomingDir.dotProduct(normal) > 0)
-				continue; // hit the back of the mirror, shouldn't reflect
+		if (incomingDir.dotProduct(normal) > 0)
+			return; // hit the back of the mirror, shouldn't reflect
 
-			Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
+		Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
-			Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
-			beam.createSimilarBeam(outgoingDir).setColor(c).enableParticleBeginning().spawn();
-		}
+		Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
+		beam.createSimilarBeam(outgoingDir).setColor(c).enableParticleBeginning().spawn();
 	}
 
 	@Override
 	public void update() {
-		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((rotPrevX - rotDestX) / 2.0), 15)),
-				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((rotPrevY - rotDestY) / 2.0), 15));
+		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((rotPrevX - rotDestX) / 2.0), 10)),
+				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((rotPrevY - rotDestY) / 2.0), 10));
 		double worldTimeTransition = (world.getTotalWorldTime() - worldTime);
-		float rotX = rotDestX, rotY = rotDestY;
 
+		float rotX, rotY;
 		if (transitionX) {
 			if (worldTimeTransition < transitionTimeMaxX) {
 				if (Math.round(rotDestX) > Math.round(rotPrevX))
 					rotX = -((rotDestX - rotPrevX) / 2) * MathHelper.cos((float) (worldTimeTransition * Math.PI / transitionTimeMaxX)) + (rotDestX + rotPrevX) / 2;
 				else
 					rotX = ((rotPrevX - rotDestX) / 2) * MathHelper.cos((float) (worldTimeTransition * Math.PI / transitionTimeMaxX)) + (rotDestX + rotPrevX) / 2;
+				if (powered) rotXPowered = rotX;
+				else rotXUnpowered = rotX;
 			} else {
 				rotX = rotDestX;
 				if (powered) rotXPowered = rotX;
 				else rotXUnpowered = rotX;
 				transitionX = false;
-				markDirty();
 			}
+			markDirty();
 		}
 		if (transitionY) {
 			if (worldTimeTransition < transitionTimeMaxY) {
@@ -117,35 +123,16 @@ public class TileMirror extends TileMod implements ITickable {
 					rotY = -((rotDestY - rotPrevY) / 2) * MathHelper.cos((float) (worldTimeTransition * Math.PI / transitionTimeMaxY)) + (rotDestY + rotPrevY) / 2;
 				else
 					rotY = ((rotPrevY - rotDestY) / 2) * MathHelper.cos((float) (worldTimeTransition * Math.PI / transitionTimeMaxY)) + (rotDestY + rotPrevY) / 2;
+				if (powered) rotYPowered = rotY;
+				else rotYUnpowered = rotY;
 			} else {
 				rotY = rotDestY;
 				if (powered) rotYPowered = rotY;
 				else rotYUnpowered = rotY;
 				transitionY = false;
-				markDirty();
 			}
+			markDirty();
 		}
-
-		if ((transitionX || transitionY) && beams != null) {
-			if (beams.length != 0) {
-				Matrix4 matrix = new Matrix4();
-				matrix.rotate(Math.toRadians(rotY), new Vec3d(0, 1, 0));
-				matrix.rotate(Math.toRadians(rotX), new Vec3d(1, 0, 0));
-
-				Vec3d normal = matrix.apply(new Vec3d(0, 1, 0));
-
-				for (Beam beam : beams) {
-					Vec3d incomingDir = beam.finalLoc.subtract(beam.initLoc).normalize();
-
-					if (incomingDir.dotProduct(normal) > 0) continue;
-
-					Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
-
-					Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
-					beam.createSimilarBeam(outgoingDir).setColor(c).enableParticleBeginning().spawn();
-				}
-			}
-		} else beams = null;
 	}
 
 	public boolean isPowered() {

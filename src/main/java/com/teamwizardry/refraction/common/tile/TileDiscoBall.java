@@ -5,11 +5,11 @@ import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.MultipleBeamTile;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.modes.BeamMode;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -28,7 +28,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by LordSaad44
  */
 @TileRegister("disco_ball")
-public class TileDiscoBall extends MultipleBeamTile implements ITickable {
+public class TileDiscoBall extends MultipleBeamTile {
 
 	@NotNull
 	public Set<Color> colors = new HashSet<>();
@@ -94,7 +94,6 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 	public void update() {
 		super.update();
 		if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) {
-			purge();
 			return;
 		}
 
@@ -104,8 +103,6 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 		}
 
 		List<Beam> modes = new ArrayList<>(beamlifes.keySet());
-		boolean match = false;
-		Color colorMatched = null;
 		for (Beam beam : modes) {
 			if (beamlifes.get(beam) >= 20) {
 				beamlifes.remove(beam);
@@ -114,21 +111,34 @@ public class TileDiscoBall extends MultipleBeamTile implements ITickable {
 			beamlifes.put(beam, beamlifes.get(beam) + 1);
 			beam.setSlope(matrix.apply(beam.slope));
 			beam.spawn();
+		}
 
-			for (Color color : colors)
-				if (color.getRed() != beam.color.getRed()
-						|| color.getGreen() != beam.color.getGreen()
-						|| color.getBlue() != beam.color.getBlue()) {
-					colorMatched = color;
-					match = true;
+		Set<Color> temp = new HashSet<>();
+		temp.addAll(colors);
+		Set<Color> primaryTemp = new HashSet<>();
+		for (BeamMode mode : beamOutputs.keySet()) {
+			Beam beam = beamOutputs.get(mode);
+			primaryTemp.add(beam.color);
+		}
+
+		boolean pass = true;
+		for (Color color1 : primaryTemp) {
+			boolean flag = false;
+			for (Color color2 : temp) {
+				if (color2.getRGB() == color1.getRGB()) {
+					flag = true;
 					break;
 				}
+			}
+			if (!flag) {
+				pass = false;
+				break;
+			}
 		}
-		if (match) {
-			colors.remove(colorMatched);
+		if (!pass) {
+			colors.clear();
+			colors.addAll(primaryTemp);
 			world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
 		}
-
-		purge();
 	}
 }

@@ -37,8 +37,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-import static net.minecraft.block.BlockDispenser.TRIGGERED;
-
 /**
  * Created by LordSaad44
  */
@@ -60,8 +58,9 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 	}
 
 	@Override
-	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
-		getTE(world, pos).handle(beams);
+	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+		getTE(world, pos).handle(beam);
+		return true;
 	}
 
 	@Override
@@ -177,17 +176,26 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		EnumFacing facing = BlockPistonBase.getFacingFromEntity(pos, placer);
 		TileMirror mirror = getTE(worldIn, pos);
-		if (facing != EnumFacing.UP) {
-			if (facing == EnumFacing.DOWN) {
-				mirror.rotDestX = 180;
-				mirror.rotPrevX = 180;
-			} else {
-				mirror.rotDestX = 90;
-				mirror.rotPrevX = 90;
-				mirror.rotDestY = 360 - facing.getHorizontalAngle();
-				mirror.rotPrevY = 360 - facing.getHorizontalAngle();
-			}
+
+		float x = 0, y = 0;
+
+		if (facing.getHorizontalAngle() == 0) {
+			x = 90;
+			y = 0;
+		} else if (facing.getHorizontalAngle() == 90) {
+			x = 270;
+			y = 90;
+		} else if (facing.getHorizontalAngle() == 270) {
+			x = -90;
+			y = 270;
+		} else if (facing.getHorizontalAngle() == 180) {
+			x = 90;
+			y = 180;
 		}
+		mirror.rotXPowered = x;
+		mirror.rotYPowered = y;
+		mirror.rotXUnpowered = x;
+		mirror.rotYUnpowered = y;
 	}
 
 	@Nullable

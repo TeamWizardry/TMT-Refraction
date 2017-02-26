@@ -38,16 +38,6 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		EnumFacing value = te.getWorld().getBlockState(te.getPos()).getValue(BlockSpectrometer.FACING);
 
 		boolean flag = true;
-		//for (ItemStack armor : Minecraft.getMinecraft().player.getArmorInventoryList()) {
-		//	if (armor == null) {
-		//		flag = false;
-		//		break;
-		//	}
-		//	if (!(armor.getItem() instanceof IReflectiveArmor)) {
-		//		flag = false;
-		//		break;
-		//	}
-		//}
 		if (flag) {
 			List<String> text = new ArrayList<>();
 			text.add(TextFormatting.RED + "Red: " + te.currentColor.getRed());
@@ -62,7 +52,6 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 		double b = (te.currentColor.getBlue() / 255.0);
 		double a = (te.currentColor.getAlpha() / 255.0);
 
-		// RED //
 		GlStateManager.pushMatrix();
 
 		GlStateManager.enableBlend();

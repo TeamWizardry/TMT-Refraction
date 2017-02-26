@@ -49,9 +49,9 @@
             "",
             "&c&l[!] FOR FUTURE REFERENCE [!]&r These values are by DEFAULT unless the modpack author tampered with them:",
             "",
-            "Solar alpha/strength (used in magnifiers): 16",
+            "Solar alpha/strength (used in magnifiers): [config:solar_strength]",
             "",
-            "Glowstone alpha/strength (used in laser blocks): 64"
+            "Glowstone alpha/strength (used in laser blocks): [config:glowstone_strength]"
           ],
           "extra": [
             {
@@ -86,7 +86,7 @@
             "Neither gold nor iron have the reflective properties you'd want to be able to play around with light, but they both are a step in the right direction.",
             "",
             "",
-            "To get something very reflective, craft an iron ingot with a gold ingot in a regular crafting window. The table requires redstone power to function, to get the components running.",
+            "To get something very reflective, craft an iron ingot with a gold ingot in a regular crafting window.",
             "",
             "",
             "It'll give you a highly [recipe:refraction:reflective_alloy], very useful for light manipulation."
@@ -97,13 +97,24 @@
           "text": [
             "Now that you have more reflective resources, you can dispense with the annoyance of placing the [recipe:refraction:magnifier] exactly above the table. By creating a [recipe:refraction:mirror] with reflective alloys and rotating it using a [recipe:refraction:screw_driver] you can redirect beams to any direction.",
             "",
-            "You can craft a [recipe:refraction:mirror] using the assembly table you craft. The Assembly table will allow you to make such materials, by using magnifiers to focus beams into it and providing a redstone signal, it will fuse the items inside of it together provided the beams being pointed into it evaluate to the correct color range and add up to the proper beam strength value (that also has a max and min per recipe).",
-            "You will only need 1 magnifier that produces 1 single weak beam to craft a mirror in the assembly table.",
-            "",
-            "Using the screwdriver on the air will decrease its precision, and sneak-using it will increase its precision. Using it on a mirror's top will rotate it horizontally, and on a mirror's side it'll rotate it vertically.",
+            "You can craft a [recipe:refraction:mirror] using the assembly table you crafted. The Assembly table will allow you to make such materials, by using magnifiers to focus beams into it and providing a &lredstone signal&r, it will fuse the items inside of it together provided the beams being pointed into it evaluate to the correct color range and add up to the proper beam strength value (that also has a max and min per recipe).",
             "",
             "",
-            "If you focus multiple beams into an assembly table, it'll be able to do more intense recipes, granting you more components to play with."
+            "&lIN LAYMAN'S TERMS:&r Each assembly table recipe requires different colored beams to be pointed at it and a specific alpha value range that needs to be met for it to be able to craft your item.&r",
+            "",
+            "If you focus multiple beams into an assembly table, it'll be able to do more intense recipes, granting you more components to play with which you can read about later. For now, let me tell you how to craft the mirror:",
+            "",
+            "",
+            "To figure out how many beams you need pointed at the assembly table to craft this, take the minimum alpha value the mirror requires in it's recipe and divide it by the alpha strength of the magnifiers ( [config:solar_strength] ) . This is the amount of beams you need to point at the assembly table.",
+            "",
+            "If the packmaker has not tampered with the recipe of this, the mirror should require one beam. Do double check.",
+            "",
+            "And if the packmaker hasn't tampered with the color values of the recipe as well, the recipe should only require a white beam since its recipe requires 255 of all 3 colors (red, green, blue) and requires an alpha value of [config:solar_strength]. Luckily, you presumable already made a setup for that! Feed the table the items by right clicking it and &lpowering it with a redstone signal&r. Red particles will signal progress, a green flash will signal completion",
+            "",
+            "",
+            "And now that you have a mirror:",
+            "",
+            "Using the screwdriver on the air will decrease its precision, and sneak-using it will increase its precision. Using it on a mirror's top will rotate it horizontally, and on a mirror's side will rotate it vertically."
           ],
           "extra": [
             {
@@ -126,20 +137,6 @@
             "",
             "",
             "&c&l[!] WARNING [!]&r Do NOT place the prism in front of a beam just yet. Please read the next section before proceeding because the next part can be lethal to both your person and your surroundings if caution is not taken!"
-          ],
-          "extra": [
-            {
-              "image": "refraction:textures/gui/tabletimages/prism_splitting.png",
-              "title": "Prism Splitting"
-            }
-          ]
-        },
-        {
-          "title": "Merging",
-          "text": [
-            "Due to much confusion relating to the crafting of blocks, I shall guide you on how to make the [recipe:refraction:reflection_chamber] step by step to help you out.",
-            "",
-            "First of all, you'll want to start off with "
           ],
           "extra": [
             {
@@ -207,6 +204,20 @@
             {
               "image": "refraction:textures/gui/tabletimages/reflection_chamber.png",
               "title": "Beam Merging"
+            }
+          ]
+        },
+        {
+          "title": "Merging",
+          "text": [
+            "Due to much confusion relating to the crafting of blocks, I shall guide you on how to make the [recipe:refraction:reflection_chamber] step by step to help you out.",
+            "",
+            "First of all, you'll want to start off with "
+          ],
+          "extra": [
+            {
+              "image": "refraction:textures/gui/tabletimages/prism_splitting.png",
+              "title": "Prism Splitting"
             }
           ]
         }

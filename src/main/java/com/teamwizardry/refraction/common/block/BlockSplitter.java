@@ -10,7 +10,6 @@ import com.teamwizardry.refraction.api.beam.IBeamHandler;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.client.render.RenderSplitter;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
-import com.teamwizardry.refraction.common.tile.TileMirror;
 import com.teamwizardry.refraction.common.tile.TileSplitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonBase;
@@ -59,8 +58,9 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 	}
 
 	@Override
-	public void handleBeams(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam... beams) {
-		getTE(world, pos).handle(beams);
+	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+		getTE(world, pos).handle(beam);
+		return true;
 	}
 
 	@Override
@@ -170,17 +170,25 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		EnumFacing facing = BlockPistonBase.getFacingFromEntity(pos, placer);
 		TileSplitter mirror = getTE(worldIn, pos);
-		if (facing != EnumFacing.UP) {
-			if (facing == EnumFacing.DOWN) {
-				mirror.rotDestX = 180;
-				mirror.rotPrevX = 180;
-			} else {
-				mirror.rotDestX = 90;
-				mirror.rotPrevX = 90;
-				mirror.rotDestY = 360 - facing.getHorizontalAngle();
-				mirror.rotPrevY = 360 - facing.getHorizontalAngle();
-			}
+		float x = 0, y = 0;
+
+		if (facing.getHorizontalAngle() == 0) {
+			x = 90;
+			y = 0;
+		} else if (facing.getHorizontalAngle() == 90) {
+			x = 270;
+			y = 90;
+		} else if (facing.getHorizontalAngle() == 270) {
+			x = -90;
+			y = 270;
+		} else if (facing.getHorizontalAngle() == 180) {
+			x = 90;
+			y = 180;
 		}
+		mirror.rotXPowered = x;
+		mirror.rotYPowered = y;
+		mirror.rotXUnpowered = x;
+		mirror.rotYUnpowered = y;
 	}
 
 	@Nullable

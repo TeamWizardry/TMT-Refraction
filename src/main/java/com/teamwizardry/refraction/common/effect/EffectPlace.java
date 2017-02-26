@@ -48,6 +48,14 @@ public class EffectPlace extends Effect {
 			fakePlayer = FakePlayerFactory.get((WorldServer) world, new GameProfile(UUID.randomUUID(), "Refraction Place Effect"));
 		fakePlayer.setSneaking(true);
 
+		if (item.getEntityItem().getItem() instanceof ItemBlock) {
+			fakePlayer.interactionManager.processRightClickBlock(
+					fakePlayer, world, item.getEntityItem(), EnumHand.MAIN_HAND,
+					beam.trace.getBlockPos(),
+					beam.trace.sideHit, 0, 0, 0);
+			return;
+		}
+
 		if (world.getTileEntity(beam.trace.getBlockPos()) == null) {
 			for (EnumFacing enumFacing : EnumFacing.VALUES) {
 				EnumActionResult result = fakePlayer.interactionManager.processRightClickBlock(

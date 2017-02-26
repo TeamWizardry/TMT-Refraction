@@ -27,7 +27,7 @@ public class ModAssemblyRecipes {
 
 		// T1
 		register("prism", new ItemStack(ModBlocks.PRISM),
-				new Color(255, 255, 255, 8), new Color(255, 255, 255, 64),
+				new Color(255, 255, 255, 16), new Color(255, 255, 255, 64),
 				LENS, LENS, LENS, LENS, LENS, LENS);
 
 		// T2

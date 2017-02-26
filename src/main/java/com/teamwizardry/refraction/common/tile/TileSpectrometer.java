@@ -1,37 +1,31 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
+import com.teamwizardry.refraction.api.MultipleBeamTile;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.modes.BeamMode;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 /**
  * Created by Saad on 9/11/2016.
  */
 @TileRegister("spectrometer")
-public class TileSpectrometer extends TileMod implements ITickable {
+public class TileSpectrometer extends MultipleBeamTile {
 
 	@Save
 	public Color maxColor = new Color(0, 0, 0, 0);
-	@Save
+
 	public Color currentColor = new Color(0, 0, 0, 0);
 	@Save
 	public Color checking = new Color(0, 0, 0, 0);
 	@Save
 	public double time;
-	public double maxTime = 30;
-	@NotNull
-	private List<Beam> lastTickBeams = new ArrayList<>();
-	@NotNull
-	private List<Beam> beams = new ArrayList<>();
+	public double maxTime = 20;
 
 	@Override
 	public void readCustomNBT(NBTTagCompound compound) {
@@ -43,95 +37,49 @@ public class TileSpectrometer extends TileMod implements ITickable {
 		compound.setInteger("current_color", currentColor.getRGB());
 	}
 
-	public void handle(Beam beam) {
-		for (Beam beam2 : beams)
-			if (beam2.doBeamsMatch(beam)) return;
-		this.beams.add(beam);
-		markDirty();
-	}
-
-	public boolean noChangeInBeams() {
-		if (beams.size() != lastTickBeams.size()) return false;
-		for (Beam beam : lastTickBeams) {
-			boolean flag = false;
-			for (Beam beam2 : beams)
-				if (beam.doBeamsMatch(beam2)) {
-					flag = true;
-					break;
-				}
-			if (!flag) return false;
-		}
-		return true;
-	}
-
 	@Override
 	public void update() {
+		super.update();
 		if (world.isRemote) return;
 
-		block:
-		{
+		if (currentColor.getRGB() != maxColor.getRGB()) {
+			if (time < maxTime) {
+				time++;
 
-			if (currentColor.getRGB() != maxColor.getRGB()) {
-				if (time < maxTime) {
-					time++;
+				double red = Math.abs(maxColor.getRed() - checking.getRed()) * MathHelper.sin((float) ((maxColor.getRed() - checking.getRed()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getRed();
+				double green = Math.abs(maxColor.getGreen() - checking.getGreen()) * MathHelper.sin((float) ((maxColor.getGreen() - checking.getGreen()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getGreen();
+				double blue = Math.abs(maxColor.getBlue() - checking.getBlue()) * MathHelper.sin((float) ((maxColor.getBlue() - checking.getBlue()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getBlue();
+				double alpha = Math.abs(maxColor.getAlpha() - checking.getAlpha()) * MathHelper.sin((float) ((maxColor.getAlpha() - checking.getAlpha()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getAlpha();
 
-					double red = Math.abs(maxColor.getRed() - checking.getRed()) * MathHelper.sin((float) ((maxColor.getRed() - checking.getRed()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getRed();
-					double green = Math.abs(maxColor.getGreen() - checking.getGreen()) * MathHelper.sin((float) ((maxColor.getGreen() - checking.getGreen()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getGreen();
-					double blue = Math.abs(maxColor.getBlue() - checking.getBlue()) * MathHelper.sin((float) ((maxColor.getBlue() - checking.getBlue()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getBlue();
-					double alpha = Math.abs(maxColor.getAlpha() - checking.getAlpha()) * MathHelper.sin((float) ((maxColor.getAlpha() - checking.getAlpha()) / 255.0 * Math.PI / 2.0 * (time / maxTime))) + checking.getAlpha();
+				currentColor = new Color((int) red, (int) green, (int) blue, (int) Math.min(alpha, 255.0));
+				world.notifyBlockUpdate(getPos(), world.getBlockState(getPos()), world.getBlockState(getPos()), 3);
+				markDirty();
 
-					currentColor = new Color((int) red, (int) green, (int) blue, (int) alpha);
-					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-					markDirty();
-
-					//Minecraft.getMinecraft().player.sendChatMessage(time + "");
-				} else {
-					checking = currentColor;
-					time = 0;
-				}
 			} else {
 				checking = currentColor;
 				time = 0;
 			}
-
-			if (beams.isEmpty()) {
-				maxColor = new Color(0, 0, 0, 0);
-				world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-				markDirty();
-				break block;
-			}
-
-			if (noChangeInBeams()) break block;
-
-			int red = 0;
-			int green = 0;
-			int blue = 0;
-			int alpha = 0;
-
-			for (Beam beam : beams) {
-				Color color = beam.color;
-				red += color.getRed() * (color.getAlpha() / 255f);
-				green += color.getGreen() * (color.getAlpha() / 255f);
-				blue += color.getBlue() * (color.getAlpha() / 255f);
-				alpha += color.getAlpha();
-			}
-			red = Math.min(red / beams.size(), 255);
-			green = Math.min(green / beams.size(), 255);
-			blue = Math.min(blue / beams.size(), 255);
-
-			float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
-			Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
-			color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
-
-			if (color.getRGB() == maxColor.getRGB()) return;
-			this.maxColor = color;
+		} else {
+			checking = currentColor;
 			time = 0;
 		}
 
-		lastTickBeams.clear();
-		lastTickBeams.addAll(beams);
-		beams.clear();
+		if (beamOutputs.isEmpty() && maxColor.getRGB() != new Color(0, 0, 0, 0).getRGB()) {
+			maxColor = new Color(0, 0, 0, 0);
+			world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+			markDirty();
+			return;
+		}
 
+		HashSet<Color> colors = new HashSet<>();
+		for (BeamMode mode : beamOutputs.keySet()) {
+			Beam beam = beamOutputs.get(mode);
+			colors.add(beam.color);
+		}
+		Color color = mergeColors(colors);
+
+		if (color.getRGB() == maxColor.getRGB()) return;
+		this.maxColor = color;
 		markDirty();
 	}
 }

@@ -55,6 +55,7 @@ public class TileMagnifier extends TileMod implements ITickable {
 				hasLens = true;
 				break;
 			}
+			hasLens = true;
 
 			if (hasLens) {
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5);
