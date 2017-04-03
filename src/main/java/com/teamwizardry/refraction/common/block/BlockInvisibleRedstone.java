@@ -17,8 +17,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -32,6 +32,9 @@ public class BlockInvisibleRedstone extends BlockModContainer {
 		super("invisible_redstone", Material.AIR);
 
 		setDefaultState(getDefaultState().withProperty(POWER, 0));
+
+		setLightLevel(15);
+		setLightOpacity(15);
 	}
 
 	@Override
@@ -91,13 +94,14 @@ public class BlockInvisibleRedstone extends BlockModContainer {
 	@Nullable
 	@Override
 	@Deprecated
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return Block.NULL_AABB;
 	}
 
 	@Override
 	@Deprecated
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
+
 	}
 
 	@Override

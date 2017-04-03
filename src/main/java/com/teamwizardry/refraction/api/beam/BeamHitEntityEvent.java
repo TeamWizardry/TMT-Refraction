@@ -5,7 +5,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * BeamHitEntityEvent is fired whenever a beam hits an entity.
@@ -19,31 +20,31 @@ import org.jetbrains.annotations.NotNull;
  */
 @Cancelable
 public class BeamHitEntityEvent extends Event {
-	@NotNull
+	@Nonnull
 	private final World world;
-	@NotNull
+	@Nonnull
 	private final Beam beam;
-	@NotNull
+	@Nonnull
 	private final Entity entityHit;
 
-	public BeamHitEntityEvent(@NotNull World world, @NotNull Beam beam, @NotNull Entity entityHit) {
+	public BeamHitEntityEvent(@Nonnull World world, @Nonnull Beam beam, @Nonnull Entity entityHit) {
 
 		this.world = world;
 		this.beam = beam;
 		this.entityHit = entityHit;
 	}
 
-	@NotNull
+	@Nonnull
 	public World getWorld() {
 		return world;
 	}
 
-	@NotNull
+	@Nonnull
 	public Beam getBeam() {
 		return beam;
 	}
 
-	@NotNull
+	@Nonnull
 	public Entity getEntityHit() {
 		return entityHit;
 	}

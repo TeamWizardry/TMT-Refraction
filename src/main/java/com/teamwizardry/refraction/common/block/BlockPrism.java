@@ -6,7 +6,7 @@ import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
@@ -30,8 +30,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +39,7 @@ import java.util.Objects;
 /**
  * Created by LordSaad44
  */
-public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
+public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 
     public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
@@ -50,7 +50,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
     }
 
     @Override
-    public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+    public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
         IBlockState state = world.getBlockState(pos);
 
         int sum = beam.color.getRed() + beam.color.getBlue() + beam.color.getGreen();
@@ -94,11 +94,11 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
                 }
             }
 
-            beam.createSimilarBeam(hitPos, ref, color).enableParticleBeginning().spawn();
+            beam.createSimilarBeam(hitPos, ref, color).spawn();
         }
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return this.getStateFromMeta(meta).withProperty(FACING, placer.getHorizontalFacing());
@@ -109,7 +109,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
         TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
@@ -120,27 +120,27 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
         return state.getValue(FACING).getIndex();
     }
 
-    @NotNull
+    @Nonnull
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING);
     }
 
-    @NotNull
+    @Nonnull
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.TRANSLUCENT;
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public IBlockState withRotation(@NotNull IBlockState state, Rotation rot) {
+    public IBlockState withRotation(@Nonnull IBlockState state, Rotation rot) {
         return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public IBlockState withMirror(@NotNull IBlockState state, Mirror mirrorIn) {
+    public IBlockState withMirror(@Nonnull IBlockState state, Mirror mirrorIn) {
         return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
@@ -175,7 +175,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
     }
 
     @Override
-    public boolean isBlockSolid(IBlockAccess worldIn, @NotNull BlockPos pos, EnumFacing side) {
+    public boolean isBlockSolid(IBlockAccess worldIn, @Nonnull BlockPos pos, EnumFacing side) {
         return false;
     }
 
@@ -185,7 +185,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, IBeamHandler {
     }
 
     @Override
-    public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
+    public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@Nonnull IBlockState blockState, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Vec3d startRaw, @Nonnull Vec3d endRaw) {
 
         EnumFacing facing = blockState.getValue(FACING);
 

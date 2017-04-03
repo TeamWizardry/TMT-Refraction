@@ -9,7 +9,7 @@ import com.teamwizardry.librarianlib.common.util.DimWithPos;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -45,10 +45,9 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -57,7 +56,7 @@ import java.util.List;
  * @author WireSegal
  *         Created at 9:34 PM on 11/12/16.
  */
-public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectable {
+public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable {
 
 	public static final PropertyBool[] PROPS = new PropertyBool[]{
 			PropertyBool.create("down"),
@@ -306,7 +305,7 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
 			private long prevTime = 0x80000000L;
 			private int curRand = -1;
 
-			@NotNull
+			@Nonnull
 			@Override
 			public String getUnlocalizedName(ItemStack par1ItemStack) {
 				if (par1ItemStack.getItemDamage() == 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
@@ -329,14 +328,14 @@ public class BlockAXYZ extends BlockMod implements IBeamHandler, IOpticConnectab
 	}
 
 	@Override
-	public boolean isToolEffective(String type, @NotNull IBlockState state) {
+	public boolean isToolEffective(String type, @Nonnull IBlockState state) {
 		return Objects.equals(type, "pickaxe") || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("NullableProblems")
-	public String getHarvestTool(@NotNull IBlockState state) {
+	public String getHarvestTool(@Nonnull IBlockState state) {
 		return "pickaxe";
 	}
 

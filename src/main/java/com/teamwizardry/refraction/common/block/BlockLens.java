@@ -5,7 +5,7 @@ import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
@@ -18,7 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -27,7 +26,7 @@ import java.util.Objects;
 /**
  * Created by LordSaad.
  */
-public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
+public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 
 	public BlockLens() {
 		super("lens_block", Material.GLASS);
@@ -77,12 +76,12 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
 				}
 			}
 
-			beam.createSimilarBeam(hitPos, ref).enableParticleBeginning().spawn();
+			beam.createSimilarBeam(hitPos, ref).spawn();
 		}
 	}
 
 	@Override
-	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
+	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@Nonnull IBlockState blockState, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Vec3d startRaw, @Nonnull Vec3d endRaw) {
 
 		EnumFacing facing = EnumFacing.UP;
 
@@ -154,7 +153,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
 		return new BlockPrism.RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
@@ -171,7 +170,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, IBeamHandler {
 	}
 
 	@Override
-	public boolean isToolEffective(String type, @NotNull IBlockState state) {
+	public boolean isToolEffective(String type, @Nonnull IBlockState state) {
 		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 }

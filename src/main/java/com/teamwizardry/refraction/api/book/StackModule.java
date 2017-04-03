@@ -6,9 +6,9 @@ import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -20,7 +20,7 @@ public class StackModule implements IParsedModule {
 	public final ItemStack stack;
 	public int x;
 	public int y;
-	@NotNull
+	@Nonnull
 	public ComponentText component;
 
 	public StackModule(TextAdapter textAdapter, @Nullable ItemStack stack, int x, int y) {
@@ -57,7 +57,7 @@ public class StackModule implements IParsedModule {
 		fr.setUnicodeFlag(false);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public ComponentText getComponent() {
 		return component;

@@ -30,7 +30,6 @@ public class ModBlocks {
 	public static BlockReflectiveAlloyBlock REFLECTIVE_ALLOY_BLOCK;
 	public static BlockTranslocator TRANSLOCATOR;
 	public static BlockAXYZ AXYZ;
-	public static BlockElectricLaser ELECTRIC_LASER;
 	public static BlockFilter FILTER;
 	public static BlockInvisible INVISIBLE;
 	public static BlockInvisibleRedstone INVISIBLE_REDSTONE;
@@ -61,10 +60,9 @@ public class ModBlocks {
 		OreDictionary.registerOre(LibOreDict.TRANSLOCATOR, TRANSLOCATOR);
 		AXYZ = new BlockAXYZ();
 		FILTER = new BlockFilter();
-		ELECTRIC_LASER = new BlockElectricLaser();
 		INVISIBLE = new BlockInvisible();
 		INVISIBLE_REDSTONE = new BlockInvisibleRedstone();
-		//BUILDER = new BlockBuilder();
+		BUILDER = new BlockBuilder();
 	}
 
 	@SideOnly(Side.CLIENT)

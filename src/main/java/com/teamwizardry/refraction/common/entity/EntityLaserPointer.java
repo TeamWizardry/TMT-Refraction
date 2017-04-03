@@ -18,8 +18,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.util.UUID;
@@ -51,7 +51,7 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 	}
 
 	@Override
-	protected void damageEntity(@NotNull DamageSource damageSrc, float damageAmount) {
+	protected void damageEntity(@Nonnull DamageSource damageSrc, float damageAmount) {
 		// noop
 	}
 
@@ -101,7 +101,7 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		return player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public EnumHandSide getPrimaryHand() {
 		return null;
@@ -114,7 +114,7 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		this.dataManager.register(HAND_HIT, false);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public Iterable<ItemStack> getArmorInventoryList() {
 		return ImmutableList.of();

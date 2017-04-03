@@ -5,7 +5,6 @@ import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.MultipleBeamTile;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.modes.BeamMode;
 import com.teamwizardry.refraction.common.block.BlockDiscoBall;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
@@ -16,9 +15,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -30,9 +29,9 @@ import java.util.concurrent.ThreadLocalRandom;
 @TileRegister("disco_ball")
 public class TileDiscoBall extends MultipleBeamTile {
 
-	@NotNull
+	@Nonnull
 	public Set<Color> colors = new HashSet<>();
-	@NotNull
+	@Nonnull
 	private HashMap<Beam, Integer> beamlifes = new HashMap<>();
 
 	@Nullable
@@ -83,7 +82,7 @@ public class TileDiscoBall extends MultipleBeamTile {
 		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
 	}
 
-	@NotNull
+	@Nonnull
 	@SideOnly(Side.CLIENT)
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
@@ -116,10 +115,9 @@ public class TileDiscoBall extends MultipleBeamTile {
 		Set<Color> temp = new HashSet<>();
 		temp.addAll(colors);
 		Set<Color> primaryTemp = new HashSet<>();
-		for (BeamMode mode : beamOutputs.keySet()) {
-			Beam beam = beamOutputs.get(mode);
+		Beam beam = outputBeam;
+		if (beam != null)
 			primaryTemp.add(beam.color);
-		}
 
 		boolean pass = true;
 		for (Color color1 : primaryTemp) {

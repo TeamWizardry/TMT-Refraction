@@ -4,7 +4,7 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileBuilder;
 import net.minecraft.block.SoundType;
@@ -18,15 +18,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Created by LordSaad.
  */
-public class BlockBuilder extends BlockModContainer implements IBeamHandler {
+public class BlockBuilder extends BlockModContainer implements ILightSink {
 
 	public BlockBuilder() {
 		super("builder", Material.IRON);
@@ -44,14 +44,14 @@ public class BlockBuilder extends BlockModContainer implements IBeamHandler {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (worldIn.isRemote)
-            playerIn.openGui(Refraction.instance, 1, playerIn.world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
-        return true;
+			playerIn.openGui(Refraction.instance, 1, playerIn.world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+		return true;
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 

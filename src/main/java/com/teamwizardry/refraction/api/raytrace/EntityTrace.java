@@ -17,20 +17,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
 public class EntityTrace {
 
-	@NotNull
+	@Nonnull
 	public World world;
-	@NotNull
+	@Nonnull
 	public Vec3d pos;
-	@NotNull
+	@Nonnull
 	public Vec3d slope;
 	public double range = ConfigValues.BEAM_RANGE;
 	public boolean ignoreEntities;
@@ -43,7 +43,7 @@ public class EntityTrace {
 	@Nullable
 	public RayTraceResult rayTraceResult;
 
-	public EntityTrace(@NotNull World world, @NotNull Vec3d pos, @NotNull Vec3d slope) {
+	public EntityTrace(@Nonnull World world, @Nonnull Vec3d pos, @Nonnull Vec3d slope) {
 		this.world = world;
 		this.pos = pos;
 		this.slope = slope;
@@ -52,7 +52,7 @@ public class EntityTrace {
 	/**
 	 * This constructor is for recasting, as it sets the range.
 	 */
-	public EntityTrace(@NotNull World world, @NotNull Beam beam) {
+	public EntityTrace(@Nonnull World world, @Nonnull Beam beam) {
 		this(world, beam.finalLoc.add(beam.slope.scale(0.05)), beam.slope);
 		BlockPos bpos = new BlockPos(beam.finalLoc.add(beam.slope));
 		IBlockState state = world.getBlockState(bpos);

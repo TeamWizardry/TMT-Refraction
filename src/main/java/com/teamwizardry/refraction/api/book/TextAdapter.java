@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.Loader;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,7 +34,7 @@ public class TextAdapter {
 	private JsonElement object;
 	private Set<Item> items = new HashSet<>();
 
-	public TextAdapter(@NotNull SubPage subPage, int id, @NotNull JsonElement object) {
+	public TextAdapter(@Nonnull SubPage subPage, int id, @Nonnull JsonElement object) {
 		this.subPage = subPage;
 		this.id = id;
 		this.object = object;

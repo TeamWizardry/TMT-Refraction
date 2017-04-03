@@ -19,9 +19,9 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,7 +70,7 @@ public class BlockCreativeLaser extends BlockModContainer implements IBeamImmune
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 
@@ -91,7 +91,7 @@ public class BlockCreativeLaser extends BlockModContainer implements IBeamImmune
 	}
 
 	@Override
-	public boolean isImmune(@NotNull World world, @NotNull BlockPos pos) {
+	public boolean isImmune(@Nonnull World world, @Nonnull BlockPos pos) {
 		return true;
 	}
 

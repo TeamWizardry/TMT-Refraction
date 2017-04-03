@@ -11,16 +11,16 @@ import com.teamwizardry.refraction.client.gui.RightSidebar;
  */
 public class LayerSelector extends RightSidebar {
 
-    public LayerSelector(GuiBuilder builder, ComponentList list, String title, Sprite icon, boolean up) {
-        super(list, title, icon, false, false);
+	public LayerSelector(GuiBuilder builder, ComponentList list, String title, Sprite icon, boolean up) {
+		super(list, title, icon, false, false);
 
-        component.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
-            if (event.getButton() == EnumMouseButton.LEFT) {
-                if (up) {
-                    if (builder.selectedLayer < builder.grid.length)
-                        builder.selectedLayer++;
-                } else if (builder.selectedLayer > 0) builder.selectedLayer--;
-            }
-        }));
-    }
+		component.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
+			if (event.getButton() == EnumMouseButton.LEFT) {
+				if (up) {
+					if (builder.selectedLayer < builder.grid.length)
+						builder.selectedLayer++;
+				} else if (builder.selectedLayer > 0) builder.selectedLayer--;
+			}
+		}));
+	}
 }

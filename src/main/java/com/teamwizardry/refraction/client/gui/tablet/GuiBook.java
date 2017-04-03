@@ -16,8 +16,8 @@ import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class GuiBook extends GuiBase {
 	private static Texture scaleTex = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/scale_icon.png"));
 	private static Sprite scaleSprite = scaleTex.getSprite("icon", 16, 16);
 
-	@NotNull
+	@Nonnull
 	public ArrayList<Page> pages = new ArrayList<>();
 	int selectedPage = 0;
 

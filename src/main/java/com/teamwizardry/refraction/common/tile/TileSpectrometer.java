@@ -4,7 +4,6 @@ import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.MultipleBeamTile;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.modes.BeamMode;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 
@@ -64,7 +63,7 @@ public class TileSpectrometer extends MultipleBeamTile {
 			time = 0;
 		}
 
-		if (beamOutputs.isEmpty() && maxColor.getRGB() != new Color(0, 0, 0, 0).getRGB()) {
+		if (outputBeam != null && maxColor.getRGB() != new Color(0, 0, 0, 0).getRGB()) {
 			maxColor = new Color(0, 0, 0, 0);
 			world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
 			markDirty();
@@ -72,10 +71,10 @@ public class TileSpectrometer extends MultipleBeamTile {
 		}
 
 		HashSet<Color> colors = new HashSet<>();
-		for (BeamMode mode : beamOutputs.keySet()) {
-			Beam beam = beamOutputs.get(mode);
+		Beam beam = outputBeam;
+		if (beam != null)
 			colors.add(beam.color);
-		}
+
 		Color color = mergeColors(colors);
 
 		if (color.getRGB() == maxColor.getRGB()) return;

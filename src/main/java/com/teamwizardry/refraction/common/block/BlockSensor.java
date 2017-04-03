@@ -4,9 +4,8 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -22,9 +21,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -32,7 +31,7 @@ import java.util.Random;
 /**
  * Created by LordSaad44
  */
-public class BlockSensor extends BlockMod implements IBeamHandler {
+public class BlockSensor extends BlockMod implements ILightSink {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 	public static final PropertyBool ON = PropertyBool.create("on");
@@ -90,14 +89,14 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+	public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighbor) {
+		IBlockState state = worldIn.getBlockState(pos);
 		EnumFacing enumfacing = state.getValue(FACING);
 
-		if (!this.canBlockStay(worldIn, pos, enumfacing)) {
-			this.dropBlockAsItem(worldIn, pos, state, 0);
-			worldIn.setBlockToAir(pos);
+		if (!this.canBlockStay((World) worldIn, pos, enumfacing)) {
+			this.dropBlockAsItem((World) worldIn, pos, state, 0);
+			((World) worldIn).setBlockToAir(pos);
 		}
-		super.neighborChanged(state, worldIn, pos, blockIn);
 	}
 
 	private boolean canBlockStay(World worldIn, BlockPos pos, EnumFacing facing) {
@@ -208,7 +207,7 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 	}
 
 	@Override
-	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		world.setBlockState(pos, world.getBlockState(pos).withProperty(ON, true));
 		for (EnumFacing facing : EnumFacing.VALUES)
 			world.notifyNeighborsOfStateExcept(pos.offset(facing), this, facing.getOpposite());
@@ -217,14 +216,14 @@ public class BlockSensor extends BlockMod implements IBeamHandler {
 	}
 
 	@Override
-	public boolean isToolEffective(String type, @NotNull IBlockState state) {
+	public boolean isToolEffective(String type, @Nonnull IBlockState state) {
 		return Objects.equals(type, "pickaxe") || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("NullableProblems")
-	public String getHarvestTool(@NotNull IBlockState state) {
+	public String getHarvestTool(@Nonnull IBlockState state) {
 		return "pickaxe";
 	}
 }

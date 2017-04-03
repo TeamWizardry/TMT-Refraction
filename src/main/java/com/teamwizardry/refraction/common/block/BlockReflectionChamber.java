@@ -6,7 +6,7 @@ import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.client.render.RenderReflectionChamber;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
@@ -25,17 +25,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Created by LordSaad44
  */
-public class BlockReflectionChamber extends BlockModContainer implements IOpticConnectable, IBeamHandler {
+public class BlockReflectionChamber extends BlockModContainer implements IOpticConnectable, ILightSink {
 
 	public BlockReflectionChamber() {
 		super("reflection_chamber", Material.IRON);
@@ -50,7 +49,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 
 	@Nonnull
 	@Override
-	public List<EnumFacing> getAvailableFacings(@NotNull IBlockState state, @NotNull IBlockAccess source, @NotNull BlockPos pos, @NotNull EnumFacing facing) {
+	public List<EnumFacing> getAvailableFacings(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos, @Nonnull EnumFacing facing) {
 		return Lists.newArrayList(EnumFacing.VALUES);
 	}
 
@@ -81,7 +80,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 	}
 
 	@Override
-	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null)
 			((TileReflectionChamber) te).handleBeam(beam);
@@ -89,7 +88,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 	}
 
 	@Override
-	public void handleFiberBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+	public void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		Vec3d slope = beam.slope.normalize().scale(0.5);
 		beam.initLoc.subtract(slope);
 		beam.finalLoc.subtract(slope);

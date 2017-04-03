@@ -1,7 +1,8 @@
 package com.teamwizardry.refraction.api.internal;
 
 import com.teamwizardry.refraction.api.beam.Beam;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author WireSegal
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  *         DO NOT IMPLEMENT THIS INTERFACE. This will cause Refraction to not work as intended.
  */
 public interface IInternalHandler {
-	void fireLaserPacket(@NotNull Beam beam);
+	void fireLaserPacket(@Nonnull Beam beam);
 
-	void runIfClient(@NotNull ClientRunnable runnable);
+	void runIfClient(@Nonnull ClientRunnable runnable);
 }

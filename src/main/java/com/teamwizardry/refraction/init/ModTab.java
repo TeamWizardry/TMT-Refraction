@@ -1,9 +1,9 @@
 package com.teamwizardry.refraction.init;
 
 import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * Created by Saad on 10/3/2016.
@@ -23,11 +23,11 @@ public class ModTab extends ModCreativeTab {
 	}
 
 	@Override
-	public Item getTabIconItem() {
-		return ModItems.SCREW_DRIVER;
+	public ItemStack getTabIconItem() {
+		return new ItemStack(ModItems.SCREW_DRIVER);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public ItemStack getIconStack() {
 		return new ItemStack(ModItems.SCREW_DRIVER);

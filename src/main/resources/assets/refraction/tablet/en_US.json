@@ -47,7 +47,7 @@
             "You can see the recipe of the [recipe:refraction:reflection_chamber] on the right tab to see an example of the bars viewed in the recipes.",
             "",
             "",
-            "&c&l[!] FOR FUTURE REFERENCE [!]&r These values are by DEFAULT unless the modpack author tampered with them:",
+            "&c&l[!] FOR FUTURE REFERENCE [!]&r",
             "",
             "Solar alpha/strength (used in magnifiers): [config:solar_strength]",
             "",
@@ -109,7 +109,7 @@
             "",
             "If the packmaker has not tampered with the recipe of this, the mirror should require one beam. Do double check.",
             "",
-            "And if the packmaker hasn't tampered with the color values of the recipe as well, the recipe should only require a white beam since its recipe requires 255 of all 3 colors (red, green, blue) and requires an alpha value of [config:solar_strength]. Luckily, you presumable already made a setup for that! Feed the table the items by right clicking it and &lpowering it with a redstone signal&r. Red particles will signal progress, a green flash will signal completion",
+            "And if the packmaker hasn't tampered with the color values of the recipe as well, the recipe should only require a white beam since its recipe requires 255 of all 3 colors (red, green, blue) and requires an alpha value of [config:solar_strength]. Luckily, you presumably already made a setup for that! Feed the table the items by right clicking it and &lpowering it with a redstone signal&r. Red particles will signal progress, a green flash will signal completion",
             "",
             "",
             "And now that you have a mirror:",
@@ -131,7 +131,7 @@
             "",
             "Different colors of beams can produce some effects. These effects can be highly beneficial to your needs, or just plain fun. I'll get to these effects later on, but to acquire them, you'll want to craft yourself a [recipe:refraction:prism].",
             "",
-            "This particular block will split a light beam into it's three basic colors: red, green, and blue. We'll get to the effects of these colors later on, as I've already said, but to acquire this block, you'll want a minimum of 5 mirrors all pointing into the assembly table with beams from magnifiers on each of them.",
+            "This particular block will split a light beam into it's three basic colors: red, green, and blue. We'll get to the effects of these colors later on, as I've already said, but to acquire this block, you'll want a minimum of 2 mirrors all pointing into the assembly table with beams from magnifiers on each of them.",
             "",
             "Next, right click the assembly table with 6 lens blocks to input the items and provide a redstone signal to the table and it will craft you your first prism.",
             "",
@@ -162,7 +162,7 @@
             "The green beam is a bonemeal beam. If pointed at a bonemealable block, it has a chance based on it's strength to bonemeal the block",
             "",
             "",
-            "And now comes the most dangerous part... The red beam is a burn beam. It has a chance based on it's strength to set any block it touches on fire and any entity it touches aflame. This beam is &mextremely&r dangerous",
+            "And now comes the most dangerous part... The red beam is a burn beam. It has a chance based on it's strength to set any block it touches on fire and any entity it touches aflame. This beam is &lextremely&r dangerous",
             " if not created with caution because it can and WILL burn down your surroundings easily if you are not careful. This is especially true because of the green beam, because if an area gets bonemealed and burnt, it will cause",
             " tons of fire based damage to your area.",
             "",
@@ -183,7 +183,7 @@
             "",
             "This block will merge any two or more beams that intersect with it and produce a final beam based on the weighted average of all the colors that went into it, taking into account color strength as well as outputting the beam in an averaged angle between them all.",
             "",
-            "This block is extremely useful as it is able to produce the entire color spectrum if use right. You'll want it to use the rest of the effects in the mod, which are:",
+            "This block is extremely useful as it is able to produce the entire color spectrum if used right. You'll want it to use the rest of the effects in the mod, which are:",
             "",
             "",
             "Cyan: Attract entities (items). If the beam is strong enough, it will attract any living entity.",
@@ -212,7 +212,24 @@
           "text": [
             "Due to much confusion relating to the crafting of blocks, I shall guide you on how to make the [recipe:refraction:reflection_chamber] step by step to help you out.",
             "",
-            "First of all, you'll want to start off with "
+            "",
+            "First of all, looking at the recipe: it requires 'half green' (since we work with ratios in the 3 colors), no blue, and full red. IE: We need twice as much red than green.",
+            "",
+            "",
+            "When you split a beam in a prism into 3 beams (red, green and blue), the alpha value of the original beam also splits. So each of the 3 colored beams you have are each [config:solar_strength] / 3. So you'll need to take this into account to get enough summative alpha into the assembly table.",
+            "",
+            "",
+            "If the pack author has not tampered with anything: The default solar alpha of magnifiers is 16, so 16 / 3 = ~5. The cube's recipe requires a MINIMUM of 16, so we need at least (16 / 5) ~3.2 beams into the table. So round up to 4 beams.",
+            "",
+            "",
+            "So now that we know we need 4 beams minimum to match the alpha range of the cube, we need to match the color, so:",
+            "",
+            "",
+            "Half green, full red, no blue. That means do not point any blue beams into the table, and point twice the red as that of green or more.",
+            "",
+            "But if you notice carefully: The green beam needs a maximum of 160. So you can point 2 green beams and 2 red beams to acquire what you need.",
+            "",
+            "Next just input your items and power it. Done!"
           ],
           "extra": [
             {
@@ -247,8 +264,8 @@
             "To invert the dispenser as if it's shift right clicking the screw driver, put the screwdriver into a crafting gird.",
             "the output of the recipe will be an 'inverted' screwdriver that will do what you want on dispensers and vice versa to reinvert it.",
             "",
-            "&c&l[!] WARNING [!]&r Powering a dispenser with a screwdriver with a direct line of redstone power to adjust a mirror might seem glitchy. This is because",
-            "powering a mirror will set it's angle to it's 'powered' state and vice versa. To fix this, simply power the dispenser INDIRECTLY through a block."
+            "",
+            "&c&l[!] WARNING [!]&r Powering a dispenser with a screwdriver with a direct line of redstone power to adjust a mirror might seem glitchy. This is because powering a mirror will set it's angle to it's 'powered' state and vice versa. To fix this, simply power the dispenser INDIRECTLY through a block."
           ]
         },
         {

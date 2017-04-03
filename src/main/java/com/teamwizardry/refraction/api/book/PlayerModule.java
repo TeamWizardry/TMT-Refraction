@@ -3,7 +3,8 @@ package com.teamwizardry.refraction.api.book;
 import com.teamwizardry.librarianlib.client.gui.GuiComponent;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
 import net.minecraft.client.Minecraft;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author LordSaad
@@ -12,7 +13,7 @@ public class PlayerModule implements IParsedModule {
 
 	public int x;
 	public int y;
-	@NotNull
+	@Nonnull
 	public ComponentText component;
 
 	public PlayerModule(TextAdapter textAdapter, int x, int y) {
@@ -37,7 +38,7 @@ public class PlayerModule implements IParsedModule {
 	}
 
 	@SuppressWarnings("rawtypes")
-	@NotNull
+	@Nonnull
 	@Override
 	public GuiComponent getComponent() {
 		return component;

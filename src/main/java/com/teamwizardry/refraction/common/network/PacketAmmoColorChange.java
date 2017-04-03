@@ -13,34 +13,34 @@ import java.awt.*;
  */
 public class PacketAmmoColorChange extends PacketBase {
 
-    private int slot;
-    private Color color;
+	private int slot;
+	private Color color;
 
-    public PacketAmmoColorChange() {
+	public PacketAmmoColorChange() {
 
-    }
+	}
 
-    public PacketAmmoColorChange(int slot, Color color) {
-        this.slot = slot;
-        this.color = color;
-    }
+	public PacketAmmoColorChange(int slot, Color color) {
+		this.slot = slot;
+		this.color = color;
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(slot);
-        buf.writeInt(color.getRGB());
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(slot);
+		buf.writeInt(color.getRGB());
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        slot = buf.readInt();
-        color = new Color(buf.readInt(), true);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		slot = buf.readInt();
+		color = new Color(buf.readInt(), true);
+	}
 
-    @Override
-    public void handle(MessageContext messageContext) {
-        ItemStack stack = messageContext.getServerHandler().playerEntity.inventory.getStackInSlot(slot);
-        if (stack == null) return;
-        ItemNBTHelper.setInt(stack, "color", color.getRGB());
-    }
+	@Override
+	public void handle(MessageContext messageContext) {
+		ItemStack stack = messageContext.getServerHandler().playerEntity.inventory.getStackInSlot(slot);
+		if (stack == null) return;
+		ItemNBTHelper.setInt(stack, "color", color.getRGB());
+	}
 }

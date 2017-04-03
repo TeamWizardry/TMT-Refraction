@@ -25,19 +25,19 @@ public final class ConfigValues {
 	public static int MAX_TESLA;
 	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_electricity_per_tick", comment = "Change this and it'll set how much tesla/tick is required to feed the Electric Laser", defaultValue = 50)
 	public static int TESLA_PER_TICK;
-    @ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_particle_life", comment = "Change this and it'll set how long beams will stay. Higher numbers will make beams feel laggier but they just VISUALLY stay longer. This is useful if you have terrible TPS issues and/or beams exciterPos flickering for whatever reason.", defaultValue = 1)
-    public static int BEAM_PARTICLE_LIFE;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "disco_ball_beam_bounce_limit", comment = "The disco ball's beams have a bounce/reflecting limit of 2 times (will not reflect at all). This is to prevent tps drops. This number is kind of a sweet spot in an enclosed cube of reflective alloy blocks. If you set it to a higher value, it will reflect a lot more beams but will drop your tps if you cannot handle it.", defaultValue = 2)
+	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_particle_life", comment = "Change this and it'll set how long inputBeams will stay. Higher numbers will make inputBeams feel laggier but they just VISUALLY stay longer. This is useful if you have terrible TPS issues and/or inputBeams exciterPos flickering for whatever reason.", defaultValue = 1)
+	public static int BEAM_PARTICLE_LIFE;
+	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "disco_ball_beam_bounce_limit", comment = "The disco ball's inputBeams have a bounce/reflecting limit of 2 times (will not reflect at all). This is to prevent tps drops. This number is kind of a sweet spot in an enclosed cube of reflective alloy blocks. If you set it to a higher value, it will reflect a lot more inputBeams but will drop your tps if you cannot handle it.", defaultValue = 2)
 	public static int DISCO_BALL_BEAM_BOUNCE_LIMIT;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_bounce_limit", comment = "The amount of times a beam is allowed to bounce or reflect MAXIMUM. If this number is decreased, beams will stop after reflecting or bouncing for that amount of times. This is mainly a safety check against trapped infinitely bouncing beams.", defaultValue = 50)
+	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_bounce_limit", comment = "The amount of times a beam is allowed to bounce or reflect MAXIMUM. If this number is decreased, inputBeams will stop after reflecting or bouncing for that amount of times. This is mainly a safety check against trapped infinitely bouncing inputBeams.", defaultValue = 50)
 	public static int BEAM_BOUNCE_LIMIT;
 	@ConfigPropertyDouble(modid = Constants.MOD_ID, category = "general", id = "player_beam_reflect_strength_division", comment = "When a player wearing full reflective alloy armor stands infront of a beam, it will reflect the beam but divide it's strength by this amount.", defaultValue = 1.4)
 	public static double PLAYER_BEAM_REFLECT_STRENGTH_DIVSION;
 	@ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "guns", id = "disable_photon_cannon", comment = "Setting this to true will completely remove the gun item from the game", defaultValue = false)
 	public static boolean DISABLE_PHOTON_CANNON;
-	@ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "laser_rendering", id = "enable_additive_blending", comment = "If disabled, will make beams opaque and not blend visually.", defaultValue = true)
+	@ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "laser_rendering", id = "enable_additive_blending", comment = "If disabled, will make inputBeams opaque and not blend visually.", defaultValue = true)
 	public static boolean ADDITIVE_BLENDING;
-	@ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "laser_rendering", id = "use_flat_beam_texture", comment = "If enabled, will use a completely flat texture for beams. It's a nice minimalistic style.", defaultValue = false)
+	@ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "laser_rendering", id = "use_flat_beam_texture", comment = "If enabled, will use a completely flat texture for inputBeams. It's a nice minimalistic style.", defaultValue = false)
 	public static boolean USE_FLAT_BEAM_TEXTURE;
 	@ConfigPropertyDouble(modid = Constants.MOD_ID, category = "index_of_refraction", id = "air_ior", comment = "IOR of air", defaultValue = 1)
 	public static double AIR_IOR;

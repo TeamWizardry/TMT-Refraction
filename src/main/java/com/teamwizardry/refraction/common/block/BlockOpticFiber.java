@@ -7,7 +7,7 @@ import com.teamwizardry.librarianlib.common.util.EnumBiFacing;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
@@ -27,10 +27,9 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +38,7 @@ import static net.minecraft.util.EnumFacing.*;
 /**
  * Created by Saad on 9/15/2016.
  */
-public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBeamHandler {
+public class BlockOpticFiber extends BlockMod implements IOpticConnectable, ILightSink {
 
 	public static final PropertyEnum<EnumBiFacing> FACING = PropertyEnum.create("facings", EnumBiFacing.class);
 	private static final AxisAlignedBB[] AABBS = new AxisAlignedBB[]{
@@ -76,7 +75,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 	}
 
 	@Override
-	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		EnumBiFacing facing = getBiFacing(world, pos);
 		if (facing == null)
 			return true;
@@ -217,7 +216,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 	}
 
 	@Override
-	public void handleFiberBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+	public void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		// NO-OP
 	}
 
@@ -226,7 +225,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return AABBS[state.getValue(FACING).ordinal()];
@@ -234,7 +233,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 
 	@Nonnull
 	@Override
-	public List<EnumFacing> getAvailableFacings(@NotNull IBlockState state, @NotNull IBlockAccess source, @NotNull BlockPos pos, @NotNull EnumFacing original) {
+	public List<EnumFacing> getAvailableFacings(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos, @Nonnull EnumFacing original) {
 		EnumBiFacing facings = state.getValue(FACING);
 		List<EnumFacing> ret = Lists.newArrayList();
 
@@ -266,7 +265,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 		return Lists.newArrayList(facings.getPrimary(), facings.getSecondary());
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		int largestPriority = 0;
@@ -318,7 +317,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @javax.annotation.Nullable Entity entityIn) {
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
 		addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER);
 
 		EnumBiFacing biFacing = state.getValue(FACING);
@@ -369,20 +368,20 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 		return state.getValue(FACING).ordinal();
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(FACING, EnumBiFacing.values()[meta % EnumBiFacing.values().length]);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 
@@ -397,14 +396,14 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, IBea
 	}
 
 	@Override
-	public boolean isToolEffective(String type, @NotNull IBlockState state) {
+	public boolean isToolEffective(String type, @Nonnull IBlockState state) {
 		return Objects.equals(type, "pickaxe") || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("NullableProblems")
-	public String getHarvestTool(@NotNull IBlockState state) {
+	public String getHarvestTool(@Nonnull IBlockState state) {
 		return "pickaxe";
 	}
 }

@@ -3,8 +3,6 @@ package com.teamwizardry.refraction.api.beam;
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.PosUtils;
-import com.teamwizardry.refraction.api.beam.modes.BeamMode;
-import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,8 +10,8 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -41,14 +39,10 @@ public class Effect implements Cloneable {
 		return this;
 	}
 
-	public BeamMode getRequiredBeamMode() {
-		return BeamModeRegistry.EFFECT;
-	}
-
 	/**
-     * The entity that the beam intersects with. If it's a beam slot, it'll run on all the entities it's
-     * traversed through. If it's a single slot, it'll only run on the one entity it hit.
-     *
+	 * The entity that the beam intersects with. If it's a beam slot, it'll run on all the entities it's
+	 * traversed through. If it's a single slot, it'll only run on the one entity it hit.
+	 *
 	 * @param world   The world object.
 	 * @param entity  The entity intersected.
 	 * @param potency The strength of the beam.
@@ -57,9 +51,9 @@ public class Effect implements Cloneable {
 	}
 
 	/**
-     * The block that the beam intersects with. If it's a beam slot, it'll run on all the gravityProtection it's
-     * traversed through. If it's a single slot, it'll only run on that one block.
-     *
+	 * The block that the beam intersects with. If it's a beam slot, it'll run on all the gravityProtection it's
+	 * traversed through. If it's a single slot, it'll only run on that one block.
+	 *
 	 * @param world   The world object.
 	 * @param pos     The position of the block intersected.
 	 * @param potency The strength of the beam.
@@ -119,7 +113,7 @@ public class Effect implements Cloneable {
 	public void runFinalBlock(World world, BlockPos pos, int potency) {
 	}
 
-	void addEntity(@NotNull World world, @NotNull Entity entity) {
+	void addEntity(@Nonnull World world, @Nonnull Entity entity) {
 		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
 			int potency = calculateEntityPotency(entity);
 			entities.put(entity.getPosition(), entity);
@@ -127,35 +121,35 @@ public class Effect implements Cloneable {
 		}
 	}
 
-	void addBlock(@NotNull World world, @NotNull BlockPos pos) {
+	void addBlock(@Nonnull World world, @Nonnull BlockPos pos) {
 		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
 			blocks.add(pos);
 			runBlock(world, pos, calculateBlockPotency(pos));
 		}
 	}
 
-	void addFinalBlock(@NotNull World world, @NotNull BlockPos pos) {
+	void addFinalBlock(@Nonnull World world, @Nonnull BlockPos pos) {
 		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
 			blocks.add(pos);
 			runFinalBlock(world, pos, calculateBlockPotency(pos));
 		}
 	}
 
-	void specialAddBlock(@NotNull World world, @NotNull BlockPos pos, @NotNull EntityLivingBase caster) {
+	void specialAddBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityLivingBase caster) {
 		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
 			blocks.add(pos);
 			specialRunBlock(world, pos, caster, calculateBlockPotency(pos));
 		}
 	}
 
-	void specialAddFinalBlock(@NotNull World world, @NotNull BlockPos pos, @NotNull EntityLivingBase caster) {
+	void specialAddFinalBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityLivingBase caster) {
 		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
 			blocks.add(pos);
 			specialRunFinalBlock(world, pos, caster, calculateBlockPotency(pos));
 		}
 	}
 
-	void specialAddEntity(@NotNull World world, @NotNull Entity entity, @NotNull EntityLivingBase caster) {
+	void specialAddEntity(@Nonnull World world, @Nonnull Entity entity, @Nonnull EntityLivingBase caster) {
 		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
 			int potency = calculateEntityPotency(entity);
 			entities.put(entity.getPosition(), entity);

@@ -1,8 +1,6 @@
 package com.teamwizardry.refraction.client.jei;
 
-import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.teamwizardry.refraction.api.Constants;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -12,8 +10,10 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import com.teamwizardry.refraction.api.Constants;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * Created by Saad on 10/12/2016.
@@ -96,7 +96,7 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setRecipe(@NotNull IRecipeLayout recipeLayout, @NotNull IRecipeWrapper recipeWrapper, @NotNull IIngredients ingredients) {
+	public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
 		if (!(recipeWrapper instanceof AssemblyTableRecipeWrapper)) return;
 
 		AssemblyTableRecipeWrapper wrapper = (AssemblyTableRecipeWrapper) recipeWrapper;

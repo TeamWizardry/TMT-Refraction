@@ -16,7 +16,8 @@ import com.teamwizardry.refraction.client.gui.RightSidebar;
 import com.teamwizardry.refraction.client.gui.builder.regionoptions.OptionFill;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by LordSaad.

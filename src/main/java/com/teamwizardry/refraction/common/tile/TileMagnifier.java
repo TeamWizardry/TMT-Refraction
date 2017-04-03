@@ -6,7 +6,6 @@ import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.state.IBlockState;
@@ -28,7 +27,7 @@ public class TileMagnifier extends TileMod implements ITickable {
 	public void update() {
 		World world = getWorld();
 
-		boolean hasLens = false;
+		boolean hasLens;
 		int worldTime = (int) (world.getWorldTime() % 24000L);
 		if (!(worldTime >= Constants.NIGHT_START && worldTime < Constants.NIGHT_END)
 				&& !world.isRaining()) {
@@ -62,7 +61,7 @@ public class TileMagnifier extends TileMod implements ITickable {
 				Vec3d dir = new Vec3d(0, -1, 0);
 				Color color = new Color(Color.WHITE.getRed(), Color.WHITE.getGreen(), Color.WHITE.getBlue(), ConfigValues.SOLAR_ALPHA);
 
-				new Beam(world, center, dir, color).setMode(BeamModeRegistry.EFFECT).enableParticleBeginning().spawn();
+				new Beam(world, center, dir, color).spawn();
 
 				return;
 			}
@@ -105,7 +104,7 @@ public class TileMagnifier extends TileMod implements ITickable {
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);
 
-				new Beam(world, center, dir, color).enableParticleBeginning().spawn();
+				new Beam(world, center, dir, color).spawn();
 			}
 		}
 	}

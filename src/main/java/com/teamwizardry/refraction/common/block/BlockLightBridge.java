@@ -7,8 +7,7 @@ import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.Effect;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
@@ -37,9 +36,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.List;
 import java.util.Random;
@@ -47,7 +46,7 @@ import java.util.Random;
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEmitter, ILaserTrace {
+public class BlockLightBridge extends BlockMod implements ILightSink, ISoundEmitter, ILaserTrace {
 
 	public static final PropertyEnum<EnumFacing.Axis> FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
 	public static final PropertyBool UP = PropertyBool.create("up");
@@ -120,7 +119,7 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
 	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
 		EnumFacing.Axis enumfacing = state.getValue(FACING);
 		EnumFacing[] facings = SPINS[enumfacing.ordinal()];
 
@@ -283,12 +282,10 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
 	}
 
 	@Override
-	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		IBlockState state = world.getBlockState(pos);
 
 		EnumFacing.Axis block = world.getBlockState(pos).getValue(FACING);
-		Effect effect = beam.effect;
-		if (effect == null) return true;
 		if (beam.color.getRGB() == Color.CYAN.getRGB()) {
 			EnumFacing positive = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.POSITIVE, block);
 			EnumFacing negative = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.NEGATIVE, block);
@@ -338,7 +335,7 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
 	}
 
 	@Override
-	public boolean shouldEmit(@NotNull World world, @NotNull BlockPos pos) {
+	public boolean shouldEmit(@Nonnull World world, @Nonnull BlockPos pos) {
 		return true;
 	}
 
@@ -366,7 +363,7 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
 			hitPos = r.hitVec;
 		}
 
-		beam.createSimilarBeam(hitPos, ref).enableParticleBeginning().spawn();
+		beam.createSimilarBeam(hitPos, ref).spawn();
 	}
 
 	@Override
@@ -380,13 +377,13 @@ public class BlockLightBridge extends BlockMod implements IBeamHandler, ISoundEm
 	}
 
 	private void showBeam(World world, Vec3d start, Vec3d end, Color color) {
-        if (!world.isRemote)
-            PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
-				new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
+		if (!world.isRemote)
+			PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
+					new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
 	}
 
 	@Override
-	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
+	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@Nonnull IBlockState blockState, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Vec3d startRaw, @Nonnull Vec3d endRaw) {
 
 		EnumFacing facing = EnumFacing.UP;
 

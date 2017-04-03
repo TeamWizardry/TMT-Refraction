@@ -30,50 +30,50 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  */
 public class ClientProxy extends CommonProxy implements IResourceManagerReloadListener {
 
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
+	@Override
+	public void preInit(FMLPreInitializationEvent event) {
+		super.preInit(event);
 
-        OBJLoader.INSTANCE.addDomain(Constants.MOD_ID);
-        LaserRenderer.INSTANCE.getClass();
-        ScrewdriverOverlay.INSTANCE.getClass();
-        GunOverlay.INSTANCE.getClass();
-        EventHandlerClient.INSTANCE.getClass(); // ditto
-        ModBlocks.initModels();
-        ModItems.initModels();
+		OBJLoader.INSTANCE.addDomain(Constants.MOD_ID);
+		LaserRenderer.INSTANCE.getClass();
+		ScrewdriverOverlay.INSTANCE.getClass();
+		GunOverlay.INSTANCE.getClass();
+		EventHandlerClient.INSTANCE.getClass(); // ditto
+		ModBlocks.initModels();
+		ModItems.initModels();
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityLaserPointer.class, RenderLaserPoint::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, manager -> new RenderGrenade(manager, ModItems.GRENADE, Minecraft.getMinecraft().getRenderItem()));
-    }
+		RenderingRegistry.registerEntityRenderingHandler(EntityLaserPointer.class, RenderLaserPoint::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, manager -> new RenderGrenade(manager, ModItems.GRENADE, Minecraft.getMinecraft().getRenderItem()));
+	}
 
-    @Override
-    public void postInit(FMLPostInitializationEvent event) {
-        super.postInit(event);
-        if (Minecraft.getMinecraft().getResourceManager() instanceof IReloadableResourceManager)
-            ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
+	@Override
+	public void postInit(FMLPostInitializationEvent event) {
+		super.postInit(event);
+		if (Minecraft.getMinecraft().getResourceManager() instanceof IReloadableResourceManager)
+			((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
 
-    }
+	}
 
-    @Override
-    public void runIfClient(ClientRunnable runnable) {
-        runnable.run();
-    }
+	@Override
+	public void runIfClient(ClientRunnable runnable) {
+		runnable.run();
+	}
 
-    @Override
-    public World getWorld() {
-        return Minecraft.getMinecraft().world;
-    }
+	@Override
+	public World getWorld() {
+		return Minecraft.getMinecraft().world;
+	}
 
-    @Override
-    public void onResourceManagerReload(IResourceManager resourceManager) {
-        MinecraftForge.EVENT_BUS.post(new ResourceReloadEvent(resourceManager));
-    }
+	@Override
+	public void onResourceManagerReload(IResourceManager resourceManager) {
+		MinecraftForge.EVENT_BUS.post(new ResourceReloadEvent(resourceManager));
+	}
 
-    public static class ResourceReloadEvent extends Event {
-        public final IResourceManager resourceManager;
+	public static class ResourceReloadEvent extends Event {
+		public final IResourceManager resourceManager;
 
-        public ResourceReloadEvent(IResourceManager manager) {
-            resourceManager = manager;
-        }
-    }
+		public ResourceReloadEvent(IResourceManager manager) {
+			resourceManager = manager;
+		}
+	}
 }

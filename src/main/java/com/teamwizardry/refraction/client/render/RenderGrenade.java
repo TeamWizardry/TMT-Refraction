@@ -15,8 +15,8 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -33,7 +33,7 @@ public class RenderGrenade extends RenderSnowball<EntityGrenade> {
 	}
 
 	@Override
-	public void doRender(@NotNull EntityGrenade entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(@Nonnull EntityGrenade entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 		Color color = new Color(entity.getDataManager().get(DATA_COLOR), true);
 

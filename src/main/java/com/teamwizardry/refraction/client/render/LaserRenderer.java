@@ -75,7 +75,7 @@ public class LaserRenderer {
 //			update();
 		}
 	}
-	
+
 	public void update() {
 		lasers.entrySet().removeIf((e) -> {
 			if (e.getValue() <= 0) return true;

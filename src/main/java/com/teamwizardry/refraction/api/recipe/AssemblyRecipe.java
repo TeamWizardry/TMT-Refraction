@@ -44,8 +44,8 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 		for (Object obj : items) {
 			if (obj instanceof ItemStack) {
 				ItemStack stack = (ItemStack) obj;
-				int stackSize = stack.stackSize;
-				stack.stackSize = 1;
+				int stackSize = stack.getCount();
+				stack.setCount(1);
 				for (int i = 0; i < stackSize; i++) {
 					this.recipe.add(stack);
 				}

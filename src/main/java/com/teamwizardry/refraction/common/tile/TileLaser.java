@@ -10,7 +10,6 @@ import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -23,8 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -48,7 +47,7 @@ public class TileLaser extends TileMod implements ITickable {
 	public void update() {
 		World world = getWorld();
 		if (world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) return;
-		if (inventory.getStackInSlot(0) != null && inventory.getStackInSlot(0).stackSize > 0) {
+		if (!inventory.getStackInSlot(0).isEmpty()) {
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			EnumFacing face = world.getBlockState(pos).getValue(BlockDirectional.FACING);
 			Vec3d vec = PosUtils.getVecFromFacing(face);
@@ -63,7 +62,7 @@ public class TileLaser extends TileMod implements ITickable {
 			ParticleSpawner.spawn(glitter, world, new StaticInterp<>(center), 2);
 
 			Color color = new Color(255, 255, 255, ConfigValues.GLOWSTONE_ALPHA);
-			new Beam(world, center, vec, color).setMode(BeamModeRegistry.EFFECT).spawn();
+			new Beam(world, center, vec, color).spawn();
 
 			if (tick < ConfigValues.GLOWSTONE_FUEL_EXPIRE_DELAY) tick++;
 			else {
@@ -90,13 +89,13 @@ public class TileLaser extends TileMod implements ITickable {
 	}
 
 	@Override
-	public boolean hasCapability(@NotNull Capability<?> capability, @NotNull EnumFacing facing) {
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getCapability(@NotNull Capability<T> capability, @NotNull EnumFacing facing) {
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) inventory : super.getCapability(capability, facing);
 	}
 }

@@ -6,7 +6,6 @@ import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
 import com.teamwizardry.refraction.api.MultipleBeamTile;
-import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
 import com.teamwizardry.refraction.api.recipe.AssemblyBehaviors;
 import com.teamwizardry.refraction.api.recipe.IAssemblyBehavior;
 import com.teamwizardry.refraction.common.network.PacketAssemblyDoneParticles;
@@ -23,9 +22,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 
 /**
@@ -37,7 +36,7 @@ public class TileAssemblyTable extends MultipleBeamTile {
 	@Nullable
 	public IAssemblyBehavior behavior;
 
-	@NotNull
+	@Nonnull
 	public ItemStackHandler output = new ItemStackHandler(1) {
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
@@ -56,18 +55,18 @@ public class TileAssemblyTable extends MultipleBeamTile {
 		}
 	};
 
-	@NotNull
+	@Nonnull
 	public ItemStackHandler inventory = new ItemStackHandler(54) {
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if (output.getStackInSlot(0) != null && output.getStackInSlot(0).stackSize > 0) return stack;
+			if (!output.getStackInSlot(0).isEmpty()) return stack;
 			if (behavior != null) return stack;
 			return super.insertItem(slot, stack, simulate);
 		}
 
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if (output.getStackInSlot(0) != null && output.getStackInSlot(0).stackSize > 0) return null;
+			if (!output.getStackInSlot(0).isEmpty()) return null;
 			if (behavior != null) return null;
 			return super.extractItem(slot, amount, simulate);
 		}
@@ -84,6 +83,11 @@ public class TileAssemblyTable extends MultipleBeamTile {
 	};
 	@Save
 	public int craftingTime = 0;
+
+	@Override
+	public boolean getUseFastSync() {
+		return false;
+	}
 
 	@Override
 	public void readCustomNBT(NBTTagCompound cmp) {
@@ -120,19 +124,19 @@ public class TileAssemblyTable extends MultipleBeamTile {
 	}
 
 	@Override
-	public boolean hasCapability(@NotNull Capability<?> capability, @NotNull EnumFacing facing) {
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getCapability(@NotNull Capability<T> capability, @NotNull EnumFacing facing) {
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ?
 				(facing == EnumFacing.DOWN ? (T) output : (T) inventory) : super.getCapability(capability, facing);
 	}
 
-	@NotNull
+	@Nonnull
 	@SideOnly(Side.CLIENT)
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
@@ -142,12 +146,10 @@ public class TileAssemblyTable extends MultipleBeamTile {
 	@Override
 	public void update() {
 		super.update();
-		if (world.isRemote || beamOutputs.isEmpty()) return;
+		if (world.isRemote || inputBeams.isEmpty()) return;
 		if (!world.isBlockPowered(getPos()) && world.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
 
-		if (!beamOutputs.containsKey(BeamModeRegistry.EFFECT)) return;
-
-		Color color = beamOutputs.get(BeamModeRegistry.EFFECT).color;
+		Color color = outputBeam.color;
 
 		if (behavior != null) {
 			if (behavior.tick(color, inventory, output, craftingTime++))

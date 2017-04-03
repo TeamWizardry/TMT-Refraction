@@ -6,7 +6,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * BeamHitEvent is fired whenever a beam hits a block.
@@ -22,38 +23,38 @@ import org.jetbrains.annotations.NotNull;
  */
 @Event.HasResult
 public class BeamHitEvent extends Event {
-	@NotNull
+	@Nonnull
 	private final World world;
-	@NotNull
+	@Nonnull
 	private final Beam beam;
-	@NotNull
+	@Nonnull
 	private final BlockPos pos;
-	@NotNull
+	@Nonnull
 	private final IBlockState state;
 
-	public BeamHitEvent(@NotNull World world, @NotNull Beam beam, @NotNull BlockPos pos, @NotNull IBlockState state) {
+	public BeamHitEvent(@Nonnull World world, @Nonnull Beam beam, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
 		this.world = world;
 		this.beam = beam;
 		this.pos = pos;
 		this.state = state;
 	}
 
-	@NotNull
+	@Nonnull
 	public World getWorld() {
 		return world;
 	}
 
-	@NotNull
+	@Nonnull
 	public Beam getBeam() {
 		return beam;
 	}
 
-	@NotNull
+	@Nonnull
 	public BlockPos getPos() {
 		return pos;
 	}
 
-	@NotNull
+	@Nonnull
 	public IBlockState getState() {
 		return state;
 	}

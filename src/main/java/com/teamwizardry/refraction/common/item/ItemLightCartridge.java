@@ -10,11 +10,13 @@ import kotlin.jvm.functions.Function2;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.List;
 
 /**
  * Created by LordSaad.
@@ -25,26 +27,26 @@ public class ItemLightCartridge extends ItemMod implements IAmmo, IItemColorProv
 		super("light_cartridge");
 		setMaxStackSize(1);
 		setMaxDamage(1000);
-    }
+	}
 
 	@Override
-	public boolean hasColor(@NotNull ItemStack stack) {
+	public boolean hasColor(@Nonnull ItemStack stack) {
 		return ItemNBTHelper.verifyExistence(stack, "color");
 	}
 
 	@Override
-	public boolean drain(@NotNull ItemStack stack, int amount, boolean simulate) {
+	public boolean drain(@Nonnull ItemStack stack, int amount, boolean simulate) {
 		if (stack.getItemDamage() + amount >= stack.getMaxDamage()) return false;
 		if (!simulate) stack.setItemDamage(amount + stack.getItemDamage());
 		return true;
 	}
 
 	@Override
-	public float remainingPercentage(@NotNull ItemStack stack) {
+	public float remainingPercentage(@Nonnull ItemStack stack) {
 		return (stack.getMaxDamage() - stack.getItemDamage()) / (float) stack.getMaxDamage();
 	}
 
-	public int getColor(@NotNull ItemStack stack) {
+	public int getColor(@Nonnull ItemStack stack) {
 		Color c = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF));
 		float[] comps = c.getRGBComponents(null);
 		c = new Color(
@@ -55,12 +57,13 @@ public class ItemLightCartridge extends ItemMod implements IAmmo, IItemColorProv
 	}
 
 	@Override
-	public int getInternalColor(@NotNull ItemStack stack) {
+	public int getInternalColor(@Nonnull ItemStack stack) {
 		return ItemNBTHelper.getInt(stack, "color", 0xFFFFFF);
 	}
 
 	@Override
-	public void getSubItems(@NotNull Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
 		super.getSubItems(itemIn, tab, subItems);
 		for (BlockFilter.EnumFilterType type : BlockFilter.EnumFilterType.values()) {
 			ItemStack stack = new ItemStack(itemIn);
@@ -69,9 +72,9 @@ public class ItemLightCartridge extends ItemMod implements IAmmo, IItemColorProv
 		}
 	}
 
-    @Nullable
-    @Override
-    public Function2<ItemStack, Integer, Integer> getItemColorFunction() {
-        return (stack, tintIndex) -> (tintIndex == 1 ? getColor(stack) : 0xFFFFFF);
-    }
+	@Nullable
+	@Override
+	public Function2<ItemStack, Integer, Integer> getItemColorFunction() {
+		return (stack, tintIndex) -> (tintIndex == 1 ? getColor(stack) : 0xFFFFFF);
+	}
 }

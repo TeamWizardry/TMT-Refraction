@@ -5,8 +5,10 @@ import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -21,7 +23,7 @@ public class RecipeScrewDriver implements IRecipe {
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
-			if (stack != null) {
+			if (!stack.isEmpty()) {
 				if (stack.getItem() == ModItems.SCREW_DRIVER) {
 					foundBaseItem = true;
 					break;
@@ -38,7 +40,7 @@ public class RecipeScrewDriver implements IRecipe {
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
-			if (stack != null)
+			if (!stack.isEmpty())
 				if (stack.getItem() == ModItems.SCREW_DRIVER) {
 					baseItem = stack;
 					break;
@@ -58,14 +60,14 @@ public class RecipeScrewDriver implements IRecipe {
 		return 10;
 	}
 
-	@Nullable
 	@Override
 	public ItemStack getRecipeOutput() {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
+	@NotNull
 	@Override
-	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
 		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
 	}
 }

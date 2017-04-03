@@ -10,8 +10,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 
@@ -33,7 +33,7 @@ public class TileSplitter extends TileMod implements ITickable {
 	public TileSplitter() {
 	}
 
-	@NotNull
+	@Nonnull
 	@SideOnly(Side.CLIENT)
 	@Override
 	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
@@ -88,8 +88,8 @@ public class TileSplitter extends TileMod implements ITickable {
 		Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
 		Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / 2);
-		beam.createSimilarBeam(outgoingDir).setColor(c).enableParticleBeginning().spawn();
-		beam.createSimilarBeam(incomingDir).setColor(c).enableParticleBeginning().spawn();
+		beam.createSimilarBeam(outgoingDir).setColor(c).spawn();
+		beam.createSimilarBeam(incomingDir).setColor(c).spawn();
 	}
 
 	@Override

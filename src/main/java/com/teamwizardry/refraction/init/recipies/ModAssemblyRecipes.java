@@ -5,7 +5,6 @@ import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.awt.*;
 
@@ -21,13 +20,13 @@ public class ModAssemblyRecipes {
 
 		// T0
 		register("mirror", new ItemStack(ModBlocks.MIRROR),
-				new Color(255, 255, 255, 1), new Color(255, 255, 255, 64),
+				new Color(255, 255, 255, 16), new Color(255, 255, 255, 64),
 				Blocks.GLASS_PANE, Blocks.GLASS_PANE, Blocks.GLASS_PANE,
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
 
 		// T1
 		register("prism", new ItemStack(ModBlocks.PRISM),
-				new Color(255, 255, 255, 16), new Color(255, 255, 255, 64),
+				new Color(255, 255, 255, 32), new Color(255, 255, 255, 64),
 				LENS, LENS, LENS, LENS, LENS, LENS);
 
 		// T2
@@ -47,15 +46,6 @@ public class ModAssemblyRecipes {
 				"gemDiamond", "gemDiamond");
 
 		// T3
-		register("electric_laser", new ItemStack(ModBlocks.ELECTRIC_LASER),
-				new Color(0, 96, 255, 32), new Color(0, 160, 255, 128),
-				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,
-				"blockIron",
-				"dustRedstone", "dustRedstone", "dustRedstone",
-				OreDictionary.doesOreNameExist("ingotSilver") ? "ingotSilver" : "gemLapis",
-				OreDictionary.doesOreNameExist("ingotPlatinum") ? "ingotPlatinum" : "gemLapis",
-				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
-				LENS, LENS, LENS);
 		register("laser", new ItemStack(ModBlocks.LASER),
 				new Color(255, 64, 64, 32), new Color(255, 106, 106, 128),
 				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,

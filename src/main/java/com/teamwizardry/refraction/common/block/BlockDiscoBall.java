@@ -4,11 +4,10 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.client.render.RenderDiscoBall;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileDiscoBall;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -21,20 +20,21 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Created by LordSaad44
  */
-public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
+public class BlockDiscoBall extends BlockModContainer implements ILightSink {
 
 	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
 
@@ -50,7 +50,7 @@ public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
 	}
 
 	@Override
-	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null)
 			((TileDiscoBall) te).handleBeam(beam);
@@ -72,16 +72,17 @@ public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
 				worldIn.getBlockState(pos.south()).isSideSolid(worldIn, pos.south(), EnumFacing.NORTH);
 	}
 
+
 	@SuppressWarnings("deprecation")
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+	public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighbor) {
+		IBlockState state = worldIn.getBlockState(pos);
 		EnumFacing enumfacing = state.getValue(FACING);
 
-		if (!this.canBlockStay(worldIn, pos, enumfacing)) {
-			this.dropBlockAsItem(worldIn, pos, state, 0);
-			worldIn.setBlockToAir(pos);
+		if (!this.canBlockStay((World) worldIn, pos, enumfacing)) {
+			this.dropBlockAsItem((World) worldIn, pos, state, 0);
+			((World) worldIn).setBlockToAir(pos);
 		}
-		super.neighborChanged(state, worldIn, pos, blockIn);
 	}
 
 	private boolean canBlockStay(World worldIn, BlockPos pos, EnumFacing facing) {
@@ -109,7 +110,7 @@ public class BlockDiscoBall extends BlockModContainer implements IBeamHandler {
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 

@@ -3,9 +3,9 @@ package com.teamwizardry.refraction.api;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface IAmmoConsumer {
 
-	@NotNull
+	@Nonnull
 	static List<ItemStack> findAllAmmo(EntityPlayer player) {
 		List<ItemStack> stacks = new ArrayList<>();
 		if (isAmmo(player.getHeldItem(EnumHand.OFF_HAND))) {
@@ -33,7 +33,7 @@ public interface IAmmoConsumer {
 		return stacks;
 	}
 
-	@NotNull
+	@Nonnull
 	static List<ItemStack> findAllAmmo(EntityPlayer player, Color color) {
 		List<ItemStack> stacks = new ArrayList<>();
 		if (isAmmo(player.getHeldItem(EnumHand.OFF_HAND), color)) {

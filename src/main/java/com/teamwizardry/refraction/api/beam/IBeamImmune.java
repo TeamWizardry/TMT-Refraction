@@ -2,12 +2,13 @@ package com.teamwizardry.refraction.api.beam;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author WireSegal
  *         Created at 9:53 PM on 12/9/16.
  */
 public interface IBeamImmune {
-	boolean isImmune(@NotNull World world, @NotNull BlockPos pos);
+	boolean isImmune(@Nonnull World world, @Nonnull BlockPos pos);
 }

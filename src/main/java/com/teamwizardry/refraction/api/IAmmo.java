@@ -1,17 +1,18 @@
 package com.teamwizardry.refraction.api;
 
 import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * Created by LordSaad.
  */
 public interface IAmmo {
-	boolean hasColor(@NotNull ItemStack stack);
+	boolean hasColor(@Nonnull ItemStack stack);
 
-	int getInternalColor(@NotNull ItemStack stack);
+	int getInternalColor(@Nonnull ItemStack stack);
 
-	boolean drain(@NotNull ItemStack stack, int amount, boolean simulate);
+	boolean drain(@Nonnull ItemStack stack, int amount, boolean simulate);
 
-	float remainingPercentage(@NotNull ItemStack stack);
+	float remainingPercentage(@Nonnull ItemStack stack);
 }

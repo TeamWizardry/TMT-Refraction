@@ -13,21 +13,21 @@ import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
  */
 public class OptionFill extends LeftSidebar {
 
-    public OptionFill(GuiBuilder builder, ComponentList list, String title, Sprite icon, GuiBuilder.TileType type) {
-        super(list, title, icon, false, false);
+	public OptionFill(GuiBuilder builder, ComponentList list, String title, Sprite icon, GuiBuilder.TileType type) {
+		super(list, title, icon, false, false);
 
-        component.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
-            if (event.getButton() == EnumMouseButton.LEFT) {
-                Vec2d first = builder.getTile(GuiBuilder.TileType.LEFT_SELECTED),
-                        second = builder.getTile(GuiBuilder.TileType.RIGHT_SELECTED);
+		component.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
+			if (event.getButton() == EnumMouseButton.LEFT) {
+				Vec2d first = builder.getTile(GuiBuilder.TileType.LEFT_SELECTED),
+						second = builder.getTile(GuiBuilder.TileType.RIGHT_SELECTED);
 
-                if (first != null && second != null)
-                    for (int i = first.getXi() < second.getXi() ? first.getXi() : second.getXi();
-                         i < (first.getXi() < second.getXi() ? second.getXi() : first.getXi()) + 1; i++)
-                        for (int j = first.getYi() < second.getYi() ? first.getYi() : second.getYi();
-                             j < (first.getYi() < second.getYi() ? second.getYi() : first.getYi()) + 1; j++)
-                            builder.grid[builder.selectedLayer][i][j] = type;
-            }
-        }));
-    }
+				if (first != null && second != null)
+					for (int i = first.getXi() < second.getXi() ? first.getXi() : second.getXi();
+					     i < (first.getXi() < second.getXi() ? second.getXi() : first.getXi()) + 1; i++)
+						for (int j = first.getYi() < second.getYi() ? first.getYi() : second.getYi();
+						     j < (first.getYi() < second.getYi() ? second.getYi() : first.getYi()) + 1; j++)
+							builder.grid[builder.selectedLayer][i][j] = type;
+			}
+		}));
+	}
 }

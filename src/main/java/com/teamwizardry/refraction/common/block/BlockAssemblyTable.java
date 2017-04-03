@@ -5,7 +5,7 @@ import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.CapsUtils;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.client.render.RenderAssemblyTable;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileAssemblyTable;
@@ -25,16 +25,16 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Created by LordSaad44
  */
-public class BlockAssemblyTable extends BlockModContainer implements IBeamHandler {
+public class BlockAssemblyTable extends BlockModContainer implements ILightSink {
 
 	public BlockAssemblyTable() {
 		super("assembly_table", Material.IRON);
@@ -57,32 +57,35 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 	}
 
 	@Override
-    public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
-        getTE(world, pos).handleBeam(beam);
-        return true;
-    }
+	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
+		getTE(world, pos).handleBeam(beam);
+		return true;
+	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+		ItemStack heldItem = playerIn.getHeldItem(hand);
+
 		if (!worldIn.isRemote) {
 			TileAssemblyTable table = getTE(worldIn, pos);
 
 			if (table.behavior != null) {
-                boolean allowedToEdit = table.behavior.canEditItems(table.inventory, table.output, table.craftingTime);
-                if (allowedToEdit)
+				boolean allowedToEdit = table.behavior.canEditItems(table.inventory, table.output, table.craftingTime);
+				if (allowedToEdit)
 					table.behavior = null;
 				else return true;
 			}
 
-			if (table.output.getStackInSlot(0) != null) {
+			if (table.output.getStackInSlot(0).isEmpty()) {
 				ItemHandlerHelper.giveItemToPlayer(playerIn, table.output.extractItem(0, 64, false));
 				playerIn.openContainer.detectAndSendChanges();
-			} else if (heldItem != null && heldItem.stackSize > 0) {
+			} else if (!heldItem.isEmpty()) {
 				ItemStack stack = heldItem.copy();
-				stack.stackSize = 1;
+				stack.setCount(1);
 				ItemStack insert = ItemHandlerHelper.insertItem(table.inventory, stack, false);
-				if (insert == null || insert.stackSize == 0)
-					heldItem.stackSize--;
+				if (insert.isEmpty())
+					heldItem.setCount(heldItem.getCount() - 1);
 				playerIn.openContainer.detectAndSendChanges();
 			} else if (CapsUtils.getOccupiedSlotCount(table.inventory) > 0) {
 				ItemHandlerHelper.giveItemToPlayer(playerIn, table.inventory.extractItem(CapsUtils.getLastOccupiedSlot(table.inventory), 1, false));
@@ -96,14 +99,17 @@ public class BlockAssemblyTable extends BlockModContainer implements IBeamHandle
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		TileAssemblyTable table = (TileAssemblyTable) worldIn.getTileEntity(pos);
-		if (table != null)
+		if (table != null) {
 			for (ItemStack stack : CapsUtils.getListOfItems(table.inventory))
 				InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
+			for (ItemStack stack : CapsUtils.getListOfItems(table.output))
+				InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
+		}
 		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 

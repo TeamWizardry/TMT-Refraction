@@ -6,13 +6,11 @@ import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.client.render.RenderMirror;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileMirror;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -26,13 +24,14 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -40,7 +39,7 @@ import java.util.Random;
 /**
  * Created by LordSaad44
  */
-public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrecision, IBeamHandler {
+public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrecision, ILightSink {
 
 	public BlockMirror() {
 		super("mirror", Material.IRON);
@@ -58,7 +57,7 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 	}
 
 	@Override
-	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		getTE(world, pos).handle(beam);
 		return true;
 	}
@@ -89,18 +88,16 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
-		if (worldIn.isRemote) return;
-
-		TileMirror mirror = getTE(worldIn, pos);
+	public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighbor) {
+		TileMirror mirror = getTE((World) worldIn, pos);
 		if (mirror == null) return;
 
 		if (mirror.isPowered()) {
-			if (!worldIn.isBlockPowered(pos) || worldIn.isBlockIndirectlyGettingPowered(pos) == 0) {
+			if (!((World) worldIn).isBlockPowered(pos) || ((World) worldIn).isBlockIndirectlyGettingPowered(pos) == 0) {
 				mirror.setPowered(false);
 			}
 		} else {
-			if (worldIn.isBlockPowered(pos) || worldIn.isBlockIndirectlyGettingPowered(pos) > 0)
+			if (((World) worldIn).isBlockPowered(pos) || ((World) worldIn).isBlockIndirectlyGettingPowered(pos) > 0)
 				mirror.setPowered(true);
 		}
 	}
@@ -117,7 +114,7 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 
@@ -133,7 +130,7 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public RayTraceResult collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
+	public RayTraceResult collisionRayTraceLaser(@Nonnull IBlockState blockState, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Vec3d startRaw, @Nonnull Vec3d endRaw) {
 		double p = 1.0 / 16.0;
 
 		AxisAlignedBB aabb = new AxisAlignedBB(p, 0, p, 1 - p, p, 1 - p).offset(-0.5, -p / 2, -0.5);
@@ -174,7 +171,7 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		EnumFacing facing = BlockPistonBase.getFacingFromEntity(pos, placer);
+		EnumFacing facing = EnumFacing.getFacingFromVector((float) placer.getLook(0).xCoord, (float) placer.getLook(0).yCoord, (float) placer.getLook(0).zCoord);
 		TileMirror mirror = getTE(worldIn, pos);
 
 		float x = 0, y = 0;
@@ -192,6 +189,10 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 			x = 90;
 			y = 180;
 		}
+		mirror.rotDestX = x;
+		mirror.rotDestY = y;
+		mirror.rotPrevX = x;
+		mirror.rotPrevY = y;
 		mirror.rotXPowered = x;
 		mirror.rotYPowered = y;
 		mirror.rotXUnpowered = x;

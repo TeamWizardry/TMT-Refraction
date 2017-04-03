@@ -2,12 +2,13 @@ package com.teamwizardry.refraction.api.soundmanager;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * Created by LordSaad.
  */
 public interface ISoundEmitter {
 
-	boolean shouldEmit(@NotNull World world, @NotNull BlockPos pos);
+	boolean shouldEmit(@Nonnull World world, @Nonnull BlockPos pos);
 }

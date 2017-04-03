@@ -18,16 +18,14 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.List;
 
 import static net.minecraft.item.ItemBow.getArrowVelocity;
 
@@ -49,10 +47,7 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 
 			int i = this.getMaxItemUseDuration(stack) - timeLeft;
 
-			if (stack != null || shouldRemoveStack) {
-				if (stack == null) {
-					stack = new ItemStack(this);
-				}
+			if (!stack.isEmpty() || shouldRemoveStack) {
 
 				float f = getArrowVelocity(i);
 				if ((double) f >= 0.5D) {
@@ -71,27 +66,28 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 					world.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
 					if (!isCreativeMode) {
-						--stack.stackSize;
-						if (stack.stackSize == 0) entityplayer.inventory.deleteStack(stack);
+						stack.setCount(stack.getCount() - 1);
+						if (stack.isEmpty()) entityplayer.inventory.deleteStack(stack);
 					}
 				}
 			}
 		}
 	}
 
-    @NotNull
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(@NotNull ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-        if (world.isRemote && (Minecraft.getMinecraft().currentScreen != null))
+	@Nonnull
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand hand) {
+		ItemStack stack = playerIn.getHeldItem(hand);
+		if (worldIn.isRemote && (Minecraft.getMinecraft().currentScreen != null))
 			return new ActionResult<>(EnumActionResult.FAIL, stack);
 		else {
-			player.setActiveHand(hand);
+			playerIn.setActiveHand(hand);
 			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
 	}
 
-    @NotNull
-    @Override
+	@Nonnull
+	@Override
 	public EnumAction getItemUseAction(ItemStack stack) {
 		if (ItemNBTHelper.getInt(stack, "color", -1) == -1) return EnumAction.NONE;
 		return EnumAction.BOW;
@@ -118,7 +114,8 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 	}
 
 	@Override
-	public void getSubItems(@NotNull Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
 		super.getSubItems(itemIn, tab, subItems);
 		for (BlockFilter.EnumFilterType type : BlockFilter.EnumFilterType.values()) {
 			ItemStack stack = new ItemStack(itemIn);

@@ -8,9 +8,6 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.Effect;
-import com.teamwizardry.refraction.api.beam.EffectTracker;
-import com.teamwizardry.refraction.common.effect.EffectDisperse;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
@@ -32,10 +29,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,7 +60,7 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 
 	@Nonnull
 	@Override
-	public List<EnumFacing> getAvailableFacings(@NotNull IBlockState state, @NotNull IBlockAccess source, @NotNull BlockPos pos, @NotNull EnumFacing facing) {
+	public List<EnumFacing> getAvailableFacings(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos, @Nonnull EnumFacing facing) {
 		if (facing != state.getValue(DIRECTION)) return Lists.newArrayList();
 		return Lists.newArrayList(state.getValue(DIRECTION).getOpposite());
 	}
@@ -127,7 +124,7 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 
@@ -142,14 +139,14 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 	}
 
 	@Override
-	public void handleFiberBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
+	public void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		IBlockState state = world.getBlockState(pos);
 		EnumFacing dir = state.getValue(BlockTranslocator.DIRECTION);
 		if (!beam.slope.equals(PosUtils.getVecFromFacing(dir)))
 			return;
 
-		Effect effect = EffectTracker.getEffect(beam);
-		if (effect instanceof EffectDisperse) {
+		// TODO
+		if (beam.color == Color.ORANGE) {
 			IBlockState axyz = world.getBlockState(pos.offset(dir));
 			IBlockState check2 = world.getBlockState(pos.offset(dir, 2));
 			if (axyz.getBlock() == ModBlocks.AXYZ && check2.getBlock().isAir(check2, world, pos.offset(dir, 2))) {
@@ -176,14 +173,14 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 	}
 
 	@Override
-	public boolean isToolEffective(String type, @NotNull IBlockState state) {
+	public boolean isToolEffective(String type, @Nonnull IBlockState state) {
 		return Objects.equals(type, "pickaxe") || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	@Nullable
 	@Override
 	@SuppressWarnings("NullableProblems")
-	public String getHarvestTool(@NotNull IBlockState state) {
+	public String getHarvestTool(@Nonnull IBlockState state) {
 		return "pickaxe";
 	}
 }

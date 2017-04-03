@@ -23,15 +23,16 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by LordSaad.
  */
 public class ExtraSidebar {
 
-	@NotNull
+	@Nonnull
 	private final SidebarType sidebarType;
 	public int id = 0;
 	@Nullable
@@ -45,7 +46,7 @@ public class ExtraSidebar {
 	public boolean isSelected = false;
 	private ComponentSprite component;
 
-	public ExtraSidebar(SubPage subPage, int id, @Nullable JsonObject object, @NotNull SidebarType sidebarType) {
+	public ExtraSidebar(SubPage subPage, int id, @Nullable JsonObject object, @Nonnull SidebarType sidebarType) {
 		this.subPage = subPage;
 		this.id = id;
 		this.sidebarType = sidebarType;

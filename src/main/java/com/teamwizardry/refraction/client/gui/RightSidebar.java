@@ -18,72 +18,72 @@ import net.minecraft.util.text.TextFormatting;
  */
 public class RightSidebar {
 
-    private static final Texture sliderSheet = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/slider_sheet.png"));
-    public static final Sprite rightNormal = sliderSheet.getSprite("right_normal", 130, 18);
-    public static final Sprite rightExtended = sliderSheet.getSprite("right_extended", 135, 18);
-    public static final Sprite rightLarge = sliderSheet.getSprite("right_large", 135, 100);
+	private static final Texture sliderSheet = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/slider_sheet.png"));
+	public static final Sprite rightNormal = sliderSheet.getSprite("right_normal", 130, 18);
+	public static final Sprite rightExtended = sliderSheet.getSprite("right_extended", 135, 18);
+	public static final Sprite rightLarge = sliderSheet.getSprite("right_large", 135, 100);
 
-    public String title;
-    public Sprite icon;
-    public ComponentSprite component;
-    public ComponentList listComp;
+	public String title;
+	public Sprite icon;
+	public ComponentSprite component;
+	public ComponentList listComp;
 
-    public RightSidebar(ComponentList list, String title, Sprite icon, boolean defaultSelected, boolean selectable) {
-        this.title = title;
-        this.icon = icon;
+	public RightSidebar(ComponentList list, String title, Sprite icon, boolean defaultSelected, boolean selectable) {
+		this.title = title;
+		this.icon = icon;
 
-        ComponentSprite background = new ComponentSprite(rightNormal, 0, 0);
-        background.setMarginBottom(2);
-        background.setMarginLeft(list.getMarginRight());
-        if (defaultSelected) background.addTag("selected");
+		ComponentSprite background = new ComponentSprite(rightNormal, 0, 0);
+		background.setMarginBottom(2);
+		background.setMarginLeft(list.getMarginRight());
+		if (defaultSelected) background.addTag("selected");
 
-        ComponentSprite iconComp = new ComponentSprite(this.icon, 5, 1, 16, 16);
-        background.add(iconComp);
+		ComponentSprite iconComp = new ComponentSprite(this.icon, 5, 1, 16, 16);
+		background.add(iconComp);
 
-        ComponentText titleComp = new ComponentText(iconComp.getSize().getXi() + 10, 9, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
-        titleComp.setOutOfFlow(true);
-        background.add(titleComp);
+		ComponentText titleComp = new ComponentText(iconComp.getSize().getXi() + 10, 9, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
+		titleComp.setOutOfFlow(true);
+		background.add(titleComp);
 
-        ComponentList listComp = new ComponentList(rightExtended.getWidth(), rightExtended.getHeight() + 2);
-        background.add(listComp);
-        this.listComp = listComp;
+		ComponentList listComp = new ComponentList(rightExtended.getWidth(), rightExtended.getHeight() + 2);
+		background.add(listComp);
+		this.listComp = listComp;
 
-        new ButtonMixin<>(background, () -> {
-        });
+		new ButtonMixin<>(background, () -> {
+		});
 
-        background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
-            if (background.hasTag("selected")) {
-                if (listComp.getChildren().size() > 0) {
-                    listComp.setVisible(true);
-                    listComp.setEnabled(true);
-                } else {
-                    listComp.setVisible(false);
-                    listComp.setEnabled(false);
-                }
-                background.setSprite(rightExtended);
-                background.setSize(new Vec2d(rightExtended.getWidth(), rightExtended.getHeight()));
-                background.setPos(new Vec2d(-rightNormal.getWidth(), 0));
-                titleComp.getText().setValue(TextFormatting.ITALIC + title);
-            } else {
-                listComp.setVisible(false);
-                listComp.setEnabled(false);
-                background.setSprite(rightNormal);
-                background.setSize(new Vec2d(rightNormal.getWidth(), rightNormal.getHeight()));
-                background.setPos(new Vec2d(-rightNormal.getWidth(), 0));
-                titleComp.getText().setValue(title);
-            }
-        });
+		background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
+			if (background.hasTag("selected")) {
+				if (listComp.getChildren().size() > 0) {
+					listComp.setVisible(true);
+					listComp.setEnabled(true);
+				} else {
+					listComp.setVisible(false);
+					listComp.setEnabled(false);
+				}
+				background.setSprite(rightExtended);
+				background.setSize(new Vec2d(rightExtended.getWidth(), rightExtended.getHeight()));
+				background.setPos(new Vec2d(-rightNormal.getWidth(), 0));
+				titleComp.getText().setValue(TextFormatting.ITALIC + title);
+			} else {
+				listComp.setVisible(false);
+				listComp.setEnabled(false);
+				background.setSprite(rightNormal);
+				background.setSize(new Vec2d(rightNormal.getWidth(), rightNormal.getHeight()));
+				background.setPos(new Vec2d(-rightNormal.getWidth(), 0));
+				titleComp.getText().setValue(title);
+			}
+		});
 
-        if (selectable)
-            background.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
-                if (event.getButton() == EnumMouseButton.LEFT) {
-                    if (!background.hasTag("selected")) {
-                        background.addTag("selected");
-                        for (GuiComponent component : list.getChildren())
-                            if (component != background) component.removeTag("selected");
-                    }
-                }
-            }));
-        component = background;
-    }
+		if (selectable)
+			background.BUS.hook(ButtonMixin.ButtonClickEvent.class, (event -> {
+				if (event.getButton() == EnumMouseButton.LEFT) {
+					if (!background.hasTag("selected")) {
+						background.addTag("selected");
+						for (GuiComponent component : list.getChildren())
+							if (component != background) component.removeTag("selected");
+					}
+				}
+			}));
+		component = background;
+	}
 }

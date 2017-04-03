@@ -1,7 +1,8 @@
 package com.teamwizardry.refraction.api.internal;
 
 import com.teamwizardry.refraction.api.beam.Beam;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author WireSegal
@@ -9,12 +10,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class DummyInternalHandler implements IInternalHandler {
 	@Override
-	public void fireLaserPacket(@NotNull Beam beam) {
+	public void fireLaserPacket(@Nonnull Beam beam) {
 		// NO-OP
 	}
 
 	@Override
-	public void runIfClient(@NotNull ClientRunnable runnable) {
+	public void runIfClient(@Nonnull ClientRunnable runnable) {
 		// NO-OP
 	}
 }

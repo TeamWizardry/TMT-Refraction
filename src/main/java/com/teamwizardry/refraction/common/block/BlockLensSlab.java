@@ -6,7 +6,7 @@ import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
@@ -23,7 +23,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -32,13 +31,13 @@ import java.util.Objects;
 /**
  * Created by LordSaad44
  */
-public class BlockLensSlab extends BlockModSlab implements ILaserTrace, IBeamHandler {
+public class BlockLensSlab extends BlockModSlab implements ILaserTrace, ILightSink {
 
 	public BlockLensSlab() {
 		super("lens", ModBlocks.LENS_BLOCK.getDefaultState());
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
@@ -62,7 +61,7 @@ public class BlockLensSlab extends BlockModSlab implements ILaserTrace, IBeamHan
 
 	@SuppressWarnings("deprecation")
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, @NotNull IBlockAccess blockAccess, @NotNull BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(IBlockState blockState, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, EnumFacing side) {
 		IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
 		Block block = iblockstate.getBlock();
 		return blockState != iblockstate || block != this && block != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
@@ -110,12 +109,12 @@ public class BlockLensSlab extends BlockModSlab implements ILaserTrace, IBeamHan
 				}
 			}
 
-			beam.createSimilarBeam(hitPos, ref).enableParticleBeginning().spawn();
+			beam.createSimilarBeam(hitPos, ref).spawn();
 		}
 	}
 
 	@Override
-	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d startRaw, @NotNull Vec3d endRaw) {
+	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@Nonnull IBlockState blockState, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Vec3d startRaw, @Nonnull Vec3d endRaw) {
 
 		EnumFacing facing = EnumFacing.UP;
 
@@ -187,7 +186,7 @@ public class BlockLensSlab extends BlockModSlab implements ILaserTrace, IBeamHan
 		return new BlockPrism.RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public String getUnlocalizedName(int meta) {
 		return "lens";

@@ -3,13 +3,8 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.IBeamHandler;
-import com.teamwizardry.refraction.api.beam.modes.BeamModeRegistry;
-import com.teamwizardry.refraction.api.beam.modes.ModeEffect;
-import com.teamwizardry.refraction.common.effect.EffectAttract;
-import com.teamwizardry.refraction.common.effect.EffectDisperse;
+import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -29,19 +24,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-import java.util.HashSet;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Created by Saad on 8/16/2016.
  */
-public class BlockElectronExciter extends BlockModContainer implements IBeamHandler {
+public class BlockElectronExciter extends BlockModContainer implements ILightSink {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	private static final PropertyBool UP = PropertyBool.create("up");
@@ -68,7 +60,7 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 		return null;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		if (placer.rotationPitch > 45) return this.getStateFromMeta(meta).withProperty(FACING, EnumFacing.UP);
@@ -78,57 +70,33 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 	}
 
 	@Override
-	public boolean handleBeam(@NotNull World world, @NotNull BlockPos pos, @NotNull Beam beam) {
-		if (beam.mode instanceof ModeEffect && beam.effect != null) {
-			if (beam.effect instanceof EffectAttract) {
-				if (beam.color.getAlpha() > 128) {
-					EnumFacing block = world.getBlockState(pos).getValue(FACING);
-					if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
-						TileElectronExciter exciter = getTE(world, pos);
-						if (exciter != null) {
-							exciter.expire = Constants.SOURCE_TIMER;
-							exciter.hasCardinalBeam = true;
-						}
-						boolean pass = false;
-						for (EnumFacing facing : EnumFacing.VALUES) {
-							if (facing != block || facing != block.getOpposite()) {
-								TileElectronExciter neighbor = getTE(world, pos.offset(facing));
-								if (neighbor != null)
-									if (neighbor.hasCardinalBeam && world.getBlockState(pos.offset(facing)).getValue(FACING) == block) {
-										pass = true;
-										break;
-									}
+	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
+		if (beam.color.getAlpha() > 128) {
+			EnumFacing block = world.getBlockState(pos).getValue(FACING);
+			if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
+				TileElectronExciter exciter = getTE(world, pos);
+				if (exciter != null) {
+					exciter.expire = Constants.SOURCE_TIMER;
+					exciter.hasCardinalBeam = true;
+				}
+				boolean pass = false;
+				for (EnumFacing facing : EnumFacing.VALUES) {
+					if (facing != block || facing != block.getOpposite()) {
+						TileElectronExciter neighbor = getTE(world, pos.offset(facing));
+						if (neighbor != null)
+							if (neighbor.hasCardinalBeam && world.getBlockState(pos.offset(facing)).getValue(FACING) == block) {
+								pass = true;
+								break;
 							}
-						}
-
-						if (pass && world.isAirBlock(pos.offset(block)))
-							world.setBlockState(pos.offset(block), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
-						return true;
 					}
 				}
-			} else if (beam.effect instanceof EffectDisperse) {
-				EnumFacing block = world.getBlockState(pos).getValue(FACING);
-				if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
 
-					Set<EnumFacing> exciters = new HashSet<>();
-					for (EnumFacing facing : EnumFacing.VALUES)
-						if (facing != block || facing != block.getOpposite()) {
-							TileElectronExciter neighbor = getTE(world, pos.offset(facing));
-							if (neighbor != null && world.getBlockState(pos.offset(facing)).getValue(FACING) == block)
-								exciters.add(facing);
-						}
-					if (!exciters.isEmpty()) {
-						Color color = new Color(0, 150, 255, beam.color.getAlpha() / exciters.size());
-						for (EnumFacing facing : exciters) {
-							beam.createSimilarBeam(PosUtils.getSideCenter(pos.offset(facing), block), PosUtils.getVecFromFacing(block), color)
-									.setMode(BeamModeRegistry.GRAVITY)
-									.spawn();
-						}
-					}
-					return true;
-				}
+				if (pass && world.isAirBlock(pos.offset(block)))
+					world.setBlockState(pos.offset(block), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
+				return true;
 			}
 		}
+
 		TileElectronExciter exciter = getTE(world, pos);
 		if (exciter != null) {
 			exciter.expire = Constants.SOURCE_TIMER;
@@ -137,9 +105,9 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 		return true;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
-	public IBlockState getActualState(@NotNull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		EnumFacing facing = state.getValue(FACING);
 		boolean up, down, left, right;
 		switch (facing) {
@@ -221,7 +189,7 @@ public class BlockElectronExciter extends BlockModContainer implements IBeamHand
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 

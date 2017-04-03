@@ -11,9 +11,9 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -157,7 +157,7 @@ public class SoundManager {
 		return false;
 	}
 
-	public boolean activateNearbyNode(@NotNull World world, @NotNull Block block, @NotNull BlockPos pos) {
+	public boolean activateNearbyNode(@Nonnull World world, @Nonnull Block block, @Nonnull BlockPos pos) {
 		if (searchForActiveNode(world, block, pos) == null) {
 			SpeakerNode node = searchForInertNode(world, block, pos);
 			if (node != null && shouldEmit(world, node.pos)) {
@@ -170,7 +170,7 @@ public class SoundManager {
 	}
 
 	@Nullable
-	public SpeakerNode searchForInertNode(@NotNull World world, @NotNull Block block, @NotNull BlockPos pos) {
+	public SpeakerNode searchForInertNode(@Nonnull World world, @Nonnull Block block, @Nonnull BlockPos pos) {
 		for (SpeakerNode node : speakerNodes) {
 			if (!node.active
 					&& node.world.provider.getDimension() == world.provider.getDimension()
@@ -182,7 +182,7 @@ public class SoundManager {
 	}
 
 	@Nullable
-	public SpeakerNode searchForActiveNode(@NotNull World world, @NotNull Block block, @NotNull BlockPos pos) {
+	public SpeakerNode searchForActiveNode(@Nonnull World world, @Nonnull Block block, @Nonnull BlockPos pos) {
 		for (SpeakerNode node : speakerNodes) {
 			if (node.active
 					&& node.world.provider.getDimension() == world.provider.getDimension()
