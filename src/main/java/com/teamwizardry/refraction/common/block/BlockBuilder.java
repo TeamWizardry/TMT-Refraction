@@ -19,6 +19,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
@@ -36,6 +37,12 @@ public class BlockBuilder extends BlockModContainer implements ILightSink {
 
 	private TileBuilder getTE(World world, BlockPos pos) {
 		return (TileBuilder) world.getTileEntity(pos);
+	}
+
+	@Nonnull
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override

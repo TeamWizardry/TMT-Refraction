@@ -14,6 +14,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
@@ -66,17 +67,27 @@ public final class Utils {
 		}
 	}
 
-	public static boolean doColorsMatchNoAlpha(Color color1, Color color2) {
+	public static boolean doColorsMatchNoAlpha(@Nonnull Color color1, @Nonnull Color color2) {
 		return color1.getRed() == color2.getRed() && color1.getGreen() == color2.getGreen() && color1.getBlue() == color2.getBlue();
 	}
 
+	public static boolean doColorsMatch(@Nonnull Color color1, @Nonnull Color color2) {
+		return color1.getRed() == color2.getRed() && color1.getGreen() == color2.getGreen() && color1.getBlue() == color2.getBlue() && color1.getAlpha() == color2.getAlpha();
+	}
+
 	public static Color mixColors(Color color1, Color color2, double percent) {
-		double inverse_percent = 1.0 - percent;
-		double redPart = color1.getRed() * percent + color2.getRed() * inverse_percent;
-		double greenPart = color1.getGreen() * percent + color2.getGreen() * inverse_percent;
-		double bluePart = color1.getBlue() * percent + color2.getBlue() * inverse_percent;
-		double alphaPart = color1.getAlpha() * percent + color2.getAlpha() * inverse_percent;
-		return new Color((int) redPart, (int) greenPart, (int) bluePart, (int) alphaPart);
+
+		float r = ((color1.getRed() / 255f) + (color2.getRed() / 255f)) / 2f;
+		float g = ((color1.getGreen() / 255f) + (color2.getGreen() / 255f)) / 2f;
+		float b = ((color1.getBlue() / 255f) + (color2.getBlue() / 255f)) / 2f;
+		float a = ((color1.getAlpha() / 255f) + (color2.getAlpha() / 255f)) / 2f;
+
+		if (Math.round(r * 255f) == color2.getRed()) r = color2.getRed() / 255f;
+		if (Math.round(g * 255f) == color2.getGreen()) g = color2.getGreen() / 255f;
+		if (Math.round(b * 255f) == color2.getBlue()) b = color2.getBlue() / 255f;
+		if (Math.round(a * 255f) == color2.getAlpha()) a = color2.getAlpha() / 255f;
+
+		return new Color(r, g, b, a);
 	}
 
 	/**

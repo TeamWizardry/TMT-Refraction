@@ -34,6 +34,7 @@ public class ModBlocks {
 	public static BlockInvisible INVISIBLE;
 	public static BlockInvisibleRedstone INVISIBLE_REDSTONE;
 	public static BlockBuilder BUILDER;
+	public static BlockProjector PROJECTOR;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -63,6 +64,7 @@ public class ModBlocks {
 		INVISIBLE = new BlockInvisible();
 		INVISIBLE_REDSTONE = new BlockInvisibleRedstone();
 		BUILDER = new BlockBuilder();
+		PROJECTOR = new BlockProjector();
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -100,5 +100,5 @@ gui.screw_driver.angle.5=22 1/2°
 gui.screw_driver.angle.6=45°
 gui.screw_driver.angle.7=90°
 
-#itemGroup.refraction=Refraction
+item_group.refraction=Refraction
 refraction.jei.assembly_table=装配台

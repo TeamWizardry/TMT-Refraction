@@ -362,8 +362,12 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 					break;
 				}
 			}
-			if (flag)
-				createSimilarBeam(entity.getLook(1)).setUUIDToSkip(entity.getUniqueID()).spawn();
+			if (flag) {
+				createSimilarBeam(entity.getLook(0)).setUUIDToSkip(entity.getUniqueID()).spawn();
+			} else if (color.getAlpha() >= 32) {
+				entity.setFire(1);
+				entity.maxHurtResistantTime = Math.max(5, (10 - (color.getAlpha() / 255) * 10));
+			}
 		}
 
 		// ENTITY REFLECTING

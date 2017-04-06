@@ -2,14 +2,9 @@ package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.librarianlib.common.base.item.ItemMod;
 import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
-import com.teamwizardry.librarianlib.common.util.MethodHandleHelper;
 import com.teamwizardry.refraction.api.IPrecision;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function2;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -17,8 +12,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
@@ -32,9 +25,6 @@ public class ItemScrewDriver extends ItemMod {
 
 	public static final String SCREWDRIVER_TOOL_CLASS = "screwdriver";
 	public static final float EFFICIENCY_ON_PROPER_MATERIAL = 6;
-	@SideOnly(Side.CLIENT)
-	private static Function2<GuiIngame, Object, Unit> remainingHighlightTicksSetter;
-	private static boolean setUpSetter = false;
 
 	public ItemScrewDriver() {
 		super("screw_driver");
@@ -67,8 +57,7 @@ public class ItemScrewDriver extends ItemMod {
 			if (ori == i) return EnumActionResult.FAIL;
 
 			ItemNBTHelper.setInt(stack, MODE_TAG, i);
-			if (player.world.isRemote)
-				displayItemName(30);
+
 			return EnumActionResult.SUCCESS;
 		}
 	}
@@ -83,19 +72,7 @@ public class ItemScrewDriver extends ItemMod {
 			return ActionResult.newResult(EnumActionResult.FAIL, stack);
 
 		ItemNBTHelper.setInt(stack, MODE_TAG, MathHelper.clamp(i, 0, multipliers.length - 1));
-		if (playerIn.world.isRemote)
-			displayItemName(30);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
-	}
-
-	@SideOnly(Side.CLIENT)
-	private void displayItemName(int ticks) {
-		GuiIngame gui = Minecraft.getMinecraft().ingameGUI;
-		if (!setUpSetter) {
-			remainingHighlightTicksSetter = MethodHandleHelper.wrapperForSetter(GuiIngame.class, "q", "field_92017_k", "remainingHighlightTicks");
-			setUpSetter = true;
-		}
-		remainingHighlightTicksSetter.invoke(gui, ticks);
 	}
 
 	@Nonnull

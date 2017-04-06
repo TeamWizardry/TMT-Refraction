@@ -30,34 +30,6 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 	@Nullable
 	public Beam outputBeam;
 
-	public Color mergeColors(Set<Color> colors) {
-		int red = 0, green = 0, blue = 0, alpha = 0;
-
-		if (colors.isEmpty()) return new Color(0, 0, 0, 0);
-
-		for (Color color : colors) {
-			double colorCount = 0;
-			if (color.getRed() > 0) colorCount++;
-			if (color.getGreen() > 0) colorCount++;
-			if (color.getBlue() > 0) colorCount++;
-			if (colorCount <= 0) continue;
-
-			red += color.getRed() * color.getAlpha() / 255F / colorCount;
-			green += color.getGreen() * color.getAlpha() / 255F / colorCount;
-			blue += color.getBlue() * color.getAlpha() / 255F / colorCount;
-			alpha += color.getAlpha();
-		}
-
-		if (!colors.isEmpty()) {
-			red = Math.min(red / colors.size(), 255);
-			green = Math.min(green / colors.size(), 255);
-			blue = Math.min(blue / colors.size(), 255);
-		}
-		float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
-		Color color = new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], 1));
-		return new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
-	}
-
 	public void handleBeam(Beam beam) {
 		boolean flag = false;
 		Set<Pair<Beam, Integer>> temp = new HashSet<>();
@@ -66,9 +38,9 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 			if (pair.getFirst().doBeamsMatch(beam)) {
 				flag = true;
 				inputBeams.remove(pair);
-				inputBeams.add(new Pair<>(pair.getFirst(), 3));
+				inputBeams.add(new Pair<>(pair.getFirst(), 10));
 			}
-		if (!flag) inputBeams.add(new Pair<>(beam, 3));
+		if (!flag) inputBeams.add(new Pair<>(beam, 10));
 	}
 
 	@Override
@@ -81,7 +53,6 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 				inputBeams.add(new Pair<>(pair.getFirst(), pair.getSecond() - 1));
 			} else inputBeams.remove(pair);
 		}
-
 
 		List<Vec3d> angles = new ArrayList<>();
 		angles.addAll(inputBeams.stream().map(pair -> pair.getFirst().slope).collect(Collectors.toList()));
@@ -104,6 +75,7 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 			alpha += color.getAlpha();
 
 		}
+
 		if (!inputBeams.isEmpty()) {
 			red = Math.min(red / inputBeams.size(), 255);
 			green = Math.min(green / inputBeams.size(), 255);
