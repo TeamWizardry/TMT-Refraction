@@ -1,8 +1,11 @@
 package com.teamwizardry.refraction.api;
 
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
+import com.teamwizardry.librarianlib.common.util.NBTTypes;
 import com.teamwizardry.refraction.api.beam.Beam;
 import kotlin.Pair;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.Vec3d;
 
@@ -30,6 +33,33 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 	@Nullable
 	public Beam outputBeam;
 
+	@Override
+	public void writeCustomNBT(NBTTagCompound cmp, boolean sync) {
+		if (outputBeam != null)
+			cmp.setTag("output", outputBeam.serializeNBT());
+		if (inputBeams.isEmpty()) {
+			cmp.removeTag("inputs");
+		} else {
+			cmp.removeTag("inputs");
+			NBTTagList list = new NBTTagList();
+			for (Pair<Beam, Integer> pair : inputBeams) list.appendTag(pair.getFirst().serializeNBT());
+			cmp.setTag("inputs", list);
+		}
+	}
+
+	@Override
+	public void readCustomNBT(NBTTagCompound cmp) {
+		if (cmp.hasKey("output"))
+			outputBeam = new Beam(cmp.getCompoundTag("output"));
+
+		if (cmp.hasKey("inputs")) {
+			NBTTagList list = cmp.getTagList("inputs", NBTTypes.COMPOUND);
+			for (int i = 0; i < list.tagCount(); i++) {
+				inputBeams.add(new Pair<>(new Beam(list.getCompoundTagAt(i)), 3));
+			}
+		}
+	}
+
 	public void handleBeam(Beam beam) {
 		boolean flag = false;
 		Set<Pair<Beam, Integer>> temp = new HashSet<>();
@@ -39,8 +69,12 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 				flag = true;
 				inputBeams.remove(pair);
 				inputBeams.add(new Pair<>(pair.getFirst(), 10));
+				markDirty();
 			}
-		if (!flag) inputBeams.add(new Pair<>(beam, 10));
+		if (!flag) {
+			inputBeams.add(new Pair<>(beam, 10));
+			markDirty();
+		}
 	}
 
 	@Override
@@ -51,7 +85,11 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 			if (pair.getSecond() > 0) {
 				inputBeams.remove(pair);
 				inputBeams.add(new Pair<>(pair.getFirst(), pair.getSecond() - 1));
-			} else inputBeams.remove(pair);
+				markDirty();
+			} else {
+				inputBeams.remove(pair);
+				markDirty();
+			}
 		}
 
 		List<Vec3d> angles = new ArrayList<>();
@@ -88,5 +126,6 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
 
 		outputBeam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), outputDir, color);
+		markDirty();
 	}
 }

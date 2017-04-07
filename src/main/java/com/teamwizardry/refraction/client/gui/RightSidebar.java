@@ -62,14 +62,14 @@ public class RightSidebar {
 				}
 				background.setSprite(rightExtended);
 				background.setSize(new Vec2d(rightExtended.getWidth(), rightExtended.getHeight()));
-				background.setPos(new Vec2d(-rightNormal.getWidth(), 0));
+				background.setPos(new Vec2d(-rightNormal.getWidth() + (list.getChildren().contains(background) ? -5 : 0), 0));
 				titleComp.getText().setValue(TextFormatting.ITALIC + title);
 			} else {
 				listComp.setVisible(false);
 				listComp.setEnabled(false);
 				background.setSprite(rightNormal);
 				background.setSize(new Vec2d(rightNormal.getWidth(), rightNormal.getHeight()));
-				background.setPos(new Vec2d(-rightNormal.getWidth(), 0));
+				background.setPos(new Vec2d(-rightNormal.getWidth() + (list.getChildren().contains(background) ? -5 : 0), 0));
 				titleComp.getText().setValue(title);
 			}
 		});
