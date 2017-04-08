@@ -118,6 +118,10 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 			red = Math.min(red / inputBeams.size(), 255);
 			green = Math.min(green / inputBeams.size(), 255);
 			blue = Math.min(blue / inputBeams.size(), 255);
+		} else {
+			outputBeam = null;
+			markDirty();
+			return;
 		}
 
 		float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);

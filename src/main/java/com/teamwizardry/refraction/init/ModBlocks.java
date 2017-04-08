@@ -36,6 +36,7 @@ public class ModBlocks {
 	public static BlockBuilder BUILDER;
 	public static BlockProjector PROJECTOR;
 	public static BlockFrictionDrill DRILL;
+	public static BlockWormHole WORMHOLE;
 
 	public static void init() {
 		MIRROR = new BlockMirror();
@@ -67,6 +68,7 @@ public class ModBlocks {
 		BUILDER = new BlockBuilder();
 		PROJECTOR = new BlockProjector();
 		DRILL = new BlockFrictionDrill();
+		WORMHOLE = new BlockWormHole();
 	}
 
 	@SideOnly(Side.CLIENT)
