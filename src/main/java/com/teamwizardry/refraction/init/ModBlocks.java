@@ -17,8 +17,7 @@ public class ModBlocks {
 	public static BlockAssemblyTable ASSEMBLY_TABLE;
 	public static BlockLaser LASER;
 	public static BlockPrism PRISM;
-	public static BlockLensSlab LENS_SLAB;
-	public static BlockLens LENS_BLOCK;
+	public static BlockLens LENS;
 	public static BlockReflectionChamber REF_CHAMBER;
 	public static BlockSplitter SPLITTER;
 	public static BlockElectronExciter ELECTRON_EXCITER;
@@ -40,9 +39,8 @@ public class ModBlocks {
 
 	public static void init() {
 		MIRROR = new BlockMirror();
-		LENS_BLOCK = new BlockLens();
-		LENS_SLAB = new BlockLensSlab();
-		OreDictionary.registerOre(LibOreDict.LENS, LENS_SLAB);
+		LENS = new BlockLens();
+		OreDictionary.registerOre(LibOreDict.LENS, LENS);
 		MAGNIFIER = new BlockMagnifier();
 		DISCO_BALL = new BlockDiscoBall();
 		ASSEMBLY_TABLE = new BlockAssemblyTable();

@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.awt.*;
@@ -74,7 +75,9 @@ public class TileWormhole extends MultipleBeamTile {
 				} else {
 					if (entity.dimension != closest.getDim())
 						entity.changeDimension(closest.getDim());
-					entity.setPosition(closest.getPos().getX() + 0.5, closest.getPos().getY() + 0.5, closest.getPos().getZ() + 0.5);
+
+					Vec3d pos = new Vec3d(closest.getPos()).addVector(0.5, 0.5, 0.5).add(entity.getLook(0));
+					entity.setPosition(pos.xCoord, pos.yCoord, pos.zCoord);
 					entity.getEntityData().setInteger("wormhole_cooldown", 10);
 				}
 			}
