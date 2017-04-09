@@ -1,6 +1,6 @@
 {
 	"parent": "block/cube_all",
 	"textures": {
-      "all": "refraction:blocks/lens"
+      "all": "refraction:blocks/wormhole"
 	}
 }

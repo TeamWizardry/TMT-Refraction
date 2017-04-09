@@ -30,14 +30,14 @@ public class TileWormhole extends MultipleBeamTile {
 
 		if (outputBeam == null) return;
 
-		boolean flag = true;
+		boolean isCached = true;
 		for (Color color : BlockWormHole.wormholes.keySet()) {
 			for (DimWithPos dimWithPos : BlockWormHole.wormholes.get(color)) {
 				if (dimWithPos.getDim() == world.provider.getDimension() && dimWithPos.getPos().toLong() == pos.toLong())
-					flag = false;
+					isCached = false;
 			}
 		}
-		if (flag) {
+		if (isCached) {
 			Color finalColor = outputBeam.color;
 			for (Color color : BlockWormHole.wormholes.keySet()) {
 				if (Utils.doColorsMatch(color, outputBeam.color)) {
@@ -51,21 +51,28 @@ public class TileWormhole extends MultipleBeamTile {
 		IBlockState state = world.getBlockState(pos);
 		EnumFacing facing = state.getValue(BlockWormHole.FACING);
 
+		boolean anyMatch = false;
 		DimWithPos closest = null;
-		if (BlockWormHole.wormholes.containsKey(outputBeam.color)) {
-			Set<DimWithPos> dimWithPosSet = BlockWormHole.wormholes.get(outputBeam.color);
-			for (DimWithPos dimWithPos : dimWithPosSet) {
-				if (closest == null && dimWithPos.getPos().toLong() != pos.toLong()) closest = dimWithPos;
-				if (closest == null) continue;
-				if (dimWithPos.getPos().distanceSq(pos) < closest.getPos().distanceSq(pos)
-						&& dimWithPos.getPos().toLong() != pos.toLong()) closest = dimWithPos;
+		for (Color color : BlockWormHole.wormholes.keySet()) {
+			if (Utils.doColorsMatch(color, outputBeam.color)) {
+				anyMatch = true;
+
+				Set<DimWithPos> dimWithPosSet = BlockWormHole.wormholes.get(color);
+				for (DimWithPos dimWithPos : dimWithPosSet) {
+					if (dimWithPos.getPos().toLong() == pos.toLong() && dimWithPos.getDim() == world.provider.getDimension())
+						continue;
+					if (closest == null) closest = dimWithPos;
+					else if (dimWithPos.getPos().distanceSq(pos) < closest.getPos().distanceSq(pos))
+						closest = dimWithPos;
+				}
+				break;
 			}
 		}
+		if (!anyMatch) return;
 		if (closest == null) return;
 
-		List<Entity> entityList = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.offset(facing, 2)).expand(0, 2, 0));
+		List<Entity> entityList = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.offset(facing)).expand(0, 2, 0));
 		if (!entityList.isEmpty()) {
-			closest = new DimWithPos(closest.getDim(), closest.getPos().add(0.5, 2, 0.5));
 			for (Entity entity : entityList) {
 				if (entity.getEntityData().hasKey("wormhole_cooldown")) {
 					int cooldown = entity.getEntityData().getInteger("wormhole_cooldown");

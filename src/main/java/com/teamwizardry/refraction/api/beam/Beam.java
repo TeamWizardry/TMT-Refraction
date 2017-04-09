@@ -316,8 +316,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		if (trace == null) return;
 		if (trace.hitVec == null) return;
 
-		// EFFECT HANDLING //
-
 		boolean traceCompleted = false;
 
 		// Making sure we don't recur //

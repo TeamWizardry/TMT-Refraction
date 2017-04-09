@@ -1,8 +1,0 @@
-{
-  "parent": "block/upper_slab",
-  "textures": {
-    "bottom": "refraction:blocks/lens",
-    "top": "refraction:blocks/lens",
-    "side": "refraction:blocks/lens"
-  }
-}

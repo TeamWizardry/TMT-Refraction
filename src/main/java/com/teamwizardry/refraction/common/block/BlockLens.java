@@ -39,7 +39,7 @@ import java.util.Objects;
 public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 
 	public BlockLens() {
-		super("lens_block", Material.GLASS);
+		super("lens", Material.GLASS);
 		setHardness(1F);
 	}
 

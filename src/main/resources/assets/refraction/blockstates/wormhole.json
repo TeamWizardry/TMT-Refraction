@@ -1,0 +1,29 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "refraction:wormhole",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "refraction:wormhole"
+    },
+    "facing=north": {
+      "model": "refraction:wormhole",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "refraction:wormhole",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "refraction:wormhole",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "refraction:wormhole",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

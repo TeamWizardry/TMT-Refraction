@@ -1,0 +1,29 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "refraction:projector",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "refraction:projector"
+    },
+    "facing=north": {
+      "model": "refraction:projector",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "refraction:projector",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "refraction:projector",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "refraction:projector",
+      "x": 90,
+      "y": 90
+    }
+  }
+}
