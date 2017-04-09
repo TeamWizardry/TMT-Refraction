@@ -68,11 +68,11 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 			if (pair.getFirst().doBeamsMatch(beam)) {
 				flag = true;
 				inputBeams.remove(pair);
-				inputBeams.add(new Pair<>(pair.getFirst(), 10));
+				inputBeams.add(new Pair<>(pair.getFirst(), 3));
 				markDirty();
 			}
 		if (!flag) {
-			inputBeams.add(new Pair<>(beam, 10));
+			inputBeams.add(new Pair<>(beam, 3));
 			markDirty();
 		}
 	}
@@ -119,7 +119,7 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 			green = Math.min(green / inputBeams.size(), 255);
 			blue = Math.min(blue / inputBeams.size(), 255);
 		} else {
-			outputBeam = null;
+			//	outputBeam = null;
 			markDirty();
 			return;
 		}

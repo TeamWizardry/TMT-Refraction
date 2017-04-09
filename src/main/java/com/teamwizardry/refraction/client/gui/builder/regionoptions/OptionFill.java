@@ -4,9 +4,11 @@ import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.client.gui.components.ComponentList;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.client.gui.LeftSidebar;
 import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
+import com.teamwizardry.refraction.common.network.PacketBuilderGridSaver;
 
 /**
  * Created by LordSaad.
@@ -28,6 +30,7 @@ public class OptionFill extends LeftSidebar {
 						     j < (first.getYi() < second.getYi() ? second.getYi() : first.getYi()) + 1; j++)
 							builder.grid[builder.selectedLayer][i][j] = type;
 			}
+			PacketHandler.NETWORK.sendToServer(new PacketBuilderGridSaver(builder.location, builder.grid));
 		}));
 	}
 }

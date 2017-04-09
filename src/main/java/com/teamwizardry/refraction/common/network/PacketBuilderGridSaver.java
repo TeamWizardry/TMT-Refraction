@@ -1,23 +1,33 @@
-package com.teamwizardry.refraction.common.tile;
+package com.teamwizardry.refraction.common.network;
 
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.common.network.PacketBase;
+import com.teamwizardry.librarianlib.common.util.saving.Save;
 import com.teamwizardry.librarianlib.common.util.saving.SaveMethodGetter;
 import com.teamwizardry.librarianlib.common.util.saving.SaveMethodSetter;
-import com.teamwizardry.refraction.api.MultipleBeamTile;
-import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
+import com.teamwizardry.refraction.common.tile.TileBuilder;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-
-import java.awt.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 /**
  * Created by LordSaad.
  */
-@TileRegister("builder")
-public class TileBuilder extends MultipleBeamTile {
+public class PacketBuilderGridSaver extends PacketBase {
 
-	public GuiBuilder.TileType[][][] grid;
+	@Save
+	private BlockPos pos;
+	private GuiBuilder.TileType[][][] grid;
+
+	public PacketBuilderGridSaver() {
+	}
+
+	public PacketBuilderGridSaver(BlockPos pos, GuiBuilder.TileType[][][] grid) {
+		this.pos = pos;
+		this.grid = grid;
+	}
 
 	@SaveMethodGetter(saveName = "grid")
 	public NBTTagList getter() {
@@ -53,11 +63,13 @@ public class TileBuilder extends MultipleBeamTile {
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void handle(MessageContext messageContext) {
+		World world = messageContext.getServerHandler().playerEntity.world;
+		TileBuilder builder = (TileBuilder) world.getTileEntity(pos);
 
-		if (outputBeam != null && Utils.doColorsMatchNoAlpha(Color.GREEN, outputBeam.color)) {
+		if (builder == null) return;
 
-		}
+		builder.grid = grid;
+		builder.markDirty();
 	}
 }

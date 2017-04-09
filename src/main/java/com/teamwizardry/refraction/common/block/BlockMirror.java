@@ -176,19 +176,29 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 
 		float x = 0, y = 0;
 
-		if (facing.getHorizontalAngle() == 0) {
-			x = 90;
-			y = 0;
-		} else if (facing.getHorizontalAngle() == 90) {
-			x = 270;
-			y = 90;
-		} else if (facing.getHorizontalAngle() == 270) {
-			x = -90;
-			y = 270;
-		} else if (facing.getHorizontalAngle() == 180) {
-			x = 90;
-			y = 180;
+		switch (facing) {
+			case WEST: {
+				x = -90;
+				y = 270;
+				break;
+			}
+			case EAST: {
+				x = 270;
+				y = 90;
+				break;
+			}
+			case NORTH: {
+				x = 90;
+				y = 0;
+				break;
+			}
+			case SOUTH: {
+				x = 90;
+				y = 180;
+				break;
+			}
 		}
+
 		mirror.rotDestX = x;
 		mirror.rotDestY = y;
 		mirror.rotPrevX = x;

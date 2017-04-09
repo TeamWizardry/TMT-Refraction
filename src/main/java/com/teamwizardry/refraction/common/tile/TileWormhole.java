@@ -16,7 +16,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by LordSaad.
@@ -28,25 +27,36 @@ public class TileWormhole extends MultipleBeamTile {
 	public void update() {
 		super.update();
 
-		if (outputBeam == null) return;
-
-		boolean isCached = true;
-		for (Color color : BlockWormHole.wormholes.keySet()) {
-			for (DimWithPos dimWithPos : BlockWormHole.wormholes.get(color)) {
-				if (dimWithPos.getDim() == world.provider.getDimension() && dimWithPos.getPos().toLong() == pos.toLong())
-					isCached = false;
-			}
-		}
-		if (isCached) {
-			Color finalColor = outputBeam.color;
+		if (outputBeam == null) {
+			Color finalColor = null;
+			DimWithPos finalDimWithPos = null;
 			for (Color color : BlockWormHole.wormholes.keySet()) {
-				if (Utils.doColorsMatch(color, outputBeam.color)) {
-					finalColor = color;
-					break;
+				for (DimWithPos dimWithPos : BlockWormHole.wormholes.get(color)) {
+					if (dimWithPos.getDim() == world.provider.getDimension()
+							&& dimWithPos.getPos().toLong() == pos.toLong()) {
+						finalColor = color;
+						finalDimWithPos = dimWithPos;
+						break;
+					}
 				}
 			}
-			BlockWormHole.wormholes.put(finalColor, new DimWithPos(world, pos));
+			if (finalColor == null) return;
+			BlockWormHole.wormholes.remove(finalColor, finalDimWithPos);
+			return;
 		}
+
+		boolean add = true;
+		for (Color color : BlockWormHole.wormholes.keySet()) {
+			for (DimWithPos dimWithPos : BlockWormHole.wormholes.get(color)) {
+				if (dimWithPos.getDim() == world.provider.getDimension()
+						&& dimWithPos.getPos().toLong() == pos.toLong()) {
+					if (Utils.doColorsMatch(color, outputBeam.color)) {
+						add = false;
+					}
+				}
+			}
+		}
+		if (add) BlockWormHole.wormholes.put(outputBeam.color, new DimWithPos(world, pos));
 
 		IBlockState state = world.getBlockState(pos);
 		EnumFacing facing = state.getValue(BlockWormHole.FACING);
@@ -57,8 +67,7 @@ public class TileWormhole extends MultipleBeamTile {
 			if (Utils.doColorsMatch(color, outputBeam.color)) {
 				anyMatch = true;
 
-				Set<DimWithPos> dimWithPosSet = BlockWormHole.wormholes.get(color);
-				for (DimWithPos dimWithPos : dimWithPosSet) {
+				for (DimWithPos dimWithPos : BlockWormHole.wormholes.get(color)) {
 					if (dimWithPos.getPos().toLong() == pos.toLong() && dimWithPos.getDim() == world.provider.getDimension())
 						continue;
 					if (closest == null) closest = dimWithPos;

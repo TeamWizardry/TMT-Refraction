@@ -40,7 +40,7 @@ public class PacketAmmoColorChange extends PacketBase {
 	@Override
 	public void handle(MessageContext messageContext) {
 		ItemStack stack = messageContext.getServerHandler().playerEntity.inventory.getStackInSlot(slot);
-		if (stack == null) return;
+		if (stack.isEmpty()) return;
 		ItemNBTHelper.setInt(stack, "color", color.getRGB());
 	}
 }

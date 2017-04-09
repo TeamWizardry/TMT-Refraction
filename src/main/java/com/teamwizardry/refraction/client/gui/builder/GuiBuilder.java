@@ -9,13 +9,16 @@ import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
 import com.teamwizardry.librarianlib.client.sprite.Sprite;
 import com.teamwizardry.librarianlib.client.sprite.Texture;
+import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.math.Vec2d;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.client.gui.LeftSidebar;
 import com.teamwizardry.refraction.client.gui.RightSidebar;
 import com.teamwizardry.refraction.client.gui.builder.regionoptions.OptionFill;
+import com.teamwizardry.refraction.common.network.PacketBuilderGridSaver;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
@@ -41,8 +44,9 @@ public class GuiBuilder extends GuiBase {
 	public TileType[][][] grid = new TileType[16][16][16];
 	public int selectedLayer = 0;
 	public Mode selectedMode = Mode.DIRECT;
+	public BlockPos location;
 
-	public GuiBuilder() {
+	public GuiBuilder(BlockPos location) {
 		super(sprBorder.getWidth() + LeftSidebar.leftExtended.getWidth() * 2, sprBorder.getHeight());
 
 		for (int i = 0; i < grid.length; i++)
@@ -51,6 +55,7 @@ public class GuiBuilder extends GuiBase {
 					grid[i][j][k] = TileType.EMPTY;
 
 		// LEFT //
+		this.location = location;
 		ComponentList leftSidebar = new ComponentList(LeftSidebar.leftExtended.getWidth(), 0);
 
 		LeftSidebar modeComp = new LeftSidebar(leftSidebar, "Selection Modes", sprTabMode, true, true);
@@ -81,9 +86,8 @@ public class GuiBuilder extends GuiBase {
 
 		LayerSelector layerUp = new LayerSelector(this, rightSidebar, "Layer Up", sprArrowUp, true);
 		LayerSelector layerDown = new LayerSelector(this, rightSidebar, "Layer Down", sprArrowDown, false);
-		layers.listComp.add(layerUp.component, layerDown.component);
 
-		rightSidebar.add(layers.component);
+		rightSidebar.add(layers.component, layerUp.component, layerDown.component);
 		getMainComponents().add(rightSidebar);
 		// RIGHT //
 
@@ -112,6 +116,7 @@ public class GuiBuilder extends GuiBase {
 						grid[selectedLayer][x][y] = TileType.PLACED;
 					else if (event.getButton() == EnumMouseButton.RIGHT)
 						grid[selectedLayer][x][y] = TileType.EMPTY;
+					PacketHandler.NETWORK.sendToServer(new PacketBuilderGridSaver(location, grid));
 				}
 		});
 
@@ -120,22 +125,28 @@ public class GuiBuilder extends GuiBase {
 			int x = pos.getXi() / 16;
 			int y = pos.getYi() / 16;
 			if (x < grid.length && y < grid.length && x > 0 && y > 0)
-				if (selectedMode == Mode.DIRECT)
+				if (selectedMode == Mode.DIRECT) {
 					if (grid[selectedLayer][x][y] == TileType.EMPTY)
 						grid[selectedLayer][x][y] = TileType.PLACED;
 					else grid[selectedLayer][x][y] = TileType.EMPTY;
-				else if (selectedMode == Mode.SELECT) {
+					PacketHandler.NETWORK.sendToServer(new PacketBuilderGridSaver(location, grid));
+				} else if (selectedMode == Mode.SELECT) {
 					if (grid[selectedLayer][x][y] == TileType.EMPTY)
 						if (event.getButton() == EnumMouseButton.LEFT) {
 							Vec2d left = getTile(TileType.LEFT_SELECTED);
 							if (left != null) grid[selectedLayer][left.getXi()][left.getYi()] = TileType.EMPTY;
 							grid[selectedLayer][x][y] = TileType.LEFT_SELECTED;
+							PacketHandler.NETWORK.sendToServer(new PacketBuilderGridSaver(location, grid));
 						} else {
 							Vec2d left = getTile(TileType.RIGHT_SELECTED);
 							if (left != null) grid[selectedLayer][left.getXi()][left.getYi()] = TileType.EMPTY;
 							grid[selectedLayer][x][y] = TileType.RIGHT_SELECTED;
+							PacketHandler.NETWORK.sendToServer(new PacketBuilderGridSaver(location, grid));
 						}
-					else grid[selectedLayer][x][y] = TileType.EMPTY;
+					else {
+						grid[selectedLayer][x][y] = TileType.EMPTY;
+						PacketHandler.NETWORK.sendToServer(new PacketBuilderGridSaver(location, grid));
+					}
 				}
 		});
 
