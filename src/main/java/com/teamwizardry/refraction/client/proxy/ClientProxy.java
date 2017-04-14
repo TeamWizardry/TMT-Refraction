@@ -8,8 +8,10 @@ import com.teamwizardry.refraction.client.core.ScrewdriverOverlay;
 import com.teamwizardry.refraction.client.render.LaserRenderer;
 import com.teamwizardry.refraction.client.render.RenderGrenade;
 import com.teamwizardry.refraction.client.render.RenderLaserPoint;
+import com.teamwizardry.refraction.client.render.RenderPlasma;
 import com.teamwizardry.refraction.common.entity.EntityGrenade;
 import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
+import com.teamwizardry.refraction.common.entity.EntityPlasma;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModItems;
@@ -43,6 +45,7 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		ModItems.initModels();
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityLaserPointer.class, RenderLaserPoint::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityPlasma.class, RenderPlasma::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, manager -> new RenderGrenade(manager, ModItems.GRENADE, Minecraft.getMinecraft().getRenderItem()));
 	}
 

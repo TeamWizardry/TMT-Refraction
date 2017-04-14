@@ -4,12 +4,16 @@ import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileBuilder;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -29,14 +33,25 @@ import java.util.Objects;
  */
 public class BlockBuilder extends BlockModContainer implements ILightSink {
 
+	public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class);
+
 	public BlockBuilder() {
 		super("builder", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 
 	private TileBuilder getTE(World world, BlockPos pos) {
 		return (TileBuilder) world.getTileEntity(pos);
+	}
+
+	@Override
+	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
+		TileBuilder te = (TileBuilder) world.getTileEntity(pos);
+		if (te != null)
+			te.handleBeam(beam);
+		return true;
 	}
 
 	@Nonnull
@@ -53,7 +68,7 @@ public class BlockBuilder extends BlockModContainer implements ILightSink {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (worldIn.isRemote)
-			playerIn.openGui(Refraction.instance, 1, playerIn.world, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+			playerIn.openGui(Refraction.instance, 1, playerIn.world, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
 
@@ -81,5 +96,25 @@ public class BlockBuilder extends BlockModContainer implements ILightSink {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
 		return new TileBuilder();
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getStateFromMeta(meta).withProperty(FACING, facing);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(FACING).getIndex();
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, FACING);
 	}
 }

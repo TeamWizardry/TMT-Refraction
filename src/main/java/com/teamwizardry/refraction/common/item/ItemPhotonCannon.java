@@ -7,12 +7,9 @@ import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IAmmo;
 import com.teamwizardry.refraction.api.IAmmoConsumer;
-import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.common.entity.EntityPlasma;
 import kotlin.jvm.functions.Function2;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
@@ -37,50 +34,25 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemCol
 
 	@Nonnull
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
-		if (ItemNBTHelper.getInt(stack, "color", -1) == -1 || GuiScreen.isAltKeyDown()) return EnumAction.NONE;
-		return EnumAction.BOW;
-	}
-
-	@Nonnull
-	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
-		playerIn.setActiveHand(hand);
-		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
-	}
+		ItemStack stack = playerIn.getHeldItem(hand);
+		if (stack.getTagCompound() == null) return new ActionResult<>(EnumActionResult.FAIL, stack);
 
-	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
-		return 1000;
-	}
-
-	@Override
-	public ItemStack onItemUseFinish(@Nonnull ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-		return stack;
-	}
-
-	@Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
-		if (!(playerIn instanceof EntityPlayer)) return;
-
-		if (stack.getTagCompound() == null) return;
-
-		if (!stack.getTagCompound().hasKey("color")) return;
+		if (!stack.getTagCompound().hasKey("color")) return new ActionResult<>(EnumActionResult.FAIL, stack);
 
 		Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
-		ItemStack ammo = IAmmoConsumer.findAmmo((EntityPlayer) playerIn, color);
-		if (ammo == null) return;
+		ItemStack ammo = IAmmoConsumer.findAmmo(playerIn, color);
+		if (ammo == null) return new ActionResult<>(EnumActionResult.FAIL, stack);
 		IAmmo ammoItem = (IAmmo) ammo.getItem();
 
-		if (!ammoItem.drain(ammo, 1, true)) return;
+		if (!ammoItem.drain(ammo, 1, true)) return new ActionResult<>(EnumActionResult.FAIL, stack);
 
 		int ammoColor = ammoItem.getInternalColor(ammo);
 
 		if (ammoColor != color.getRGB())
 			ItemNBTHelper.setInt(stack, "color", ammoColor);
 
-		if (!((EntityPlayer) playerIn).capabilities.isCreativeMode)
+		if (!playerIn.capabilities.isCreativeMode)
 			ammoItem.drain(ammo, 1, false);
 
 		boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
@@ -88,11 +60,13 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemCol
 		if (!handMod) cross = cross.scale(-1);
 		Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
 
-		Beam beam = new Beam(playerIn.getEntityWorld(), playerVec, playerIn.getLook(1), color)
-				.setUUIDToSkip(playerIn.getUniqueID())
-				.setCaster(playerIn)
-				.setRange(30);
-		beam.spawn();
+		if (worldIn.isRemote) return new ActionResult<>(EnumActionResult.FAIL, stack);
+
+		EntityPlasma plasma = new EntityPlasma(worldIn, playerIn.getLook(0), color);
+		plasma.setPosition(playerVec.xCoord, playerVec.yCoord, playerVec.zCoord);
+		worldIn.spawnEntity(plasma);
+		playerIn.getCooldownTracker().setCooldown(this, 5);
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Nullable

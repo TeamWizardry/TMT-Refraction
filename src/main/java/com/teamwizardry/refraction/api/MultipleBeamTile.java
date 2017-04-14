@@ -3,7 +3,6 @@ package com.teamwizardry.refraction.api;
 import com.teamwizardry.librarianlib.common.base.block.TileMod;
 import com.teamwizardry.librarianlib.common.util.NBTTypes;
 import com.teamwizardry.refraction.api.beam.Beam;
-import kotlin.Pair;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
@@ -13,9 +12,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -28,7 +26,7 @@ import java.util.stream.Collectors;
 public class MultipleBeamTile extends TileMod implements ITickable {
 
 	@Nonnull
-	public Set<Pair<Beam, Integer>> inputBeams = new HashSet<>();
+	public HashMap<Beam, Integer> inputBeams = new HashMap<>();
 
 	@Nullable
 	public Beam outputBeam;
@@ -37,12 +35,13 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 	public void writeCustomNBT(NBTTagCompound cmp, boolean sync) {
 		if (outputBeam != null)
 			cmp.setTag("output", outputBeam.serializeNBT());
+
 		if (inputBeams.isEmpty()) {
 			cmp.removeTag("inputs");
 		} else {
 			cmp.removeTag("inputs");
 			NBTTagList list = new NBTTagList();
-			for (Pair<Beam, Integer> pair : inputBeams) list.appendTag(pair.getFirst().serializeNBT());
+			for (Beam beam : inputBeams.keySet()) list.appendTag(beam.serializeNBT());
 			cmp.setTag("inputs", list);
 		}
 	}
@@ -55,51 +54,56 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 		if (cmp.hasKey("inputs")) {
 			NBTTagList list = cmp.getTagList("inputs", NBTTypes.COMPOUND);
 			for (int i = 0; i < list.tagCount(); i++) {
-				inputBeams.add(new Pair<>(new Beam(list.getCompoundTagAt(i)), 3));
+				inputBeams.put(new Beam(list.getCompoundTagAt(i)), 5);
 			}
 		}
 	}
 
 	public void handleBeam(Beam beam) {
 		boolean flag = false;
-		Set<Pair<Beam, Integer>> temp = new HashSet<>();
-		temp.addAll(inputBeams);
-		for (Pair<Beam, Integer> pair : temp)
-			if (pair.getFirst().doBeamsMatch(beam)) {
+		HashMap<Beam, Integer> temp = new HashMap<>();
+		temp.putAll(inputBeams);
+		for (Beam check : temp.keySet())
+			if (check.doBeamsMatch(beam)) {
 				flag = true;
-				inputBeams.remove(pair);
-				inputBeams.add(new Pair<>(pair.getFirst(), 3));
+				inputBeams.put(check, 5);
 				markDirty();
 			}
 		if (!flag) {
-			inputBeams.add(new Pair<>(beam, 3));
+			inputBeams.put(beam, 5);
 			markDirty();
 		}
 	}
 
 	@Override
 	public void update() {
-		Set<Pair<Beam, Integer>> temp = new HashSet<>();
-		temp.addAll(inputBeams);
-		for (Pair<Beam, Integer> pair : temp) {
-			if (pair.getSecond() > 0) {
-				inputBeams.remove(pair);
-				inputBeams.add(new Pair<>(pair.getFirst(), pair.getSecond() - 1));
-				markDirty();
-			} else {
-				inputBeams.remove(pair);
+		if (inputBeams.isEmpty()) {
+			if (outputBeam != null) {
+				outputBeam = null;
 				markDirty();
 			}
+			return;
+		} else {
+			HashMap<Beam, Integer> temp = new HashMap<>();
+			temp.putAll(inputBeams);
+			boolean update = false;
+			for (Beam check : temp.keySet()) {
+				int count = temp.get(check);
+				if (count > 0) inputBeams.put(check, count - 1);
+				else inputBeams.remove(check);
+				update = true;
+			}
+			if (update) markDirty();
 		}
 
 		List<Vec3d> angles = new ArrayList<>();
-		angles.addAll(inputBeams.stream().map(pair -> pair.getFirst().slope).collect(Collectors.toList()));
+		angles.addAll(inputBeams.keySet().stream().map(beam -> beam.slope).collect(Collectors.toList()));
 		Vec3d outputDir = RotationHelper.averageDirection(angles);
 
 		int red = 0, green = 0, blue = 0, alpha = 0;
 
-		for (Pair<Beam, Integer> pair : inputBeams) {
-			Color color = pair.getFirst().color;
+		for (Beam beam : inputBeams.keySet()) {
+			Color color = beam.color;
 
 			double colorCount = 0;
 			if (color.getRed() > 0) colorCount++;
@@ -111,17 +115,12 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 			green += color.getGreen() * color.getAlpha() / 255F / colorCount;
 			blue += color.getBlue() * color.getAlpha() / 255F / colorCount;
 			alpha += color.getAlpha();
-
 		}
 
 		if (!inputBeams.isEmpty()) {
 			red = Math.min(red / inputBeams.size(), 255);
 			green = Math.min(green / inputBeams.size(), 255);
 			blue = Math.min(blue / inputBeams.size(), 255);
-		} else {
-			//	outputBeam = null;
-			markDirty();
-			return;
 		}
 
 		float[] hsbvals = Color.RGBtoHSB(red, green, blue, null);
@@ -129,7 +128,11 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
 
-		outputBeam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), outputDir, color);
-		markDirty();
+		Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), outputDir, color);
+
+		if (outputBeam == null || !beam.doBeamsMatch(outputBeam)) {
+			outputBeam = beam;
+			markDirty();
+		}
 	}
 }

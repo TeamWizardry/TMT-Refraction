@@ -16,6 +16,8 @@ import com.teamwizardry.refraction.client.gui.LeftSidebar;
 import com.teamwizardry.refraction.client.gui.RightSidebar;
 import com.teamwizardry.refraction.client.gui.builder.regionoptions.OptionFill;
 import com.teamwizardry.refraction.common.network.PacketBuilderGridSaver;
+import com.teamwizardry.refraction.common.tile.TileBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -49,11 +51,23 @@ public class GuiBuilder extends GuiBase {
 	public GuiBuilder(BlockPos location) {
 		super(sprBorder.getWidth() + LeftSidebar.leftExtended.getWidth() * 2, sprBorder.getHeight());
 
-		for (int i = 0; i < grid.length; i++)
-			for (int j = 0; j < grid.length; j++)
-				for (int k = 0; k < grid.length; k++)
-					grid[i][j][k] = TileType.EMPTY;
+		TileBuilder builder = (TileBuilder) Minecraft.getMinecraft().world.getTileEntity(location);
+		if (builder != null && builder.grid != null) {
+			grid = builder.grid;
 
+			for (int x = 0; x < grid.length; x++)
+				for (int y = 0; y < grid.length; y++)
+					for (int z = 0; z < grid.length; z++) {
+						if (grid[y][x][z] == null)
+							grid[y][x][z] = GuiBuilder.TileType.EMPTY;
+					}
+		} else {
+
+			for (int i = 0; i < grid.length; i++)
+				for (int j = 0; j < grid.length; j++)
+					for (int k = 0; k < grid.length; k++)
+						grid[i][j][k] = TileType.EMPTY;
+		}
 		// LEFT //
 		this.location = location;
 		ComponentList leftSidebar = new ComponentList(LeftSidebar.leftExtended.getWidth(), 0);

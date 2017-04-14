@@ -2,7 +2,6 @@ package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.client.util.TooltipHelper;
 import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
 import com.teamwizardry.librarianlib.common.util.math.Matrix4;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
@@ -11,7 +10,6 @@ import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
-import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +22,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -49,9 +46,9 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 	}
 
 	public static void showBeam(World world, Vec3d start, Vec3d end, Color color) {
-		if (!world.isRemote)
-			PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
-					new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
+		//if (!world.isRemote)
+		//	PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
+		//			new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 50));
 	}
 
 	@Override

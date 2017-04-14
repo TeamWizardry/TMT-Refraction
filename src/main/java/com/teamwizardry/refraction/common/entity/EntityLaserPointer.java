@@ -73,7 +73,7 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 	public void updateRayPos() {
 		if (player == null || player.get() == null) {
 			this.setDead();
-		} else if (player.get().getActiveItemStack() == null || player.get().getActiveItemStack().getItem() != ModItems.LASER_PEN) {
+		} else if (player.get().getActiveItemStack().isEmpty() || player.get().getActiveItemStack().getItem() != ModItems.LASER_PEN) {
 			this.setDead();
 		} else {
 			RayTraceResult res = rayTrace(player.get(), ItemLaserPen.RANGE);

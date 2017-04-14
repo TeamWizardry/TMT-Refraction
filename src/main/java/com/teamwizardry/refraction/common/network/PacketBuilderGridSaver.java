@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 /**
@@ -30,13 +31,15 @@ public class PacketBuilderGridSaver extends PacketBase {
 	}
 
 	@SaveMethodGetter(saveName = "grid")
-	public NBTTagList getter() {
+	public NBTTagCompound getter() {
+		NBTTagCompound nbt = new NBTTagCompound();
+		NBTTagList list = new NBTTagList();
 		if (grid != null) {
-			NBTTagList list = new NBTTagList();
 			for (int i = 0; i < grid.length; i++)
 				for (int j = 0; j < grid.length; j++)
 					for (int k = 0; k < grid.length; k++) {
 						GuiBuilder.TileType box = grid[i][j][k];
+						if (box == GuiBuilder.TileType.EMPTY) continue;
 						NBTTagCompound compound = new NBTTagCompound();
 						compound.setString("type", box.toString());
 						compound.setInteger("layer", i);
@@ -45,28 +48,30 @@ public class PacketBuilderGridSaver extends PacketBase {
 						list.appendTag(compound);
 					}
 		}
-		return null;
+		nbt.setTag("list", list);
+		return nbt;
 	}
 
 	@SaveMethodSetter(saveName = "grid")
-	public void setter(NBTTagList list) {
-		if (list != null) {
-			for (int q = 0; q < list.tagCount(); q++) {
-				NBTTagCompound compound = list.getCompoundTagAt(q);
-				GuiBuilder.TileType type = GuiBuilder.TileType.valueOf(compound.getString("type"));
-				int layer = compound.getInteger("layer");
-				int x = compound.getInteger("x");
-				int y = compound.getInteger("y");
-				grid[layer][x][y] = type;
-			}
+	public void setter(NBTTagCompound nbt) {
+		if (grid == null) grid = new GuiBuilder.TileType[16][16][16];
+
+		NBTTagList list = nbt.getTagList("list", Constants.NBT.TAG_COMPOUND);
+		for (int q = 0; q < list.tagCount(); q++) {
+			NBTTagCompound compound = list.getCompoundTagAt(q);
+			GuiBuilder.TileType type = GuiBuilder.TileType.valueOf(compound.getString("type"));
+			int layer = compound.getInteger("layer");
+			int x = compound.getInteger("x");
+			int y = compound.getInteger("y");
+			grid[layer][x][y] = type;
 		}
 	}
 
 	@Override
 	public void handle(MessageContext messageContext) {
 		World world = messageContext.getServerHandler().playerEntity.world;
-		TileBuilder builder = (TileBuilder) world.getTileEntity(pos);
 
+		TileBuilder builder = (TileBuilder) world.getTileEntity(pos);
 		if (builder == null) return;
 
 		builder.grid = grid;
