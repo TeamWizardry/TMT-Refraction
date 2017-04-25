@@ -41,8 +41,17 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 	}
 
 	public static Vec3d refracted(double from, double to, Vec3d vec, Vec3d normal) {
-		double r = from / to, c = -normal.dotProduct(vec);
-		return vec.scale(r).add(normal.scale((r * c) - Math.sqrt(1 - (r * r) * (1 - (c * c)))));
+		double ratio = from / to;
+		double mag = normal.crossProduct(vec).lengthSquared();
+		
+		Vec3d first = normal.scale(-1).crossProduct(vec);
+		first = normal.crossProduct(first).scale(ratio);
+		
+		Vec3d second = normal.scale(Math.sqrt(1 - ratio*ratio*mag));
+		
+		return first.subtract(second);
+//		double r = from / to, c = -normal.dotProduct(vec);
+//		return vec.scale(r).add(normal.scale((r * c) - Math.sqrt(1 - (r * r) * (1 - (c * c)))));
 	}
 
 	public static void showBeam(World world, Vec3d start, Vec3d end, Color color) {

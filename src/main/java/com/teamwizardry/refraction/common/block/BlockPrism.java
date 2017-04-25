@@ -1,15 +1,9 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.librarianlib.common.util.math.Matrix4;
-import com.teamwizardry.refraction.api.ConfigValues;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.ILightSink;
-import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
-import com.teamwizardry.refraction.api.raytrace.Tri;
-import com.teamwizardry.refraction.common.item.ItemScrewDriver;
+import java.awt.Color;
+import java.util.List;
+import java.util.Objects;
+import javax.annotation.Nonnull;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -30,11 +24,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
-import java.util.List;
-import java.util.Objects;
+import com.teamwizardry.librarianlib.client.util.TooltipHelper;
+import com.teamwizardry.librarianlib.common.base.block.BlockMod;
+import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.ILightSink;
+import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
+import com.teamwizardry.refraction.api.raytrace.Tri;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 
 /**
  * Created by LordSaad44
@@ -188,7 +187,6 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 	public BlockPrism.RayTraceResultData<Vec3d> collisionRayTraceLaser(@Nonnull IBlockState blockState, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Vec3d startRaw, @Nonnull Vec3d endRaw) {
 
 		EnumFacing facing = blockState.getValue(FACING);
-
 		Matrix4 matrixA = new Matrix4();
 		Matrix4 matrixB = new Matrix4();
 //		matrixA.translate(new Vec3d(-0.5, -0.5, -0.5));
@@ -218,10 +216,11 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 				a = new Vec3d(0.001, 0.001, 0), // This needs to be offset
 				b = new Vec3d(1, 0.001, 0.5),
 				c = new Vec3d(0.001, 0.001, 1), // and this too. Just so that blue refracts in ALL cases
+				
 				A = a.addVector(0, 0.998, 0),
 				B = b.addVector(0, 0.998, 0), // these y offsets are to fix translocation issues
 				C = c.addVector(0, 0.998, 0);
-
+		
 		Tri[] tris = new Tri[]{
 				new Tri(a, b, c),
 				new Tri(A, C, B),
@@ -233,7 +232,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 				new Tri(a, B, b),
 
 				new Tri(b, B, C),
-				new Tri(b, C, c),
+				new Tri(b, C, c)
 		};
 
 		Vec3d start = matrixA.apply(startRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
