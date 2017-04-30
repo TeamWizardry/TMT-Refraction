@@ -1,6 +1,6 @@
 {
-"__comment": "Designed by Wiresegal with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
-"textures": {
+  "__comment": "Designed by Wiresegal with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+  "textures": {
     "particle": "refraction:blocks/light_bridge"
-}
+  }
 }

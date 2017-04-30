@@ -1,17 +1,64 @@
 {
   "multipart": [
-    { "apply": { "model": "refraction:optic_fiber" } },
-    { "when": { "facings": "up_north|up_south|up_west|up_east|up_down" },
-      "apply": { "model": "refraction:optic_fiber_dongle" } },
-    { "when": { "facings": "up_down|down_north|down_south|down_west|down_east" },
-      "apply": { "model": "refraction:optic_fiber_dongle", "x": 180 } },
-    { "when": { "facings": "up_north|down_north|west_north|east_north|north_south" },
-      "apply": { "model": "refraction:optic_fiber_dongle", "x": 90 } },
-    { "when": { "facings": "up_south|down_south|west_south|east_south|north_south" },
-      "apply": { "model": "refraction:optic_fiber_dongle", "x": 270 } },
-    { "when": { "facings": "up_east|down_east|west_east|east_north|east_south" },
-      "apply": { "model": "refraction:optic_fiber_dongle", "x": 90, "y": 90 } },
-    { "when": { "facings": "up_west|down_west|west_north|west_south|west_east" },
-      "apply": { "model": "refraction:optic_fiber_dongle", "x": 90, "y": 270 } }
+    {
+      "apply": {
+        "model": "refraction:optic_fiber"
+      }
+    },
+    {
+      "when": {
+        "facings": "up_north|up_south|up_west|up_east|up_down"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle"
+      }
+    },
+    {
+      "when": {
+        "facings": "up_down|down_north|down_south|down_west|down_east"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "facings": "up_north|down_north|west_north|east_north|north_south"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "facings": "up_south|down_south|west_south|east_south|north_south"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "facings": "up_east|down_east|west_east|east_north|east_south"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle",
+        "x": 90,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facings": "up_west|down_west|west_north|west_south|west_east"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle",
+        "x": 90,
+        "y": 270
+      }
+    }
   ]
 }

@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.init;
 
-import com.teamwizardry.librarianlib.common.base.ModCreativeTab;
+import com.teamwizardry.librarianlib.features.base.ModCreativeTab;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;

@@ -1,9 +1,9 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
-import com.teamwizardry.librarianlib.common.util.math.Matrix4;
-import com.teamwizardry.librarianlib.common.util.saving.Save;
+import com.teamwizardry.librarianlib.features.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.features.base.block.TileMod;
+import com.teamwizardry.librarianlib.features.math.Matrix4;
+import com.teamwizardry.librarianlib.features.saving.Save;
 import com.teamwizardry.refraction.api.beam.Beam;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;

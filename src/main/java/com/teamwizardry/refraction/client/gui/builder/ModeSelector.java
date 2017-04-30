@@ -1,9 +1,9 @@
 package com.teamwizardry.refraction.client.gui.builder;
 
-import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentList;
-import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
-import com.teamwizardry.librarianlib.client.sprite.Sprite;
+import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentList;
+import com.teamwizardry.librarianlib.features.gui.mixin.ButtonMixin;
+import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.refraction.client.gui.LeftSidebar;
 
 /**

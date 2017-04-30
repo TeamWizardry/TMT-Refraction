@@ -1,9 +1,9 @@
 package com.teamwizardry.refraction.client.jei;
 
 import com.google.common.collect.ImmutableList;
-import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
-import com.teamwizardry.librarianlib.client.sprite.Sprite;
-import com.teamwizardry.librarianlib.client.sprite.Texture;
+import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
+import com.teamwizardry.librarianlib.features.sprite.Sprite;
+import com.teamwizardry.librarianlib.features.sprite.Texture;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.recipe.AssemblyRecipe;

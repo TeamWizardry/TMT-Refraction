@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.core;
 
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper;
 import com.teamwizardry.refraction.api.IPrecision;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;

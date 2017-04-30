@@ -1,15 +1,15 @@
 package com.teamwizardry.refraction.client.gui.tablet;
 
 import com.google.gson.JsonObject;
-import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
-import com.teamwizardry.librarianlib.client.gui.GuiComponent;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentStack;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
-import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
-import com.teamwizardry.librarianlib.client.sprite.Sprite;
-import com.teamwizardry.librarianlib.common.util.math.Vec2d;
+import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
+import com.teamwizardry.librarianlib.features.gui.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentStack;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
+import com.teamwizardry.librarianlib.features.gui.mixin.ButtonMixin;
+import com.teamwizardry.librarianlib.features.math.Vec2d;
+import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.client.gui.RightSidebar;
 import com.teamwizardry.refraction.client.jei.JEIRefractionPlugin;

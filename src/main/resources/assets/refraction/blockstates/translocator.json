@@ -1,16 +1,118 @@
 {
   "multipart": [
-    {"when": {"side": "up"}, "apply": { "model": "refraction:translocator", "x": -90 }},
-    {"when": {"side": "down"}, "apply": { "model": "refraction:translocator", "x": 90 }},
-    {"when": {"side": "east"}, "apply": { "model": "refraction:translocator", "y": 90 }},
-    {"when": {"side": "west"}, "apply": { "model": "refraction:translocator", "y": -90 }},
-    {"when": {"side": "south"}, "apply": { "model": "refraction:translocator", "y": 180 }},
-    {"when": {"side": "north"}, "apply": { "model": "refraction:translocator" }},
-    {"when": {"side": "down", "connected": "true"}, "apply": { "model": "refraction:optic_fiber_dongle" }},
-    { "when": { "side": "up", "connected": "true" }, "apply": { "model": "refraction:optic_fiber_dongle", "x": 180 } },
-    { "when": { "side": "south", "connected": "true" }, "apply": { "model": "refraction:optic_fiber_dongle", "x": 90 } },
-    { "when": { "side": "north", "connected": "true" }, "apply": { "model": "refraction:optic_fiber_dongle", "x": 270 } },
-    { "when": { "side": "west", "connected": "true" }, "apply": { "model": "refraction:optic_fiber_dongle", "x": 90, "y": 90 } },
-    { "when": { "side": "east", "connected": "true" }, "apply": { "model": "refraction:optic_fiber_dongle", "x": 90, "y": 270 } }
+    {
+      "when": {
+        "side": "up"
+      },
+      "apply": {
+        "model": "refraction:translocator",
+        "x": -90
+      }
+    },
+    {
+      "when": {
+        "side": "down"
+      },
+      "apply": {
+        "model": "refraction:translocator",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "side": "east"
+      },
+      "apply": {
+        "model": "refraction:translocator",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "side": "west"
+      },
+      "apply": {
+        "model": "refraction:translocator",
+        "y": -90
+      }
+    },
+    {
+      "when": {
+        "side": "south"
+      },
+      "apply": {
+        "model": "refraction:translocator",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "side": "north"
+      },
+      "apply": {
+        "model": "refraction:translocator"
+      }
+    },
+    {
+      "when": {
+        "side": "down",
+        "connected": "true"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle"
+      }
+    },
+    {
+      "when": {
+        "side": "up",
+        "connected": "true"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "side": "south",
+        "connected": "true"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "side": "north",
+        "connected": "true"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "side": "west",
+        "connected": "true"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle",
+        "x": 90,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "side": "east",
+        "connected": "true"
+      },
+      "apply": {
+        "model": "refraction:optic_fiber_dongle",
+        "x": 90,
+        "y": 270
+      }
+    }
   ]
 }

@@ -1,17 +1,17 @@
 {
-	"spritesheet":{
-		"textureWidth":32,
-		"textureHeight":128,
-		"sprites":{
-			"tile_right_selected":[0, 0, 16, 16],
-			"tile_left_selected":[0, 16, 16, 16],
-			"tile_normal":[0, 32, 16, 16],
-			"icon_direct":[0, 48, 16, 16],
-			"icon_region_selection":[0, 64, 16, 16],
-			"tab_mode":[0, 80, 16, 16],
-			"arrow_up":[0, 96, 16, 16],
-			"arrow_down":[0, 112, 16, 16],
-			"layers":[16, 0, 16, 16]
-		}
-	}
+  "spritesheet": {
+    "textureWidth": 32,
+    "textureHeight": 128,
+    "sprites": {
+      "tile_right_selected": [0, 0, 16, 16],
+      "tile_left_selected": [0, 16, 16, 16],
+      "tile_normal": [0, 32, 16, 16],
+      "icon_direct": [0, 48, 16, 16],
+      "icon_region_selection": [0, 64, 16, 16],
+      "tab_mode": [0, 80, 16, 16],
+      "arrow_up": [0, 96, 16, 16],
+      "arrow_down": [0, 112, 16, 16],
+      "layers": [16, 0, 16, 16]
+    }
+  }
 }

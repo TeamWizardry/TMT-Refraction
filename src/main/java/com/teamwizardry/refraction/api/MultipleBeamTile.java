@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.api;
 
-import com.teamwizardry.librarianlib.common.base.block.TileMod;
-import com.teamwizardry.librarianlib.common.util.NBTTypes;
+import com.teamwizardry.librarianlib.features.base.block.TileMod;
+import com.teamwizardry.librarianlib.features.utilities.NBTTypes;
 import com.teamwizardry.refraction.api.beam.Beam;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;

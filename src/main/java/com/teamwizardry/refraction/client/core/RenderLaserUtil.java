@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client.core;
 
-import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
+import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.client.Minecraft;

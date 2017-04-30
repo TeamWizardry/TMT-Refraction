@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.api;
 
-import com.teamwizardry.librarianlib.common.util.ConfigPropertyBoolean;
-import com.teamwizardry.librarianlib.common.util.ConfigPropertyDouble;
-import com.teamwizardry.librarianlib.common.util.ConfigPropertyInt;
+import com.teamwizardry.librarianlib.features.config.ConfigPropertyBoolean;
+import com.teamwizardry.librarianlib.features.config.ConfigPropertyDouble;
+import com.teamwizardry.librarianlib.features.config.ConfigPropertyInt;
 
 /**
  * @author WireSegal

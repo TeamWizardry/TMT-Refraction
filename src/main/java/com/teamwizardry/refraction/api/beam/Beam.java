@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.api.beam;
 
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.librarianlib.features.network.PacketHandler;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.raytrace.EntityTrace;

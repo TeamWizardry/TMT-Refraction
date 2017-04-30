@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
-import com.teamwizardry.librarianlib.common.util.saving.SaveMethodGetter;
-import com.teamwizardry.librarianlib.common.util.saving.SaveMethodSetter;
+import com.teamwizardry.librarianlib.features.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.features.saving.SaveMethodGetter;
+import com.teamwizardry.librarianlib.features.saving.SaveMethodSetter;
 import com.teamwizardry.refraction.api.MultipleBeamTile;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
@@ -23,7 +23,7 @@ public class TileBuilder extends MultipleBeamTile {
 
 	public GuiBuilder.TileType[][][] grid;
 
-	@SaveMethodGetter(saveName = "grid")
+	@SaveMethodGetter(saveName = "grid_saver")
 	public NBTTagCompound getter() {
 		NBTTagCompound nbt = new NBTTagCompound();
 		NBTTagList list = new NBTTagList();
@@ -45,7 +45,7 @@ public class TileBuilder extends MultipleBeamTile {
 		return nbt;
 	}
 
-	@SaveMethodSetter(saveName = "grid")
+	@SaveMethodSetter(saveName = "grid_saver")
 	public void setter(NBTTagCompound nbt) {
 		if (grid == null) grid = new GuiBuilder.TileType[16][16][16];
 

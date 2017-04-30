@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
-import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.librarianlib.features.base.block.BlockMod;
+import com.teamwizardry.librarianlib.features.math.Matrix4;
+import com.teamwizardry.librarianlib.features.network.PacketHandler;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;

@@ -1,11 +1,11 @@
 package com.teamwizardry.refraction.client.gui.builder.regionoptions;
 
-import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentList;
-import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
-import com.teamwizardry.librarianlib.client.sprite.Sprite;
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
-import com.teamwizardry.librarianlib.common.util.math.Vec2d;
+import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentList;
+import com.teamwizardry.librarianlib.features.gui.mixin.ButtonMixin;
+import com.teamwizardry.librarianlib.features.math.Vec2d;
+import com.teamwizardry.librarianlib.features.network.PacketHandler;
+import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.refraction.client.gui.LeftSidebar;
 import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
 import com.teamwizardry.refraction.common.network.PacketBuilderGridSaver;

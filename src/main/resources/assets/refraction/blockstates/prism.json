@@ -9,20 +9,20 @@
     "uvlock": true
   },
   "variants": {
-	"facing": {
-		"up": {},
-		"down": {},
-		"north": {
-			"y":270
-		},
-		"south": {
-		  "y": 90
-		},
-		"west": {
-		  "y": 180
-		},
-		"east": {}
-	},
+    "facing": {
+      "up": {},
+      "down": {},
+      "north": {
+        "y": 270
+      },
+      "south": {
+        "y": 90
+      },
+      "west": {
+        "y": 180
+      },
+      "east": {}
+    },
     "inventory": [{}]
   }
 }

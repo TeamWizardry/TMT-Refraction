@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client.core;
 
-import com.teamwizardry.librarianlib.common.util.math.Vec2d;
+import com.teamwizardry.librarianlib.features.math.Vec2d;
 import com.teamwizardry.refraction.api.IPrecision;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.block.state.IBlockState;
@@ -91,8 +91,8 @@ public class ScrewdriverOverlay {
 			tessellator.draw();
 			GlStateManager.enableTexture2D();
 
-			int width = Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
-			Minecraft.getMinecraft().fontRendererObj.drawString(text, -width - (int) (circleRadius * SQRT2), -9 - (int) (circleRadius * SQRT2), 0x000000, false);
+			int width = Minecraft.getMinecraft().fontRenderer.getStringWidth(text);
+			Minecraft.getMinecraft().fontRenderer.drawString(text, -width - (int) (circleRadius * SQRT2), -9 - (int) (circleRadius * SQRT2), 0x000000, false);
 
 			GlStateManager.color(1, 1, 1);
 			GlStateManager.popMatrix();
@@ -109,7 +109,7 @@ public class ScrewdriverOverlay {
 					GlStateManager.enableTexture2D();
 					GlStateManager.color(1, 1, 1);
 					String s = prec.getRotX(world, highlighting) + ", " + prec.getRotY(world, highlighting);
-					Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(s, event.getResolution().getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(s) / 2, event.getResolution().getScaledHeight() / 2 + 30, 0xFFFFFF);
+					Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(s, event.getResolution().getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(s) / 2, event.getResolution().getScaledHeight() / 2 + 30, 0xFFFFFF);
 					GlStateManager.popMatrix();
 					highlighting = null;
 				}

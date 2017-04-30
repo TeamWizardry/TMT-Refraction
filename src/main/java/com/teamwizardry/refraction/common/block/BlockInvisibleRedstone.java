@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.features.base.block.BlockModContainer;
 import com.teamwizardry.refraction.common.tile.TileInvisibleRedstone;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

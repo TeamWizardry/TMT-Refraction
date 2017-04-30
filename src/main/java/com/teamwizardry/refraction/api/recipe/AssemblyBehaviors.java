@@ -1,10 +1,11 @@
 package com.teamwizardry.refraction.api.recipe;
 
 import com.google.common.collect.HashBiMap;
-import com.teamwizardry.librarianlib.common.util.LibHelpersKt;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
+
+import static com.teamwizardry.librarianlib.features.helpers.CommonUtilMethods.getCurrentModId;
 
 /**
  * @author WireSegal
@@ -18,7 +19,7 @@ public final class AssemblyBehaviors {
 	}
 
 	public static IAssemblyBehavior register(String key, IAssemblyBehavior recipe) {
-		key = LibHelpersKt.getCurrentModId() + ":" + key;
+		key = getCurrentModId() + ":" + key;
 		if (behaviors.containsKey(key))
 			throw new IllegalArgumentException("Key " + key + " already used for an assembly recipe");
 		behaviors.put(key, recipe);

@@ -80,7 +80,7 @@ public class HudRenderHelper {
 		GlStateManager.enableBlend();
 
 		String longest = "";
-		FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 		for (String s : messages) {
 			if (fr.getStringWidth(s) > fr.getStringWidth(longest)) longest = s;
 		}

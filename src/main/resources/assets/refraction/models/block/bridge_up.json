@@ -1,16 +1,22 @@
 {
-"__comment": "Designed by Wiresegal with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
-"textures": {
+  "__comment": "Designed by Wiresegal with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+  "textures": {
     "texture": "refraction:blocks/light_bridge_vert"
-},
-"elements": [ 
-{
-    "from": [ 8, 0, 0 ],
-    "to": [ 8, 8, 16 ],
-    "faces": {
-        "east":  { "uv": [ 16, 16, 0, 8 ], "texture": "#texture" },
-        "west":  { "uv": [ 0, 0, 16, 8 ], "texture": "#texture" }
+  },
+  "elements": [
+    {
+      "from": [8, 0, 0],
+      "to": [8, 8, 16],
+      "faces": {
+        "east": {
+          "uv": [16, 16, 0, 8],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [0, 0, 16, 8],
+          "texture": "#texture"
+        }
+      }
     }
-}
-]
+  ]
 }

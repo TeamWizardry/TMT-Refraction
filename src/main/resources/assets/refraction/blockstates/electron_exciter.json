@@ -1,7 +1,23 @@
 {
   "multipart": [
-    {"when": { "facing": "up" }, "apply": { "model": "refraction:electron_exciter", "x": 270 }},
-    {"when": { "facing": "down" }, "apply": { "model": "refraction:electron_exciter", "x": 90 }},
+    {
+      "when": {
+        "facing": "up"
+      },
+      "apply": {
+        "model": "refraction:electron_exciter",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "down"
+      },
+      "apply": {
+        "model": "refraction:electron_exciter",
+        "x": 90
+      }
+    },
     {
       "when": {
         "facing": "north"
@@ -19,11 +35,44 @@
         "y": 180
       }
     },
-    {"when": { "facing": "west" }, "apply": { "model": "refraction:electron_exciter", "y": 270 }},
-    {"when": { "facing": "east" }, "apply": { "model": "refraction:electron_exciter", "y": 90 }},
-
-    {"when": { "facing": "up", "up": "true" }, "apply": { "model": "refraction:electron_beam_up", "x": 270 }},
-    {"when": { "facing": "down", "up": "true" }, "apply": { "model": "refraction:electron_beam_up", "x": 90 }},
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "refraction:electron_exciter",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "refraction:electron_exciter",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "up",
+        "up": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_up",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "down",
+        "up": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_up",
+        "x": 90
+      }
+    },
     {
       "when": {
         "facing": "north",
@@ -43,11 +92,46 @@
         "y": 180
       }
     },
-    {"when": { "facing": "west", "up": "true" }, "apply": { "model": "refraction:electron_beam_up", "y": 270 }},
-    {"when": { "facing": "east", "up": "true" }, "apply": { "model": "refraction:electron_beam_up", "y": 90 }},
-
-    {"when": { "facing": "up", "left": "true" }, "apply": { "model": "refraction:electron_beam_left", "x": 270 }},
-    {"when": { "facing": "down", "left": "true" }, "apply": { "model": "refraction:electron_beam_left", "x": 90 }},
+    {
+      "when": {
+        "facing": "west",
+        "up": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_up",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "up": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_up",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "up",
+        "left": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_left",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "down",
+        "left": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_left",
+        "x": 90
+      }
+    },
     {
       "when": {
         "facing": "north",
@@ -67,11 +151,46 @@
         "y": 180
       }
     },
-    {"when": { "facing": "west", "left": "true" }, "apply": { "model": "refraction:electron_beam_left", "y": 270 }},
-    {"when": { "facing": "east", "left": "true" }, "apply": { "model": "refraction:electron_beam_left", "y": 90 }},
-
-    {"when": { "facing": "up", "right": "true" }, "apply": { "model": "refraction:electron_beam_right", "x": 270 }},
-    {"when": { "facing": "down", "right": "true" }, "apply": { "model": "refraction:electron_beam_right", "x": 90 }},
+    {
+      "when": {
+        "facing": "west",
+        "left": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_left",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "left": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_left",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "up",
+        "right": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_right",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "down",
+        "right": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_right",
+        "x": 90
+      }
+    },
     {
       "when": {
         "facing": "north",
@@ -91,11 +210,46 @@
         "y": 180
       }
     },
-    {"when": { "facing": "west", "right": "true" }, "apply": { "model": "refraction:electron_beam_right", "y": 270 }},
-    {"when": { "facing": "east", "right": "true" }, "apply": { "model": "refraction:electron_beam_right", "y": 90 }},
-
-    {"when": { "facing": "up", "down": "true" }, "apply": { "model": "refraction:electron_beam_down", "x": 270 }},
-    {"when": { "facing": "down", "down": "true" }, "apply": { "model": "refraction:electron_beam_down", "x": 90 }},
+    {
+      "when": {
+        "facing": "west",
+        "right": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_right",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "right": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_right",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "up",
+        "down": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_down",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "down",
+        "down": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_down",
+        "x": 90
+      }
+    },
     {
       "when": {
         "facing": "north",
@@ -115,7 +269,25 @@
         "y": 180
       }
     },
-    {"when": { "facing": "west", "down": "true" }, "apply": { "model": "refraction:electron_beam_down", "y": 270 }},
-    {"when": { "facing": "east", "down": "true" }, "apply": { "model": "refraction:electron_beam_down", "y": 90 }}
+    {
+      "when": {
+        "facing": "west",
+        "down": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_down",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "down": "true"
+      },
+      "apply": {
+        "model": "refraction:electron_beam_down",
+        "y": 90
+      }
+    }
   ]
 }

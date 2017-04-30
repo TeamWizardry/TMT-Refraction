@@ -1,9 +1,9 @@
 package com.teamwizardry.refraction.common.item;
 
-import com.teamwizardry.librarianlib.client.util.ColorUtils;
-import com.teamwizardry.librarianlib.common.base.item.IItemColorProvider;
-import com.teamwizardry.librarianlib.common.base.item.ItemMod;
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
+import com.teamwizardry.librarianlib.features.base.item.IItemColorProvider;
+import com.teamwizardry.librarianlib.features.base.item.ItemMod;
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper;
+import com.teamwizardry.librarianlib.features.utilities.client.ColorUtils;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IAmmo;
 import com.teamwizardry.refraction.api.IAmmoConsumer;

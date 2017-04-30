@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.proxy;
 
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
+import com.teamwizardry.librarianlib.features.network.PacketHandler;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.internal.ClientRunnable;

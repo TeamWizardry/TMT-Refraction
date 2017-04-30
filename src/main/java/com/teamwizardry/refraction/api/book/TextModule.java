@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.api.book;
 
-import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
+
+import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 
 import javax.annotation.Nonnull;
 

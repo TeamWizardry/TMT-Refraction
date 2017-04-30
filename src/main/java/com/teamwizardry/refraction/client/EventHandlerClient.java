@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.client;
 
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper;
+import com.teamwizardry.librarianlib.features.network.PacketHandler;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IAmmo;
 import com.teamwizardry.refraction.api.IAmmoConsumer;

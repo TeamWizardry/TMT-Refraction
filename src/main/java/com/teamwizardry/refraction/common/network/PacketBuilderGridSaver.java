@@ -1,9 +1,9 @@
 package com.teamwizardry.refraction.common.network;
 
-import com.teamwizardry.librarianlib.common.network.PacketBase;
-import com.teamwizardry.librarianlib.common.util.saving.Save;
-import com.teamwizardry.librarianlib.common.util.saving.SaveMethodGetter;
-import com.teamwizardry.librarianlib.common.util.saving.SaveMethodSetter;
+import com.teamwizardry.librarianlib.features.network.PacketBase;
+import com.teamwizardry.librarianlib.features.saving.Save;
+import com.teamwizardry.librarianlib.features.saving.SaveMethodGetter;
+import com.teamwizardry.librarianlib.features.saving.SaveMethodSetter;
 import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
 import com.teamwizardry.refraction.common.tile.TileBuilder;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +30,7 @@ public class PacketBuilderGridSaver extends PacketBase {
 		this.grid = grid;
 	}
 
-	@SaveMethodGetter(saveName = "grid")
+	@SaveMethodGetter(saveName = "grid_saver")
 	public NBTTagCompound getter() {
 		NBTTagCompound nbt = new NBTTagCompound();
 		NBTTagList list = new NBTTagList();
@@ -52,7 +52,7 @@ public class PacketBuilderGridSaver extends PacketBase {
 		return nbt;
 	}
 
-	@SaveMethodSetter(saveName = "grid")
+	@SaveMethodSetter(saveName = "grid_saver")
 	public void setter(NBTTagCompound nbt) {
 		if (grid == null) grid = new GuiBuilder.TileType[16][16][16];
 
@@ -69,7 +69,7 @@ public class PacketBuilderGridSaver extends PacketBase {
 
 	@Override
 	public void handle(MessageContext messageContext) {
-		World world = messageContext.getServerHandler().playerEntity.world;
+		World world = messageContext.getServerHandler().player.world;
 
 		TileBuilder builder = (TileBuilder) world.getTileEntity(pos);
 		if (builder == null) return;

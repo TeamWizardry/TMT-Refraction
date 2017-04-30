@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.common.tile;
 
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
-import com.teamwizardry.librarianlib.common.util.DimWithPos;
-import com.teamwizardry.librarianlib.common.util.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.features.autoregister.TileRegister;
+import com.teamwizardry.librarianlib.features.network.PacketHandler;
+import com.teamwizardry.librarianlib.features.utilities.DimWithPos;
 import com.teamwizardry.refraction.api.MultipleBeamTile;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.block.BlockWormHole;

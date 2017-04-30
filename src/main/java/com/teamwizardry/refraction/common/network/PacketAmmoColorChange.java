@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.common.network;
 
-import com.teamwizardry.librarianlib.common.network.PacketBase;
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper;
+import com.teamwizardry.librarianlib.features.network.PacketBase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -39,7 +39,7 @@ public class PacketAmmoColorChange extends PacketBase {
 
 	@Override
 	public void handle(MessageContext messageContext) {
-		ItemStack stack = messageContext.getServerHandler().playerEntity.inventory.getStackInSlot(slot);
+		ItemStack stack = messageContext.getServerHandler().player.inventory.getStackInSlot(slot);
 		if (stack.isEmpty()) return;
 		ItemNBTHelper.setInt(stack, "color", color.getRGB());
 	}

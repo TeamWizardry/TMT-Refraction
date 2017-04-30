@@ -1,20 +1,131 @@
-{	
-	"multipart": [
-		{ "apply": { "model": "refraction:bridge_particle" } },
-
-		{"when": { "axis": "x", "down": "true" }, "apply": { "model": "refraction:bridge_up", "y": 90 } },
-		{"when": { "axis": "x", "up": "true" }, "apply": { "model": "refraction:bridge_up", "y": 90, "x": 180 } },
-		{"when": { "axis": "x", "left": "true" }, "apply": { "model": "refraction:bridge", "y": 90 } },
-		{"when": { "axis": "x", "right": "true" }, "apply": { "model": "refraction:bridge", "y": 270 } },
-
-		{"when": { "axis": "y", "down": "true" }, "apply": { "model": "refraction:bridge_up", "x": 90 } },
-		{"when": { "axis": "y", "up": "true" }, "apply": { "model": "refraction:bridge_up", "y": 180, "x": 90 } },
-		{"when": { "axis": "y", "left": "true" }, "apply": { "model": "refraction:bridge_up", "y": 270, "x": 90 } },
-		{"when": { "axis": "y", "right": "true" }, "apply": { "model": "refraction:bridge_up", "y": 90, "x": 90 } },
-
-		{"when": { "axis": "z", "down": "true" }, "apply": { "model": "refraction:bridge_up" } },
-		{"when": { "axis": "z", "up": "true" }, "apply": { "model": "refraction:bridge_up", "x": 180 } },
-		{"when": { "axis": "z", "left": "true" }, "apply": { "model": "refraction:bridge", "y": 180 } },
-		{"when": { "axis": "z", "right": "true" }, "apply": { "model": "refraction:bridge" } }
-	]
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "refraction:bridge_particle"
+      }
+    },
+    {
+      "when": {
+        "axis": "x",
+        "down": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge_up",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "axis": "x",
+        "up": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge_up",
+        "y": 90,
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "axis": "x",
+        "left": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "axis": "x",
+        "right": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "axis": "y",
+        "down": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge_up",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "axis": "y",
+        "up": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge_up",
+        "y": 180,
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "axis": "y",
+        "left": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge_up",
+        "y": 270,
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "axis": "y",
+        "right": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge_up",
+        "y": 90,
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "axis": "z",
+        "down": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge_up"
+      }
+    },
+    {
+      "when": {
+        "axis": "z",
+        "up": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge_up",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "axis": "z",
+        "left": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "axis": "z",
+        "right": "true"
+      },
+      "apply": {
+        "model": "refraction:bridge"
+      }
+    }
+  ]
 }

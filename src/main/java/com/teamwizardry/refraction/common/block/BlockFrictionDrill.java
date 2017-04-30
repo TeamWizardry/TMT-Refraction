@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.features.base.block.BlockModContainer;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.common.tile.TileFrictionDrill;

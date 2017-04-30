@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.google.common.collect.HashMultimap;
-import com.teamwizardry.librarianlib.common.base.block.BlockModContainer;
-import com.teamwizardry.librarianlib.common.util.DimWithPos;
+import com.teamwizardry.librarianlib.features.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.features.utilities.DimWithPos;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.common.tile.TileWormhole;

@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.item.armor;
 
-import com.teamwizardry.librarianlib.common.base.item.ItemModArmor;
+import com.teamwizardry.librarianlib.features.base.item.ItemModArmor;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.IReflectiveArmor;
 import com.teamwizardry.refraction.client.core.ModelReflectiveArmorHolder;

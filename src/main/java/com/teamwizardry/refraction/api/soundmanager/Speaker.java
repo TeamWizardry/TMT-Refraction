@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.api.soundmanager;
 
 import com.google.common.collect.Lists;
-import com.teamwizardry.librarianlib.common.util.NBTTypes;
+import com.teamwizardry.librarianlib.features.utilities.NBTTypes;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;

@@ -1,9 +1,9 @@
 {
-	"spritesheet":{
-		"textureWidth":28,
-		"textureHeight":135,
-		"sprites":{
-			"box":[0, 0, 28, 135]
-		}
-	}
+  "spritesheet": {
+    "textureWidth": 28,
+    "textureHeight": 135,
+    "sprites": {
+      "box": [0, 0, 28, 135]
+    }
+  }
 }

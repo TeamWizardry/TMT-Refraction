@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.api.book;
 
-import com.teamwizardry.librarianlib.client.gui.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.GuiComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
  */
 public interface IParsedModule {
 
-	FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+	FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
 	@SuppressWarnings("rawtypes")
 	@Nonnull

@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.api.recipe;
 
-import com.teamwizardry.librarianlib.LibrarianLog;
+import com.teamwizardry.librarianlib.core.LibrarianLog;
 import com.teamwizardry.refraction.api.CapsUtils;
 import com.teamwizardry.refraction.api.Utils;
 import net.minecraft.block.Block;

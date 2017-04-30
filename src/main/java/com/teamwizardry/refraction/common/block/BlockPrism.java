@@ -1,9 +1,15 @@
 package com.teamwizardry.refraction.common.block;
 
-import java.awt.Color;
-import java.util.List;
-import java.util.Objects;
-import javax.annotation.Nonnull;
+import com.teamwizardry.librarianlib.features.base.block.BlockMod;
+import com.teamwizardry.librarianlib.features.math.Matrix4;
+import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
+import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.ILightSink;
+import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
+import com.teamwizardry.refraction.api.raytrace.Tri;
+import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -24,16 +30,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.teamwizardry.librarianlib.client.util.TooltipHelper;
-import com.teamwizardry.librarianlib.common.base.block.BlockMod;
-import com.teamwizardry.librarianlib.common.util.math.Matrix4;
-import com.teamwizardry.refraction.api.ConfigValues;
-import com.teamwizardry.refraction.api.Constants;
-import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.ILightSink;
-import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
-import com.teamwizardry.refraction.api.raytrace.Tri;
-import com.teamwizardry.refraction.common.item.ItemScrewDriver;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by LordSaad44

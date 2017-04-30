@@ -1,14 +1,14 @@
 package com.teamwizardry.refraction.client.gui;
 
-import com.teamwizardry.librarianlib.client.gui.EnumMouseButton;
-import com.teamwizardry.librarianlib.client.gui.GuiComponent;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentList;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentSprite;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentText;
-import com.teamwizardry.librarianlib.client.gui.mixin.ButtonMixin;
-import com.teamwizardry.librarianlib.client.sprite.Sprite;
-import com.teamwizardry.librarianlib.client.sprite.Texture;
-import com.teamwizardry.librarianlib.common.util.math.Vec2d;
+import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
+import com.teamwizardry.librarianlib.features.gui.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentList;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
+import com.teamwizardry.librarianlib.features.gui.mixin.ButtonMixin;
+import com.teamwizardry.librarianlib.features.math.Vec2d;
+import com.teamwizardry.librarianlib.features.sprite.Sprite;
+import com.teamwizardry.librarianlib.features.sprite.Texture;
 import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;

@@ -1,11 +1,11 @@
 {
-	"spritesheet":{
-		"textureWidth":64,
-		"textureHeight":64,
-		"sprites":{
-			"slot":[0, 10, 18, 18],
-			"bar":[0, 0, 32, 4],
-			"outline":[0, 4, 34, 6]
-		}
-	}
+  "spritesheet": {
+    "textureWidth": 64,
+    "textureHeight": 64,
+    "sprites": {
+      "slot": [0, 10, 18, 18],
+      "bar": [0, 0, 32, 4],
+      "outline": [0, 4, 34, 6]
+    }
+  }
 }

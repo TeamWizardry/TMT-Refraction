@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.common.item;
 
-import com.teamwizardry.librarianlib.common.base.item.ItemMod;
-import com.teamwizardry.librarianlib.common.util.ItemNBTHelper;
+import com.teamwizardry.librarianlib.features.base.item.ItemMod;
+import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper;
 import com.teamwizardry.refraction.api.IPrecision;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

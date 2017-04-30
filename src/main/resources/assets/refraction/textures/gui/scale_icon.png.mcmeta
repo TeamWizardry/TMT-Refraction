@@ -1,9 +1,9 @@
 {
-	"spritesheet":{
-		"textureWidth":16,
-		"textureHeight":16,
-		"sprites":{
-			"icon":[0, 0, 16, 16]
-			}
-	}
+  "spritesheet": {
+    "textureWidth": 16,
+    "textureHeight": 16,
+    "sprites": {
+      "icon": [0, 0, 16, 16]
+    }
+  }
 }

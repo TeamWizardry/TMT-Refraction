@@ -1,8 +1,8 @@
 package com.teamwizardry.refraction.api.book;
 
 import com.google.gson.JsonElement;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentStack;
-import com.teamwizardry.librarianlib.client.gui.components.ComponentVoid;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentStack;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.client.gui.RightSidebar;

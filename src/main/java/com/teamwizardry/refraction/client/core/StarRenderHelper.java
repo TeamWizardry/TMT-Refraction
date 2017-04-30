@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client.core;
 
-import com.teamwizardry.librarianlib.client.core.ClientTickHandler;
+import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;

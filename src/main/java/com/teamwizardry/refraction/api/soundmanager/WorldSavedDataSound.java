@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.api.soundmanager;
 
-import com.teamwizardry.librarianlib.common.util.NBTTypes;
+import com.teamwizardry.librarianlib.features.utilities.NBTTypes;
 import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;

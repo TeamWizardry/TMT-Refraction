@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.init;
 
-import com.teamwizardry.librarianlib.common.base.ModAchievement;
+import com.teamwizardry.librarianlib.features.base.ModAchievement;
 import net.minecraftforge.common.AchievementPage;
 
 /**

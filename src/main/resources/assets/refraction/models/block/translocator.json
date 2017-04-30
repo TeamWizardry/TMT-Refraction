@@ -1,269 +1,593 @@
 {
-"__comment": "Designed by Wiresegal with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
-"textures": {
+  "__comment": "Designed by Wiresegal with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+  "textures": {
     "particle": "refraction:blocks/translocator_portal",
     "translocator_portal": "refraction:blocks/translocator_portal",
     "optic_fiber_dot": "refraction:blocks/optic_fiber_dot",
     "optic_fiber_strip": "refraction:blocks/optic_fiber_strip"
-},
-"elements": [ 
-{
-    "from": [ 3, 3, 0 ],
-    "to": [ 13, 13, 1 ],
-    "faces": {
-        "down":  { "uv": [ 13, 1, 3, 0 ], "texture": "#translocator_portal" },
-        "up":    { "uv": [ 3, 0, 13, 1 ], "texture": "#translocator_portal" },
-        "north": { "uv": [ 3, 3, 13, 13 ], "texture": "#translocator_portal" },
-        "south": { "uv": [ 3, 3, 13, 13 ], "texture": "#translocator_portal" },
-        "west":  { "uv": [ 0, 3, 1, 13 ], "texture": "#translocator_portal" },
-        "east":  { "uv": [ 15, 3, 16, 13 ], "texture": "#translocator_portal" }
-    }
-},
-{
-    "from": [ 1, 11, 1 ],
-    "to": [ 5, 15, 7 ],
-    "faces": {
-        "down":  { "uv": [ 4, 6, 0, 0 ], "texture": "#optic_fiber_strip" },
-        "up":    { "uv": [ 0, 0, 4, 6 ], "texture": "#optic_fiber_strip" },
-        "north": { "uv": [ 0, 0, 4, 4 ], "texture": "#optic_fiber_dot" },
-        "south": { "uv": [ 0, 0, 4, 4 ], "texture": "#optic_fiber_dot" },
-        "west":  { "uv": [ 4, 0, 10, 4 ], "texture": "#optic_fiber_strip" },
-        "east":  { "uv": [ 4, 0, 10, 4 ], "texture": "#optic_fiber_strip" }
-    }
-},
-{
-    "from": [ 11, 11, 1 ],
-    "to": [ 15, 15, 7 ],
-    "faces": {
-        "down":  { "uv": [ 4, 6, 0, 0 ], "texture": "#optic_fiber_strip" },
-        "up":    { "uv": [ 0, 0, 4, 6 ], "texture": "#optic_fiber_strip" },
-        "north": { "uv": [ 0, 0, 4, 4 ], "texture": "#optic_fiber_dot" },
-        "south": { "uv": [ 0, 0, 4, 4 ], "texture": "#optic_fiber_dot" },
-        "west":  { "uv": [ 4, 0, 10, 4 ], "texture": "#optic_fiber_strip" },
-        "east":  { "uv": [ 4, 0, 10, 4 ], "texture": "#optic_fiber_strip" }
-    }
-},
-{
-    "from": [ 1, 1, 1 ],
-    "to": [ 5, 5, 7 ],
-    "faces": {
-        "down":  { "uv": [ 4, 6, 0, 0 ], "texture": "#optic_fiber_strip" },
-        "up":    { "uv": [ 0, 0, 4, 6 ], "texture": "#optic_fiber_strip" },
-        "north": { "uv": [ 0, 0, 4, 4 ], "texture": "#optic_fiber_dot" },
-        "south": { "uv": [ 0, 0, 4, 4 ], "texture": "#optic_fiber_dot" },
-        "west":  { "uv": [ 4, 0, 10, 4 ], "texture": "#optic_fiber_strip" },
-        "east":  { "uv": [ 4, 0, 10, 4 ], "texture": "#optic_fiber_strip" }
-    }
-},
-{
-    "from": [ 11, 1, 1 ],
-    "to": [ 15, 5, 7 ],
-    "faces": {
-        "down":  { "uv": [ 4, 6, 0, 0 ], "texture": "#optic_fiber_strip" },
-        "up":    { "uv": [ 0, 0, 4, 6 ], "texture": "#optic_fiber_strip" },
-        "north": { "uv": [ 0, 0, 4, 4 ], "texture": "#optic_fiber_dot" },
-        "south": { "uv": [ 0, 0, 4, 4 ], "texture": "#optic_fiber_dot" },
-        "west":  { "uv": [ 4, 0, 10, 4 ], "texture": "#optic_fiber_strip" },
-        "east":  { "uv": [ 4, 0, 10, 4 ], "texture": "#optic_fiber_strip" }
-    }
-},
-{
-    "from": [ 6, 6, 1 ],
-    "to": [ 10, 10, 10 ],
-    "faces": {
-        "down":  { "uv": [ 4, 9, 0, 0 ], "texture": "#optic_fiber_strip" },
-        "up":    { "uv": [ 0, 0, 4, 9 ], "texture": "#optic_fiber_strip" },
-        "north": { "uv": [ 0, 0, 4, 4 ], "texture": "#optic_fiber_dot" },
-        "south": { "uv": [ 0, 0, 4, 4 ], "texture": "#optic_fiber_dot" },
-        "west":  { "uv": [ 4, 0, 13, 4 ], "texture": "#optic_fiber_strip" },
-        "east":  { "uv": [ 4, 0, 13, 4 ], "texture": "#optic_fiber_strip" }
-    }
-},
-{
-    "from": [ 1, 13, 0 ],
-    "to": [ 5, 15, 1 ],
-    "faces": {
-        "down":  { "uv": [ 15, 1, 11, 0 ], "texture": "#translocator_portal" },
-        "up":    { "uv": [ 1, 0, 5, 1 ], "texture": "#translocator_portal" },
-        "north": { "uv": [ 11, 1, 15, 3 ], "texture": "#translocator_portal" },
-        "south": { "uv": [ 1, 1, 5, 3 ], "texture": "#translocator_portal" },
-        "west":  { "uv": [ 0, 1, 1, 3 ], "texture": "#translocator_portal" },
-        "east":  { "uv": [ 15, 1, 16, 3 ], "texture": "#translocator_portal" }
-    }
-},
-{
-    "from": [ 11, 13, 0 ],
-    "to": [ 15, 15, 1 ],
-    "faces": {
-        "down":  { "uv": [ 5, 1, 1, 0 ], "texture": "#translocator_portal" },
-        "up":    { "uv": [ 11, 0, 15, 1 ], "texture": "#translocator_portal" },
-        "north": { "uv": [ 1, 1, 5, 3 ], "texture": "#translocator_portal" },
-        "south": { "uv": [ 11, 1, 15, 3 ], "texture": "#translocator_portal" },
-        "west":  { "uv": [ 0, 1, 1, 3 ], "texture": "#translocator_portal" },
-        "east":  { "uv": [ 15, 1, 16, 3 ], "texture": "#translocator_portal" }
-    }
-},
-{
-    "from": [ 11, 1, 0 ],
-    "to": [ 15, 3, 1 ],
-    "faces": {
-        "down":  { "uv": [ 5, 1, 1, 0 ], "texture": "#translocator_portal" },
-        "up":    { "uv": [ 11, 0, 15, 1 ], "texture": "#translocator_portal" },
-        "north": { "uv": [ 1, 13, 5, 15 ], "texture": "#translocator_portal" },
-        "south": { "uv": [ 11, 13, 15, 15 ], "texture": "#translocator_portal" },
-        "west":  { "uv": [ 0, 13, 1, 15 ], "texture": "#translocator_portal" },
-        "east":  { "uv": [ 15, 13, 16, 15 ], "texture": "#translocator_portal" }
-    }
-},
-{
-    "from": [ 1, 1, 0 ],
-    "to": [ 5, 3, 1 ],
-    "faces": {
-        "down":  { "uv": [ 15, 1, 11, 0 ], "texture": "#translocator_portal" },
-        "up":    { "uv": [ 1, 0, 5, 1 ], "texture": "#translocator_portal" },
-        "north": { "uv": [ 11, 13, 15, 15 ], "texture": "#translocator_portal" },
-        "south": { "uv": [ 1, 13, 5, 15 ], "texture": "#translocator_portal" },
-        "west":  { "uv": [ 0, 13, 1, 15 ], "texture": "#translocator_portal" },
-        "east":  { "uv": [ 15, 13, 16, 15 ], "texture": "#translocator_portal" }
-    }
-},
-{
-    "from": [ 1, 11, 0 ],
-    "to": [ 3, 13, 1 ],
-    "faces": {
-        "down":  { "uv": [ 15, 1, 13, 0 ], "texture": "#translocator_portal" },
-        "up":    { "uv": [ 1, 0, 3, 1 ], "texture": "#translocator_portal" },
-        "north": { "uv": [ 13, 3, 15, 5 ], "texture": "#translocator_portal" },
-        "south": { "uv": [ 1, 3, 3, 5 ], "texture": "#translocator_portal" },
-        "west":  { "uv": [ 0, 3, 1, 5 ], "texture": "#translocator_portal" },
-        "east":  { "uv": [ 15, 3, 16, 5 ], "texture": "#translocator_portal" }
-    }
-},
-{
-    "from": [ 13, 11, 0 ],
-    "to": [ 15, 13, 1 ],
-    "faces": {
-        "down":  { "uv": [ 3, 1, 1, 0 ], "texture": "#translocator_portal" },
-        "up":    { "uv": [ 13, 0, 15, 1 ], "texture": "#translocator_portal" },
-        "north": { "uv": [ 1, 3, 3, 5 ], "texture": "#translocator_portal" },
-        "south": { "uv": [ 13, 3, 15, 5 ], "texture": "#translocator_portal" },
-        "west":  { "uv": [ 0, 3, 1, 5 ], "texture": "#translocator_portal" },
-        "east":  { "uv": [ 15, 3, 16, 5 ], "texture": "#translocator_portal" }
-    }
-},
-{
-    "from": [ 13, 3, 0 ],
-    "to": [ 15, 5, 1 ],
-    "faces": {
-        "down":  { "uv": [ 3, 1, 1, 0 ], "texture": "#translocator_portal" },
-        "up":    { "uv": [ 13, 0, 15, 1 ], "texture": "#translocator_portal" },
-        "north": { "uv": [ 1, 11, 3, 13 ], "texture": "#translocator_portal" },
-        "south": { "uv": [ 13, 11, 15, 13 ], "texture": "#translocator_portal" },
-        "west":  { "uv": [ 0, 11, 1, 13 ], "texture": "#translocator_portal" },
-        "east":  { "uv": [ 15, 11, 16, 13 ], "texture": "#translocator_portal" }
-    }
-},
-{
-    "from": [ 1, 3, 0 ],
-    "to": [ 3, 5, 1 ],
-    "faces": {
-        "down":  { "uv": [ 15, 1, 13, 0 ], "texture": "#translocator_portal" },
-        "up":    { "uv": [ 1, 0, 3, 1 ], "texture": "#translocator_portal" },
-        "north": { "uv": [ 13, 11, 15, 13 ], "texture": "#translocator_portal" },
-        "south": { "uv": [ 1, 11, 3, 13 ], "texture": "#translocator_portal" },
-        "west":  { "uv": [ 0, 11, 1, 13 ], "texture": "#translocator_portal" },
-        "east":  { "uv": [ 15, 11, 16, 13 ], "texture": "#translocator_portal" }
-    }
-},
-{
-    "from": [ 5, 12, 2 ],
-    "to": [ 11, 14, 4 ],
-    "faces": {
-        "down":  { "uv": [ 16, 7, 10, 5 ], "texture": "#optic_fiber_strip" },
-        "up":    { "uv": [ 10, 5, 16, 7 ], "texture": "#optic_fiber_strip" },
-        "north": { "uv": [ 10, 5, 16, 7 ], "texture": "#optic_fiber_strip" },
-        "south": { "uv": [ 10, 5, 16, 7 ], "texture": "#optic_fiber_strip" },
-        "west":  { "uv": [ 2, 2, 4, 4 ], "texture": "#optic_fiber_strip" },
-        "east":  { "uv": [ 12, 2, 14, 4 ], "texture": "#optic_fiber_strip" }
-    }
-},
-{
-    "from": [ 5, 2, 2 ],
-    "to": [ 11, 4, 4 ],
-    "faces": {
-        "down":  { "uv": [ 16, 7, 10, 5 ], "texture": "#optic_fiber_strip" },
-        "up":    { "uv": [ 10, 5, 16, 7 ], "texture": "#optic_fiber_strip" },
-        "north": { "uv": [ 10, 5, 16, 7 ], "texture": "#optic_fiber_strip" },
-        "south": { "uv": [ 10, 5, 16, 7 ], "texture": "#optic_fiber_strip" },
-        "west":  { "uv": [ 2, 12, 4, 14 ], "texture": "#optic_fiber_strip" },
-        "east":  { "uv": [ 12, 12, 14, 14 ], "texture": "#optic_fiber_strip" }
-    }
-},
-{
-    "from": [ 2, 5, 2 ],
-    "to": [ 4, 11, 4 ],
-    "faces": {
-        "down":  { "uv": [ 14, 4, 12, 2 ], "texture": "#optic_fiber_strip" },
-        "up":    { "uv": [ 2, 2, 4, 4 ], "texture": "#optic_fiber_strip" },
-        "north": { "uv": [ 5, 10, 7, 16 ], "texture": "#optic_fiber_strip" },
-        "south": { "uv": [ 5, 10, 7, 16 ], "texture": "#optic_fiber_strip" },
-        "west":  { "uv": [ 5, 10, 7, 16 ], "texture": "#optic_fiber_strip" },
-        "east":  { "uv": [ 5, 10, 7, 16 ], "texture": "#optic_fiber_strip" }
-    }
-},
-{
-    "from": [ 12, 5, 2 ],
-    "to": [ 14, 11, 4 ],
-    "faces": {
-        "down":  { "uv": [ 4, 4, 2, 2 ], "texture": "#optic_fiber_strip" },
-        "up":    { "uv": [ 12, 2, 14, 4 ], "texture": "#optic_fiber_strip" },
-        "north": { "uv": [ 5, 10, 7, 16 ], "texture": "#optic_fiber_strip" },
-        "south": { "uv": [ 5, 10, 7, 16 ], "texture": "#optic_fiber_strip" },
-        "west":  { "uv": [ 5, 10, 7, 16 ], "texture": "#optic_fiber_strip" },
-        "east":  { "uv": [ 5, 10, 7, 16 ], "texture": "#optic_fiber_strip" }
-    }
-}
-],
-    "display": {
-        "thirdperson_righthand": {
-            "rotation": [ 10, 180, 0 ],
-            "translation": [ 0, 1.7, -0.5 ],
-            "scale": [ 0.37, 0.37, 0.37 ]
+  },
+  "elements": [
+    {
+      "from": [3, 3, 0],
+      "to": [13, 13, 1],
+      "faces": {
+        "down": {
+          "uv": [13, 1, 3, 0],
+          "texture": "#translocator_portal"
         },
-        "thirdperson_lefthand": {
-            "rotation": [ 10, 180, 0 ],
-            "translation": [ 0, 1.7, -0.5 ],
-            "scale": [ 0.37, 0.37, 0.37 ]
+        "up": {
+          "uv": [3, 0, 13, 1],
+          "texture": "#translocator_portal"
         },
-        "head": {
-            "rotation": [ 0, 180, 0 ],
-            "translation": [ 0, 0, -10 ],
-            "scale": [ 1, 1, 1 ]
+        "north": {
+          "uv": [3, 3, 13, 13],
+          "texture": "#translocator_portal"
         },
-        "ground": {
-            "rotation": [ 0, 0, 0 ],
-            "translation": [ 0, 2, 1 ],
-            "scale": [ 0.37, 0.37, 0.37 ]
+        "south": {
+          "uv": [3, 3, 13, 13],
+          "texture": "#translocator_portal"
         },
-        "fixed": {
-            "rotation": [ 0, 180, 0 ],
-            "translation": [ 0, 0, -7.75 ],
-            "scale": [ 1, 1, 1 ]
+        "west": {
+          "uv": [0, 3, 1, 13],
+          "texture": "#translocator_portal"
         },
-        "firstperson_righthand": {
-            "rotation": [ 0, 180, 0 ],
-            "translation": [ 0, 0, -3.97 ],
-            "scale": [ 0.56, 0.56, 0.56 ]
-        },
-        "firstperson_lefthand": {
-            "rotation": [ 0, 180, 0 ],
-            "translation": [ 0, 0, -3.97 ],
-            "scale": [ 0.56, 0.56, 0.56 ]
-        },
-        "gui": {
-            "rotation": [ 27, 45, 0 ],
-            "translation": [ 2.46, -1.32, 0 ],
-            "scale": [ 0.75, 0.75, 0.75 ]
+        "east": {
+          "uv": [15, 3, 16, 13],
+          "texture": "#translocator_portal"
         }
+      }
+    },
+    {
+      "from": [1, 11, 1],
+      "to": [5, 15, 7],
+      "faces": {
+        "down": {
+          "uv": [4, 6, 0, 0],
+          "texture": "#optic_fiber_strip"
+        },
+        "up": {
+          "uv": [0, 0, 4, 6],
+          "texture": "#optic_fiber_strip"
+        },
+        "north": {
+          "uv": [0, 0, 4, 4],
+          "texture": "#optic_fiber_dot"
+        },
+        "south": {
+          "uv": [0, 0, 4, 4],
+          "texture": "#optic_fiber_dot"
+        },
+        "west": {
+          "uv": [4, 0, 10, 4],
+          "texture": "#optic_fiber_strip"
+        },
+        "east": {
+          "uv": [4, 0, 10, 4],
+          "texture": "#optic_fiber_strip"
+        }
+      }
+    },
+    {
+      "from": [11, 11, 1],
+      "to": [15, 15, 7],
+      "faces": {
+        "down": {
+          "uv": [4, 6, 0, 0],
+          "texture": "#optic_fiber_strip"
+        },
+        "up": {
+          "uv": [0, 0, 4, 6],
+          "texture": "#optic_fiber_strip"
+        },
+        "north": {
+          "uv": [0, 0, 4, 4],
+          "texture": "#optic_fiber_dot"
+        },
+        "south": {
+          "uv": [0, 0, 4, 4],
+          "texture": "#optic_fiber_dot"
+        },
+        "west": {
+          "uv": [4, 0, 10, 4],
+          "texture": "#optic_fiber_strip"
+        },
+        "east": {
+          "uv": [4, 0, 10, 4],
+          "texture": "#optic_fiber_strip"
+        }
+      }
+    },
+    {
+      "from": [1, 1, 1],
+      "to": [5, 5, 7],
+      "faces": {
+        "down": {
+          "uv": [4, 6, 0, 0],
+          "texture": "#optic_fiber_strip"
+        },
+        "up": {
+          "uv": [0, 0, 4, 6],
+          "texture": "#optic_fiber_strip"
+        },
+        "north": {
+          "uv": [0, 0, 4, 4],
+          "texture": "#optic_fiber_dot"
+        },
+        "south": {
+          "uv": [0, 0, 4, 4],
+          "texture": "#optic_fiber_dot"
+        },
+        "west": {
+          "uv": [4, 0, 10, 4],
+          "texture": "#optic_fiber_strip"
+        },
+        "east": {
+          "uv": [4, 0, 10, 4],
+          "texture": "#optic_fiber_strip"
+        }
+      }
+    },
+    {
+      "from": [11, 1, 1],
+      "to": [15, 5, 7],
+      "faces": {
+        "down": {
+          "uv": [4, 6, 0, 0],
+          "texture": "#optic_fiber_strip"
+        },
+        "up": {
+          "uv": [0, 0, 4, 6],
+          "texture": "#optic_fiber_strip"
+        },
+        "north": {
+          "uv": [0, 0, 4, 4],
+          "texture": "#optic_fiber_dot"
+        },
+        "south": {
+          "uv": [0, 0, 4, 4],
+          "texture": "#optic_fiber_dot"
+        },
+        "west": {
+          "uv": [4, 0, 10, 4],
+          "texture": "#optic_fiber_strip"
+        },
+        "east": {
+          "uv": [4, 0, 10, 4],
+          "texture": "#optic_fiber_strip"
+        }
+      }
+    },
+    {
+      "from": [6, 6, 1],
+      "to": [10, 10, 10],
+      "faces": {
+        "down": {
+          "uv": [4, 9, 0, 0],
+          "texture": "#optic_fiber_strip"
+        },
+        "up": {
+          "uv": [0, 0, 4, 9],
+          "texture": "#optic_fiber_strip"
+        },
+        "north": {
+          "uv": [0, 0, 4, 4],
+          "texture": "#optic_fiber_dot"
+        },
+        "south": {
+          "uv": [0, 0, 4, 4],
+          "texture": "#optic_fiber_dot"
+        },
+        "west": {
+          "uv": [4, 0, 13, 4],
+          "texture": "#optic_fiber_strip"
+        },
+        "east": {
+          "uv": [4, 0, 13, 4],
+          "texture": "#optic_fiber_strip"
+        }
+      }
+    },
+    {
+      "from": [1, 13, 0],
+      "to": [5, 15, 1],
+      "faces": {
+        "down": {
+          "uv": [15, 1, 11, 0],
+          "texture": "#translocator_portal"
+        },
+        "up": {
+          "uv": [1, 0, 5, 1],
+          "texture": "#translocator_portal"
+        },
+        "north": {
+          "uv": [11, 1, 15, 3],
+          "texture": "#translocator_portal"
+        },
+        "south": {
+          "uv": [1, 1, 5, 3],
+          "texture": "#translocator_portal"
+        },
+        "west": {
+          "uv": [0, 1, 1, 3],
+          "texture": "#translocator_portal"
+        },
+        "east": {
+          "uv": [15, 1, 16, 3],
+          "texture": "#translocator_portal"
+        }
+      }
+    },
+    {
+      "from": [11, 13, 0],
+      "to": [15, 15, 1],
+      "faces": {
+        "down": {
+          "uv": [5, 1, 1, 0],
+          "texture": "#translocator_portal"
+        },
+        "up": {
+          "uv": [11, 0, 15, 1],
+          "texture": "#translocator_portal"
+        },
+        "north": {
+          "uv": [1, 1, 5, 3],
+          "texture": "#translocator_portal"
+        },
+        "south": {
+          "uv": [11, 1, 15, 3],
+          "texture": "#translocator_portal"
+        },
+        "west": {
+          "uv": [0, 1, 1, 3],
+          "texture": "#translocator_portal"
+        },
+        "east": {
+          "uv": [15, 1, 16, 3],
+          "texture": "#translocator_portal"
+        }
+      }
+    },
+    {
+      "from": [11, 1, 0],
+      "to": [15, 3, 1],
+      "faces": {
+        "down": {
+          "uv": [5, 1, 1, 0],
+          "texture": "#translocator_portal"
+        },
+        "up": {
+          "uv": [11, 0, 15, 1],
+          "texture": "#translocator_portal"
+        },
+        "north": {
+          "uv": [1, 13, 5, 15],
+          "texture": "#translocator_portal"
+        },
+        "south": {
+          "uv": [11, 13, 15, 15],
+          "texture": "#translocator_portal"
+        },
+        "west": {
+          "uv": [0, 13, 1, 15],
+          "texture": "#translocator_portal"
+        },
+        "east": {
+          "uv": [15, 13, 16, 15],
+          "texture": "#translocator_portal"
+        }
+      }
+    },
+    {
+      "from": [1, 1, 0],
+      "to": [5, 3, 1],
+      "faces": {
+        "down": {
+          "uv": [15, 1, 11, 0],
+          "texture": "#translocator_portal"
+        },
+        "up": {
+          "uv": [1, 0, 5, 1],
+          "texture": "#translocator_portal"
+        },
+        "north": {
+          "uv": [11, 13, 15, 15],
+          "texture": "#translocator_portal"
+        },
+        "south": {
+          "uv": [1, 13, 5, 15],
+          "texture": "#translocator_portal"
+        },
+        "west": {
+          "uv": [0, 13, 1, 15],
+          "texture": "#translocator_portal"
+        },
+        "east": {
+          "uv": [15, 13, 16, 15],
+          "texture": "#translocator_portal"
+        }
+      }
+    },
+    {
+      "from": [1, 11, 0],
+      "to": [3, 13, 1],
+      "faces": {
+        "down": {
+          "uv": [15, 1, 13, 0],
+          "texture": "#translocator_portal"
+        },
+        "up": {
+          "uv": [1, 0, 3, 1],
+          "texture": "#translocator_portal"
+        },
+        "north": {
+          "uv": [13, 3, 15, 5],
+          "texture": "#translocator_portal"
+        },
+        "south": {
+          "uv": [1, 3, 3, 5],
+          "texture": "#translocator_portal"
+        },
+        "west": {
+          "uv": [0, 3, 1, 5],
+          "texture": "#translocator_portal"
+        },
+        "east": {
+          "uv": [15, 3, 16, 5],
+          "texture": "#translocator_portal"
+        }
+      }
+    },
+    {
+      "from": [13, 11, 0],
+      "to": [15, 13, 1],
+      "faces": {
+        "down": {
+          "uv": [3, 1, 1, 0],
+          "texture": "#translocator_portal"
+        },
+        "up": {
+          "uv": [13, 0, 15, 1],
+          "texture": "#translocator_portal"
+        },
+        "north": {
+          "uv": [1, 3, 3, 5],
+          "texture": "#translocator_portal"
+        },
+        "south": {
+          "uv": [13, 3, 15, 5],
+          "texture": "#translocator_portal"
+        },
+        "west": {
+          "uv": [0, 3, 1, 5],
+          "texture": "#translocator_portal"
+        },
+        "east": {
+          "uv": [15, 3, 16, 5],
+          "texture": "#translocator_portal"
+        }
+      }
+    },
+    {
+      "from": [13, 3, 0],
+      "to": [15, 5, 1],
+      "faces": {
+        "down": {
+          "uv": [3, 1, 1, 0],
+          "texture": "#translocator_portal"
+        },
+        "up": {
+          "uv": [13, 0, 15, 1],
+          "texture": "#translocator_portal"
+        },
+        "north": {
+          "uv": [1, 11, 3, 13],
+          "texture": "#translocator_portal"
+        },
+        "south": {
+          "uv": [13, 11, 15, 13],
+          "texture": "#translocator_portal"
+        },
+        "west": {
+          "uv": [0, 11, 1, 13],
+          "texture": "#translocator_portal"
+        },
+        "east": {
+          "uv": [15, 11, 16, 13],
+          "texture": "#translocator_portal"
+        }
+      }
+    },
+    {
+      "from": [1, 3, 0],
+      "to": [3, 5, 1],
+      "faces": {
+        "down": {
+          "uv": [15, 1, 13, 0],
+          "texture": "#translocator_portal"
+        },
+        "up": {
+          "uv": [1, 0, 3, 1],
+          "texture": "#translocator_portal"
+        },
+        "north": {
+          "uv": [13, 11, 15, 13],
+          "texture": "#translocator_portal"
+        },
+        "south": {
+          "uv": [1, 11, 3, 13],
+          "texture": "#translocator_portal"
+        },
+        "west": {
+          "uv": [0, 11, 1, 13],
+          "texture": "#translocator_portal"
+        },
+        "east": {
+          "uv": [15, 11, 16, 13],
+          "texture": "#translocator_portal"
+        }
+      }
+    },
+    {
+      "from": [5, 12, 2],
+      "to": [11, 14, 4],
+      "faces": {
+        "down": {
+          "uv": [16, 7, 10, 5],
+          "texture": "#optic_fiber_strip"
+        },
+        "up": {
+          "uv": [10, 5, 16, 7],
+          "texture": "#optic_fiber_strip"
+        },
+        "north": {
+          "uv": [10, 5, 16, 7],
+          "texture": "#optic_fiber_strip"
+        },
+        "south": {
+          "uv": [10, 5, 16, 7],
+          "texture": "#optic_fiber_strip"
+        },
+        "west": {
+          "uv": [2, 2, 4, 4],
+          "texture": "#optic_fiber_strip"
+        },
+        "east": {
+          "uv": [12, 2, 14, 4],
+          "texture": "#optic_fiber_strip"
+        }
+      }
+    },
+    {
+      "from": [5, 2, 2],
+      "to": [11, 4, 4],
+      "faces": {
+        "down": {
+          "uv": [16, 7, 10, 5],
+          "texture": "#optic_fiber_strip"
+        },
+        "up": {
+          "uv": [10, 5, 16, 7],
+          "texture": "#optic_fiber_strip"
+        },
+        "north": {
+          "uv": [10, 5, 16, 7],
+          "texture": "#optic_fiber_strip"
+        },
+        "south": {
+          "uv": [10, 5, 16, 7],
+          "texture": "#optic_fiber_strip"
+        },
+        "west": {
+          "uv": [2, 12, 4, 14],
+          "texture": "#optic_fiber_strip"
+        },
+        "east": {
+          "uv": [12, 12, 14, 14],
+          "texture": "#optic_fiber_strip"
+        }
+      }
+    },
+    {
+      "from": [2, 5, 2],
+      "to": [4, 11, 4],
+      "faces": {
+        "down": {
+          "uv": [14, 4, 12, 2],
+          "texture": "#optic_fiber_strip"
+        },
+        "up": {
+          "uv": [2, 2, 4, 4],
+          "texture": "#optic_fiber_strip"
+        },
+        "north": {
+          "uv": [5, 10, 7, 16],
+          "texture": "#optic_fiber_strip"
+        },
+        "south": {
+          "uv": [5, 10, 7, 16],
+          "texture": "#optic_fiber_strip"
+        },
+        "west": {
+          "uv": [5, 10, 7, 16],
+          "texture": "#optic_fiber_strip"
+        },
+        "east": {
+          "uv": [5, 10, 7, 16],
+          "texture": "#optic_fiber_strip"
+        }
+      }
+    },
+    {
+      "from": [12, 5, 2],
+      "to": [14, 11, 4],
+      "faces": {
+        "down": {
+          "uv": [4, 4, 2, 2],
+          "texture": "#optic_fiber_strip"
+        },
+        "up": {
+          "uv": [12, 2, 14, 4],
+          "texture": "#optic_fiber_strip"
+        },
+        "north": {
+          "uv": [5, 10, 7, 16],
+          "texture": "#optic_fiber_strip"
+        },
+        "south": {
+          "uv": [5, 10, 7, 16],
+          "texture": "#optic_fiber_strip"
+        },
+        "west": {
+          "uv": [5, 10, 7, 16],
+          "texture": "#optic_fiber_strip"
+        },
+        "east": {
+          "uv": [5, 10, 7, 16],
+          "texture": "#optic_fiber_strip"
+        }
+      }
     }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [10, 180, 0],
+      "translation": [0, 1.7, -0.5],
+      "scale": [0.37, 0.37, 0.37]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [10, 180, 0],
+      "translation": [0, 1.7, -0.5],
+      "scale": [0.37, 0.37, 0.37]
+    },
+    "head": {
+      "rotation": [0, 180, 0],
+      "translation": [0, 0, -10],
+      "scale": [1, 1, 1]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 2, 1],
+      "scale": [0.37, 0.37, 0.37]
+    },
+    "fixed": {
+      "rotation": [0, 180, 0],
+      "translation": [0, 0, -7.75],
+      "scale": [1, 1, 1]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 180, 0],
+      "translation": [0, 0, -3.97],
+      "scale": [0.56, 0.56, 0.56]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 180, 0],
+      "translation": [0, 0, -3.97],
+      "scale": [0.56, 0.56, 0.56]
+    },
+    "gui": {
+      "rotation": [27, 45, 0],
+      "translation": [2.46, -1.32, 0],
+      "scale": [0.75, 0.75, 0.75]
+    }
+  }
 }

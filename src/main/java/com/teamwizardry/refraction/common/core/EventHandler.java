@@ -1,7 +1,7 @@
 package com.teamwizardry.refraction.common.core;
 
-import com.teamwizardry.librarianlib.common.network.PacketHandler;
-import com.teamwizardry.librarianlib.common.util.math.Matrix4;
+import com.teamwizardry.librarianlib.features.math.Matrix4;
+import com.teamwizardry.librarianlib.features.network.PacketHandler;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
 import com.teamwizardry.refraction.api.Utils;
