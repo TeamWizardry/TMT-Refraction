@@ -1,8 +1,10 @@
 package com.teamwizardry.refraction.api;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
@@ -10,6 +12,41 @@ import javax.annotation.Nullable;
  * Created by Saad on 9/9/2016.
  */
 public final class PosUtils {
+
+	public static BlockPos getHighestBlock(World world, BlockPos pos) {
+		BlockPos.MutableBlockPos highest = new BlockPos.MutableBlockPos(pos.getX(), 255, pos.getZ());
+		IBlockState stateHighest = world.getBlockState(highest);
+		while (world.isAirBlock(highest) || stateHighest.getMaterial().isLiquid()) {
+			if (highest.getY() <= 0) {
+				break;
+			}
+			highest.move(EnumFacing.DOWN);
+			stateHighest = world.getBlockState(highest);
+		}
+
+		return highest;
+	}
+
+	public static boolean isHighestBlock(World world, BlockPos pos) {
+		BlockPos.MutableBlockPos highest = new BlockPos.MutableBlockPos(pos.getX(), 255, pos.getZ());
+		IBlockState stateHighest = world.getBlockState(highest);
+		while (world.isAirBlock(highest) || !stateHighest.isFullBlock()
+				|| !stateHighest.isOpaqueCube()
+				|| !stateHighest.isBlockNormalCube()
+				|| !stateHighest.isNormalCube()
+				|| stateHighest.isTranslucent()
+				|| stateHighest.getMaterial().isLiquid()
+				|| !stateHighest.getMaterial().isSolid()) {
+			if (highest.getY() <= 0) break;
+
+			highest.move(EnumFacing.DOWN);
+			stateHighest = world.getBlockState(highest);
+
+			if (highest.getY() == pos.getY()) return true;
+		}
+
+		return false;
+	}
 
 	@Nullable
 	public static EnumFacing getFacing(Vec3d p1, Vec3d p2) {

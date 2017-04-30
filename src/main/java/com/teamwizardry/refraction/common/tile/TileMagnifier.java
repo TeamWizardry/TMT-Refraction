@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.features.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.features.base.block.TileMod;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.util.ITickable;
@@ -20,28 +21,30 @@ public class TileMagnifier extends TileMod implements ITickable {
 
 	@Override
 	public void update() {
+		if (world.isRemote) return;
+
 		int worldTime = (int) (world.getWorldTime() % 24000L);
 		if (!(worldTime >= Constants.NIGHT_START && worldTime < Constants.NIGHT_END)
 				&& !world.isRaining()) {
 			for (int y = 1; y < 10; y++) {
 				BlockPos lens = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
-				if (world.getBlockState(lens).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens))
+				if (world.getBlockState(lens).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens))
 					continue;
-				if (world.getBlockState(lens.south()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.south()))
+				if (world.getBlockState(lens.south()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.south()))
 					continue;
-				if (world.getBlockState(lens.north()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.north()))
+				if (world.getBlockState(lens.north()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.north()))
 					continue;
-				if (world.getBlockState(lens.east()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.east()))
+				if (world.getBlockState(lens.east()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.east()))
 					continue;
-				if (world.getBlockState(lens.west()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.west()))
+				if (world.getBlockState(lens.west()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.west()))
 					continue;
-				if (world.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.south().west()))
+				if (world.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.south().west()))
 					continue;
-				if (world.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.south().east()))
+				if (world.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.south().east()))
 					continue;
-				if (world.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.north().west()))
+				if (world.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.north().west()))
 					continue;
-				if (world.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.north().east()))
+				if (world.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.north().east()))
 					continue;
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);
