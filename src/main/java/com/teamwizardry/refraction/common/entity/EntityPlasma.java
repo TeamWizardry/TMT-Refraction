@@ -72,15 +72,15 @@ public class EntityPlasma extends Entity {
 	public void onUpdate() {
 		super.onUpdate();
 		//Minecraft.getMinecraft().player.sendChatMessage(ticksExisted + "");
-		//if (!world.isRemote)
-		//	if (ticksExisted > 100) world.removeEntity(this);
+		if (!world.isRemote)
+			if (ticksExisted > 100) world.removeEntity(this);
 
 		motionX = getDataManager().get(DATA_X) * 1.5;
 		motionY = getDataManager().get(DATA_Y) * 1.5;
 		motionZ = getDataManager().get(DATA_Z) * 1.5;
 
 		move(MoverType.SELF, motionX, motionY, motionZ);
-		//if (getDataManager().get(DATA_COLLIDED) != isCollided) applyCollision(isCollided);
+		if (getDataManager().get(DATA_COLLIDED) != isCollided) applyCollision(isCollided);
 	}
 
 	@Override
