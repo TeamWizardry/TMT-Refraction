@@ -16,8 +16,8 @@ public class ModEntities {
 	public static void init() {
 		int id = 0;
 
-		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "laser_pointer"), EntityLaserPointer.class, "laser_pointer", ++id, Refraction.instance, 32, Integer.MAX_VALUE, false);
-		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "plasma"), EntityPlasma.class, "plasma", ++id, Refraction.instance, 32, Integer.MAX_VALUE, false);
-		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "grenade"), EntityGrenade.class, "grenade", ++id, Refraction.instance, 32, Integer.MAX_VALUE, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "laser_pointer"), EntityLaserPointer.class, "laser_pointer", ++id, Refraction.instance, 32, 1, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "plasma"), EntityPlasma.class, "plasma", ++id, Refraction.instance, 128, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MOD_ID, "grenade"), EntityGrenade.class, "grenade", ++id, Refraction.instance, 32, 1, false);
 	}
 }

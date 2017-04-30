@@ -44,7 +44,7 @@ public class EventHandlerClient {
 	public void onMouseEvent(MouseEvent event) {
 		if (event.getDwheel() != 0 && Minecraft.getMinecraft().player.isSneaking()) {
 			ItemStack stack = Minecraft.getMinecraft().player.getHeldItemMainhand();
-			if (stack != null && stack.getItem() instanceof IAmmoConsumer) {
+			if (stack.getItem() instanceof IAmmoConsumer) {
 
 				List<ItemStack> ammoList = IAmmoConsumer.findAllAmmo(Minecraft.getMinecraft().player);
 				if (ammoList.size() <= 0) {

@@ -22,7 +22,6 @@ import java.awt.*;
 /**
  * Created by LordSaad.
  */
-@SuppressWarnings("MethodCallSideOnly")
 public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemColorProvider {
 
 	public ItemPhotonCannon() {
@@ -62,7 +61,7 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemCol
 
 		if (worldIn.isRemote) return new ActionResult<>(EnumActionResult.FAIL, stack);
 
-		EntityPlasma plasma = new EntityPlasma(worldIn, playerIn.getLook(0), color);
+		EntityPlasma plasma = new EntityPlasma(worldIn, playerIn.getLook(0), color, playerIn.getEntityId());
 		plasma.setPosition(playerVec.xCoord, playerVec.yCoord, playerVec.zCoord);
 		worldIn.spawnEntity(plasma);
 		playerIn.getCooldownTracker().setCooldown(this, 5);
