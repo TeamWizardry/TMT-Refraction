@@ -32,7 +32,7 @@ public class BlockTracker {
 			curPos = nextPos;
 		}
 
-		Vec3d invSlope = new Vec3d(1 / slope.xCoord, 1 / slope.yCoord, 1 / slope.zCoord);
+		Vec3d invSlope = new Vec3d(1 / slope.x, 1 / slope.y, 1 / slope.z);
 
 		for (BlockPos pos : possible) {
 			if (collides(beam, pos, invSlope))
@@ -44,19 +44,19 @@ public class BlockTracker {
 	}
 
 	private boolean collides(Beam beam, BlockPos pos, Vec3d invSlope) {
-		boolean signX = invSlope.xCoord < 0;
-		boolean signY = invSlope.yCoord < 0;
-		boolean signZ = invSlope.zCoord < 0;
+		boolean signX = invSlope.x < 0;
+		boolean signY = invSlope.y < 0;
+		boolean signZ = invSlope.z < 0;
 
 		double txMin, txMax, tyMin, tyMax, tzMin, tzMax;
 		AxisAlignedBB axis = new AxisAlignedBB(pos);
 
-		txMin = ((signX ? axis.maxX : axis.minX) - beam.initLoc.xCoord) * invSlope.xCoord;
-		txMax = ((signX ? axis.minX : axis.maxX) - beam.initLoc.xCoord) * invSlope.xCoord;
-		tyMin = ((signY ? axis.maxY : axis.minY) - beam.initLoc.yCoord) * invSlope.yCoord;
-		tyMax = ((signY ? axis.minY : axis.maxY) - beam.initLoc.yCoord) * invSlope.yCoord;
-		tzMin = ((signZ ? axis.maxZ : axis.minZ) - beam.initLoc.zCoord) * invSlope.zCoord;
-		tzMax = ((signZ ? axis.minZ : axis.maxZ) - beam.initLoc.zCoord) * invSlope.zCoord;
+		txMin = ((signX ? axis.maxX : axis.minX) - beam.initLoc.x) * invSlope.x;
+		txMax = ((signX ? axis.minX : axis.maxX) - beam.initLoc.x) * invSlope.x;
+		tyMin = ((signY ? axis.maxY : axis.minY) - beam.initLoc.y) * invSlope.y;
+		tyMax = ((signY ? axis.minY : axis.maxY) - beam.initLoc.y) * invSlope.y;
+		tzMin = ((signZ ? axis.maxZ : axis.minZ) - beam.initLoc.z) * invSlope.z;
+		tzMax = ((signZ ? axis.minZ : axis.maxZ) - beam.initLoc.z) * invSlope.z;
 
 		if (txMin > txMax || tyMin > txMax)
 			return false;

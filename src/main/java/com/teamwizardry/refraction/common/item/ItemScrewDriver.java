@@ -83,7 +83,7 @@ public class ItemScrewDriver extends ItemMod {
 	}
 
 	@Override
-	public float getStrVsBlock(ItemStack stack, IBlockState state) {
+	public float getDestroySpeed(ItemStack stack, IBlockState state) {
 		for (String type : getToolClasses(stack))
 			if (state.getBlock().isToolEffective(type, state))
 				return EFFICIENCY_ON_PROPER_MATERIAL;

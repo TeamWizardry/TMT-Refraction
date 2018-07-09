@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "refraction:axyz"
+    },
+    "title": {
+      "translate": "advancement.refraction.axyz"
+    },
+    "description": {
+      "translate": "advancement.refraction.axyz.desc",
+      "italic": true
+    },
+    "background": "refraction:textures/blocks/reflective_alloy_block.png"
+  },
+  "parent": "wizardry:crafted_translocator",
+  "criteria": {
+    "craft_book": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "refraction:axyz"
+          }
+        ]
+      }
+    }
+  }
+}

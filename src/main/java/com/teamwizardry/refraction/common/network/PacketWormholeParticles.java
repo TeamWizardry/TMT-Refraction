@@ -67,7 +67,7 @@ public class PacketWormholeParticles extends PacketBase {
 		}
 
 		Vec3d tmp = Minecraft.getMinecraft().player.getLook(0);
-		Vec3d normal = new Vec3d(tmp.xCoord, 0, tmp.zCoord);
+		Vec3d normal = new Vec3d(tmp.x, 0, tmp.z);
 
 		ParticleBuilder wormholeVoid = new ParticleBuilder(10);
 		wormholeVoid.setAlphaFunction(new InterpFadeInOut(0.9f, 0.9f));

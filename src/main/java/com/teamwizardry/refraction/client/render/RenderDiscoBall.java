@@ -54,7 +54,8 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileDiscoBall te, double x, double y, double z, float partialticks, int destroyStage) {
+	public void render(TileDiscoBall te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	//public void renderTileEntityFast(TileDiscoBall te, double x, double y, double z, float partialTicks, int destroyStage, float partial, net.minecraft.client.renderer.BufferBuilder buffer) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		if (Minecraft.isAmbientOcclusionEnabled())
 			GlStateManager.shadeModel(GL11.GL_SMOOTH);
@@ -71,25 +72,25 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
 			if (state.getValue(BlockDiscoBall.FACING) == EnumFacing.UP) {
 				GlStateManager.rotate(180, 1, 0, 0);
 				GlStateManager.translate(0, -1, 0);
-				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
+				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialTicks, 0, 1, 0);
 			} else if (state.getValue(BlockDiscoBall.FACING) == EnumFacing.DOWN) {
-				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
+				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialTicks, 0, 1, 0);
 			} else if (state.getValue(BlockDiscoBall.FACING) == EnumFacing.EAST) {
 				GlStateManager.translate(0.5, 0.5, 0);
 				GlStateManager.rotate(90, 0, 0, 1);
-				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
+				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialTicks, 0, 1, 0);
 			} else if (state.getValue(BlockDiscoBall.FACING) == EnumFacing.WEST) {
 				GlStateManager.translate(-0.5, 0.5, 0);
 				GlStateManager.rotate(-90, 0, 0, 1);
-				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
+				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialTicks, 0, 1, 0);
 			} else if (state.getValue(BlockDiscoBall.FACING) == EnumFacing.NORTH) {
 				GlStateManager.translate(0, 0.5, -0.5);
 				GlStateManager.rotate(90, 1, 0, 0);
-				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
+				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialTicks, 0, 1, 0);
 			} else {
 				GlStateManager.translate(0, 0.5, 0.5);
 				GlStateManager.rotate(-90, 1, 0, 0);
-				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialticks, 0, 1, 0);
+				GlStateManager.rotate((float) te.getWorld().getTotalWorldTime() + partialTicks, 0, 1, 0);
 			}
 		}
 

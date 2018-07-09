@@ -3,9 +3,10 @@ package com.teamwizardry.refraction.client.render;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -57,48 +58,48 @@ public class RenderLaserPoint extends Render<EntityLaserPointer> {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(loc);
 
 		Tessellator t = Tessellator.getInstance();
-		VertexBuffer vb = t.getBuffer();
+		BufferBuilder bb = t.getBuffer();
 
-		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 		double M = 0.1;
 		double m = -0.1;
 		double o = -margin;
 
 		if (isX || all) {
-			vb.pos(-o, m, m).tex(0, 0).endVertex();
-			vb.pos(-o, m, M).tex(1, 0).endVertex();
-			vb.pos(-o, M, M).tex(1, 1).endVertex();
-			vb.pos(-o, M, m).tex(0, 1).endVertex();
+			bb.pos(-o, m, m).tex(0, 0).endVertex();
+			bb.pos(-o, m, M).tex(1, 0).endVertex();
+			bb.pos(-o, M, M).tex(1, 1).endVertex();
+			bb.pos(-o, M, m).tex(0, 1).endVertex();
 
-			vb.pos(o, M, m).tex(0, 1).endVertex();
-			vb.pos(o, M, M).tex(1, 1).endVertex();
-			vb.pos(o, m, M).tex(1, 0).endVertex();
-			vb.pos(o, m, m).tex(0, 0).endVertex();
+			bb.pos(o, M, m).tex(0, 1).endVertex();
+			bb.pos(o, M, M).tex(1, 1).endVertex();
+			bb.pos(o, m, M).tex(1, 0).endVertex();
+			bb.pos(o, m, m).tex(0, 0).endVertex();
 		}
 
 		if (isY || all) {
-			vb.pos(m, -o, m).tex(0, 0).endVertex();
-			vb.pos(M, -o, m).tex(1, 0).endVertex();
-			vb.pos(M, -o, M).tex(1, 1).endVertex();
-			vb.pos(m, -o, M).tex(0, 1).endVertex();
+			bb.pos(m, -o, m).tex(0, 0).endVertex();
+			bb.pos(M, -o, m).tex(1, 0).endVertex();
+			bb.pos(M, -o, M).tex(1, 1).endVertex();
+			bb.pos(m, -o, M).tex(0, 1).endVertex();
 
-			vb.pos(m, o, M).tex(0, 1).endVertex();
-			vb.pos(M, o, M).tex(1, 1).endVertex();
-			vb.pos(M, o, m).tex(1, 0).endVertex();
-			vb.pos(m, o, m).tex(0, 0).endVertex();
+			bb.pos(m, o, M).tex(0, 1).endVertex();
+			bb.pos(M, o, M).tex(1, 1).endVertex();
+			bb.pos(M, o, m).tex(1, 0).endVertex();
+			bb.pos(m, o, m).tex(0, 0).endVertex();
 		}
 
 		if (isZ || all) {
-			vb.pos(m, m, o).tex(0, 0).endVertex();
-			vb.pos(M, m, o).tex(1, 0).endVertex();
-			vb.pos(M, M, o).tex(1, 1).endVertex();
-			vb.pos(m, M, o).tex(0, 1).endVertex();
+			bb.pos(m, m, o).tex(0, 0).endVertex();
+			bb.pos(M, m, o).tex(1, 0).endVertex();
+			bb.pos(M, M, o).tex(1, 1).endVertex();
+			bb.pos(m, M, o).tex(0, 1).endVertex();
 
-			vb.pos(m, M, -o).tex(0, 1).endVertex();
-			vb.pos(M, M, -o).tex(1, 1).endVertex();
-			vb.pos(M, m, -o).tex(1, 0).endVertex();
-			vb.pos(m, m, -o).tex(0, 0).endVertex();
+			bb.pos(m, M, -o).tex(0, 1).endVertex();
+			bb.pos(M, M, -o).tex(1, 1).endVertex();
+			bb.pos(M, m, -o).tex(1, 0).endVertex();
+			bb.pos(m, m, -o).tex(0, 0).endVertex();
 		}
 
 		t.draw();

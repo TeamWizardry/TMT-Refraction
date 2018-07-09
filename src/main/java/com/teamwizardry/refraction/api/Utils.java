@@ -102,7 +102,7 @@ public final class Utils {
 			Vec3d hitPos = trace.hitVec;
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			Vec3d dir = hitPos.subtract(center);
-			return EnumFacing.getFacingFromVector((float) dir.xCoord, (float) dir.yCoord, (float) dir.zCoord);
+			return EnumFacing.getFacingFromVector((float) dir.x, (float) dir.y, (float) dir.z);
 		}
 		return null;
 	}

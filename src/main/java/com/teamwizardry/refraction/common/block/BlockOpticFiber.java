@@ -15,9 +15,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -122,7 +122,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, ILig
 
 		IBlockState state = world.getBlockState(pos);
 		AxisAlignedBB axis = state.getBoundingBox(world, pos);
-		EnumFacing beamDir = EnumFacing.getFacingFromVector((float) beam.slope.xCoord, (float) beam.slope.yCoord, (float) beam.slope.zCoord);
+		EnumFacing beamDir = EnumFacing.getFacingFromVector((float) beam.slope.x, (float) beam.slope.y, (float) beam.slope.z);
 
 		if (primaryOpen && secondaryOpen) {
 			if (facing.contains(beamDir.getOpposite())) {
@@ -193,23 +193,23 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, ILig
 			Vec3d hitPos = beam.trace.hitVec;
 			Vec3d dir = hitPos.subtract(pos.getX(), pos.getY(), pos.getZ());
 
-			if (dir.xCoord == axis.minX)
-				if (dir.yCoord > axis.minY && dir.yCoord < axis.maxY && dir.zCoord > axis.minZ && dir.zCoord < axis.maxZ)
+			if (dir.x == axis.minX)
+				if (dir.y > axis.minY && dir.y < axis.maxY && dir.z > axis.minZ && dir.z < axis.maxZ)
 					return EnumFacing.WEST;
-			if (dir.xCoord == axis.maxX)
-				if (dir.yCoord > axis.minY && dir.yCoord < axis.maxY && dir.zCoord > axis.minZ && dir.zCoord < axis.maxZ)
+			if (dir.x == axis.maxX)
+				if (dir.y > axis.minY && dir.y < axis.maxY && dir.z > axis.minZ && dir.z < axis.maxZ)
 					return EnumFacing.EAST;
-			if (dir.yCoord == axis.minY)
-				if (dir.xCoord > axis.minX && dir.xCoord < axis.maxX && dir.zCoord > axis.minZ && dir.zCoord < axis.maxZ)
+			if (dir.y == axis.minY)
+				if (dir.x > axis.minX && dir.x < axis.maxX && dir.z > axis.minZ && dir.z < axis.maxZ)
 					return EnumFacing.DOWN;
-			if (dir.yCoord == axis.maxY)
-				if (dir.xCoord > axis.minX && dir.xCoord < axis.maxX && dir.zCoord > axis.minZ && dir.zCoord < axis.maxZ)
+			if (dir.y == axis.maxY)
+				if (dir.x > axis.minX && dir.x < axis.maxX && dir.z > axis.minZ && dir.z < axis.maxZ)
 					return EnumFacing.UP;
-			if (dir.zCoord == axis.minZ)
-				if (dir.xCoord > axis.minX && dir.xCoord < axis.maxX && dir.yCoord > axis.minY && dir.yCoord < axis.maxY)
+			if (dir.z == axis.minZ)
+				if (dir.x > axis.minX && dir.x < axis.maxX && dir.y > axis.minY && dir.y < axis.maxY)
 					return EnumFacing.NORTH;
-			if (dir.zCoord == axis.maxZ)
-				if (dir.yCoord > axis.minY && dir.yCoord < axis.maxY && dir.yCoord > axis.minY && dir.yCoord < axis.maxY)
+			if (dir.z == axis.maxZ)
+				if (dir.y > axis.minY && dir.y < axis.maxY && dir.y > axis.minY && dir.y < axis.maxY)
 					return EnumFacing.SOUTH;
 		}
 		return null;
@@ -221,7 +221,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, ILig
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 

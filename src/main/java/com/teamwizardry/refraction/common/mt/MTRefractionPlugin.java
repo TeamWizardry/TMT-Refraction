@@ -1,16 +1,16 @@
 package com.teamwizardry.refraction.common.mt;
 
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.item.IngredientStack;
-import minetweaker.api.oredict.IOreDictEntry;
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.IngredientStack;
+import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class MTRefractionPlugin {
 	public static void init() {
-		MineTweakerAPI.registerClass(AssemblyTable.class);
+		CraftTweakerAPI.registerClass(AssemblyTable.class);
 	}
 
 	public static ItemStack toStack(IItemStack iStack) {

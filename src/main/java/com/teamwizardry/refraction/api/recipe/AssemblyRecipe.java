@@ -12,6 +12,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ import java.util.List;
  */
 public class AssemblyRecipe implements IAssemblyBehavior {
 
-	private final ArrayList<Object> recipe;
+	private final List<List<ItemStack>> recipe;
 	private final int minRed, minGreen, minBlue, minStrength;
 	private final int maxRed, maxGreen, maxBlue, maxStrength;
 	private final Color minColor, maxColor;
@@ -47,12 +49,12 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 				int stackSize = stack.getCount();
 				stack.setCount(1);
 				for (int i = 0; i < stackSize; i++) {
-					this.recipe.add(stack);
+					this.recipe.add(Collections.singletonList(stack));
 				}
 			} else if (obj instanceof Item) {
-				this.recipe.add(new ItemStack((Item) obj));
+				this.recipe.add(Collections.singletonList(new ItemStack((Item) obj)));
 			} else if (obj instanceof Block) {
-				this.recipe.add(new ItemStack((Block) obj));
+				this.recipe.add(Collections.singletonList(new ItemStack((Block) obj)));
 			} else if (obj instanceof String) {
 				List<ItemStack> oreDicts = OreDictionary.getOres((String) obj);
 				if (oreDicts == null || oreDicts.size() <= 0) {
@@ -68,7 +70,7 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 		this(result, one.getRed(), one.getGreen(), one.getBlue(), one.getAlpha(), two.getRed(), two.getGreen(), two.getBlue(), two.getAlpha(), items);
 	}
 
-	public ArrayList<Object> getRecipe() {
+	public List<List<ItemStack>> getRecipe() {
 		return recipe;
 	}
 
@@ -95,7 +97,30 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 				color.getBlue() >= minBlue &&
 				color.getAlpha() <= maxStrength &&
 				color.getAlpha() >= minStrength &&
-				Utils.matchItemStackLists(CapsUtils.getListOfItems(items), recipe);
+				isIngrediant(CapsUtils.getListOfItems(items), recipe);
+	}
+
+	private boolean isIngrediant(List<ItemStack> input, List<List<ItemStack>> required) {
+		List<List<ItemStack>> inputsMissing = new ArrayList<>(required);
+		for (ItemStack i : input) {
+			loop:
+			for (int j = 0; j < inputsMissing.size(); j++) {
+				List<ItemStack> inp = inputsMissing.get(j);
+				for (ItemStack obj : inp) {
+					if (obj.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+						obj.setItemDamage(i.getItemDamage());
+					if (Utils.itemEquals(i, obj)) {
+						inputsMissing.remove(j);
+						break loop;
+					}
+				}
+				if (Utils.itemEquals(i, inp)) {
+					inputsMissing.remove(j);
+					break;
+				}
+			}
+		}
+		return inputsMissing.isEmpty();
 	}
 
 	@Override

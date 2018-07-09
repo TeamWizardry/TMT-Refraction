@@ -3,7 +3,6 @@ package com.teamwizardry.refraction.common.core;
 import com.teamwizardry.librarianlib.features.math.Matrix4;
 import com.teamwizardry.librarianlib.features.network.PacketHandler;
 import com.teamwizardry.refraction.api.ConfigValues;
-import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.BeamHitEvent;
@@ -13,7 +12,6 @@ import com.teamwizardry.refraction.common.block.BlockLens;
 import com.teamwizardry.refraction.common.block.BlockPrism;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.common.network.PacketLaserDisplayTick;
-import com.teamwizardry.refraction.init.ModAchievements;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.state.IBlockState;
@@ -57,19 +55,6 @@ public class EventHandler {
 	}
 
 	@SubscribeEvent
-	public void craft(EventAssemblyTableCraft event) {
-		if (event.getOutput().getItem() == ModBlocks.TRANSLOCATOR.getItemForm())
-			for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
-				player.addStat(ModAchievements.TRANSLOCATOR);
-		else if (event.getOutput().getItem() == ModBlocks.PRISM.getItemForm())
-			for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
-				player.addStat(ModAchievements.PRISM);
-		else if (event.getOutput().getItem() == ModBlocks.AXYZ.getItemForm())
-			for (EntityPlayer player : getPlayersWithinRange(event.getWorld(), event.getPos(), 20))
-				player.addStat(ModAchievements.AXYZ);
-	}
-
-	@SubscribeEvent
 	public void handleGlass(BeamHitEvent event) {
 		if (event.getState().getBlock() instanceof ILightSink) return;
 		if (event.getResult() != Event.Result.DEFAULT) return;
@@ -105,7 +90,7 @@ public class EventHandler {
 					normal = r.data.scale(-1);
 					Vec3d oldRef = ref;
 					ref = BlockLens.refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
-					if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
+					if (Double.isNaN(ref.x) || Double.isNaN(ref.y) || Double.isNaN(ref.z)) {
 						ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
 						break;
 					}

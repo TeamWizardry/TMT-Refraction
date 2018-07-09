@@ -108,21 +108,21 @@ public class PacketAXYZMarks extends PacketBase {
 				Pair<Vec3d, Vec3d> pair = controlPoints.get(dimWithPos);
 				double shift = ThreadLocalRandom.current().nextDouble(0.1, 0.5);
 
-				double p1r1 = pair.getFirst().xCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
-				double p1r2 = pair.getFirst().yCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
-				double p1r3 = pair.getFirst().zCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				double p1r1 = pair.getFirst().x + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				double p1r2 = pair.getFirst().y + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				double p1r3 = pair.getFirst().z + ThreadLocalRandom.current().nextDouble(-shift, shift);
 				Vec3d p1 = new Vec3d(
-						p1r1 <= 2 ? p1r1 : pair.getFirst().xCoord,
-						p1r2 <= 2 ? p1r2 : pair.getFirst().yCoord,
-						p1r3 <= 2 ? p1r3 : pair.getFirst().zCoord
+						p1r1 <= 2 ? p1r1 : pair.getFirst().x,
+						p1r2 <= 2 ? p1r2 : pair.getFirst().y,
+						p1r3 <= 2 ? p1r3 : pair.getFirst().z
 				);
-				double p2r1 = pair.getSecond().xCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
-				double p2r2 = pair.getSecond().yCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
-				double p2r3 = pair.getSecond().zCoord + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				double p2r1 = pair.getSecond().x + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				double p2r2 = pair.getSecond().y + ThreadLocalRandom.current().nextDouble(-shift, shift);
+				double p2r3 = pair.getSecond().z + ThreadLocalRandom.current().nextDouble(-shift, shift);
 				Vec3d p2 = new Vec3d(
-						p2r1 <= 2 ? p2r1 : pair.getSecond().xCoord,
-						p2r2 <= 2 ? p2r2 : pair.getSecond().yCoord,
-						p2r3 <= 2 ? p2r3 : pair.getSecond().zCoord
+						p2r1 <= 2 ? p2r1 : pair.getSecond().x,
+						p2r2 <= 2 ? p2r2 : pair.getSecond().y,
+						p2r3 <= 2 ? p2r3 : pair.getSecond().z
 				);
 				controlPoints.put(dimWithPos, new Pair<>(p1, p2));
 

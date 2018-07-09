@@ -4,10 +4,10 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.recipe.AssemblyBehaviors;
 import com.teamwizardry.refraction.api.recipe.AssemblyRecipe;
 import kotlin.Pair;
-import minetweaker.IUndoableAction;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IItemStack;
+import crafttweaker.IAction;
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -27,15 +27,15 @@ public class AssemblyTable {
 			return;
 		if (minAlpha > 255 || maxAlpha > 255 || minRed > 255 || maxRed > 255 || minGreen > 255 || maxGreen > 255 || minBlue > 255 || maxBlue > 255)
 			return;
-		MineTweakerAPI.apply(new Add(name, new AssemblyRecipe(MTRefractionPlugin.toStack(output), minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, MTRefractionPlugin.toObjects(input))));
+		CraftTweakerAPI.apply(new Add(name, new AssemblyRecipe(MTRefractionPlugin.toStack(output), minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, MTRefractionPlugin.toObjects(input))));
 	}
 
 	@ZenMethod
 	public static void remove(IItemStack output) {
-		MineTweakerAPI.apply(new Remove(MTRefractionPlugin.toStack(output)));
+		CraftTweakerAPI.apply(new Remove(MTRefractionPlugin.toStack(output)));
 	}
 
-	private static class Add implements IUndoableAction {
+	private static class Add implements IAction {
 		private final AssemblyRecipe recipe;
 		private String name;
 
@@ -47,37 +47,16 @@ public class AssemblyTable {
 		@Override
 		public void apply() {
 			AssemblyBehaviors.getBehaviors().put("zen:" + name, recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(recipe);
-		}
-
-		@Override
-		public boolean canUndo() {
-			return true;
+			//CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(recipe);
 		}
 
 		@Override
 		public String describe() {
 			return "Adding Assembly Table recipe for " + recipe.getResult().getDisplayName();
 		}
-
-		@Override
-		public String describeUndo() {
-			return "Removing Assembly Table recipe for " + recipe.getResult().getDisplayName();
-		}
-
-		@Override
-		public Object getOverrideKey() {
-			return null;
-		}
-
-		@Override
-		public void undo() {
-			AssemblyBehaviors.getBehaviors().remove("zen:" + name);
-			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe);
-		}
 	}
 
-	private static class Remove implements IUndoableAction {
+	private static class Remove implements IAction {
 		private final ItemStack output;
 		List<Pair<String, AssemblyRecipe>> toRemove = new ArrayList<>();
 
@@ -94,33 +73,12 @@ public class AssemblyTable {
 					.map(recipe -> new Pair<>(AssemblyBehaviors.getBehaviors().inverse().get(recipe), (AssemblyRecipe) recipe))
 					.collect(Collectors.toList()));
 			toRemove.forEach((obj) -> AssemblyBehaviors.getBehaviors().remove(obj.component1()));
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(output);
-		}
-
-		@Override
-		public boolean canUndo() {
-			return true;
+			//MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(output);
 		}
 
 		@Override
 		public String describe() {
 			return "Removing Assembly Table recipes for " + output.getDisplayName();
-		}
-
-		@Override
-		public String describeUndo() {
-			return "Re-adding Assembly Table recipes for " + output.getDisplayName();
-		}
-
-		@Override
-		public Object getOverrideKey() {
-			return null;
-		}
-
-		@Override
-		public void undo() {
-			toRemove.forEach(recipe -> AssemblyBehaviors.getBehaviors().put(recipe.component1(), recipe.component2()));
-			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(output);
 		}
 	}
 }

@@ -6,14 +6,12 @@ import com.teamwizardry.refraction.common.tile.TileMirror;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
@@ -59,7 +57,7 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileMirror te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileMirror te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		double subtractedMillis = (te.getWorld().getTotalWorldTime() - te.worldTime);
 		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((te.rotPrevX - te.rotDestX) / 2.0), 10)),
 				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((te.rotPrevY - te.rotDestY) / 2.0), 10));
@@ -69,10 +67,6 @@ public class RenderMirror extends TileEntitySpecialRenderer<TileMirror> {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		getBakedModels();
-		World world = te.getWorld();
-
-		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vb = tessellator.getBuffer();
 
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		if (Minecraft.isAmbientOcclusionEnabled())

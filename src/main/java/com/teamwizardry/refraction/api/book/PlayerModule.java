@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.api.book;
 
-import com.teamwizardry.librarianlib.features.gui.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import net.minecraft.client.Minecraft;
 

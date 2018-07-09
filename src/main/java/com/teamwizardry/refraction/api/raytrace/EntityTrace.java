@@ -96,16 +96,17 @@ public class EntityTrace {
 
 		if (focusedBlock != null) blockDistance = focusedBlock.hitVec.distanceTo(pos);
 
-		Vec3d cast = pos.addVector(slope.xCoord * range, slope.yCoord * range, slope.zCoord * range);
+		Vec3d cast = pos.addVector(slope.x * range, slope.y * range, slope.z * range);
 		Entity focusedEntity = null;
 		Vec3d vec = null;
-		List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(new BlockPos(pos)).addCoord(slope.xCoord * range, slope.yCoord * range, slope.zCoord * range).expand(1, 1, 1), Predicates.and(apply -> apply != null && !ignoreEntities && (apply.canBeCollidedWith() || (apply instanceof EntityItem)), EntitySelectors.NOT_SPECTATING));
+		List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(new BlockPos(pos)).offset(slope.x * range, slope.y * range, slope.z * range).expand(1, 1, 1), Predicates.and(apply -> apply != null && !ignoreEntities && (apply.canBeCollidedWith() || (apply instanceof EntityItem)), EntitySelectors.NOT_SPECTATING));
 		double blockDistCopy = blockDistance;
 
 		int j = 0;
 		while (j < list.size()) {
 			Entity current = list.get(j);
-			AxisAlignedBB axis = current.getEntityBoundingBox().expandXyz(current.getCollisionBorderSize());
+			float expand = current.getCollisionBorderSize();
+			AxisAlignedBB axis = current.getEntityBoundingBox().expand(expand, expand, expand);
 
 			if (uuidToSkip != null && current.getUniqueID().equals(uuidToSkip)) {
 				j++;
@@ -123,7 +124,7 @@ public class EntityTrace {
 				axis = axis.expand(0, 0.25, 0);
 			RayTraceResult result = axis.calculateIntercept(pos, cast);
 
-			if (axis.isVecInside(pos)) {
+			if (axis.contains(pos)) {
 				if (blockDistCopy > 0) {
 					focusedEntity = current;
 					vec = result == null ? pos : result.hitVec;

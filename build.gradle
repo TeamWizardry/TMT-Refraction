@@ -7,13 +7,15 @@ buildscript {
         }
     }
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT"
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
+apply plugin: 'kotlin'
 apply plugin: "net.minecraftforge.gradle.forge"
 
-version = "2.0"
+version = "$mod_version"
 group = "com.teamwizardry"
 archivesBaseName = "refraction"
 
@@ -21,14 +23,24 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 minecraft {
-    version = "1.11.2-13.20.0.2282"
+    version = "$mc_version-$forge_version"
     runDir = "run"
-    mappings = "snapshot_20170324"
+    mappings = "$mcp_version"
+
+    replace 'GRADLE:VERSION', "$mod_version"
+    replace 'required-before:librarianlib', 'required-before:librarianlib@' + liblib_version
+
 }
 
 repositories {
     mavenCentral()
-    maven { url "http://dvs1.progwml6.com/files/maven" }
+    maven { url = "http://maven.bluexin.be/repository/snapshots/" }
+    maven {
+        url 'http://maven.shadowfacts.net/'
+    }
+    maven { url = "http://dvs1.progwml6.com/files/maven" }
+    maven { url = "http://tehnut.info/maven" }
+    maven { url = "http://maven.tterrag.com/" }
     maven {
         name 'jared maven'
         url "http://maven.blamejared.com"
@@ -36,9 +48,12 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.3.382:api"
-    compile "MineTweaker3:MineTweaker3-API:3.0.20.70"
-    runtime "mezz.jei:jei_1.10.2:3.13.3.382"
+    //compile "com.teamwizardry.librarianlib:librarianlib-1.12.2:$liblib_version-SNAPSHOT:deobf"
+    //deobfCompile "com.teamwizardry.librarianlib:librarianlib-$liblib_version"
+    deobfCompile "mezz.jei:jei_1.12.2:$jei_version:api"
+    runtime "mezz.jei:jei_1.12.2:$jei_version"
+
+    compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 processResources {

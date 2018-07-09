@@ -2,7 +2,8 @@ package com.teamwizardry.refraction.client.gui.tablet;
 
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
-import com.teamwizardry.librarianlib.features.gui.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentStack;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
@@ -72,9 +73,9 @@ public class ExtraSidebar {
 
 		if (sidebarType == SidebarType.IMAGE && image != null) {
 			ComponentSprite imageComp = new ComponentSprite(this.image, RightSidebar.rightNormal.getWidth() - this.image.getWidth(), 1, 16, 16);
-			new ButtonMixin<>(imageComp, () -> {
+			new ButtonMixin(imageComp, () -> {
 			});
-			imageComp.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
+			imageComp.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, (event) -> {
 				if (isSelected) {
 					imageComp.setSize(new Vec2d(64, 64));
 					imageComp.setPos(new Vec2d(32, 20));
@@ -91,16 +92,16 @@ public class ExtraSidebar {
 		titleComp.getText().setValue(title);
 		background.add(titleComp);
 
-		new ButtonMixin<>(background, () -> {
+		new ButtonMixin(background, () -> {
 		});
 
-		background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
+		background.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, (event) -> {
 			if (subPage.isSelected) {
 				background.setVisible(true);
-				background.setEnabled(true);
+				//background.setEnabled(true);
 			} else {
 				background.setVisible(false);
-				background.setEnabled(false);
+				//background.setEnabled(false);
 			}
 
 			if (isSelected) {
@@ -120,7 +121,7 @@ public class ExtraSidebar {
 			ItemStack stack = slotcomp.getStack().getValue(slotcomp);
 			IRecipeLayoutDrawable drawable = JEIRefractionPlugin.getDrawableFromItem(stack);
 
-			background.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
+			background.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
 				if (subPage.isSelected && isSelected) {
 					GlStateManager.pushMatrix();
 					RenderHelper.enableGUIStandardItemLighting();

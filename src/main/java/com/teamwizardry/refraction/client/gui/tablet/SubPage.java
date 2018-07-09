@@ -4,7 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
-import com.teamwizardry.librarianlib.features.gui.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.gui.mixin.ButtonMixin;
@@ -66,16 +67,16 @@ public class SubPage {
 		ComponentText titleComp = new ComponentText(10, 9, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.MIDDLE);
 		background.add(titleComp);
 
-		new ButtonMixin<>(background, () -> {
+		new ButtonMixin(background, () -> {
 		});
 
-		background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
+		background.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, (event) -> {
 			if (page.isSelected) {
 				background.setVisible(true);
-				background.setEnabled(true);
+				//background.setEnabled(true);
 			} else {
 				background.setVisible(false);
-				background.setEnabled(false);
+				//background.setEnabled(false);
 			}
 
 			if (isSelected) {

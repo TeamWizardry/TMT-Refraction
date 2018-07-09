@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "refraction:grenade"
+    },
+    "title": {
+      "translate": "advancement.refraction.grenade"
+    },
+    "description": {
+      "translate": "advancement.refraction.grenade.desc",
+      "italic": true
+    },
+    "background": "refraction:textures/blocks/reflective_alloy_block.png"
+  },
+  "criteria": {
+    "craft_book": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "refraction:grenade"
+          }
+        ]
+      }
+    }
+  }
+}

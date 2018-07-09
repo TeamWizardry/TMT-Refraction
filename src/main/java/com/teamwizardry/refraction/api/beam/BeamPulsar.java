@@ -27,14 +27,14 @@ public class BeamPulsar {
 	}
 
 	public static RayTraceResult rayTraceBlocks(World world, Set<BlockPos> exclude, Vec3d start, Vec3d end, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
-		if (!Double.isNaN(start.xCoord) && !Double.isNaN(start.yCoord) && !Double.isNaN(start.zCoord)) {
-			if (!Double.isNaN(end.xCoord) && !Double.isNaN(end.yCoord) && !Double.isNaN(end.zCoord)) {
-				int i = MathHelper.floor(end.xCoord);
-				int j = MathHelper.floor(end.yCoord);
-				int k = MathHelper.floor(end.zCoord);
-				int l = MathHelper.floor(start.xCoord);
-				int i1 = MathHelper.floor(start.yCoord);
-				int j1 = MathHelper.floor(start.zCoord);
+		if (!Double.isNaN(start.x) && !Double.isNaN(start.y) && !Double.isNaN(start.z)) {
+			if (!Double.isNaN(end.x) && !Double.isNaN(end.y) && !Double.isNaN(end.z)) {
+				int i = MathHelper.floor(end.x);
+				int j = MathHelper.floor(end.y);
+				int k = MathHelper.floor(end.z);
+				int l = MathHelper.floor(start.x);
+				int i1 = MathHelper.floor(start.y);
+				int j1 = MathHelper.floor(start.z);
 				BlockPos blockpos = new BlockPos(l, i1, j1);
 				IBlockState iblockstate = world.getBlockState(blockpos);
 				Block block = iblockstate.getBlock();
@@ -53,7 +53,7 @@ public class BeamPulsar {
 				int k1 = 200;
 
 				while (k1-- >= 0) {
-					if (Double.isNaN(start.xCoord) || Double.isNaN(start.yCoord) || Double.isNaN(start.zCoord)) {
+					if (Double.isNaN(start.x) || Double.isNaN(start.y) || Double.isNaN(start.z)) {
 						return null;
 					}
 
@@ -95,20 +95,20 @@ public class BeamPulsar {
 					double d3 = 999.0D;
 					double d4 = 999.0D;
 					double d5 = 999.0D;
-					double d6 = end.xCoord - start.xCoord;
-					double d7 = end.yCoord - start.yCoord;
-					double d8 = end.zCoord - start.zCoord;
+					double d6 = end.x - start.x;
+					double d7 = end.y - start.y;
+					double d8 = end.z - start.z;
 
 					if (flag2) {
-						d3 = (d0 - start.xCoord) / d6;
+						d3 = (d0 - start.x) / d6;
 					}
 
 					if (flag) {
-						d4 = (d1 - start.yCoord) / d7;
+						d4 = (d1 - start.y) / d7;
 					}
 
 					if (flag1) {
-						d5 = (d2 - start.zCoord) / d8;
+						d5 = (d2 - start.z) / d8;
 					}
 
 					if (d3 == -0.0D) {
@@ -127,18 +127,18 @@ public class BeamPulsar {
 
 					if (d3 < d4 && d3 < d5) {
 						enumfacing = i > l ? EnumFacing.WEST : EnumFacing.EAST;
-						start = new Vec3d(d0, start.yCoord + d7 * d3, start.zCoord + d8 * d3);
+						start = new Vec3d(d0, start.y + d7 * d3, start.z + d8 * d3);
 					} else if (d4 < d5) {
 						enumfacing = j > i1 ? EnumFacing.DOWN : EnumFacing.UP;
-						start = new Vec3d(start.xCoord + d6 * d4, d1, start.zCoord + d8 * d4);
+						start = new Vec3d(start.x + d6 * d4, d1, start.z + d8 * d4);
 					} else {
 						enumfacing = k > j1 ? EnumFacing.NORTH : EnumFacing.SOUTH;
-						start = new Vec3d(start.xCoord + d6 * d5, start.yCoord + d7 * d5, d2);
+						start = new Vec3d(start.x + d6 * d5, start.y + d7 * d5, d2);
 					}
 
-					l = MathHelper.floor(start.xCoord) - (enumfacing == EnumFacing.EAST ? 1 : 0);
-					i1 = MathHelper.floor(start.yCoord) - (enumfacing == EnumFacing.UP ? 1 : 0);
-					j1 = MathHelper.floor(start.zCoord) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
+					l = MathHelper.floor(start.x) - (enumfacing == EnumFacing.EAST ? 1 : 0);
+					i1 = MathHelper.floor(start.y) - (enumfacing == EnumFacing.UP ? 1 : 0);
+					j1 = MathHelper.floor(start.z) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
 					blockpos = new BlockPos(l, i1, j1);
 					IBlockState iblockstate1 = world.getBlockState(blockpos);
 					Block block1 = iblockstate1.getBlock();

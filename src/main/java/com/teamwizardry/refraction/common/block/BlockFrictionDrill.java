@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.features.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.features.base.block.BlockMod;
+import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.common.tile.TileFrictionDrill;
@@ -9,9 +10,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by LordSaad.

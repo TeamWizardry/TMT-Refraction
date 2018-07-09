@@ -14,13 +14,14 @@ import net.minecraft.item.ItemStack;
  */
 public class RenderAssemblyTable extends TileEntitySpecialRenderer<TileAssemblyTable> {
 
-	public void renderTileEntityAt(TileAssemblyTable te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileAssemblyTable te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	//public void renderTileEntityAt(TileAssemblyTable te, double x, double y, double z, float partialTicks, int destroyStage) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 
 		double time = ClientTickHandler.getTicksInGame() + partialTicks;
 
-		if (te.output.getStackInSlot(0) != null) {
+		if (te.output.getStackInSlot(0) != ItemStack.EMPTY) {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(0.5, 1.35, 0.5);
 			GlStateManager.scale(0.5, 0.5, 0.5);
@@ -31,7 +32,7 @@ public class RenderAssemblyTable extends TileEntitySpecialRenderer<TileAssemblyT
 
 		int items = 0;
 		for (int i = 0; i < te.inventory.getSlots(); i++)
-			if (te.inventory.getStackInSlot(i) == null)
+			if (te.inventory.getStackInSlot(i) == ItemStack.EMPTY)
 				break;
 			else items++;
 		float[] angles = new float[te.inventory.getSlots()];
@@ -53,7 +54,7 @@ public class RenderAssemblyTable extends TileEntitySpecialRenderer<TileAssemblyT
 			GlStateManager.rotate(180F, 0F, 0F, 1F);
 			ItemStack stack = te.inventory.getStackInSlot(i);
 			Minecraft mc = Minecraft.getMinecraft();
-			if (stack != null) {
+			if (stack != ItemStack.EMPTY) {
 				mc.getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
 			}
 			GlStateManager.popMatrix();

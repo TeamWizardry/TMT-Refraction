@@ -1,37 +1,33 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "refraction:sensor.obj",
-    "transform": "forge:default-block"
-  },
   "variants": {
-    "facing": {
-      "up": {},
-      "down": {
-        "x": 180
-      },
-      "north": {
-        "x": 90
-      },
-      "south": {
-        "x": 90,
-        "y": -180
-      },
-      "west": {
-        "x": 90,
-        "y": -90
-      },
-      "east": {
-        "x": 90,
-        "y": 90
-      }
+    "facing=up": {
+      "model": "refraction:sensor.obj"
     },
-    "on": {
-      "true": {},
-      "false": {}
+    "facing=down": {
+      "model": "refraction:sensor.obj",
+      "x": 180
     },
-    "inventory": [
-      {}
-    ]
+    "facing=north": {
+      "model": "refraction:sensor.obj",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "refraction:sensor.obj",
+      "x": 90,
+      "y": -180
+    },
+    "facing=west": {
+      "model": "refraction:sensor.obj",
+      "x": 90,
+      "y": -90
+    },
+    "facing=east": {
+      "model": "refraction:sensor.obj",
+      "x": 90,
+      "y": 90
+    },
+    "inventory": {
+      "model": "refraction:sensor.obj"
+    }
   }
 }

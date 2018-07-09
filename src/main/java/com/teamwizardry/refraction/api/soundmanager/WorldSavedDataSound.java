@@ -5,7 +5,7 @@ import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 
 import javax.annotation.Nonnull;

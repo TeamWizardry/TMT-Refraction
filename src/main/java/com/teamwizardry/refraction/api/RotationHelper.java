@@ -14,15 +14,15 @@ public final class RotationHelper {
 	}
 
 	/**
-	 * Calculates the spherical coordinates, given a cartesian vector
+	 * Calculates the spherical inates, given a cartesian vector
 	 *
 	 * @param vec Vector given in (x, y, z)
 	 * @return Vector given in (rho, theta, phi)
 	 */
 	public static Vec3d toSpherical(Vec3d vec) {
-		double x = vec.xCoord;
-		double y = vec.yCoord;
-		double z = vec.zCoord;
+		double x = vec.x;
+		double y = vec.y;
+		double z = vec.z;
 		double radius = Math.sqrt(x * x + y * y + z * z);
 		double theta = Math.atan2(z, x);
 		double phi = Math.atan2(Math.sqrt(x * x + z * z), y);
@@ -46,9 +46,9 @@ public final class RotationHelper {
 		for (Vec3d vec : vectors) {
 			if (vec == null) continue;
 			vec.normalize();
-			x += vec.xCoord;
-			y += vec.yCoord;
-			z += vec.zCoord;
+			x += vec.x;
+			y += vec.y;
+			z += vec.z;
 		}
 
 		return new Vec3d(x, y, z);

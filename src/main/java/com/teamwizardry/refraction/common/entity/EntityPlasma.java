@@ -60,9 +60,9 @@ public class EntityPlasma extends Entity {
 	}
 
 	private void applyLook(Vec3d look) {
-		getDataManager().set(DATA_X, (float) look.xCoord);
-		getDataManager().set(DATA_Y, (float) look.yCoord);
-		getDataManager().set(DATA_Z, (float) look.zCoord);
+		getDataManager().set(DATA_X, (float) look.x);
+		getDataManager().set(DATA_Y, (float) look.y);
+		getDataManager().set(DATA_Z, (float) look.z);
 		getDataManager().setDirty(DATA_X);
 		getDataManager().setDirty(DATA_Y);
 		getDataManager().setDirty(DATA_Z);
@@ -80,7 +80,7 @@ public class EntityPlasma extends Entity {
 		motionZ = getDataManager().get(DATA_Z) * 1.5;
 
 		move(MoverType.SELF, motionX, motionY, motionZ);
-		if (getDataManager().get(DATA_COLLIDED) != isCollided) applyCollision(isCollided);
+		if (getDataManager().get(DATA_COLLIDED) != collided) applyCollision(collided);
 	}
 
 	@Override

@@ -4,9 +4,10 @@ import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
@@ -30,8 +31,8 @@ public class RenderLaserUtil {
 	public static void startRenderingLasers() {
 		drawingLasers = true;
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vb = tessellator.getBuffer();
-		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+		BufferBuilder bb = tessellator.getBuffer();
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 	}
 
 	public static void finishRenderingLasers() {
@@ -55,7 +56,7 @@ public class RenderLaserUtil {
 
 		Vec3d playerEyes = Minecraft.getMinecraft().player.getPositionEyes(ClientTickHandler.getPartialTicks());
 		Vec3d normal = (end.subtract(start)).crossProduct(playerEyes.subtract(start)).normalize(); //(b.subtract(a)).crossProduct(c.subtract(a));
-		if (normal.yCoord < 0)
+		if (normal.y < 0)
 			normal = normal.scale(-1);
 
 		//Vec3d d = normal.scale((0.25 * color.getAlpha() / 255f) / 2.);
@@ -67,40 +68,40 @@ public class RenderLaserUtil {
 		double uMin = 0, uMax = 1;
 
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vb = tessellator.getBuffer();
+		BufferBuilder bb = tessellator.getBuffer();
 
 		GlStateManager.depthMask(false);
 
-		if (!drawingLasers) vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-		pos(vb, start.add(d)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, end.subtract(d)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, end.add(d)).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		if (!drawingLasers) bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+		pos(bb, start.add(d)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(bb, start.subtract(d)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(bb, end.subtract(d)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(bb, end.add(d)).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
 
 		if (!drawingLasers)
 			tessellator.draw();
 
-		if (!drawingLasers) vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-		pos(vb, start.add(d2)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, start.subtract(d2)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, end.subtract(d2)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, end.add(d2)).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		if (!drawingLasers) bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+		pos(bb, start.add(d2)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(bb, start.subtract(d2)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(bb, end.subtract(d2)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(bb, end.add(d2)).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
 
 		if (!drawingLasers)
 			tessellator.draw();
 
-		if (!drawingLasers) vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-		pos(vb, start.add(d3)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, start.subtract(d3)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, end.subtract(d3)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
-		pos(vb, end.add(d3)).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		if (!drawingLasers) bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+		pos(bb, start.add(d3)).tex(uMin, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(bb, start.subtract(d3)).tex(uMin, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(bb, end.subtract(d3)).tex(uMax, vMax).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
+		pos(bb, end.add(d3)).tex(uMax, vMin).color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(128, color.getAlpha())).endVertex();
 
 		if (!drawingLasers)
 			tessellator.draw();
 	}
 
-	private static VertexBuffer pos(VertexBuffer vb, Vec3d pos) {
-		return vb.pos(pos.xCoord, pos.yCoord, pos.zCoord);
+	private static BufferBuilder pos(BufferBuilder bb, Vec3d pos) {
+		return bb.pos(pos.x, pos.y, pos.z);
 	}
 
 }

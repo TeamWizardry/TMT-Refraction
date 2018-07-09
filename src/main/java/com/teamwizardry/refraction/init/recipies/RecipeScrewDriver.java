@@ -8,6 +8,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -15,7 +16,7 @@ import javax.annotation.Nullable;
 /**
  * Created by Saad on 6/13/2016.
  */
-public class RecipeScrewDriver implements IRecipe {
+public class RecipeScrewDriver extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
@@ -56,8 +57,8 @@ public class RecipeScrewDriver implements IRecipe {
 	}
 
 	@Override
-	public int getRecipeSize() {
-		return 10;
+	public boolean canFit(int width, int height) {
+		return true;
 	}
 
 	@Override

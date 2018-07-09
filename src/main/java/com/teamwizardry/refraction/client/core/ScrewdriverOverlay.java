@@ -6,9 +6,10 @@ import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
@@ -73,20 +74,20 @@ public class ScrewdriverOverlay {
 			vec = rot(vec, -angle / 2 - 45);
 
 			Tessellator tessellator = Tessellator.getInstance();
-			VertexBuffer vb = tessellator.getBuffer();
+			BufferBuilder bb = tessellator.getBuffer();
 
-			vb.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION);
-			vb.pos(0, 0, 0).endVertex();
+			bb.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION);
+			bb.pos(0, 0, 0).endVertex();
 
 			double ang = angle;
 
 			do {
 				Vec2d v = rot(vec, ang);
-				vb.pos(v.getX(), v.getY(), 0).endVertex();
+				bb.pos(v.getX(), v.getY(), 0).endVertex();
 				ang -= anglePer;
 			} while (ang > 0);
 
-			vb.pos(vec.getX(), vec.getY(), 0).endVertex();
+			bb.pos(vec.getX(), vec.getY(), 0).endVertex();
 
 			tessellator.draw();
 			GlStateManager.enableTexture2D();

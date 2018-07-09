@@ -6,7 +6,7 @@ import com.teamwizardry.refraction.common.tile.TileSplitter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -63,7 +63,7 @@ public class RenderSplitter extends TileEntitySpecialRenderer<TileSplitter> {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileSplitter te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileSplitter te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		double subtractedMillis = (te.getWorld().getTotalWorldTime() - te.worldTime);
 		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((te.rotPrevX - te.rotDestX) / 2.0), 10)),
 				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((te.rotPrevY - te.rotDestY) / 2.0), 10));
@@ -73,10 +73,6 @@ public class RenderSplitter extends TileEntitySpecialRenderer<TileSplitter> {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		getBakedModels();
-		World world = te.getWorld();
-
-		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vb = tessellator.getBuffer();
 
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		if (Minecraft.isAmbientOcclusionEnabled())

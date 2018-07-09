@@ -63,13 +63,13 @@ public class ItemLightCartridge extends ItemMod implements IAmmo, IItemColorProv
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		super.getSubItems(itemIn, tab, subItems);
-		for (BlockFilter.EnumFilterType type : BlockFilter.EnumFilterType.values()) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+		super.getSubItems(tab, subItems);
+		/*for (BlockFilter.EnumFilterType type : BlockFilter.EnumFilterType.values()) {
 			ItemStack stack = new ItemStack(itemIn);
 			ItemNBTHelper.setInt(stack, "color", type.color | 0xFF000000);
 			subItems.add(stack);
-		}
+		}*/
 	}
 
 	@Nullable

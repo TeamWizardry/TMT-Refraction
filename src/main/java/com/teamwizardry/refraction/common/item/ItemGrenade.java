@@ -4,9 +4,7 @@ import com.teamwizardry.librarianlib.features.base.item.IItemColorProvider;
 import com.teamwizardry.librarianlib.features.base.item.ItemMod;
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper;
 import com.teamwizardry.librarianlib.features.utilities.client.ColorUtils;
-import com.teamwizardry.refraction.common.block.BlockFilter;
 import com.teamwizardry.refraction.common.entity.EntityGrenade;
-import com.teamwizardry.refraction.init.ModAchievements;
 import kotlin.jvm.functions.Function2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -57,7 +54,7 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 						Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
 						EntityGrenade entityGrenade = new EntityGrenade(world, color, entityplayer);
 						entityGrenade.setPosition(entityplayer.posX, entityplayer.posY + entityplayer.eyeHeight, entityplayer.posZ);
-						entityGrenade.setHeadingFromThrower(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0f, 1.5f, 1.0f);
+						entityGrenade.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0f, 1.5f, 1.0f);
 						stack.damageItem(1, entityplayer);
 						world.spawnEntity(entityGrenade);
 						entityGrenade.velocityChanged = true;
@@ -109,19 +106,14 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 	}
 
 	@Override
-	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
-		playerIn.addStat(ModAchievements.GRENADE);
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		super.getSubItems(itemIn, tab, subItems);
-		for (BlockFilter.EnumFilterType type : BlockFilter.EnumFilterType.values()) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+		super.getSubItems(tab, subItems);
+		/*for (BlockFilter.EnumFilterType type : BlockFilter.EnumFilterType.values()) {
 			ItemStack stack = new ItemStack(itemIn);
 			ItemNBTHelper.setInt(stack, "color", type.color | 0xFF000000);
 			subItems.add(stack);
-		}
+		}*/
 	}
 
 	@Nullable

@@ -51,12 +51,12 @@ public final class PosUtils {
 	@Nullable
 	public static EnumFacing getFacing(Vec3d p1, Vec3d p2) {
 		Vec3d sub = p2.subtract(p1);
-		if (sub.yCoord == 0 && sub.xCoord == 0 && sub.zCoord > 0) return EnumFacing.SOUTH;
-		else if (sub.yCoord == 0 && sub.xCoord == 0 && sub.zCoord < 0) return EnumFacing.NORTH;
-		else if (sub.yCoord == 0 && sub.xCoord > 0 && sub.zCoord == 0) return EnumFacing.EAST;
-		else if (sub.yCoord == 0 && sub.xCoord < 0 && sub.zCoord == 0) return EnumFacing.WEST;
-		else if (sub.yCoord > 0 && sub.xCoord == 0 && sub.zCoord == 0) return EnumFacing.UP;
-		else if (sub.yCoord < 0 && sub.xCoord == 0 && sub.zCoord == 0) return EnumFacing.DOWN;
+		if (sub.y == 0 && sub.x == 0 && sub.z > 0) return EnumFacing.SOUTH;
+		else if (sub.y == 0 && sub.x == 0 && sub.z < 0) return EnumFacing.NORTH;
+		else if (sub.y == 0 && sub.x > 0 && sub.z == 0) return EnumFacing.EAST;
+		else if (sub.y == 0 && sub.x < 0 && sub.z == 0) return EnumFacing.WEST;
+		else if (sub.y > 0 && sub.x == 0 && sub.z == 0) return EnumFacing.UP;
+		else if (sub.y < 0 && sub.x == 0 && sub.z == 0) return EnumFacing.DOWN;
 		return null;
 	}
 
@@ -96,26 +96,26 @@ public final class PosUtils {
 	}
 
 	public static int getDistance(Vec3d initLoc, Vec3d slope, BlockPos pos) {
-		double slopeX = slope.xCoord < 0 ? -slope.xCoord : slope.xCoord;
-		double slopeY = slope.yCoord < 0 ? -slope.yCoord : slope.yCoord;
-		double slopeZ = slope.zCoord < 0 ? -slope.zCoord : slope.zCoord;
+		double slopeX = slope.x < 0 ? -slope.x : slope.x;
+		double slopeY = slope.y < 0 ? -slope.y : slope.y;
+		double slopeZ = slope.z < 0 ? -slope.z : slope.z;
 		if (slopeX > slopeY) {
 			if (slopeX > slopeZ) {
-				double x = pos.getX() - initLoc.xCoord;
-				int dist = (int) (x * slope.xCoord);
+				double x = pos.getX() - initLoc.x;
+				int dist = (int) (x * slope.x);
 				return dist < 0 ? -dist : dist;
 			}
-			double z = pos.getZ() - initLoc.zCoord;
-			int dist = (int) (z * slope.zCoord);
+			double z = pos.getZ() - initLoc.z;
+			int dist = (int) (z * slope.z);
 			return dist < 0 ? -dist : dist;
 		}
 		if (slopeY > slopeZ) {
-			double y = pos.getY() - initLoc.yCoord;
-			int dist = (int) (y * slope.yCoord);
+			double y = pos.getY() - initLoc.y;
+			int dist = (int) (y * slope.y);
 			return dist < 0 ? -dist : dist;
 		}
-		double z = pos.getZ() - initLoc.zCoord;
-		int dist = (int) (z * slope.zCoord);
+		double z = pos.getZ() - initLoc.z;
+		int dist = (int) (z * slope.z);
 		return dist < 0 ? -dist : dist;
 	}
 }

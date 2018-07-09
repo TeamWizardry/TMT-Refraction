@@ -27,7 +27,6 @@ public class ModItems {
 		LASER_PEN = new ItemLaserPen();
 		SCREW_DRIVER = new ItemScrewDriver();
 		REFLECTIVE_ALLOY = new ItemReflectiveAlloy();
-		OreDictionary.registerOre(LibOreDict.REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
 		BOOK = new ItemBook();
 		GRENADE = new ItemGrenade();
 		PHOTON_CANNON = new ItemPhotonCannon();
@@ -36,6 +35,10 @@ public class ModItems {
 		LEGGINGS = new ItemArmorReflectiveAlloy("ref_alloy_leggings", EntityEquipmentSlot.LEGS);
 		BOOTS = new ItemArmorReflectiveAlloy("ref_alloy_boots", EntityEquipmentSlot.FEET);
 		LIGHT_CARTRIDGE = new ItemLightCartridge();
+	}
+
+	public static void initOreDict() {
+		OreDictionary.registerOre(LibOreDict.REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
 	}
 
 	public static void initModels() {

@@ -14,7 +14,6 @@ import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
 import com.teamwizardry.refraction.api.soundmanager.SoundManager;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
-import com.teamwizardry.refraction.init.ModAchievements;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -23,7 +22,6 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.BlockRenderLayer;
@@ -109,13 +107,6 @@ public class BlockLightBridge extends BlockMod implements ILightSink, ISoundEmit
 	@Override
 	public ItemBlock createItemForm() {
 		return null;
-	}
-
-	@Override
-	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-		if (entityIn instanceof EntityPlayer) {
-			((EntityPlayer) entityIn).addStat(ModAchievements.LIGHT_BRIDGE, 1);
-		}
 	}
 
 	@Override
@@ -355,7 +346,7 @@ public class BlockLightBridge extends BlockMod implements ILightSink, ISoundEmit
 			normal = r.data.scale(-1);
 			Vec3d oldRef = ref;
 			ref = refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
-			if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
+			if (Double.isNaN(ref.x) || Double.isNaN(ref.y) || Double.isNaN(ref.z)) {
 				ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
 				break;
 			}
@@ -379,7 +370,7 @@ public class BlockLightBridge extends BlockMod implements ILightSink, ISoundEmit
 	private void showBeam(World world, Vec3d start, Vec3d end, Color color) {
 		if (!world.isRemote)
 			PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(start, end, color),
-					new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.xCoord, start.yCoord, start.zCoord, 256));
+					new NetworkRegistry.TargetPoint(world.provider.getDimension(), start.x, start.y, start.z, 256));
 	}
 
 	@Override

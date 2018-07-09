@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.client.jei;
 
+import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -46,6 +47,12 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 		return localizedName;
 	}
 
+	@Override
+	public String getModName()
+	{
+		return Constants.MOD_NAME;
+	}
+
 	@Nonnull
 	@Override
 	public IDrawable getBackground() {
@@ -62,63 +69,28 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 	}
 
-	@Override
-	public void drawAnimations(@Nonnull Minecraft minecraft) {
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
-		if (!(recipeWrapper instanceof AssemblyTableRecipeWrapper)) return;
-
-		AssemblyTableRecipeWrapper wrapper = (AssemblyTableRecipeWrapper) recipeWrapper;
-		int index = 0;
-
-		double slice = 2 * Math.PI / wrapper.getInputs().size();
-		for (int i = 0; i < wrapper.getInputs().size(); i++) {
-			double angle = slice * i;
-			int newX = (int) (82 + 50 * Math.cos(angle));
-			int newY = (int) (82 + 50 * Math.sin(angle));
-			recipeLayout.getItemStacks().init(index, true, newX, newY);
-			Object obj = wrapper.getInputs().get(i);
-			if (obj == null)
-				continue;
-			if (obj instanceof ItemStack)
-				recipeLayout.getItemStacks().set(index, (ItemStack) obj);
-			if (obj instanceof List)
-				recipeLayout.getItemStacks().set(index, (List<ItemStack>) obj);
-			index++;
-		}
-
-		recipeLayout.getItemStacks().init(index, true, 82, 82);
-		recipeLayout.getItemStacks().set(index, (ItemStack) wrapper.getOutputs().get(0));
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
 		if (!(recipeWrapper instanceof AssemblyTableRecipeWrapper)) return;
 
-		AssemblyTableRecipeWrapper wrapper = (AssemblyTableRecipeWrapper) recipeWrapper;
 		int index = 0;
 
-		double slice = 2 * Math.PI / wrapper.getInputs().size();
-		for (int i = 0; i < wrapper.getInputs().size(); i++) {
+		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
+		double slice = 2 * Math.PI / inputs.size();
+		for (int i = 0; i < inputs.size(); i++) {
 			double angle = slice * i;
 			int newX = (int) (82 + 50 * Math.cos(angle));
 			int newY = (int) (82 + 50 * Math.sin(angle));
 			recipeLayout.getItemStacks().init(index, true, newX, newY);
-			Object obj = wrapper.getInputs().get(i);
+			List<ItemStack> obj = inputs.get(i);
 			if (obj == null)
 				continue;
-			if (obj instanceof ItemStack)
-				recipeLayout.getItemStacks().set(index, (ItemStack) obj);
-			if (obj instanceof List)
-				recipeLayout.getItemStacks().set(index, (List<ItemStack>) obj);
+			recipeLayout.getItemStacks().set(index, obj);
 			index++;
 		}
 
 		recipeLayout.getItemStacks().init(index, true, 82, 82);
-		recipeLayout.getItemStacks().set(index, (ItemStack) wrapper.getOutputs().get(0));
+		recipeLayout.getItemStacks().set(index, inputs.get(0));
 	}
 }

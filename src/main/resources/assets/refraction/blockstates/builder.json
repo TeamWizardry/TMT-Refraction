@@ -1,7 +1,22 @@
 {
-  "variants": {
-    "normal": {
-      "model": "refraction:builder"
-    }
-  }
+	"variants": {
+		"facing=down": {
+			"model": "refraction:builder"
+		},
+		"facing=up": {
+			"model": "refraction:builder"
+		},
+		"facing=north": {
+			"model": "refraction:builder"
+		},
+		"facing=south": {
+			"model": "refraction:builder"
+		},
+		"facing=west": {
+			"model": "refraction:builder"
+		},
+		"facing=east": {
+			"model": "refraction:builder"
+		}
+	}
 }

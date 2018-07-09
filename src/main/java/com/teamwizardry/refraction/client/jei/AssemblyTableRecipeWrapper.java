@@ -33,8 +33,8 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 	private static Sprite BAR = texture.getSprite("bar", 64, 8);
 	@SuppressWarnings("unused")
 	private static Sprite OUTLINE = texture.getSprite("outline", 68, 12);
-	private ArrayList<Object> inputs = new ArrayList<>();
-	private ArrayList<ItemStack> outputs = new ArrayList<>();
+	private List<List<ItemStack>> inputs;
+	private ItemStack output;
 	private List<FluidStack> fluidInputs = ImmutableList.of();
 	private List<FluidStack> fluidOutputs = ImmutableList.of();
 	private Color minColor, maxColor, currentColor;
@@ -47,8 +47,8 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 	private boolean transition = false;
 
 	public AssemblyTableRecipeWrapper(AssemblyRecipe recipe) {
-		inputs.addAll(recipe.getRecipe());
-		outputs.add(recipe.getResult());
+		inputs = recipe.getRecipe();
+		output = recipe.getResult();
 		maxColor = recipe.getMaxColor();
 		minColor = recipe.getMinColor();
 		currentColor = recipe.getMinColor();
@@ -58,26 +58,8 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 
 	@Override
 	public void getIngredients(IIngredients ingredients) {
-	}
-
-	@Override
-	public List<?> getInputs() {
-		return inputs;
-	}
-
-	@Override
-	public List<?> getOutputs() {
-		return outputs;
-	}
-
-	@Override
-	public List<FluidStack> getFluidInputs() {
-		return fluidInputs;
-	}
-
-	@Override
-	public List<FluidStack> getFluidOutputs() {
-		return fluidOutputs;
+		ingredients.setInputLists(ItemStack.class, inputs);
+		ingredients.setOutput(ItemStack.class, output);
 	}
 
 	@Override
@@ -152,10 +134,6 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 		GlStateManager.color(1, 1, 1);
 
 		GlStateManager.popMatrix();
-	}
-
-	@Override
-	public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
 	}
 
 	@Override

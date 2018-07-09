@@ -1,9 +1,11 @@
 package com.teamwizardry.refraction.api.book;
 
-import com.teamwizardry.librarianlib.features.gui.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 
@@ -42,10 +44,10 @@ public class StackModule implements IParsedModule {
 			component.getText().setValue(displayName);
 			this.x += fr.getStringWidth(displayName);
 
-			List<String> tooltip = stack.getTooltip(Minecraft.getMinecraft().player, false);
-			component.BUS.hook(GuiComponent.PostDrawEvent.class, postDrawEvent -> {
+			List<String> tooltip = stack.getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.NORMAL);
+			component.BUS.hook(GuiComponentEvents.PostDrawEvent.class, postDrawEvent -> {
 				if (component.getMouseOver())
-					component.setTooltip(tooltip);
+					component.render.setTooltip(tooltip);
 			});
 		} else {
 			component.getText().setValue("<NULL>");

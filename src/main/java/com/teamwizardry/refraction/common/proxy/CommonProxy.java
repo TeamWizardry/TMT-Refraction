@@ -40,7 +40,6 @@ public class CommonProxy {
 		ModBlocks.init();
 		ModItems.init();
 		ModEntities.init();
-		ModAchievements.init();
 
 		EventHandler.INSTANCE.getClass();
 		SoundManager.INSTANCE.getClass();
@@ -59,6 +58,8 @@ public class CommonProxy {
 	}
 
 	public void init(FMLInitializationEvent event) {
+		ModBlocks.initOreDict();
+		ModItems.initOreDict();
 		CraftingRecipes.init();
 		ModAssemblyRecipes.init();
 	}
@@ -68,7 +69,7 @@ public class CommonProxy {
 		SoundManager.INSTANCE.addSpeaker(ModBlocks.LASER, 40, ModSounds.electrical_hums, 0.015f, 1f, false);
 		SoundManager.INSTANCE.addSpeaker(ModBlocks.LIGHT_BRIDGE, 67, ModSounds.light_bridges, 0.05f, 1f, false);
 
-		if (Loader.isModLoaded("MineTweaker3"))
+		if (Loader.isModLoaded("CraftTweaker2"))
 			MTRefractionPlugin.init();
 	}
 

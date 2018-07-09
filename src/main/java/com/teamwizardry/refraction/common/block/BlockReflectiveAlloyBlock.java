@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.features.base.block.BlockMod;
+import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer;
 import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
@@ -10,7 +11,7 @@ import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +20,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
@@ -35,7 +37,7 @@ public class BlockReflectiveAlloyBlock extends BlockMod implements ILightSink {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 
@@ -49,25 +51,25 @@ public class BlockReflectiveAlloyBlock extends BlockMod implements ILightSink {
 		Vec3d outgoingLoc = beam.finalLoc;
 		switch (facing) {
 			case UP:
-				outgoingDir = new Vec3d(incomingDir.xCoord, Math.abs(incomingDir.yCoord), incomingDir.zCoord);
+				outgoingDir = new Vec3d(incomingDir.x, Math.abs(incomingDir.y), incomingDir.z);
 				outgoingLoc = outgoingLoc.subtract(0, 0.001, 0);
 				break;
 			case DOWN:
-				outgoingDir = new Vec3d(incomingDir.xCoord, -Math.abs(incomingDir.yCoord), incomingDir.zCoord);
+				outgoingDir = new Vec3d(incomingDir.x, -Math.abs(incomingDir.y), incomingDir.z);
 				break;
 			case NORTH:
-				outgoingDir = new Vec3d(incomingDir.xCoord, incomingDir.yCoord, -Math.abs(incomingDir.zCoord));
+				outgoingDir = new Vec3d(incomingDir.x, incomingDir.y, -Math.abs(incomingDir.z));
 				break;
 			case SOUTH:
-				outgoingDir = new Vec3d(incomingDir.xCoord, incomingDir.yCoord, Math.abs(incomingDir.zCoord));
+				outgoingDir = new Vec3d(incomingDir.x, incomingDir.y, Math.abs(incomingDir.z));
 				outgoingLoc = outgoingLoc.subtract(0, 0, 0.001);
 				break;
 			case EAST:
-				outgoingDir = new Vec3d(Math.abs(incomingDir.xCoord), incomingDir.yCoord, incomingDir.zCoord);
+				outgoingDir = new Vec3d(Math.abs(incomingDir.x), incomingDir.y, incomingDir.z);
 				outgoingLoc = outgoingLoc.subtract(0.001, 0, 0);
 				break;
 			case WEST:
-				outgoingDir = new Vec3d(-Math.abs(incomingDir.xCoord), incomingDir.yCoord, incomingDir.zCoord);
+				outgoingDir = new Vec3d(-Math.abs(incomingDir.x), incomingDir.y, incomingDir.z);
 				break;
 			default:
 				outgoingDir = incomingDir;

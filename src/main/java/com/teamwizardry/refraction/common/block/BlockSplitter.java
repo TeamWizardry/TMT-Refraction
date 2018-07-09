@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.features.base.block.BlockModContainer;
+import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer;
 import com.teamwizardry.librarianlib.features.math.Matrix4;
 import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
 import com.teamwizardry.refraction.api.Constants;
@@ -14,8 +14,8 @@ import com.teamwizardry.refraction.common.tile.TileSplitter;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -83,7 +83,7 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 
@@ -165,7 +165,7 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		EnumFacing facing = EnumFacing.getFacingFromVector((float) placer.getLook(0).xCoord, (float) placer.getLook(0).yCoord, (float) placer.getLook(0).zCoord);
+		EnumFacing facing = EnumFacing.getFacingFromVector((float) placer.getLook(0).x, (float) placer.getLook(0).y, (float) placer.getLook(0).z);
 		TileSplitter mirror = getTE(worldIn, pos);
 		float x = 0, y = 0;
 

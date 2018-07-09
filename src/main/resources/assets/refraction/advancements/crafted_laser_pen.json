@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "refraction:laser_pen"
+    },
+    "title": {
+      "translate": "advancement.refraction.laser_pen"
+    },
+    "description": {
+      "translate": "advancement.refraction.laser_pen.desc",
+      "italic": true
+    },
+    "background": "refraction:textures/blocks/reflective_alloy_block.png"
+  },
+  "parent": "wizardry:crafted_prism",
+  "criteria": {
+    "craft_book": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "refraction:laser_pen"
+          }
+        ]
+      }
+    }
+  }
+}

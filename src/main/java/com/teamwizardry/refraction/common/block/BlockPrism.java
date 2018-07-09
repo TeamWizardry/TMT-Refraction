@@ -15,6 +15,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,6 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
@@ -85,7 +87,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 					normal = r.data.scale(-1);
 					Vec3d oldRef = ref;
 					ref = BlockLens.refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
-					if (Double.isNaN(ref.xCoord) || Double.isNaN(ref.yCoord) || Double.isNaN(ref.zCoord)) {
+					if (Double.isNaN(ref.x) || Double.isNaN(ref.y) || Double.isNaN(ref.z)) {
 						ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
 						break;
 					}
@@ -105,7 +107,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 
@@ -145,11 +147,6 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 	}
 
 	@Override
-	public boolean isFullyOpaque(IBlockState state) {
-		return false;
-	}
-
-	@Override
 	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
@@ -175,7 +172,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 	}
 
 	@Override
-	public boolean isBlockSolid(IBlockAccess worldIn, @Nonnull BlockPos pos, EnumFacing side) {
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return false;
 	}
 

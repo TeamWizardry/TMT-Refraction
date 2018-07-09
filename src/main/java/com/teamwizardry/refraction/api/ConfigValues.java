@@ -1,52 +1,88 @@
 package com.teamwizardry.refraction.api;
 
-import com.teamwizardry.librarianlib.features.config.ConfigPropertyBoolean;
-import com.teamwizardry.librarianlib.features.config.ConfigPropertyDouble;
-import com.teamwizardry.librarianlib.features.config.ConfigPropertyInt;
+import com.teamwizardry.librarianlib.features.config.ConfigProperty;
+import com.teamwizardry.librarianlib.features.config.ConfigDoubleRange; //use those
+import com.teamwizardry.librarianlib.features.config.ConfigIntRange;
 
 /**
  * @author WireSegal
  *         Created at 12:18 AM on 12/8/16.
  */
 public final class ConfigValues {
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "max_beam_range", comment = "This will specify how far a beam can go", defaultValue = 128)
-	public static int BEAM_RANGE;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "distance_loss", comment = "The factor to multiply the potency - distance by.", defaultValue = 1)
-	public static int DISTANCE_LOSS;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "solar_strength", comment = "This will specify the strength the sun will provide to magnifiers. Max: 255", defaultValue = 16)
-	public static int SOLAR_ALPHA;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "glowstone_strength", comment = "This will specify the strength glowstone will provide to the glowstone laser. Max: 255 ", defaultValue = 64)
-	public static int GLOWSTONE_ALPHA;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "electric_strength", comment = "This will specify the strength electricity will provide to the Electric Laser. Max: 255 ", defaultValue = 64)
-	public static int ELECTRIC_ALPHA;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "glowstone_fuel_expire_delay", comment = "Change this and it'll set how long glowstone fuel will last in the glowstone powered laser", defaultValue = 500)
-	public static int GLOWSTONE_FUEL_EXPIRE_DELAY;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "max_tesla_for_electric_laser", comment = "Change this and it'll set how much tesla can be stored in the Electric Laser", defaultValue = 100000)
-	public static int MAX_TESLA;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_electricity_per_tick", comment = "Change this and it'll set how much tesla/tick is required to feed the Electric Laser", defaultValue = 50)
-	public static int TESLA_PER_TICK;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_particle_life", comment = "Change this and it'll set how long inputBeams will stay. Higher numbers will make inputBeams feel laggier but they just VISUALLY stay longer. This is useful if you have terrible TPS issues and/or inputBeams exciterPos flickering for whatever reason.", defaultValue = 1)
-	public static int BEAM_PARTICLE_LIFE;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "disco_ball_beam_bounce_limit", comment = "The disco ball's inputBeams have a bounce/reflecting limit of 2 times (will not reflect at all). This is to prevent tps drops. This number is kind of a sweet spot in an enclosed cube of reflective alloy blocks. If you set it to a higher value, it will reflect a lot more inputBeams but will drop your tps if you cannot handle it.", defaultValue = 2)
-	public static int DISCO_BALL_BEAM_BOUNCE_LIMIT;
-	@ConfigPropertyInt(modid = Constants.MOD_ID, category = "general", id = "beam_bounce_limit", comment = "The amount of times a beam is allowed to bounce or reflect MAXIMUM. If this number is decreased, inputBeams will stop after reflecting or bouncing for that amount of times. This is mainly a safety check against trapped infinitely bouncing inputBeams.", defaultValue = 50)
-	public static int BEAM_BOUNCE_LIMIT;
-	@ConfigPropertyDouble(modid = Constants.MOD_ID, category = "general", id = "player_beam_reflect_strength_division", comment = "When a player wearing full reflective alloy armor stands infront of a beam, it will reflect the beam but divide it's strength by this amount.", defaultValue = 1.4)
-	public static double PLAYER_BEAM_REFLECT_STRENGTH_DIVSION;
-	@ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "guns", id = "disable_photon_cannon", comment = "Setting this to true will completely remove the gun item from the game", defaultValue = false)
-	public static boolean DISABLE_PHOTON_CANNON;
-	@ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "laser_rendering", id = "enable_additive_blending", comment = "If disabled, will make inputBeams opaque and not blend visually.", defaultValue = true)
-	public static boolean ADDITIVE_BLENDING;
-	@ConfigPropertyBoolean(modid = Constants.MOD_ID, category = "laser_rendering", id = "use_flat_beam_texture", comment = "If enabled, will use a completely flat texture for inputBeams. It's a nice minimalistic style.", defaultValue = false)
-	public static boolean USE_FLAT_BEAM_TEXTURE;
-	@ConfigPropertyDouble(modid = Constants.MOD_ID, category = "index_of_refraction", id = "air_ior", comment = "IOR of air", defaultValue = 1)
-	public static double AIR_IOR;
-	@ConfigPropertyDouble(modid = Constants.MOD_ID, category = "index_of_refraction", id = "glass_ior", comment = "IOR of glass", defaultValue = 1.2)
-	public static double GLASS_IOR;
-	@ConfigPropertyDouble(modid = Constants.MOD_ID, category = "index_of_refraction", id = "red_ior", comment = "IOR of red", defaultValue = 0.6)
-	public static double RED_IOR;
-	@ConfigPropertyDouble(modid = Constants.MOD_ID, category = "index_of_refraction", id = "green_ior", comment = "IOR of green", defaultValue = 0.4)
-	public static double GREEN_IOR;
-	@ConfigPropertyDouble(modid = Constants.MOD_ID, category = "index_of_refraction", id = "blue_ior", comment = "IOR of blue", defaultValue = 0.2)
-	public static double BLUE_IOR;
+	@ConfigIntRange(min = 1, max = 255)
+	@ConfigProperty(category = "general", comment = "This will specify how far a beam can go")
+	public static int BEAM_RANGE = 128;
+
+	@ConfigIntRange(min = 1, max = 100)
+	@ConfigProperty(category = "general", comment = "The factor to multiply the potency - distance by.")
+	public static int DISTANCE_LOSS = 1;
+
+	@ConfigIntRange(min = 0, max = 255)
+	@ConfigProperty(category = "general", comment = "This will specify the strength the sun will provide to magnifiers. Max: 255")
+	public static int SOLAR_ALPHA = 16;
+
+	@ConfigIntRange(min = 0, max = 255)
+	@ConfigProperty(category = "general", comment = "This will specify the strength glowstone will provide to the glowstone laser. Max: 255 ")
+	public static int GLOWSTONE_ALPHA = 64;
+
+	@ConfigIntRange(min = 0, max = 255)
+	@ConfigProperty(category = "general", comment = "This will specify the strength electricity will provide to the Electric Laser. Max: 255 ")
+	public static int ELECTRIC_ALPHA = 64;
+
+	@ConfigIntRange(min = 0, max = 100000)
+	@ConfigProperty(category = "general", comment = "Change this and it'll set how long glowstone fuel will last in the glowstone powered laser")
+	public static int GLOWSTONE_FUEL_EXPIRE_DELAY = 500;
+
+	@ConfigIntRange(min = 0, max = 10000000)
+	@ConfigProperty(category = "general", comment = "Change this and it'll set how much tesla can be stored in the Electric Laser")
+	public static int MAX_TESLA = 100000;
+
+	@ConfigIntRange(min = 0, max = 100000)
+	@ConfigProperty(category = "general", comment = "Change this and it'll set how much tesla/tick is required to feed the Electric Laser")
+	public static int TESLA_PER_TICK = 50;
+
+	@ConfigIntRange(min = 0, max = 10000)
+	@ConfigProperty(category = "general", comment = "Change this and it'll set how long inputBeams will stay. Higher numbers will make inputBeams feel laggier but they just VISUALLY stay longer. This is useful if you have terrible TPS issues and/or inputBeams exciterPos flickering for whatever reason.")
+	public static int BEAM_PARTICLE_LIFE = 1;
+
+	@ConfigIntRange(min = 0, max = 20)
+	@ConfigProperty(category = "general", comment = "The disco ball's inputBeams have a bounce/reflecting limit of 2 times (will not reflect at all). This is to prevent tps drops. This number is kind of a sweet spot in an enclosed cube of reflective alloy blocks. If you set it to a higher value, it will reflect a lot more inputBeams but will drop your tps if you cannot handle it.")
+	public static int DISCO_BALL_BEAM_BOUNCE_LIMIT = 2;
+
+	@ConfigIntRange(min = 1, max = 50)
+	@ConfigProperty(category = "general", comment = "The amount of times a beam is allowed to bounce or reflect MAXIMUM. If this number is decreased, inputBeams will stop after reflecting or bouncing for that amount of times. This is mainly a safety check against trapped infinitely bouncing inputBeams.")
+	public static int BEAM_BOUNCE_LIMIT = 50;
+
+	@ConfigDoubleRange(min = 0, max = 3)
+	@ConfigProperty(category = "general", comment = "When a player wearing full reflective alloy armor stands infront of a beam, it will reflect the beam but divide it's strength by this amount.")
+	public static double PLAYER_BEAM_REFLECT_STRENGTH_DIVSION = 1.4;
+
+	@ConfigProperty(category = "guns", comment = "Setting this to true will completely remove the gun item from the game")
+	public static boolean DISABLE_PHOTON_CANNON = false;
+
+	@ConfigProperty(category = "laser_rendering", comment = "If disabled, will make inputBeams opaque and not blend visually.")
+	public static boolean ADDITIVE_BLENDING = true;
+
+	@ConfigProperty(category = "laser_rendering", comment = "If enabled, will use a completely flat texture for inputBeams. It's a nice minimalistic style.")
+	public static boolean USE_FLAT_BEAM_TEXTURE = false;
+
+	@ConfigDoubleRange(min = 0, max = 2)
+	@ConfigProperty(category = "index_of_refraction", comment = "IOR of air")
+	public static double AIR_IOR = 1;
+
+	@ConfigDoubleRange(min = 0, max = 2)
+	@ConfigProperty(category = "index_of_refraction", comment = "IOR of glass")
+	public static double GLASS_IOR = 1.2;
+
+	@ConfigDoubleRange(min = 0, max = 2)
+	@ConfigProperty(category = "index_of_refraction", comment = "IOR of red")
+	public static double RED_IOR = 0.6;
+
+	@ConfigDoubleRange(min = 0, max = 2)
+	@ConfigProperty(category = "index_of_refraction", comment = "IOR of green")
+	public static double GREEN_IOR = 0.4;
+
+	@ConfigDoubleRange(min = 0, max = 2)
+	@ConfigProperty(category = "index_of_refraction", comment = "IOR of blue")
+	public static double BLUE_IOR = 0.2;
 }

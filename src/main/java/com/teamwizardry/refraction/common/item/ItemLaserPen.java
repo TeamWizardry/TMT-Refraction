@@ -3,7 +3,6 @@ package com.teamwizardry.refraction.common.item;
 import com.teamwizardry.librarianlib.features.base.item.ItemMod;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
-import com.teamwizardry.refraction.init.ModAchievements;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -28,11 +27,6 @@ public class ItemLaserPen extends ItemMod {
 	public ItemLaserPen() {
 		super("laser_pen");
 		setMaxStackSize(1);
-	}
-
-	@Override
-	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
-		playerIn.addStat(ModAchievements.LASER_PEN);
 	}
 
 	@Override
@@ -64,7 +58,7 @@ public class ItemLaserPen extends ItemMod {
 
 		Vec3d cross = player.getLook(1).crossProduct(new Vec3d(0, player.getEyeHeight(), 0)).normalize().scale(player.width / 2);
 		if (!handMod) cross = cross.scale(-1);
-		Vec3d playerVec = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord, player.posZ + cross.zCoord);
+		Vec3d playerVec = new Vec3d(player.posX + cross.x, player.posY + player.getEyeHeight() + cross.y, player.posZ + cross.z);
 
 		new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0x20FF0000, true))
 				.setUUIDToSkip(player.getUniqueID())

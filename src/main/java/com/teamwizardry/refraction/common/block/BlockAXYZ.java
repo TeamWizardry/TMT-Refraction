@@ -23,6 +23,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -38,7 +39,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -105,7 +106,7 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 
@@ -123,11 +124,6 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
 	public boolean isFullBlock(IBlockState state) {
 		return false;
 	}
@@ -138,7 +134,7 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 	}
 
 	@Override
-	public boolean isFullyOpaque(IBlockState state) {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
@@ -176,7 +172,7 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		if (server == null)
 			return Blocks.AIR.getDefaultState();
-		return server.worldServerForDimension(key.getDim()).getBlockState(key.getPos());
+		return server.getWorld(key.getDim()).getBlockState(key.getPos());
 	}
 
 	@SubscribeEvent
@@ -211,7 +207,7 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 
 						int worldId = s.getDim(), x = s.getPos().getX(), y = s.getPos().getY(), z = s.getPos().getZ();
 						BlockPos pos = s.getPos();
-						World world = server.worldServerForDimension(worldId);
+						World world = server.getWorld(worldId);
 						if (world.isAirBlock(pos.offset(dir)))
 							world.setBlockState(pos.offset(dir), ModBlocks.AXYZ.getDefaultState());
 						else if (!world.isRemote) {
@@ -225,7 +221,7 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 							DimWithPos dPos = mappedPositions.get(s);
 							worldId = dPos.getDim();
 							BlockPos pos2 = dPos.getPos();
-							world = server.worldServerForDimension(worldId);
+							world = server.getWorld(worldId);
 
 
 							mappedPositions.remove(s);
@@ -371,7 +367,7 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 				if (tag instanceof NBTTagString) {
 					String value = ((NBTTagString) tag).getString();
 					DimWithPos dimWithPos = DimWithPos.fromString(key);
-					World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimWithPos.getDim());
+					World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dimWithPos.getDim());
 					if (world.getBlockState(dimWithPos.getPos()).getBlock() == ModBlocks.AXYZ)
 						ModBlocks.AXYZ.mappedPositions.put(DimWithPos.fromString(key), DimWithPos.fromString(value));
 				}

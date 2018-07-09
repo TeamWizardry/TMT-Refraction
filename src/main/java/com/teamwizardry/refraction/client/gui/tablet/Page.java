@@ -4,7 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
-import com.teamwizardry.librarianlib.features.gui.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.gui.mixin.ButtonMixin;
@@ -67,16 +68,16 @@ public class Page {
 		continueText.getText().setValue("...");
 
 		ComponentSprite leftNav = new ComponentSprite(LeftSidebar.leftArrow, GuiBook.BACKGROUND_SPRITE.getWidth() + (LeftSidebar.leftArrow.getWidth() / 2) - 50, GuiBook.BACKGROUND_SPRITE.getHeight() - 30, 16, 10);
-		new ButtonMixin<>(leftNav, () -> {
+		new ButtonMixin(leftNav, () -> {
 		});
-		leftNav.BUS.hook(GuiComponent.MouseClickEvent.class, mouseClickEvent -> {
+		leftNav.BUS.hook(GuiComponentEvents.MouseClickEvent.class, mouseClickEvent -> {
 			pageNB = pageNB > 0 ? pageNB - 1 : pageNB;
 		});
 
 		ComponentSprite rightNav = new ComponentSprite(LeftSidebar.rightArrow, GuiBook.BACKGROUND_SPRITE.getWidth() + (LeftSidebar.leftArrow.getWidth() / 2) + 50, GuiBook.BACKGROUND_SPRITE.getHeight() - 30, 16, 10);
-		new ButtonMixin<>(rightNav, () -> {
+		new ButtonMixin(rightNav, () -> {
 		});
-		rightNav.BUS.hook(GuiComponent.MouseClickEvent.class, mouseClickEvent -> {
+		rightNav.BUS.hook(GuiComponentEvents.MouseClickEvent.class, mouseClickEvent -> {
 			pageNB = pageNB < subPages.get(selectedSubPage).textPages.size() - 1 ? pageNB + 1 : pageNB;
 		});
 		background.add(leftNav, rightNav, continueText);
@@ -87,34 +88,34 @@ public class Page {
 			background.add(subPage.getComponent());
 		});
 
-		new ButtonMixin<>(background, () -> {
+		new ButtonMixin(background, () -> {
 		});
 
-		background.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
+		background.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, (event) -> {
 
 			if (isSelected) {
 				textComponent.setVisible(true);
-				textComponent.setEnabled(true);
+				//textComponent.setEnabled(true);
 
 				if (subPages.get(selectedSubPage).textPages.size() > 1) {
-					rightNav.setEnabled(true);
+					//rightNav.setEnabled(true);
 					rightNav.setVisible(true);
-					leftNav.setEnabled(true);
+					//leftNav.setEnabled(true);
 					leftNav.setVisible(true);
 					continueText.setVisible(true);
 				} else {
-					rightNav.setEnabled(false);
+					//rightNav.setEnabled(false);
 					rightNav.setVisible(false);
-					leftNav.setEnabled(false);
+					//leftNav.setEnabled(false);
 					leftNav.setVisible(false);
 					continueText.setVisible(false);
 				}
 			} else {
 				textComponent.setVisible(false);
-				textComponent.setEnabled(false);
-				rightNav.setEnabled(false);
+				//textComponent.setEnabled(false);
+				//rightNav.setEnabled(false);
 				rightNav.setVisible(false);
-				leftNav.setEnabled(false);
+				//leftNav.setEnabled(false);
 				leftNav.setVisible(false);
 				continueText.setVisible(false);
 			}

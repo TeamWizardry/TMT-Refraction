@@ -120,12 +120,12 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
 	public boolean doBeamsMatch(@Nonnull Beam beam) {
 		return beam.color.getRGB() == color.getRGB()
-				&& beam.slope.xCoord == slope.xCoord
-				&& beam.slope.yCoord == slope.yCoord
-				&& beam.slope.zCoord == slope.zCoord
-				&& beam.initLoc.xCoord == initLoc.xCoord
-				&& beam.initLoc.yCoord == initLoc.yCoord
-				&& beam.initLoc.zCoord == initLoc.zCoord
+				&& beam.slope.x == slope.x
+				&& beam.slope.y == slope.y
+				&& beam.slope.z == slope.z
+				&& beam.initLoc.x == initLoc.x
+				&& beam.initLoc.y == initLoc.y
+				&& beam.initLoc.z == initLoc.z
 				&& beam.allowedBounceTimes == allowedBounceTimes
 				&& beam.bouncedTimes == bouncedTimes
 				&& beam.range == range;
@@ -375,7 +375,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
 		// PARTICLES
 		if (ThreadLocalRandom.current().nextInt(10) == 0)
-			PacketHandler.NETWORK.sendToAllAround(new PacketBeamParticle(initLoc, trace.hitVec, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.xCoord, initLoc.yCoord, initLoc.zCoord, 30));
+			PacketHandler.NETWORK.sendToAllAround(new PacketBeamParticle(initLoc, trace.hitVec, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.x, initLoc.y, initLoc.z, 30));
 		// PARTICLES
 	}
 
@@ -404,12 +404,12 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	@Override
 	public NBTTagCompound serializeNBT() {
 		NBTTagCompound compound = new NBTTagCompound();
-		compound.setDouble("init_loc_x", initLoc.xCoord);
-		compound.setDouble("init_loc_y", initLoc.yCoord);
-		compound.setDouble("init_loc_z", initLoc.zCoord);
-		compound.setDouble("slope_x", slope.xCoord);
-		compound.setDouble("slope_y", slope.yCoord);
-		compound.setDouble("slope_z", slope.zCoord);
+		compound.setDouble("init_loc_x", initLoc.x);
+		compound.setDouble("init_loc_y", initLoc.y);
+		compound.setDouble("init_loc_z", initLoc.z);
+		compound.setDouble("slope_x", slope.x);
+		compound.setDouble("slope_y", slope.y);
+		compound.setDouble("slope_z", slope.z);
 		compound.setInteger("color", color.getRGB());
 		compound.setInteger("world", world.provider.getDimension());
 		compound.setInteger("bounce_times", bouncedTimes);
@@ -423,7 +423,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
 		if (nbt.hasKey("world")) {
-			world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(nbt.getInteger("dim"));
+			world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(nbt.getInteger("dim"));
 		} else throw new NullPointerException("'world' key not found or missing in deserialized beam object.");
 		if (nbt.hasKey("init_loc_x") && nbt.hasKey("init_loc_y") && nbt.hasKey("init_loc_z")) {
 			initLoc = new Vec3d(nbt.getDouble("init_loc_x"), nbt.getDouble("init_loc_y"), nbt.getDouble("init_loc_z"));

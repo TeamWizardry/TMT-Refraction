@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "refraction:prism"
+    },
+    "title": {
+      "translate": "advancement.refraction.prism"
+    },
+    "description": {
+      "translate": "advancement.refraction.prism.desc",
+      "italic": true
+    },
+    "background": "refraction:textures/blocks/reflective_alloy_block.png"
+  },
+  "criteria": {
+    "craft_book": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "refraction:prism"
+          }
+        ]
+      }
+    }
+  }
+}

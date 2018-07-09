@@ -93,7 +93,7 @@ public class TileWormhole extends MultipleBeamTile {
 						entity.changeDimension(closest.getDim());
 
 					Vec3d pos = new Vec3d(closest.getPos()).addVector(0.5, 0.5, 0.5).add(entity.getLook(0));
-					entity.setPosition(pos.xCoord, pos.yCoord, pos.zCoord);
+					entity.setPosition(pos.x, pos.y, pos.z);
 					entity.getEntityData().setInteger("wormhole_cooldown", 10);
 				}
 			}

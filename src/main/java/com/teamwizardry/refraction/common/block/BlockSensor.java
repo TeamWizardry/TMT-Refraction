@@ -13,8 +13,8 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -73,7 +73,7 @@ public class BlockSensor extends BlockMod implements ILightSink {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
 	}
 
@@ -109,11 +109,6 @@ public class BlockSensor extends BlockMod implements ILightSink {
 	}
 
 	@Override
-	public boolean isFullyOpaque(IBlockState state) {
-		return false;
-	}
-
-	@Override
 	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
@@ -139,7 +134,7 @@ public class BlockSensor extends BlockMod implements ILightSink {
 	}
 
 	@Override
-	public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return false;
 	}
 

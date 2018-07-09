@@ -46,7 +46,8 @@ public class RenderReflectionChamber extends TileEntitySpecialRenderer<TileRefle
 	}
 
 	@Override
-	public void renderTileEntityAt(TileReflectionChamber te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileReflectionChamber te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	//public void renderTileEntityFast(TileReflectionChamber te, double x, double y, double z, float partialTicks, int destroyStage, float partial, net.minecraft.client.renderer.BufferBuilder buffer) {
 
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		if (Minecraft.isAmbientOcclusionEnabled())

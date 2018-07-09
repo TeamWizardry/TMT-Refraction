@@ -3,7 +3,8 @@ package com.teamwizardry.refraction.client.gui.builder;
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
 import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.features.gui.GuiBase;
-import com.teamwizardry.librarianlib.features.gui.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentList;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.mixin.ButtonMixin;
@@ -70,13 +71,15 @@ public class GuiBuilder extends GuiBase {
 		}
 		// LEFT //
 		this.location = location;
-		ComponentList leftSidebar = new ComponentList(LeftSidebar.leftExtended.getWidth(), 0);
+		//TODO CHECK IF THIS WORKS
+		ComponentList leftSidebar = new ComponentList(LeftSidebar.leftExtended.getWidth(), 0, LeftSidebar.leftExtended.getHeight());
 
 		LeftSidebar modeComp = new LeftSidebar(leftSidebar, "Selection Modes", sprTabMode, true, true);
-		modeComp.listComp.setMarginLeft(5);
+		modeComp.listComp.getPos().add(5,0);//.setMarginLeft(5);
 		modeComp.listComp.add(new ModeSelector(modeComp.listComp, this, Mode.DIRECT, "Set Tiles Directly", sprIconDirect, true).component);
 
-		ComponentList selectRegionOptions = new ComponentList(0, 0);
+		//TODO CHECK IF THIS WORKS
+		ComponentList selectRegionOptions = new ComponentList(0, 0, this.height);
 		selectRegionOptions.add(new OptionFill(this, selectRegionOptions, "Fill", sprIconDirect, TileType.PLACED).component);
 		selectRegionOptions.add(new OptionFill(this, selectRegionOptions, "Clear", sprIconDirect, TileType.EMPTY).component);
 
@@ -89,12 +92,14 @@ public class GuiBuilder extends GuiBase {
 		// LEFT //
 
 		// RIGHT //
-		ComponentList rightSidebar = new ComponentList(sprBorder.getWidth() * 2 - 11, 0);
+		//TODO CHECK IF THIS WORKS
+		ComponentList rightSidebar = new ComponentList(sprBorder.getWidth() * 2 - 11, 0, sprBorder.getHeight());
 
 		RightSidebar layers = new RightSidebar(rightSidebar, "Layers", sprLayers, false, true);
-		layers.listComp.setMarginLeft(-5);
+		layers.listComp.getPos().add(-5,0);
+		//layers.listComp.setMarginLeft(-5);
 
-		layers.component.BUS.hook(GuiComponent.ComponentTickEvent.class, componentTickEvent -> {
+		layers.component.BUS.hook(GuiComponentEvents.ComponentTickEvent.class, componentTickEvent -> {
 			layers.title = "Layers - Current: " + selectedLayer;
 		});
 
@@ -117,10 +122,10 @@ public class GuiBuilder extends GuiBase {
 				(getGuiWidth() / 2) - (sprScreen.getWidth() / 2),
 				(getGuiHeight() / 2) - (sprScreen.getHeight() / 2));
 
-		new ButtonMixin<>(compScreen, () -> {
+		new ButtonMixin(compScreen, () -> {
 		});
 
-		compScreen.BUS.hook(GuiComponent.MouseDragEvent.class, (event) -> {
+		compScreen.BUS.hook(GuiComponentEvents.MouseDragEvent.class, (event) -> {
 			Vec2d pos = event.getMousePos();
 			int x = pos.getXi() / 16;
 			int y = pos.getYi() / 16;
@@ -134,7 +139,7 @@ public class GuiBuilder extends GuiBase {
 				}
 		});
 
-		compScreen.BUS.hook(GuiComponent.MouseDownEvent.class, (event) -> {
+		compScreen.BUS.hook(GuiComponentEvents.MouseDownEvent.class, (event) -> {
 			Vec2d pos = event.getMousePos();
 			int x = pos.getXi() / 16;
 			int y = pos.getYi() / 16;
@@ -164,7 +169,7 @@ public class GuiBuilder extends GuiBase {
 				}
 		});
 
-		compScreen.BUS.hook(GuiComponent.PostDrawEvent.class, (event) -> {
+		compScreen.BUS.hook(GuiComponentEvents.PostDrawEvent.class, (event) -> {
 			for (int i = 0; i < grid.length; i++)
 				for (int j = 0; j < grid.length; j++) {
 					TileType box = grid[selectedLayer][i][j];
@@ -178,16 +183,16 @@ public class GuiBuilder extends GuiBase {
 					texSpriteSheet.bind();
 					if (box == TileType.PLACED) {
 						sprTileNormal.draw((int) ClientTickHandler.getPartialTicks(),
-								event.getComponent().getPos().getXi() + i * 16,
-								event.getComponent().getPos().getYi() + j * 16);
+								event.component.getPos().getXi() + i * 16,
+								event.component.getPos().getYi() + j * 16);
 					} else if (box == TileType.LEFT_SELECTED) {
 						sprTileLeftSelected.draw((int) ClientTickHandler.getPartialTicks(),
-								event.getComponent().getPos().getXi() + i * 16,
-								event.getComponent().getPos().getYi() + j * 16);
+								event.component.getPos().getXi() + i * 16,
+								event.component.getPos().getYi() + j * 16);
 					} else if (box == TileType.RIGHT_SELECTED) {
 						sprTileRightSelected.draw((int) ClientTickHandler.getPartialTicks(),
-								event.getComponent().getPos().getXi() + i * 16,
-								event.getComponent().getPos().getYi() + j * 16);
+								event.component.getPos().getXi() + i * 16,
+								event.component.getPos().getYi() + j * 16);
 					}
 
 					GlStateManager.enableLighting();
@@ -211,16 +216,16 @@ public class GuiBuilder extends GuiBase {
 						texSpriteSheet.bind();
 						if (box == TileType.PLACED) {
 							sprTileNormal.draw((int) ClientTickHandler.getPartialTicks(),
-									event.getComponent().getPos().getXi() + i * 16,
-									event.getComponent().getPos().getYi() + j * 16);
+									event.component.getPos().getXi() + i * 16,
+									event.component.getPos().getYi() + j * 16);
 						} else if (box == TileType.LEFT_SELECTED) {
 							sprTileLeftSelected.draw((int) ClientTickHandler.getPartialTicks(),
-									event.getComponent().getPos().getXi() + i * 16,
-									event.getComponent().getPos().getYi() + j * 16);
+									event.component.getPos().getXi() + i * 16,
+									event.component.getPos().getYi() + j * 16);
 						} else if (box == TileType.RIGHT_SELECTED) {
 							sprTileRightSelected.draw((int) ClientTickHandler.getPartialTicks(),
-									event.getComponent().getPos().getXi() + i * 16,
-									event.getComponent().getPos().getYi() + j * 16);
+									event.component.getPos().getXi() + i * 16,
+									event.component.getPos().getYi() + j * 16);
 						}
 
 						GlStateManager.enableLighting();

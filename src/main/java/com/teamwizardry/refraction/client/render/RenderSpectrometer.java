@@ -8,9 +8,10 @@ import com.teamwizardry.refraction.common.block.BlockSpectrometer;
 import com.teamwizardry.refraction.common.tile.TileSpectrometer;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
@@ -26,7 +27,8 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 	private static Texture texture = new Texture(loc);
 	private static Sprite BAR_SPRITE = texture.getSprite("bar", 1, 1);
 
-	public void renderTileEntityAt(TileSpectrometer te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileSpectrometer te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	//public void renderTileEntityAt(TileSpectrometer te, double x, double y, double z, float partialTicks, int destroyStage) {
 		IBlockState state = te.getWorld().getBlockState(te.getPos());
 		if (state.getBlock() != ModBlocks.SPECTROMETER)
 			return;
@@ -95,9 +97,9 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 
 	private void drawClipped(Sprite sprite, int animTicks, float x, float y, double width, double height) {
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vb = tessellator.getBuffer();
+		BufferBuilder bb = tessellator.getBuffer();
 
-		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 		int wholeSpritesX = (int) Math.ceil(width / sprite.getWidth()) - 1;
 		int wholeSpritesY = (int) Math.ceil(height / sprite.getHeight()) - 1;
@@ -132,10 +134,10 @@ public class RenderSpectrometer extends TileEntitySpecialRenderer<TileSpectromet
 				double maxU = minU + uSpan * (spriteWidth / sprite.getWidth());
 				double maxV = minV + vSpan * (spriteHeight / sprite.getHeight());
 
-				vb.pos(minX, maxY, 0.0).tex(minU, maxV).endVertex();
-				vb.pos(maxX, maxY, 0.0).tex(maxU, maxV).endVertex();
-				vb.pos(maxX, minY, 0.0).tex(maxU, minV).endVertex();
-				vb.pos(minX, minY, 0.0).tex(minU, minV).endVertex();
+				bb.pos(minX, maxY, 0.0).tex(minU, maxV).endVertex();
+				bb.pos(maxX, maxY, 0.0).tex(maxU, maxV).endVertex();
+				bb.pos(maxX, minY, 0.0).tex(maxU, minV).endVertex();
+				bb.pos(minX, minY, 0.0).tex(minU, minV).endVertex();
 
 			}
 		}

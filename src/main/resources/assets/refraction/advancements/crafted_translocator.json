@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "refraction:translocator"
+    },
+    "title": {
+      "translate": "advancement.refraction.translocator"
+    },
+    "description": {
+      "translate": "advancement.refraction.translocator.desc",
+      "italic": true
+    },
+    "background": "refraction:textures/blocks/reflective_alloy_block.png"
+  },
+  "parent": "wizardry:crafted_prism",
+  "criteria": {
+    "craft_book": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "refraction:translocator"
+          }
+        ]
+      }
+    }
+  }
+}

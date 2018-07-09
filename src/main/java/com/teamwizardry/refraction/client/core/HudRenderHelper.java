@@ -2,10 +2,11 @@ package com.teamwizardry.refraction.client.core;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -90,7 +91,7 @@ public class HudRenderHelper {
 
 		GlStateManager.translate(0, height, 0.04);
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexbuffer = tessellator.getBuffer();
+		BufferBuilder vertexbuffer = tessellator.getBuffer();
 		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
 		vertexbuffer.pos(-width, -height, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
 		vertexbuffer.pos(-width, height, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();

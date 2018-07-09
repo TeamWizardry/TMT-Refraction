@@ -88,16 +88,16 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 				this.dataManager.set(AXIS_HIT, (byte) 255);
 
 			}
-			this.setPositionAndUpdate(pos.xCoord, pos.yCoord, pos.zCoord);
+			this.setPositionAndUpdate(pos.x, pos.y, pos.z);
 		}
 	}
 
 	public RayTraceResult rayTrace(EntityPlayer player, double blockReachDistance) {
 		Vec3d cross = player.getLook(1).crossProduct(new Vec3d(0, player.getEyeHeight(), 0)).normalize().scale(player.width / 2);
 		if (!dataManager.get(HAND_HIT)) cross = cross.scale(-1);
-		Vec3d vec3d = new Vec3d(player.posX + cross.xCoord, player.posY + player.getEyeHeight() + cross.yCoord, player.posZ + cross.zCoord);
+		Vec3d vec3d = new Vec3d(player.posX + cross.x, player.posY + player.getEyeHeight() + cross.y, player.posZ + cross.z);
 		Vec3d vec3d1 = this.getVectorForRotation(player.rotationPitch, player.rotationYawHead);
-		Vec3d vec3d2 = vec3d.addVector(vec3d1.xCoord * blockReachDistance, vec3d1.yCoord * blockReachDistance, vec3d1.zCoord * blockReachDistance);
+		Vec3d vec3d2 = vec3d.addVector(vec3d1.x * blockReachDistance, vec3d1.y * blockReachDistance, vec3d1.z * blockReachDistance);
 		return player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
 	}
 

@@ -2,13 +2,11 @@ package com.teamwizardry.refraction.client.jei;
 
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.recipe.AssemblyBehaviors;
+import com.teamwizardry.refraction.api.recipe.AssemblyRecipe;
 import com.teamwizardry.refraction.init.ModBlocks;
 import mezz.jei.api.*;
 import mezz.jei.api.gui.IRecipeLayoutDrawable;
-import mezz.jei.api.recipe.IFocus;
-import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import mezz.jei.api.recipe.*;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -51,15 +49,15 @@ public class JEIRefractionPlugin extends BlankModPlugin {
 
 	@Override
 	public void register(@Nonnull IModRegistry registry) {
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		registry.handleRecipes(AssemblyRecipe.class, AssemblyTableRecipeWrapper::new, AssemblyTableRecipeCategory.UID);
+		registry.addRecipes(new ArrayList<>(AssemblyBehaviors.getBehaviors().values()), AssemblyTableRecipeCategory.UID);
+		registry.addRecipeCatalyst(new ItemStack(ModBlocks.ASSEMBLY_TABLE), AssemblyTableRecipeCategory.UID);
+	}
 
-		registry.addRecipeCategories(new AssemblyTableRecipeCategory(jeiHelpers.getGuiHelper()));
-
-		registry.addRecipeHandlers(new AssemblyTableRecipeHandler());
-
-		registry.addRecipes(new ArrayList<>(AssemblyBehaviors.getBehaviors().values()));
-
-		registry.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.ASSEMBLY_TABLE), AssemblyTableRecipeCategory.UID);
+	@Override
+	public void registerCategories(IRecipeCategoryRegistration registry) {
+		IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+		registry.addRecipeCategories(new AssemblyTableRecipeCategory(guiHelper));
 	}
 
 	@Override

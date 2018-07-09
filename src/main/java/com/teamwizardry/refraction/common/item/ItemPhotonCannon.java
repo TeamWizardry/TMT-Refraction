@@ -57,12 +57,12 @@ public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemCol
 		boolean handMod = playerIn.getHeldItemMainhand() == stack ^ playerIn.getPrimaryHand() == EnumHandSide.LEFT;
 		Vec3d cross = playerIn.getLook(1).crossProduct(new Vec3d(0, playerIn.getEyeHeight(), 0)).normalize().scale(playerIn.width / 2);
 		if (!handMod) cross = cross.scale(-1);
-		Vec3d playerVec = new Vec3d(playerIn.posX + cross.xCoord, playerIn.posY + playerIn.getEyeHeight() + cross.yCoord - 0.2, playerIn.posZ + cross.zCoord);
+		Vec3d playerVec = new Vec3d(playerIn.posX + cross.x, playerIn.posY + playerIn.getEyeHeight() + cross.y - 0.2, playerIn.posZ + cross.z);
 
 		if (worldIn.isRemote) return new ActionResult<>(EnumActionResult.FAIL, stack);
 
 		EntityPlasma plasma = new EntityPlasma(worldIn, playerIn.getLook(0), color, playerIn.getEntityId());
-		plasma.setPosition(playerVec.xCoord, playerVec.yCoord, playerVec.zCoord);
+		plasma.setPosition(playerVec.x, playerVec.y, playerVec.z);
 		worldIn.spawnEntity(plasma);
 		playerIn.getCooldownTracker().setCooldown(this, 5);
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);

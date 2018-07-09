@@ -5,27 +5,35 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.teamwizardry.librarianlib.core.LibrarianLib;
 import com.teamwizardry.librarianlib.features.gui.GuiBase;
-import com.teamwizardry.librarianlib.features.gui.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
+import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
+import com.teamwizardry.librarianlib.features.gui.provided.book.ModGuiBook;
+import com.teamwizardry.librarianlib.features.gui.provided.book.hierarchy.book.Book;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
 import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.librarianlib.features.sprite.Texture;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
+import kotlin.jvm.Throws;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 
 import javax.annotation.Nonnull;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
  * Created by Saad on 10/7/2016.
  */
-public class GuiBook extends GuiBase {
+public class GuiBook extends ModGuiBook {
 
 	private static Texture BACKGROUND_TEXTURE = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/book_background.png"));
 	static Sprite BACKGROUND_SPRITE = BACKGROUND_TEXTURE.getSprite("bg", 232, 323);
@@ -40,8 +48,9 @@ public class GuiBook extends GuiBase {
 	public ArrayList<Page> pages = new ArrayList<>();
 	int selectedPage = 0;
 
-	public GuiBook() {
-		super(232, 300);
+	public GuiBook(Book bock, ItemStack stack) {
+		//super(232, 300);
+		super(bock);
 
 		ComponentVoid mainComponent = new ComponentVoid(width / 2, height / 2, 232, 323);
 
@@ -59,17 +68,16 @@ public class GuiBook extends GuiBase {
 
 		// PAGES
 		if (pages.isEmpty()) {
-			String langname = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
+			String langName = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
 			InputStream stream;
-			try {
-				stream = LibrarianLib.PROXY.getResource(Constants.MOD_ID, "tablet/" + langname + ".json");
-			} catch (Throwable e) {
-				stream = LibrarianLib.PROXY.getResource(Constants.MOD_ID, "tablet/en_US.json");
+
+			stream = getLocalResourceFile(new ResourceLocation(Constants.MOD_ID, "tablet/" + langName + ".json"));
+			if (stream == null ) {
+				stream = getLocalResourceFile(new ResourceLocation(Constants.MOD_ID, "tablet/en_US.json"));
 			}
 
 			if (stream != null) {
-				InputStreamReader reader = new InputStreamReader(stream);
-				JsonElement json = new JsonParser().parse(reader);
+				JsonElement json = new JsonParser().parse(new InputStreamReader(stream));
 
 				if (json.isJsonObject() && json.getAsJsonObject().has("pages")) {
 					JsonArray array = json.getAsJsonObject().getAsJsonArray("pages");
@@ -90,17 +98,19 @@ public class GuiBook extends GuiBase {
 		ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
 		Vec2d res = new Vec2d(resolution.getScaledWidth(), resolution.getScaledHeight());
 		ComponentSprite icon = new ComponentSprite(scaleSprite, res.getXi() - 16, res.getYi() / 2, 16, 16);
-		icon.BUS.hook(GuiComponent.MouseClickEvent.class, mouseClickEvent -> {
-			mainComponent.setChildScale(1);
+		icon.BUS.hook(GuiComponentEvents.MouseClickEvent.class, mouseClickEvent -> {
+			mainComponent.getChildren().forEach(gc -> gc.getTransform().setScale(1));
 		});
 		ComponentSprite increase = new ComponentSprite(GuiBuilder.sprArrowUp, res.getXi() - 16, res.getYi() / 2 - 16, 16, 16);
-		increase.BUS.hook(GuiComponent.MouseClickEvent.class, mouseClickEvent -> {
-			mainComponent.setChildScale(mainComponent.getChildScale() + 0.1);
+		increase.BUS.hook(GuiComponentEvents.MouseClickEvent.class, mouseClickEvent -> {
+			mainComponent.getChildren().forEach(gc -> gc.getTransform().setScale(gc.getTransform().getScale() + 0.1));
 		});
 		ComponentSprite decrease = new ComponentSprite(GuiBuilder.sprArrowDown, res.getXi() - 16, res.getYi() / 2 + 16, 16, 16);
-		decrease.BUS.hook(GuiComponent.MouseClickEvent.class, mouseClickEvent -> {
-			if (mainComponent.getChildScale() > 0.1)
-				mainComponent.setChildScale(mainComponent.getChildScale() - 0.1);
+		decrease.BUS.hook(GuiComponentEvents.MouseClickEvent.class, mouseClickEvent -> {
+			mainComponent.getChildren().forEach(gc -> {
+				if (gc.getTransform().getScale() > 0.1)
+					gc.getTransform().setScale(gc.getTransform().getScale() - 0.1);
+			});
 		});
 
 		getFullscreenComponents().add(icon, increase, decrease);
@@ -111,6 +121,18 @@ public class GuiBook extends GuiBase {
 
 	@Override
 	public boolean doesGuiPauseGame() {
-		return true;
+		return false;
+	}
+
+	private static InputStream getLocalResourceFile(ResourceLocation location) {
+		//Path path = Paths.get("/assets", location.getResourceDomain(), location.getResourcePath());
+		InputStream r;
+		try	{
+			r = Minecraft.getMinecraft().getResourceManager().getResource(location).getInputStream();
+			//r = new FileReader(path.toString());
+		} catch (Throwable e) {
+			r = null;
+		}
+		return r;
 	}
 }

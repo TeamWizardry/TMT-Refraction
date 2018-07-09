@@ -44,7 +44,7 @@ public class SpeakerNode implements INBTSerializable<NBTTagCompound> {
 		speaker = new Speaker();
 		speaker.deserializeNBT(nbt.getCompoundTag("speaker"));
 		pos = BlockPos.fromLong(nbt.getLong("pos"));
-		world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(nbt.getInteger("dim"));
+		world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(nbt.getInteger("dim"));
 		queue = nbt.getInteger("queue");
 		tick = nbt.getInteger("tick");
 		active = nbt.getBoolean("active");

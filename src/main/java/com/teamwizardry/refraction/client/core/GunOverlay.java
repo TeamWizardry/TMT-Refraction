@@ -10,9 +10,10 @@ import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -100,17 +101,17 @@ public class GunOverlay {
 			GlStateManager.translate(posX / 2, posY / 2, 0);
 
 			Tessellator tess = Tessellator.getInstance();
-			VertexBuffer vb = tess.getBuffer();
+			BufferBuilder bb = tess.getBuffer();
 			for (Color color : colors) {
 				float[] colorVals = color.getRGBColorComponents(null);
-				vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+				bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 				for (int i = 0; i < numSegmentsPerArc; i++) {
 					int currentRadius = SELECTOR_RADIUS + (gunColor.equals(color) ? SELECTOR_SHIFT : 0);
 					float currentAngle = i * anglePerSegment + angle;
-					vb.pos((currentRadius - SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle), (currentRadius - SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
-					vb.pos((currentRadius - SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle + anglePerSegment), (currentRadius - SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle + anglePerSegment), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
-					vb.pos((currentRadius + SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle + anglePerSegment), (currentRadius + SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle + anglePerSegment), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
-					vb.pos((currentRadius + SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle), (currentRadius + SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+					bb.pos((currentRadius - SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle), (currentRadius - SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+					bb.pos((currentRadius - SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle + anglePerSegment), (currentRadius - SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle + anglePerSegment), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+					bb.pos((currentRadius + SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle + anglePerSegment), (currentRadius + SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle + anglePerSegment), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
+					bb.pos((currentRadius + SELECTOR_WIDTH / 2) * MathHelper.cos(currentAngle), (currentRadius + SELECTOR_WIDTH / 2) * MathHelper.sin(currentAngle), 0).color(colorVals[0], colorVals[1], colorVals[2], SELECTOR_ALPHA).endVertex();
 				}
 				tess.draw();
 
@@ -164,10 +165,10 @@ public class GunOverlay {
 
 	private ItemStack getItemInHand(Item item) {
 		ItemStack stack = Minecraft.getMinecraft().player.getHeldItemMainhand();
-		if (stack == null)
+		if (stack == ItemStack.EMPTY)
 			stack = Minecraft.getMinecraft().player.getHeldItemOffhand();
 
-		if (stack == null)
+		if (stack == ItemStack.EMPTY)
 			return null;
 		if (stack.getItem() != item)
 			return null;

@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "refraction:electron_exciter"
+    },
+    "title": {
+      "translate": "advancement.refraction.light_bridge"
+    },
+    "description": {
+      "translate": "advancement.refraction.light_bridge.desc",
+      "italic": true
+    },
+    "background": "refraction:textures/blocks/reflective_alloy_block.png"
+  },
+  "parent": "wizardry:crafted_prism",
+  "criteria": {
+    "light_bridge": {
+      "trigger": "minecraft:enter_block",
+      "conditions": {
+        "block": "refraction:light_bridge"
+        ]
+      }
+    }aha
+  }
+}

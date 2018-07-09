@@ -39,13 +39,13 @@ public class PacketLaserFX extends PacketBase {
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeFloat((float) start.xCoord);
-		buf.writeFloat((float) start.yCoord);
-		buf.writeFloat((float) start.zCoord);
+		buf.writeFloat((float) start.x);
+		buf.writeFloat((float) start.y);
+		buf.writeFloat((float) start.z);
 
-		buf.writeFloat((float) end.xCoord);
-		buf.writeFloat((float) end.yCoord);
-		buf.writeFloat((float) end.zCoord);
+		buf.writeFloat((float) end.x);
+		buf.writeFloat((float) end.y);
+		buf.writeFloat((float) end.z);
 
 		buf.writeInt(color.getRed());
 		buf.writeInt(color.getGreen());
