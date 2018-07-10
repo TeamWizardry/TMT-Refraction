@@ -73,8 +73,6 @@ public class BlockDiscoBall extends BlockModContainer implements ILightSink {
 				worldIn.getBlockState(pos.south()).isSideSolid(worldIn, pos.south(), EnumFacing.NORTH);
 	}
 
-
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighbor) {
 		IBlockState state = worldIn.getBlockState(pos);
@@ -115,11 +113,13 @@ public class BlockDiscoBall extends BlockModContainer implements ILightSink {
 		return layer == BlockRenderLayer.CUTOUT;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;

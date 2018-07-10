@@ -268,9 +268,9 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 	}
 
 	@Override
-	public void handleBeams(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam... beams) {
-		for (Beam beam : beams)
-			handleFiberBeam(world, pos, beam);
+	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
+		handleFiberBeam(world, pos, beam);
+		return true;
 	}
 
 	@Nonnull

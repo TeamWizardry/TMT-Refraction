@@ -45,7 +45,7 @@ public class TileAssemblyTable extends MultipleBeamTile {
 
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if (behavior != null) return null;
+			if (behavior != null) return ItemStack.EMPTY;
 			else return super.extractItem(slot, amount, simulate);
 		}
 
@@ -66,8 +66,8 @@ public class TileAssemblyTable extends MultipleBeamTile {
 
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if (!output.getStackInSlot(0).isEmpty()) return null;
-			if (behavior != null) return null;
+			if (!output.getStackInSlot(0).isEmpty()) return ItemStack.EMPTY;
+			if (behavior != null) return ItemStack.EMPTY;
 			return super.extractItem(slot, amount, simulate);
 		}
 

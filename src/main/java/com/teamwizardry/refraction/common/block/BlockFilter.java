@@ -82,11 +82,11 @@ public class BlockFilter extends BlockMod implements ILightSink, IOpticConnectab
 	}
 
 	@Override
-	public void handleBeams(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam... beams) {
+	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		IBlockState state = world.getBlockState(pos);
 		EnumFilterType type = state.getValue(TYPE);
-		for (Beam beam : beams)
-			beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(type.red, type.green, type.blue, beam.color.getAlpha() / 255f)).spawn();
+		beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(type.red, type.green, type.blue, beam.color.getAlpha() / 255f)).spawn();
+		return true;
 	}
 
 	@Nonnull

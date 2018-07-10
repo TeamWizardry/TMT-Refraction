@@ -26,6 +26,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -78,17 +79,17 @@ public class BlockAssemblyTable extends BlockModContainer implements ILightSink 
 				else return true;
 			}
 
-			if (table.output.getStackInSlot(0).isEmpty()) {
+			if (!table.output.getStackInSlot(0).isEmpty()) {
 				ItemHandlerHelper.giveItemToPlayer(playerIn, table.output.extractItem(0, 64, false));
 				playerIn.openContainer.detectAndSendChanges();
-			} else if (!heldItem.isEmpty()) {
+			} else if (!heldItem.isEmpty() && !playerIn.isSneaking()) {
 				ItemStack stack = heldItem.copy();
 				stack.setCount(1);
 				ItemStack insert = ItemHandlerHelper.insertItem(table.inventory, stack, false);
 				if (insert.isEmpty())
 					heldItem.setCount(heldItem.getCount() - 1);
 				playerIn.openContainer.detectAndSendChanges();
-			} else if (CapsUtils.getOccupiedSlotCount(table.inventory) > 0) {
+			} else if (playerIn.isSneaking() && CapsUtils.getOccupiedSlotCount(table.inventory) > 0) {
 				ItemHandlerHelper.giveItemToPlayer(playerIn, table.inventory.extractItem(CapsUtils.getLastOccupiedSlot(table.inventory), 1, false));
 				playerIn.openContainer.detectAndSendChanges();
 			}
