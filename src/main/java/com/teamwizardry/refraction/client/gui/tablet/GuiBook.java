@@ -3,37 +3,27 @@ package com.teamwizardry.refraction.client.gui.tablet;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.teamwizardry.librarianlib.core.LibrarianLib;
 import com.teamwizardry.librarianlib.features.gui.GuiBase;
-import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
-import com.teamwizardry.librarianlib.features.gui.provided.book.ModGuiBook;
-import com.teamwizardry.librarianlib.features.gui.provided.book.hierarchy.book.Book;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
 import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.librarianlib.features.sprite.Texture;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
-import kotlin.jvm.Throws;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
 
 import javax.annotation.Nonnull;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
  * Created by Saad on 10/7/2016.
  */
-public class GuiBook extends ModGuiBook {
+public class GuiBook extends GuiBase {
 
 	private static Texture BACKGROUND_TEXTURE = new Texture(new ResourceLocation(Constants.MOD_ID, "textures/gui/book_background.png"));
 	static Sprite BACKGROUND_SPRITE = BACKGROUND_TEXTURE.getSprite("bg", 232, 323);
@@ -48,9 +38,9 @@ public class GuiBook extends ModGuiBook {
 	public ArrayList<Page> pages = new ArrayList<>();
 	int selectedPage = 0;
 
-	public GuiBook(Book bock, ItemStack stack) {
-		//super(232, 300);
-		super(bock);
+	public GuiBook() {
+		super(232, 300);
+		//super(bock);
 
 		ComponentVoid mainComponent = new ComponentVoid(width / 2, height / 2, 232, 323);
 
@@ -125,11 +115,9 @@ public class GuiBook extends ModGuiBook {
 	}
 
 	private static InputStream getLocalResourceFile(ResourceLocation location) {
-		//Path path = Paths.get("/assets", location.getResourceDomain(), location.getResourcePath());
 		InputStream r;
 		try	{
 			r = Minecraft.getMinecraft().getResourceManager().getResource(location).getInputStream();
-			//r = new FileReader(path.toString());
 		} catch (Throwable e) {
 			r = null;
 		}
