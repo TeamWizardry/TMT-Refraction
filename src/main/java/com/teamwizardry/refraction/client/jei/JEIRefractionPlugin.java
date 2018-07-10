@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Saad on 10/12/2016.
  */
 @JEIPlugin
-public class JEIRefractionPlugin extends BlankModPlugin {
+public class JEIRefractionPlugin implements IModPlugin {
 
 	public static IJeiRuntime jeiRuntime;
 
@@ -62,7 +62,7 @@ public class JEIRefractionPlugin extends BlankModPlugin {
 
 	@Override
 	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-		super.onRuntimeAvailable(jeiRuntime);
+		//super.onRuntimeAvailable(jeiRuntime);
 		JEIRefractionPlugin.jeiRuntime = jeiRuntime;
 	}
 }

@@ -91,6 +91,6 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 		}
 
 		recipeLayout.getItemStacks().init(index, true, 82, 82);
-		recipeLayout.getItemStacks().set(index, inputs.get(0));
+		recipeLayout.getItemStacks().set(index, ingredients.getOutputs(ItemStack.class).get(0));
 	}
 }
