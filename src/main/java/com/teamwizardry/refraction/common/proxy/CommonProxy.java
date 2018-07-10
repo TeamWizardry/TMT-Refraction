@@ -40,6 +40,7 @@ public class CommonProxy {
 		ModBlocks.init();
 		ModItems.init();
 		ModEntities.init();
+		ModEffects.init();
 
 		EventHandler.INSTANCE.getClass();
 		SoundManager.INSTANCE.getClass();

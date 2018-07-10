@@ -61,6 +61,12 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	public World world;
 
 	/**
+	 * The effect the beam will produce across itself or at it's destination
+	 */
+	@Nullable
+	public Effect effect;
+
+	/**
 	 * The raytrace produced from the beam after it spawns.
 	 * Contains some neat methods you can use.
 	 */
@@ -300,6 +306,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		return this;
 	}
 
+
 	/**
 	 * Will spawn the final complete beam.
 	 */
@@ -308,6 +315,13 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		if (color.getAlpha() <= 1) return;
 		if (bouncedTimes > allowedBounceTimes) return;
 
+		// EFFECT CHECKING //
+		if (effect == null) {
+			Effect tempEffect = EffectTracker.getEffect(this);
+			if (tempEffect != null) effect = tempEffect;
+		} else effect = null;
+		// EFFECT CHECKING //
+
 		EntityTrace entityTrace = new EntityTrace(world, initLoc, slope).setUUIDToSkip(uuidToSkip).setRange(range);
 		trace = entityTrace.cast();
 
@@ -315,6 +329,9 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
 		if (trace == null) return;
 		if (trace.hitVec == null) return;
+
+		// EFFECT HANDLING //
+		boolean pass = true;
 
 		boolean traceCompleted = false;
 
@@ -346,6 +363,25 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 			if (!traceCompleted) traceCompleted = recast();
 		}
 
+		// Effect handling
+		if (effect != null) {
+			if (effect.getType() == Effect.EffectType.BEAM)
+				EffectTracker.addEffect(world, this);
+
+			else if (pass) {
+				if (effect.getType() == Effect.EffectType.SINGLE) {
+					if (trace.typeOfHit != RayTraceResult.Type.MISS) {
+						EffectTracker.addEffect(world, trace.hitVec, effect);
+
+					} else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+						BlockPos pos = trace.getBlockPos();
+						EffectTracker.addEffect(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), effect);
+					}
+				}
+			}
+		}
+		// EFFECT HANDLING
+
 		// ENTITY REFLECTING
 		if (trace.typeOfHit == RayTraceResult.Type.ENTITY && trace.entityHit instanceof EntityLivingBase) {
 			EntityLivingBase entity = (EntityLivingBase) trace.entityHit;
@@ -367,7 +403,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 				entity.maxHurtResistantTime = Math.max(5, (10 - (color.getAlpha() / 255) * 10));
 			}
 		}
-
 		// ENTITY REFLECTING
 
 		// Particle packet sender
