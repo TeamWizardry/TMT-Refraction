@@ -47,14 +47,13 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 			if (!stack.isEmpty() || shouldRemoveStack) {
 
 				float f = getArrowVelocity(i);
-				if ((double) f >= 0.5D) {
-					boolean isCreativeMode = entityplayer.capabilities.isCreativeMode;
+				if (f >= 0.5F) {
 
 					if (!world.isRemote) {
 						Color color = new Color(ItemNBTHelper.getInt(stack, "color", 0xFFFFFF), true);
 						EntityGrenade entityGrenade = new EntityGrenade(world, color, entityplayer);
 						entityGrenade.setPosition(entityplayer.posX, entityplayer.posY + entityplayer.eyeHeight, entityplayer.posZ);
-						entityGrenade.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0f, 1.5f, 1.0f);
+						entityGrenade.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0f, f, 1.0f); //0.0f, 1.5f, 1.0f
 						stack.damageItem(1, entityplayer);
 						world.spawnEntity(entityGrenade);
 						entityGrenade.velocityChanged = true;
@@ -62,7 +61,7 @@ public class ItemGrenade extends ItemMod implements IItemColorProvider {
 
 					world.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-					if (!isCreativeMode) {
+					if (!shouldRemoveStack) {
 						stack.setCount(stack.getCount() - 1);
 						if (stack.isEmpty()) entityplayer.inventory.deleteStack(stack);
 					}

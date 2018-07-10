@@ -33,6 +33,7 @@ public class EntityGrenade extends EntityThrowable {
 	public EntityGrenade(World worldIn, Color color, EntityLivingBase caster) {
 		super(worldIn);
 		this.caster = caster;
+		this.thrower = caster;
 		applyColor(color);
 	}
 
@@ -65,7 +66,7 @@ public class EntityGrenade extends EntityThrowable {
 			Vec3d pos = new Vec3d(posX, posY, posZ);
 			for (int i = 0; i < 30; i++) {
 				double radius = 5;
-				double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
+				double theta = 2.0d * Math.PI * ThreadLocalRandom.current().nextFloat();
 				double r = radius * ThreadLocalRandom.current().nextFloat();
 				double x = r * MathHelper.cos((float) theta);
 				double z = r * MathHelper.sin((float) theta);
