@@ -6,6 +6,7 @@ import com.teamwizardry.refraction.api.recipe.AssemblyRecipe;
 import com.teamwizardry.refraction.init.ModBlocks;
 import mezz.jei.api.*;
 import mezz.jei.api.gui.IRecipeLayoutDrawable;
+import mezz.jei.api.ingredients.IIngredientBlacklist;
 import mezz.jei.api.recipe.*;
 import net.minecraft.item.ItemStack;
 
@@ -49,6 +50,7 @@ public class JEIRefractionPlugin implements IModPlugin {
 
 	@Override
 	public void register(@Nonnull IModRegistry registry) {
+		blacklist(registry.getJeiHelpers().getIngredientBlacklist());
 		registry.handleRecipes(AssemblyRecipe.class, AssemblyTableRecipeWrapper::new, AssemblyTableRecipeCategory.UID);
 		registry.addRecipes(new ArrayList<>(AssemblyBehaviors.getBehaviors().values()), AssemblyTableRecipeCategory.UID);
 		registry.addRecipeCatalyst(new ItemStack(ModBlocks.ASSEMBLY_TABLE), AssemblyTableRecipeCategory.UID);
@@ -60,9 +62,12 @@ public class JEIRefractionPlugin implements IModPlugin {
 		registry.addRecipeCategories(new AssemblyTableRecipeCategory(guiHelper));
 	}
 
+	private void blacklist(IIngredientBlacklist blacklist) {
+		blacklist.addIngredientToBlacklist(ModBlocks.WORMHOLE);
+	}
+
 	@Override
 	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-		//super.onRuntimeAvailable(jeiRuntime);
 		JEIRefractionPlugin.jeiRuntime = jeiRuntime;
 	}
 }
