@@ -30,6 +30,7 @@ minecraft {
     replace 'GRADLE:VERSION', "$mod_version"
     replace 'required-before:librarianlib', 'required-before:librarianlib@' + liblib_version
 
+    replaceIn 'Constants.java'
 }
 
 repositories {
