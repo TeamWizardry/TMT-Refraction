@@ -41,28 +41,20 @@ public class EffectGravity extends Effect {
 			((EntityPlayer) entity).velocityChanged = true;
 	}
 
+	@Override
+	public void runBlock(World world, BlockPos pos, int potency) {
+		if (world.isAirBlock(pos)) return;
 
-	@SuppressWarnings("deprecation")
-	@SubscribeEvent
-	public void beamHit(BeamHitEvent event) {
-		if (event.getBeam().effect instanceof EffectGravity) {
-			World world = event.getWorld();
-			BlockPos pos = event.getPos();
+		EffectTracker.gravityProtection.put(pos, 50);
+		IBlockState state = world.getBlockState(pos);
 
-			if (world.isAirBlock(pos)) return;
-
-			EffectTracker.gravityProtection.put(pos, 50);
-			IBlockState state = world.getBlockState(pos);
-
-			if (world.isAirBlock(pos.down())) {
-				int potency = event.getBeam().color.getAlpha();
-				double hardness = state.getBlock().getBlockHardness(state, world, event.getPos());
-				if (hardness >= 0 && hardness * 64 < potency && world.getTileEntity(pos) == null) {
-					EntityFallingBlock falling = new EntityFallingBlock(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
-					falling.fallTime = 1;
-					world.setBlockToAir(pos);
-					world.spawnEntity(falling);
-				}
+		if (world.isAirBlock(pos.down())) {
+			double hardness = state.getBlockHardness(world, pos);
+			if (hardness >= 0 && hardness * 64 < potency && world.getTileEntity(pos) == null) {
+				EntityFallingBlock falling = new EntityFallingBlock(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state);
+				falling.fallTime = 1;
+				world.setBlockToAir(pos);
+				world.spawnEntity(falling);
 			}
 		}
 	}
