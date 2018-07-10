@@ -14,24 +14,24 @@ public final class CapsUtils {
 
 	public static int getOccupiedSlotCount(IItemHandler inventory) {
 		int x = 0;
-		for (int i = 0; i < inventory.getSlots(); i++) if (inventory.getStackInSlot(i) != null) x++;
+		for (int i = 0; i < inventory.getSlots(); i++) if (inventory.getStackInSlot(i) != ItemStack.EMPTY) x++;
 		return x;
 	}
 
 	public static int getLastOccupiedSlot(IItemHandler inventory) {
-		for (int i = inventory.getSlots() - 1; i > 0; i--) if (inventory.getStackInSlot(i) != null) return i;
+		for (int i = inventory.getSlots() - 1; i > 0; i--) if (inventory.getStackInSlot(i) != ItemStack.EMPTY) return i;
 		return 0;
 	}
 
 	public static List<ItemStack> getListOfItems(IItemHandler inventory) {
 		List<ItemStack> stacks = new ArrayList<>();
 		for (int i = 0; i < inventory.getSlots(); i++)
-			if (inventory.getStackInSlot(i) != null) stacks.add(inventory.getStackInSlot(i));
+			if (inventory.getStackInSlot(i) != ItemStack.EMPTY) stacks.add(inventory.getStackInSlot(i));
 		return stacks;
 	}
 
 	public static void clearInventory(IItemHandlerModifiable inventory) {
 		for (int i = 0; i < inventory.getSlots(); i++)
-			inventory.setStackInSlot(i, null);
+			inventory.setStackInSlot(i, ItemStack.EMPTY);
 	}
 }
