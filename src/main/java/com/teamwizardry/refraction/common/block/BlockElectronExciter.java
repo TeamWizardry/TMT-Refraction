@@ -71,6 +71,7 @@ public class BlockElectronExciter extends BlockModContainer implements ILightSin
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
+		if(beam.aesthetic) return true;
 		if (beam.color.getAlpha() > 128) {
 			EnumFacing block = world.getBlockState(pos).getValue(FACING);
 			if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {

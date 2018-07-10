@@ -53,6 +53,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
+		if(beam.aesthetic) return true;
 		IBlockState state = world.getBlockState(pos);
 
 		int sum = beam.color.getRed() + beam.color.getBlue() + beam.color.getGreen();

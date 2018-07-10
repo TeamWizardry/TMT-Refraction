@@ -64,6 +64,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
+		if(beam.aesthetic) return true;
 		IBlockState state = world.getBlockState(pos);
 		fireColor(world, pos, state, beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, beam);
 		return true;

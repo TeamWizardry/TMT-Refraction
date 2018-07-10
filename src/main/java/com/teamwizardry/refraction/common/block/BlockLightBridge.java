@@ -274,6 +274,7 @@ public class BlockLightBridge extends BlockMod implements ILightSink, ISoundEmit
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
+		if(beam.aesthetic) return true;
 		IBlockState state = world.getBlockState(pos);
 
 		EnumFacing.Axis block = world.getBlockState(pos).getValue(FACING);

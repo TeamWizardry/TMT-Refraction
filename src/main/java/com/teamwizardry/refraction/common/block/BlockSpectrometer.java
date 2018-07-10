@@ -46,6 +46,7 @@ public class BlockSpectrometer extends BlockModContainer implements ILightSink {
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
+		if(beam.aesthetic) return true;
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null)
 			((TileSpectrometer) te).handleBeam(beam);

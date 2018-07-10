@@ -99,7 +99,7 @@ public class EventHandler {
 				}
 			}
 
-			beam.createSimilarBeam(hitPos, ref, color).spawn();
+			beam.createSimilarBeam(hitPos, ref, color).setAesthetic(true).spawn();
 		}
 	}
 

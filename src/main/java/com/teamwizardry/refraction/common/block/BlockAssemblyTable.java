@@ -60,6 +60,7 @@ public class BlockAssemblyTable extends BlockModContainer implements ILightSink 
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
+		if(beam.aesthetic) return true;
 		getTE(world, pos).handleBeam(beam);
 		return true;
 	}

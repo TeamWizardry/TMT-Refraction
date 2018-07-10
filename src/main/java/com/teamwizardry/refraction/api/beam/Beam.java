@@ -104,6 +104,11 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	 */
 	public String customName = "";
 
+	/**
+	 * Is the Beam aesthetic use only
+	 */
+	public boolean aesthetic = false;
+
 	public Beam(@Nonnull World world, @Nonnull Vec3d initLoc, @Nonnull Vec3d slope, @Nonnull Color color) {
 		this.world = world;
 		this.initLoc = initLoc;
@@ -192,7 +197,8 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 				.setBouncedTimes(bouncedTimes)
 				.incrementBouncedTimes()
 				.setRange(range)
-				.setCaster(caster);
+				.setCaster(caster)
+				.setAesthetic(aesthetic);
 	}
 
 	/**
@@ -306,6 +312,17 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		return this;
 	}
 
+	/**
+	 * Will set the range the raytrace will attempt.
+	 *
+	 * @param aesthetic If the beam should be aesthetic only. Default: false
+	 * @return This beam itself for the convenience of editing a beam in one line/chain.
+	 */
+	public Beam setAesthetic(boolean aesthetic) {
+		this.aesthetic = aesthetic;
+		return this;
+	}
+
 
 	/**
 	 * Will spawn the final complete beam.
@@ -364,7 +381,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		}
 
 		// Effect handling
-		if (effect != null) {
+		if (effect != null && !aesthetic) {
 			if (effect.getType() == Effect.EffectType.BEAM)
 				EffectTracker.addEffect(world, this);
 

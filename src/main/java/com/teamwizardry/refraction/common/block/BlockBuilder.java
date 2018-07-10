@@ -49,7 +49,8 @@ public class BlockBuilder extends BlockModContainer implements ILightSink {
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
-		TileBuilder te = (TileBuilder) world.getTileEntity(pos);
+		if(beam.aesthetic) return true;
+		TileBuilder te = getTE(world, pos);
 		if (te != null)
 			te.handleBeam(beam);
 		return true;
