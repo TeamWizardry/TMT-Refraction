@@ -37,14 +37,17 @@ repositories {
     maven { url = "http://dvs1.progwml6.com/files/maven" }
     maven { url = "http://maven.tterrag.com/" }
     maven { url = "http://maven.blamejared.com" }
+    maven { url = 'http://maven.mcmoddev.com' }
 }
 
 dependencies {
     compile "com.teamwizardry.librarianlib:librarianlib-1.12.2:$liblib_version-SNAPSHOT:deobf"
-    deobfCompile "mezz.jei:jei_1.12.2:$jei_version:api"
-    runtime "mezz.jei:jei_1.12.2:$jei_version"
 
+    deobfCompile "mezz.jei:jei_1.12.2:$jei_version:api"
     compile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-$ct_version"
+    compile "net.darkhax.tesla:Tesla-1.12.2:$tesla_version"
+
+    runtime "mezz.jei:jei_1.12.2:$jei_version"
 }
 
 processResources {

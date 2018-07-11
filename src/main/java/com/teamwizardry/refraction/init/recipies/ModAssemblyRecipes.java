@@ -5,6 +5,7 @@ import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.awt.*;
 
@@ -46,6 +47,15 @@ public class ModAssemblyRecipes {
 				"gemDiamond", "gemDiamond");
 
 		// T3
+		register("electric_laser", new ItemStack(ModBlocks.ELECTRIC_LASER),
+				new Color(0, 96, 255, 54), new Color(0, 160, 255, 128),
+				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,
+				"blockIron",
+				"dustRedstone", "dustRedstone", "dustRedstone",
+				OreDictionary.doesOreNameExist("ingotSilver") ? "ingotSilver" : "gemLapis",
+				OreDictionary.doesOreNameExist("ingotPlatinum") ? "ingotPlatinum" : "gemLapis",
+				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
+				LENS, LENS, LENS);
 		register("laser", new ItemStack(ModBlocks.LASER),
 				new Color(255, 64, 64, 32), new Color(255, 106, 106, 128),
 				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,

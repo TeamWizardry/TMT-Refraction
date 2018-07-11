@@ -37,6 +37,7 @@ public class ModBlocks {
 	public static BlockProjector PROJECTOR;
 	public static BlockFrictionDrill DRILL;
 	public static BlockWormHole WORMHOLE;
+	public static BlockElectricLaser ELECTRIC_LASER;
 
 	public static void init() {
 
@@ -65,6 +66,7 @@ public class ModBlocks {
 		PROJECTOR = new BlockProjector();
 		DRILL = new BlockFrictionDrill();
 		WORMHOLE = new BlockWormHole();
+		ELECTRIC_LASER = new BlockElectricLaser();
 	}
 
 	public static void initOreDict() {
