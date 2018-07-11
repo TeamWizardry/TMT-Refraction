@@ -12,6 +12,7 @@ import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.api.soundmanager.ISoundEmitter;
 import com.teamwizardry.refraction.api.soundmanager.SoundManager;
+import com.teamwizardry.refraction.common.effect.EffectAttract;
 import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -24,6 +25,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -274,56 +276,55 @@ public class BlockLightBridge extends BlockMod implements ILightSink, ISoundEmit
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
-		if(beam.aesthetic) return true;
-		IBlockState state = world.getBlockState(pos);
-
 		EnumFacing.Axis block = world.getBlockState(pos).getValue(FACING);
-		if (beam.color.getRGB() == Color.CYAN.getRGB()) {
-			EnumFacing positive = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.POSITIVE, block);
-			EnumFacing negative = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.NEGATIVE, block);
-			Vec3d slope = beam.slope.normalize();
-			if (slope.dotProduct(new Vec3d(positive.getDirectionVec())) > 0.999 || slope.dotProduct(new Vec3d(negative.getDirectionVec())) > 0.999) {
+		EnumFacing positive = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.POSITIVE, block);
+		EnumFacing negative = EnumFacing.getFacingFromAxis(EnumFacing.AxisDirection.NEGATIVE, block);
+		Vec3d slope = beam.slope.normalize();
+		if (slope.dotProduct(new Vec3d(positive.getDirectionVec())) > 0.999 || slope.dotProduct(new Vec3d(negative.getDirectionVec())) > 0.999) {
 
-				EnumFacing facing = PosUtils.getFacing(beam.initLoc, beam.finalLoc);
-				if (facing == null) return true;
+			EnumFacing facing = PosUtils.getFacing(beam.initLoc, beam.finalLoc);
+			if (facing == null) return false;
 
-				for (int i = 1; i < ConfigValues.BEAM_RANGE; i++) {
-					BlockPos backwards = pos.offset(facing, i);
-					if (world.getBlockState(backwards).getBlock() == ModBlocks.ELECTRON_EXCITER) {
-						IBlockState baseExciterState = world.getBlockState(backwards);
-						EnumFacing baseExciterFacing = baseExciterState.getValue(BlockElectronExciter.FACING);
-						TileElectronExciter exciter = (TileElectronExciter) world.getTileEntity(backwards);
-						if (exciter != null) {
+			for (int i = 1; i < ConfigValues.BEAM_RANGE; i++) {
+				BlockPos backwards = pos.offset(facing, i);
+				if (world.getBlockState(backwards).getBlock() == ModBlocks.ELECTRON_EXCITER) {
+					IBlockState baseExciterState = world.getBlockState(backwards);
+					EnumFacing baseExciterFacing = baseExciterState.getValue(BlockElectronExciter.FACING);
+					TileElectronExciter exciter = (TileElectronExciter) world.getTileEntity(backwards);
+					if (exciter != null)  {
 
-							// Check for adjacent exciters
-							boolean pass = false;
-							for (EnumFacing facing2 : EnumFacing.VALUES) {
-								if (facing2 != baseExciterFacing || facing2 != baseExciterFacing.getOpposite()) {
-									TileElectronExciter neighbor = (TileElectronExciter) world.getTileEntity(backwards.offset(facing2));
-									if (neighbor != null && neighbor.hasCardinalBeam) {
-										pass = true;
-										break;
-									}
-								}
-							}
-							if (pass) {
-								exciter.expire = Constants.SOURCE_TIMER;
-								if (world.isAirBlock(pos.offset(baseExciterFacing)))
-									world.setBlockState(pos.offset(baseExciterFacing), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, baseExciterFacing.getAxis()), 3);
-								return true;
-							} else world.setBlockToAir(pos);
+						// Check for adjacent exciters
+						if (isNeighborValid(world, pos, backwards, baseExciterFacing)) {
+							exciter.expire = Constants.SOURCE_TIMER;
+							if (world.isAirBlock(pos.offset(baseExciterFacing)))
+								world.setBlockState(pos.offset(baseExciterFacing), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, baseExciterFacing.getAxis()), 3);
+							return true;
 						} else world.setBlockToAir(pos);
-					} else if (world.getBlockState(backwards).getBlock() == Blocks.AIR) {
-						world.setBlockToAir(pos);
-						return true;
-					}
+					} else world.setBlockToAir(pos);
+				} else if (world.getBlockState(backwards).getBlock() == Blocks.AIR) {
+					world.setBlockToAir(pos);
+					return false;
 				}
 			}
 		}
+		fireColor(world, pos, beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.AIR_IOR, beam);
+		return false;
+	}
 
-		fireColor(world, pos, state, beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, beam);
-
-		return true;
+	private boolean isNeighborValid(@Nonnull World world, @Nonnull BlockPos origin, @Nonnull BlockPos backwards, EnumFacing baseExciterFacing) {
+		boolean hasValidNeighbor = false;
+		for (EnumFacing facing : EnumFacing.VALUES) {
+			if (facing != baseExciterFacing || facing != baseExciterFacing.getOpposite()) {
+				TileEntity neighbor = world.getTileEntity(backwards.offset(facing));
+				if (neighbor instanceof TileElectronExciter && ((TileElectronExciter)neighbor).hasCardinalBeam) {
+					//Fiber Cables shouldnt build into LightBridges
+					if (!(world.getBlockState(origin.offset(facing)).getBlock() instanceof BlockOpticFiber ))
+						hasValidNeighbor = true;
+					break;
+				}
+			}
+		}
+		return hasValidNeighbor;
 	}
 
 	@Override
@@ -331,11 +332,12 @@ public class BlockLightBridge extends BlockMod implements ILightSink, ISoundEmit
 		return true;
 	}
 
-	private void fireColor(World world, BlockPos pos, IBlockState state, Vec3d hitPos, Vec3d ref, double IORMod, Beam beam) {
+	private void fireColor(World world, BlockPos pos, Vec3d hitPos, Vec3d ref, double IORMod, Beam beam) {
+		IBlockState state = world.getBlockState(pos);
 		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, world, pos, hitPos.subtract(ref), hitPos.add(ref));
 		assert r != null;
 		Vec3d normal = r.data;
-		ref = refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.GLASS_IOR + IORMod, ref, normal).normalize();
+		ref = refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
 		hitPos = r.hitVec;
 
 		for (int i = 0; i < 5; i++) {
@@ -346,7 +348,7 @@ public class BlockLightBridge extends BlockMod implements ILightSink, ISoundEmit
 			assert r != null;
 			normal = r.data.scale(-1);
 			Vec3d oldRef = ref;
-			ref = refracted(ConfigValues.GLASS_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
+			ref = refracted(ConfigValues.AIR_IOR + IORMod, ConfigValues.AIR_IOR + IORMod, ref, normal).normalize();
 			if (Double.isNaN(ref.x) || Double.isNaN(ref.y) || Double.isNaN(ref.z)) {
 				ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
 				break;

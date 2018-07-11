@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.ILightSink;
+import com.teamwizardry.refraction.common.effect.EffectAttract;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -72,38 +73,47 @@ public class BlockElectronExciter extends BlockModContainer implements ILightSin
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		if(beam.aesthetic) return true;
-		if (beam.color.getAlpha() > 128) {
-			EnumFacing block = world.getBlockState(pos).getValue(FACING);
-			if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
-				TileElectronExciter exciter = getTE(world, pos);
-				if (exciter != null) {
-					exciter.expire = Constants.SOURCE_TIMER;
-					exciter.hasCardinalBeam = true;
-				}
-				boolean pass = false;
-				for (EnumFacing facing : EnumFacing.VALUES) {
-					if (facing != block || facing != block.getOpposite()) {
-						TileElectronExciter neighbor = getTE(world, pos.offset(facing));
-						if (neighbor != null)
-							if (neighbor.hasCardinalBeam && world.getBlockState(pos.offset(facing)).getValue(FACING) == block) {
-								pass = true;
-								break;
-							}
-					}
-				}
+		if(beam.effect == null) return true;
 
-				if (pass && world.isAirBlock(pos.offset(block)))
-					world.setBlockState(pos.offset(block), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
-				return true;
+		if (beam.effect instanceof EffectAttract) {
+			if (beam.color.getAlpha() > 128) {
+				EnumFacing block = world.getBlockState(pos).getValue(FACING);
+				if (isIncomingBeamValid(world, pos, block, beam)) {
+					TileElectronExciter exciter = getTE(world, pos);
+					if (exciter != null) {
+						exciter.hasCardinalBeam = true;
+
+						if (isNeighborValid(world, pos, block)) {
+							exciter.expire = Constants.SOURCE_TIMER;
+							if (world.isAirBlock(pos.offset(block)))
+								world.setBlockState(pos.offset(block), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
+						}
+					}
+					//return true;
+				}
 			}
 		}
-
-		TileElectronExciter exciter = getTE(world, pos);
-		if (exciter != null) {
-			exciter.expire = Constants.SOURCE_TIMER;
-			exciter.hasCardinalBeam = true;
-		}
 		return true;
+	}
+
+	private boolean isNeighborValid(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing block) {
+		boolean hasValidNeighbor = false;
+		for (EnumFacing facing : EnumFacing.VALUES) {
+			if (facing != block || facing != block.getOpposite()) {
+				TileElectronExciter neighbor = getTE(world, pos.offset(facing));
+				if (neighbor != null)
+					if (neighbor.hasCardinalBeam && world.getBlockState(pos.offset(facing)).getValue(FACING) == block) {
+						hasValidNeighbor = true;
+						break;
+					}
+			}
+		}
+		return hasValidNeighbor;
+	}
+
+	private boolean isIncomingBeamValid(@Nonnull World world, @Nonnull BlockPos pos,@Nonnull EnumFacing block, @Nonnull Beam beam) {
+		return beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999
+				&& !(world.getBlockState(pos.offset(block)).getBlock() instanceof BlockOpticFiber);
 	}
 
 	@Nonnull
