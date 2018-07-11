@@ -198,7 +198,8 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 				.incrementBouncedTimes()
 				.setRange(range)
 				.setCaster(caster)
-				.setAesthetic(aesthetic);
+				.setAesthetic(aesthetic)
+				.setEffect(effect);
 	}
 
 	/**
@@ -313,13 +314,24 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	}
 
 	/**
-	 * Will set the range the raytrace will attempt.
+	 * Will set the Beam to be asthetic only.
 	 *
 	 * @param aesthetic If the beam should be aesthetic only. Default: false
 	 * @return This beam itself for the convenience of editing a beam in one line/chain.
 	 */
 	public Beam setAesthetic(boolean aesthetic) {
 		this.aesthetic = aesthetic;
+		return this;
+	}
+
+	/**
+	 * Will set the effect the beam will have.
+	 *
+	 * @param effect Beam effect. Default: null
+	 * @return This beam itself for the convenience of editing a beam in one line/chain.
+	 */
+	public Beam setEffect(Effect effect) {
+		this.effect = effect;
 		return this;
 	}
 

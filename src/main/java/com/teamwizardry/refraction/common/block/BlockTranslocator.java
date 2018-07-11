@@ -8,6 +8,7 @@ import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.common.effect.EffectDisperse;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.SoundType;
@@ -18,7 +19,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -147,7 +147,7 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 			return;
 
 		// TODO
-		if (beam.color == Color.ORANGE) {
+		if (beam.effect instanceof EffectDisperse) {
 			IBlockState axyz = world.getBlockState(pos.offset(dir));
 			IBlockState check2 = world.getBlockState(pos.offset(dir, 2));
 			if (axyz.getBlock() == ModBlocks.AXYZ && check2.getBlock().isAir(check2, world, pos.offset(dir, 2))) {
