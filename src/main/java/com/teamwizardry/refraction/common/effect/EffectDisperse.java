@@ -57,7 +57,7 @@ public class EffectDisperse extends Effect {
 			((EntityPlayer) entity).velocityChanged = true;
 		if (entity instanceof EntityItem) {
 
-			ItemStack itemstack = entity.getDataManager().get(ITEM).orNull();
+			ItemStack itemstack = entity.getDataManager().get(ITEM).or(ItemStack.EMPTY);
 			if (itemstack == ItemStack.EMPTY) return;
 
 			for (BlockPos pos : BlockPos.getAllInBoxMutable(entity.getPosition().add(-1, -1, -1), entity.getPosition().add(1, 1, 1))) {
