@@ -29,7 +29,7 @@ public class EffectDisperse extends Effect {
 
 	private static Function0<Object> ItemHandler = MethodHandleHelper.wrapperForStaticGetter(EntityItem.class, "c", "field_184533_c", "ITEM");
 	@SuppressWarnings("unchecked")
-	private static DataParameter<Optional<ItemStack>> ITEM = (DataParameter<Optional<ItemStack>>) ItemHandler.invoke();
+	private static DataParameter<ItemStack> ITEM = (DataParameter<ItemStack>) ItemHandler.invoke();
 
 	@Override
 	public EffectType getType() {
@@ -57,7 +57,7 @@ public class EffectDisperse extends Effect {
 			((EntityPlayer) entity).velocityChanged = true;
 		if (entity instanceof EntityItem) {
 
-			ItemStack itemstack = entity.getDataManager().get(ITEM).or(ItemStack.EMPTY);
+			ItemStack itemstack = entity.getDataManager().get(ITEM);
 			if (itemstack == ItemStack.EMPTY) return;
 
 			for (BlockPos pos : BlockPos.getAllInBoxMutable(entity.getPosition().add(-1, -1, -1), entity.getPosition().add(1, 1, 1))) {
