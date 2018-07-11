@@ -56,6 +56,9 @@ public class CommonProxy {
 		PacketHandler.register(PacketLaserDisplayTick.class, Side.CLIENT);
 		PacketHandler.register(PacketWormholeParticles.class, Side.CLIENT);
 		PacketHandler.register(PacketBuilderGridSaver.class, Side.SERVER);
+
+		if (Loader.isModLoaded("crafttweaker"))
+			MTRefractionPlugin.init();
 	}
 
 	public void init(FMLInitializationEvent event) {
@@ -69,9 +72,6 @@ public class CommonProxy {
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.SCREW_DRIVER, new DispenserScrewDriverBehavior());
 		SoundManager.INSTANCE.addSpeaker(ModBlocks.LASER, 40, ModSounds.electrical_hums, 0.015f, 1f, false);
 		SoundManager.INSTANCE.addSpeaker(ModBlocks.LIGHT_BRIDGE, 67, ModSounds.light_bridges, 0.05f, 1f, false);
-
-		if (Loader.isModLoaded("CraftTweaker2"))
-			MTRefractionPlugin.init();
 	}
 
 	public void serverStarting(FMLServerStartingEvent event) {

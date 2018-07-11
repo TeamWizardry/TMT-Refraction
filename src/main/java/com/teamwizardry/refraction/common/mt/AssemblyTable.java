@@ -47,7 +47,6 @@ public class AssemblyTable {
 		@Override
 		public void apply() {
 			AssemblyBehaviors.getBehaviors().put("zen:" + name, recipe);
-			//CraftTweakerAPI.getIjeiRecipeRegistry().addRecipe(recipe);
 		}
 
 		@Override
@@ -73,7 +72,6 @@ public class AssemblyTable {
 					.map(recipe -> new Pair<>(AssemblyBehaviors.getBehaviors().inverse().get(recipe), (AssemblyRecipe) recipe))
 					.collect(Collectors.toList()));
 			toRemove.forEach((obj) -> AssemblyBehaviors.getBehaviors().remove(obj.component1()));
-			//MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(output);
 		}
 
 		@Override
