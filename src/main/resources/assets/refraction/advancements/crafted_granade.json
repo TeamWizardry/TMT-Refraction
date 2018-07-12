@@ -12,6 +12,7 @@
     },
     "background": "refraction:textures/blocks/reflective_alloy_block.png"
   },
+  "parent": "refraction:crafted_prism",
   "criteria": {
     "craft_book": {
       "trigger": "minecraft:inventory_changed",

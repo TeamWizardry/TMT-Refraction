@@ -12,7 +12,7 @@
     },
     "background": "refraction:textures/blocks/reflective_alloy_block.png"
   },
-  "parent": "wizardry:crafted_translocator",
+  "parent": "refraction:crafted_translocator",
   "criteria": {
     "craft_book": {
       "trigger": "minecraft:inventory_changed",

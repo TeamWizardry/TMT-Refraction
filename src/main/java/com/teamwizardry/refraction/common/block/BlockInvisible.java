@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 public class BlockInvisible extends BlockMod {
 
 	public BlockInvisible() {
-		super("invisible", Material.IRON);
+		super("invisible_block", Material.IRON);
 	}
 
 	@Override

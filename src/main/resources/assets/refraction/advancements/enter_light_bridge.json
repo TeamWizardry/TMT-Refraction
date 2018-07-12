@@ -12,14 +12,13 @@
     },
     "background": "refraction:textures/blocks/reflective_alloy_block.png"
   },
-  "parent": "wizardry:crafted_prism",
+  "parent": "refraction:crafted_prism",
   "criteria": {
     "light_bridge": {
       "trigger": "minecraft:enter_block",
       "conditions": {
         "block": "refraction:light_bridge"
-        ]
       }
-    }aha
+    }
   }
 }
