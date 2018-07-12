@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author LordSaad
  */
-public class StackModule implements IParsedModule {
+/*public class StackModule implements IParsedModule {
 
 	@Nullable
 	public final ItemStack stack;
@@ -64,4 +64,4 @@ public class StackModule implements IParsedModule {
 	public ComponentText getComponent() {
 		return component;
 	}
-}
+}*/

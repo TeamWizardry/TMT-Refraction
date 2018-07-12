@@ -1,0 +1,20 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.items.screw.title",
+  "description": "refraction.book.items.screw.desc",
+  "content": [
+    "refraction.book.items.screw.content1",
+    {
+      "type": "recipe",
+      "recipe": "refraction:screw_driver"
+    },
+    "refraction.book.items.screw.content2",
+    "refraction.book.items.screw.content4",
+    "refraction.book.items.screw.content5",
+    "refraction.book.items.screw.content6",
+    "refraction.book.items.screw.content7"
+  ]
+}

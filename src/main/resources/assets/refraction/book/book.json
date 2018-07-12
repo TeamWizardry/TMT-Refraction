@@ -1,48 +1,59 @@
 {
-  "title": "wizardry.book.title",
-  "subtitle": "wizardry.book.subtitle",
+  "title": "refraction.book.name",
+  "subtitle": "a book",
   "color": "0x331409",
   "highlight": "0x00ffdd",
   "categories": [
     {
-      "title": "wizardry.book.steps.title",
-      "icon": "wizardry:gui/book/icons/orb_wand",
+      "title": "refraction.book.start.title",
+      "icon": "refraction:refraction_burst",
       "description": "test",
       "entries": [
-        "wizardry:steps/step_1_mana",
-        "wizardry:steps/step_2_garbs",
-        "wizardry:steps/step_3_nacre",
-        "wizardry:steps/step_4_structures",
-        "wizardry:steps/step_5_spell_creation"
+        "refraction:start/start_1",
+        "refraction:start/start_2_rainbow",
+        "refraction:start/start_3_baby",
+        "refraction:start/start_4_shiny",
+        "refraction:start/start_5_reflection",
+        "refraction:start/start_6_refraction",
+        "refraction:start/start_7_rgb",
+        "refraction:start/start_8_effects",
+        "refraction:start/start_9_merging"
       ]
     },
     {
-      "title": "wizardry.book.itemsblocks.title",
-      "icon": "wizardry:gui/book/icons/hot_spices",
+      "title": "refraction.book.items.title",
+      "icon": "refraction:refraction_burst",
       "description": "test",
       "entries": [
-        "wizardry:itemsblocks/crude_halo",
-        "wizardry:itemsblocks/devil_dust",
-        "wizardry:itemsblocks/orbs",
-        "wizardry:itemsblocks/wisdom_wood"
+        "refraction:items/items_1_screw",
+        "refraction:items/items_2_alloy",
+        "refraction:items/items_3_pen",
+        "refraction:items/items_4_grenade",
+        "refraction:items/items_5_cannon"
       ]
     },
     {
-      "title": "wizardry.book.mobs.title",
-      "icon": "wizardry:gui/book/icons/fangs",
+      "title": "refraction.book.blocks.title",
+      "icon": "refraction:refraction_burst",
       "description": "test",
       "entries": [
-        "wizardry:mobs/fairies",
-        "wizardry:mobs/spiritwights",
-        "wizardry:mobs/unicorns"
+        "refraction:blocks/blocks_1_laser",
+        "refraction:blocks/blocks_2_mirror",
+        "refraction:blocks/blocks_3_disco",
+        "refraction:blocks/blocks_4_sensor",
+        "refraction:blocks/blocks_5_fiber",
+        "refraction:blocks/blocks_6_spectro",
+        "refraction:blocks/blocks_7_exciter",
+        "refraction:blocks/blocks_8_axyz"
       ]
     },
     {
-      "title": "wizardry.book.dimensions.title",
-      "icon": "wizardry:gui/book/icons/magic_gate",
+      "title": "refraction.book.misc.title",
+      "icon": "refraction:refraction_burst",
       "description": "test",
       "entries": [
-        "wizardry:dimensions/underworld"
+        "refraction:misc/misc_1_inv",
+        "refraction:misc/misc_2_gravity"
       ]
     }
   ]

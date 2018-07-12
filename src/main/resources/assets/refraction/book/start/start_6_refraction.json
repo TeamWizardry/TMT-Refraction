@@ -1,0 +1,15 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.start.refraction.title",
+  "description": "refraction.book.start.refraction.desc",
+  "content": [
+    "refraction.book.start.refraction.content1",
+    "refraction.book.start.refraction.content2",
+    "refraction.book.start.refraction.content3",
+    "refraction.book.start.refraction.content4",
+    "refraction.book.start.refraction.content5"
+  ]
+}

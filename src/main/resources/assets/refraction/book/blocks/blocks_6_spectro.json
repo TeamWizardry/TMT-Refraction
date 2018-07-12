@@ -1,0 +1,11 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.blocks.spectro.title",
+  "description": "refraction.book.blocks.spectro.desc",
+  "content": [
+    "refraction.book.blocks.spectro.content1"
+  ]
+}

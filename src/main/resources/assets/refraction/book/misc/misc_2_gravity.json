@@ -1,0 +1,13 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.misc.gravity.title",
+  "description": "refraction.book.misc.gravity.desc",
+  "content": [
+    "refraction.book.misc.gravity.content1",
+    "refraction.book.misc.gravity.content2",
+    "refraction.book.misc.gravity.content3"
+  ]
+}

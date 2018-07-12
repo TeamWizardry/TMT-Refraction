@@ -1,0 +1,22 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.start.effects.title",
+  "description": "refraction.book.start.effects.desc",
+  "content": [
+    "refraction.book.start.effects.content1",
+    {
+      "type": "recipe",
+      "recipe": "refraction:reflection_chamber"
+    },
+    "refraction.book.start.effects.content2",
+    "refraction.book.start.effects.content3",
+    "refraction.book.start.effects.content4",
+    "refraction.book.start.effects.content5",
+    "refraction.book.start.effects.content6",
+    "refraction.book.start.effects.content7",
+    "refraction.book.start.effects.content8"
+  ]
+}

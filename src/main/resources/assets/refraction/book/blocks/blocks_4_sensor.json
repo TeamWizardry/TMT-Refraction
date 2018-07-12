@@ -1,0 +1,11 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.blocks.sensor.title",
+  "description": "refraction.book.blocks.sensor.desc",
+  "content": [
+    "refraction.book.blocks.sensor.content1"
+  ]
+}

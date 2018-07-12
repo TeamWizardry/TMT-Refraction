@@ -1,0 +1,25 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.start.baby.title",
+  "description": "refraction.book.start.baby.desc",
+  "content": [
+    "refraction.book.start.baby.content1",
+    {
+      "type": "recipe",
+      "recipe": "refraction:assembly_table"
+    },
+    "refraction.book.start.baby.content2",
+    {
+      "type": "recipe",
+      "recipe": "refraction:magnifier"
+    },
+    "refraction.book.start.baby.content3",
+    {
+      "type": "structure",
+      "structure": "refraction:gui/tabletimages/assembly_table_setup"
+    }
+  ]
+}

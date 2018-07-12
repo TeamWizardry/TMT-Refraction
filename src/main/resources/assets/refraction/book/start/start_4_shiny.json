@@ -1,0 +1,15 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.start.shiny.title",
+  "description": "refraction.book.start.shiny.desc",
+  "content": [
+    "refraction.book.start.shiny.content1",
+    {
+      "type": "recipe",
+      "recipe": "refraction:reflective_alloy"
+    }
+  ]
+}

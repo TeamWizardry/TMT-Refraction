@@ -1,0 +1,13 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.blocks.fiber.title",
+  "description": "refraction.book.blocks.fiber.desc",
+  "content": [
+    "refraction.book.blocks.fiber.content1",
+    "refraction.book.blocks.fiber.content2",
+    "refraction.book.blocks.fiber.content3"
+  ]
+}

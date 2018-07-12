@@ -1,0 +1,14 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.blocks.exciter.title",
+  "description": "refraction.book.blocks.exciter.desc",
+  "content": [
+    "refraction.book.blocks.exciter.content1",
+    "refraction.book.blocks.exciter.content2",
+    "refraction.book.blocks.exciter.content3",
+    "refraction.book.blocks.exciter.content4"
+    ]
+}

@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 /**
  * @author LordSaad
  */
-public class PlayerModule implements IParsedModule {
+/*public class PlayerModule implements IParsedModule {
 
 	public int x;
 	public int y;
@@ -43,4 +43,4 @@ public class PlayerModule implements IParsedModule {
 	public GuiComponent getComponent() {
 		return component;
 	}
-}
+}*/

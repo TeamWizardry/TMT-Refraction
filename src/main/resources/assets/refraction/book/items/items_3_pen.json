@@ -1,0 +1,15 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.items.pen.title",
+  "description": "refraction.book.items.pen.desc",
+  "content": [
+    "refraction.book.items.pen.content1",
+    {
+      "type": "recipe",
+      "recipe": "refraction:laser_pen"
+    }
+  ]
+}

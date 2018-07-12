@@ -1,0 +1,18 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.start.rainbow.title",
+  "description": "refraction.book.start.rainbow.desc",
+  "content": [
+    "refraction.book.start.rainbow.content1",
+    "refraction.book.start.rainbow.content2",
+    "refraction.book.start.rainbow.content3",
+    "refraction.book.start.rainbow.content4",
+    "refraction.book.start.rainbow.content5",
+    "refraction.book.start.rainbow.content6",
+    "refraction.book.start.rainbow.content7",
+    "refraction.book.start.rainbow.content8"
+  ]
+}

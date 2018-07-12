@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 /**
  * @author LordSaad
  */
-public class TextModule implements IParsedModule {
+/*public class TextModule implements IParsedModule {
 
 	@Nonnull
 	public ComponentText component;
@@ -27,4 +27,4 @@ public class TextModule implements IParsedModule {
 	public ComponentText getComponent() {
 		return component;
 	}
-}
+}*/

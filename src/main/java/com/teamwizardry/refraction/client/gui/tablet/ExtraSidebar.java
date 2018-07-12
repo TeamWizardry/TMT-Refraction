@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.client.gui.tablet;
 
-import com.google.gson.JsonObject;
+/*import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 
 /**
  * Created by LordSaad.
- */
+
 public class ExtraSidebar {
 
 	@Nonnull
@@ -43,7 +43,7 @@ public class ExtraSidebar {
 	@Nullable
 	public Sprite image;
 	public String title;
-	public SubPage subPage;
+	public Object subPage;
 	public boolean isSelected = false;
 	private ComponentSprite component;
 
@@ -67,7 +67,7 @@ public class ExtraSidebar {
 	}
 
 	public ExtraSidebar init() {
-		int x = RightSidebar.rightNormal.getWidth() + GuiBook.BACKGROUND_SPRITE.getWidth() - 14;
+		int x = RightSidebar.rightNormal.getWidth() + 14;
 		ComponentSprite background = new ComponentSprite(RightSidebar.rightNormal, x, 0, RightSidebar.rightNormal.getWidth(), RightSidebar.rightNormal.getHeight());
 		background.addTag(id);
 
@@ -179,4 +179,4 @@ public class ExtraSidebar {
 	public enum SidebarType {
 		IMAGE, RECIPE
 	}
-}
+}*/

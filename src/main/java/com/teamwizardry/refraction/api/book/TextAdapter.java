@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.api.book;
 
-import com.google.gson.JsonElement;
+/*import com.google.gson.JsonElement;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentStack;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
 import com.teamwizardry.refraction.api.ConfigValues;
@@ -24,12 +24,12 @@ import java.util.Set;
  * @author LordSaad
  *         <p>
  *         This class will convert a JsonArray object into a formatted text component
- */
+
 public class TextAdapter {
 
 	public static int wrapLength = 200;
 	public ArrayList<ExtraSidebar> extraSidebars = new ArrayList<>();
-	private SubPage subPage;
+	private Object subPage;
 	private int id;
 	private JsonElement object;
 	private Set<Item> items = new HashSet<>();
@@ -84,4 +84,4 @@ public class TextAdapter {
 			} else text += "\n";
 		return text;
 	}
-}
+}*/
