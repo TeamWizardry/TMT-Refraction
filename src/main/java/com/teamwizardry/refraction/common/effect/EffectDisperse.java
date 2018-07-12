@@ -18,6 +18,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -26,6 +27,12 @@ import java.util.concurrent.ThreadLocalRandom;
  * Will disperse any entities that intersect with the beam. Potency < 128 only disperses item entities.
  */
 public class EffectDisperse extends Effect {
+
+	@Nonnull
+	protected Color getEffectColor() {
+		return Color.MAGENTA;
+	}
+
 
 	private static Function0<Object> ItemHandler = MethodHandleHelper.wrapperForStaticGetter(EntityItem.class, "c", "field_184533_c", "ITEM");
 	@SuppressWarnings("unchecked")
@@ -78,10 +85,5 @@ public class EffectDisperse extends Effect {
 				((EntityItem) entity).setItem(newStack);
 			}
 		}
-	}
-
-	@Override
-	public Color getColor() {
-		return Color.MAGENTA;
 	}
 }

@@ -7,9 +7,15 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 public class EffectBreak extends Effect {
+
+	@Nonnull
+	protected Color getEffectColor() {
+		return Color.YELLOW;
+	}
 
 	@Override
 	public int getChance(int potency) {
@@ -30,10 +36,5 @@ public class EffectBreak extends Effect {
 		float hardness = world.getBlockState(pos).getBlockHardness(world, pos);
 		if (hardness >= 0 && hardness * 32 * 2 / 3 < potency)
 			world.destroyBlock(pos, true);
-	}
-
-	@Override
-	public Color getColor() {
-		return Color.YELLOW;
 	}
 }

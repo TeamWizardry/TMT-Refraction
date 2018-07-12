@@ -5,6 +5,8 @@ import com.teamwizardry.librarianlib.features.base.block.BlockMod;
 import com.teamwizardry.librarianlib.features.base.block.IBlockColorProvider;
 import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.Effect;
+import com.teamwizardry.refraction.api.beam.EffectTracker;
 import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import kotlin.jvm.functions.Function2;
@@ -85,7 +87,8 @@ public class BlockFilter extends BlockMod implements ILightSink, IOpticConnectab
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		IBlockState state = world.getBlockState(pos);
 		EnumFilterType type = state.getValue(TYPE);
-		beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(type.red, type.green, type.blue, beam.color.getAlpha() / 255f)).spawn();
+		Color color = new Color(type.red, type.green, type.blue, beam.getColor().getAlpha() / 255f);
+		beam.createSimilarBeam(beam.finalLoc, beam.slope, EffectTracker.getEffect(color)).spawn();
 		return true;
 	}
 
@@ -98,7 +101,7 @@ public class BlockFilter extends BlockMod implements ILightSink, IOpticConnectab
 	@Override
 	public void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		IBlockState state = world.getBlockState(pos);
-		beam.createSimilarBeam(beam.finalLoc, beam.slope, new Color(state.getValue(TYPE).color)).spawn();
+		beam.createSimilarBeam(beam.finalLoc, beam.slope, EffectTracker.getEffect(new Color(state.getValue(TYPE).color))).spawn();
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -20,18 +21,29 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by LordSaad44
  */
-public class Effect implements Cloneable {
+public abstract class Effect implements Cloneable {
 
 	public Beam beam;
 	public HashMultimap<BlockPos, Entity> entities = HashMultimap.create();
 	public Set<BlockPos> blocks = new HashSet<>();
-	private int potency;
 	private HashMap<BlockPos, Integer> blockPotencies = new HashMap<>();
 	private HashMap<UUID, Integer> entityPotencies = new HashMap<>();
 
+	protected Color color;
+
+	public Effect() {
+		this.color = getEffectColor();
+	}
+	@Nonnull
+	protected abstract Color getEffectColor();
+
 	public Effect setPotency(int potency) {
-		this.potency = potency;
+		this.color = new Color(color.getRed(),color.getGreen(), color.getBlue(), potency);
 		return this;
+	}
+
+	public int getPotency() {
+		return this.color.getAlpha();
 	}
 
 	public Effect setBeam(Beam beam) {
@@ -114,7 +126,7 @@ public class Effect implements Cloneable {
 	}
 
 	void addEntity(@Nonnull World world, @Nonnull Entity entity) {
-		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
 			int potency = calculateEntityPotency(entity);
 			entities.put(entity.getPosition(), entity);
 			runEntity(world, entity, potency);
@@ -122,35 +134,35 @@ public class Effect implements Cloneable {
 	}
 
 	void addBlock(@Nonnull World world, @Nonnull BlockPos pos) {
-		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
 			blocks.add(pos);
 			runBlock(world, pos, calculateBlockPotency(pos));
 		}
 	}
 
 	void addFinalBlock(@Nonnull World world, @Nonnull BlockPos pos) {
-		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
 			blocks.add(pos);
 			runFinalBlock(world, pos, calculateBlockPotency(pos));
 		}
 	}
 
 	void specialAddBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityLivingBase caster) {
-		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
 			blocks.add(pos);
 			specialRunBlock(world, pos, caster, calculateBlockPotency(pos));
 		}
 	}
 
 	void specialAddFinalBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityLivingBase caster) {
-		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
 			blocks.add(pos);
 			specialRunFinalBlock(world, pos, caster, calculateBlockPotency(pos));
 		}
 	}
 
 	void specialAddEntity(@Nonnull World world, @Nonnull Entity entity, @Nonnull EntityLivingBase caster) {
-		if ((getChance(potency) > 0 && ThreadLocalRandom.current().nextInt(getChance(potency)) == 0) || getChance(potency) <= 0) {
+		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
 			int potency = calculateEntityPotency(entity);
 			entities.put(entity.getPosition(), entity);
 			specialRunEntity(world, entity, caster, potency);
@@ -158,7 +170,7 @@ public class Effect implements Cloneable {
 	}
 
 	List<Entity> filterEntities(List<Entity> entityList) {
-		entityList.removeIf(entity -> potency < 1
+		entityList.removeIf(entity -> getPotency() < 1
 				|| (beam.uuidToSkip != null
 				&& beam.uuidToSkip.equals(entity.getUniqueID()))
 				|| (entity instanceof EntityLivingBase
@@ -169,13 +181,13 @@ public class Effect implements Cloneable {
 	}
 
 	private int calculateBlockPotency(BlockPos pos) {
-		int potency = Math.max(0, this.potency - PosUtils.getDistance(beam.initLoc, beam.slope, pos) * ConfigValues.DISTANCE_LOSS);
+		int potency = Math.max(0, this.getPotency() - PosUtils.getDistance(beam.initLoc, beam.slope, pos) * ConfigValues.DISTANCE_LOSS);
 		blockPotencies.put(pos, potency);
 		return potency;
 	}
 
 	private int calculateEntityPotency(Entity entity) {
-		int potency = Math.max(0, this.potency - PosUtils.getDistance(beam.initLoc, beam.slope, entity.getPosition()) * ConfigValues.DISTANCE_LOSS);
+		int potency = Math.max(0, this.getPotency() - PosUtils.getDistance(beam.initLoc, beam.slope, entity.getPosition()) * ConfigValues.DISTANCE_LOSS);
 		for (ItemStack armor : entity.getArmorInventoryList())
 			if (armor != null && armor.getItem() instanceof IReflectiveArmor)
 				potency /= ((IReflectiveArmor) armor.getItem()).reflectionDampeningConstant(armor, this);
@@ -187,8 +199,9 @@ public class Effect implements Cloneable {
 		return -1;
 	}
 
+	@Nonnull
 	public Color getColor() {
-		return Color.WHITE;
+		return this.color;
 	}
 
 	public EffectType getType() {

@@ -282,11 +282,10 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 	@Override
 	public void handleFiberBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
 		int dim = world.provider.getDimension();
-		Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
 		DimWithPos key = new DimWithPos(dim, pos);
 		if (mappedPositions.containsKey(key)) {
 			BlockPos mapPos = mappedPositions.get(key).getPos();
-			beam.createSimilarBeam(new Vec3d(mapPos).addVector(0.5, 0.5, 0.5), beam.slope).setColor(c).spawn();
+			beam.createSimilarBeam(new Vec3d(mapPos).addVector(0.5, 0.5, 0.5), beam.slope).setEffect(beam.effect.copy().setPotency((int) (beam.getAlpha() / 1.05))).spawn();
 		}
 	}
 

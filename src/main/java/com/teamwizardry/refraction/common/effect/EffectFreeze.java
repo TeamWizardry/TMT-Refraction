@@ -10,12 +10,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 /**
  * Created by LordSaad44
  */
 public class EffectFreeze extends Effect {
+
+	@Nonnull
+	protected Color getEffectColor() {
+		return Color.BLUE;
+	}
 
 	@Override
 	public void runEntity(World world, Entity entity, int potency) {
@@ -45,10 +51,5 @@ public class EffectFreeze extends Effect {
 			if (potency >= 200)
 				entityLivingBase.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, effectDuration, potency / 25, true, false));
 		}
-	}
-
-	@Override
-	public Color getColor() {
-		return Color.BLUE;
 	}
 }

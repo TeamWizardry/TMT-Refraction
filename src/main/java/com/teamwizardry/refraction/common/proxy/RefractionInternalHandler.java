@@ -9,6 +9,7 @@ import com.teamwizardry.refraction.common.network.PacketLaserFX;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 
 /**
  * @author WireSegal
@@ -17,7 +18,7 @@ import javax.annotation.Nonnull;
 public final class RefractionInternalHandler implements IInternalHandler {
 	@Override
 	public void fireLaserPacket(@Nonnull Beam beam) {
-		PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(beam.initLoc, beam.finalLoc, beam.color), new NetworkRegistry.TargetPoint(beam.world.provider.getDimension(), beam.initLoc.x, beam.initLoc.y, beam.initLoc.z, 256));
+		PacketHandler.NETWORK.sendToAllAround(new PacketLaserFX(beam.initLoc, beam.finalLoc, beam.getColor()), new NetworkRegistry.TargetPoint(beam.world.provider.getDimension(), beam.initLoc.x, beam.initLoc.y, beam.initLoc.z, 256));
 	}
 
 	@Override

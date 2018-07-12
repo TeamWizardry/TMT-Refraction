@@ -50,13 +50,13 @@ public class TileWormhole extends MultipleBeamTile {
 			for (DimWithPos dimWithPos : BlockWormHole.wormholes.get(color)) {
 				if (dimWithPos.getDim() == world.provider.getDimension()
 						&& dimWithPos.getPos().toLong() == pos.toLong()) {
-					if (Utils.doColorsMatch(color, outputBeam.color)) {
+					if (Utils.doColorsMatch(color, outputBeam.getColor())) {
 						add = false;
 					}
 				}
 			}
 		}
-		if (add) BlockWormHole.wormholes.put(outputBeam.color, new DimWithPos(world, pos));
+		if (add) BlockWormHole.wormholes.put(outputBeam.getColor(), new DimWithPos(world, pos));
 
 		IBlockState state = world.getBlockState(pos);
 		EnumFacing facing = state.getValue(BlockWormHole.FACING);
@@ -64,7 +64,7 @@ public class TileWormhole extends MultipleBeamTile {
 		boolean anyMatch = false;
 		DimWithPos closest = null;
 		for (Color color : BlockWormHole.wormholes.keySet()) {
-			if (Utils.doColorsMatch(color, outputBeam.color)) {
+			if (Utils.doColorsMatch(color, outputBeam.getColor())) {
 				anyMatch = true;
 
 				for (DimWithPos dimWithPos : BlockWormHole.wormholes.get(color)) {

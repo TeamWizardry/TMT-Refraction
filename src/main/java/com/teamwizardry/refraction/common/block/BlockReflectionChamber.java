@@ -8,6 +8,7 @@ import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.client.render.RenderReflectionChamber;
+import com.teamwizardry.refraction.common.effect.EffectAesthetic;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
 import net.minecraft.block.SoundType;
@@ -81,7 +82,7 @@ public class BlockReflectionChamber extends BlockModContainer implements IOpticC
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
-		if(beam.aesthetic) return true;
+		if(beam.isAesthetic()) return true;
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null)
 			((TileReflectionChamber) te).handleBeam(beam);

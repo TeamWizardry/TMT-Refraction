@@ -55,21 +55,19 @@ public class EffectTracker {
 		return effectInstances.putIfAbsent(world, new EffectTracker(world)) == null;
 	}
 
-	public static Effect getEffect(Beam beam) {
-		Color color = beam.color;
-
+	public static Effect getEffect(Color color) {
 		double closestDist = Utils.getColorDistance(color, Color.WHITE);
 		Effect closestColor = null;
 
 		for (Effect effect : effectRegistry) {
 			double dist = Utils.getColorDistance(color, effect.getColor());
-			if (dist < closestDist) {
+			if (dist <= closestDist) {
 				closestDist = dist;
 				closestColor = effect;
 			}
 		}
 
-		return closestColor == null ? null : closestColor.copy().setBeam(beam).setPotency(beam.color.getAlpha());
+		return closestColor == null ? null : closestColor.copy().setPotency(color.getAlpha());
 	}
 
 	public static void registerEffect(Effect effect) {

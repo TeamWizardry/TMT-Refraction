@@ -353,7 +353,7 @@ public class BlockLightBridge extends BlockMod implements ILightSink, ISoundEmit
 				ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
 				break;
 			}
-			showBeam(world, hitPos, r.hitVec, beam.color);
+			showBeam(world, hitPos, r.hitVec, beam.getColor());
 			hitPos = r.hitVec;
 		}
 

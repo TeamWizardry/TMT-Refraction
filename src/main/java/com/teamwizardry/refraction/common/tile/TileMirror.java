@@ -90,8 +90,7 @@ public class TileMirror extends TileMod implements ITickable {
 
 		Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
-		Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
-		beam.createSimilarBeam(outgoingDir).setColor(c).spawn();
+		beam.createSimilarBeam(outgoingDir).setEffect(beam.effect.copy().setPotency((int) (beam.getAlpha() / 1.05))).spawn();
 	}
 
 	@Override

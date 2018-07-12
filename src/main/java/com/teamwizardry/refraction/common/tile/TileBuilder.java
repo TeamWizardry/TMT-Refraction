@@ -67,7 +67,7 @@ public class TileBuilder extends MultipleBeamTile {
 		if (world.isRemote) return;
 		if (grid == null) return;
 
-		if (outputBeam != null && Utils.doColorsMatchNoAlpha(outputBeam.color, Color.GREEN)) {
+		if (outputBeam != null && Utils.doColorsMatchNoAlpha(outputBeam.getColor(), Color.GREEN)) {
 			for (int i = 0; i < grid.length; i++)
 				for (int j = 0; j < grid.length; j++)
 					for (int k = 0; k < grid.length; k++) {

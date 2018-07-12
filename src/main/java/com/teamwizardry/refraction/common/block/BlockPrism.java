@@ -6,9 +6,11 @@ import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.EffectTracker;
 import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.api.raytrace.Tri;
+import com.teamwizardry.refraction.common.effect.EffectAesthetic;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -53,22 +55,24 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
-		if(beam.aesthetic) return true;
+		if(beam.isAesthetic()) return true;
 		IBlockState state = world.getBlockState(pos);
 
-		int sum = beam.color.getRed() + beam.color.getBlue() + beam.color.getGreen();
-		double red = beam.color.getAlpha() * beam.color.getRed() / sum;
-		double green = beam.color.getAlpha() * beam.color.getGreen() / sum;
-		double blue = beam.color.getAlpha() * beam.color.getBlue() / sum;
+		Color color = beam.getColor();
+
+		int sum = color.getRed() + color.getBlue() + color.getGreen();
+		double red = color.getAlpha() * color.getRed() / sum;
+		double green = color.getAlpha() * color.getGreen() / sum;
+		double blue = color.getAlpha() * color.getBlue() / sum;
 
 		Vec3d hitPos = beam.finalLoc;
 
-		if (beam.color.getRed() != 0)
-			fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.RED_IOR, new Color(beam.color.getRed(), 0, 0, (int) red), beam);
-		if (beam.color.getGreen() != 0)
-			fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GREEN_IOR, new Color(0, beam.color.getGreen(), 0, (int) green), beam);
-		if (beam.color.getBlue() != 0)
-			fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.BLUE_IOR, new Color(0, 0, beam.color.getBlue(), (int) blue), beam);
+		if (color.getRed() != 0)
+			fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.RED_IOR, new Color(color.getRed(), 0, 0, (int) red), beam);
+		if (color.getGreen() != 0)
+			fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GREEN_IOR, new Color(0, color.getGreen(), 0, (int) green), beam);
+		if (color.getBlue() != 0)
+			fireColor(world, pos, state, hitPos, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.BLUE_IOR, new Color(0, 0, color.getBlue(), (int) blue), beam);
 		return true;
 	}
 
@@ -97,7 +101,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 				}
 			}
 
-			beam.createSimilarBeam(hitPos, ref, color).spawn();
+			beam.createSimilarBeam(hitPos, ref, EffectTracker.getEffect(color)).spawn();
 		}
 	}
 

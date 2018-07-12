@@ -42,7 +42,7 @@ public class TileFrictionDrill extends TileMod implements ITickable {
 	}
 
 	public void handleBeam(Beam beam) {
-		if (beam.color.getAlpha() < 127) return;
+		if (beam.getAlpha() < 127) return;
 		if (lastBeam == null) {
 			lastBeam = beam;
 			return;

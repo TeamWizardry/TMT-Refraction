@@ -3,9 +3,14 @@ package com.teamwizardry.refraction.common.block;
 import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer;
 import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
 import com.teamwizardry.refraction.api.Constants;
+import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.ILightSink;
+import com.teamwizardry.refraction.common.effect.EffectAesthetic;
 import com.teamwizardry.refraction.common.effect.EffectAttract;
+import com.teamwizardry.refraction.common.effect.EffectDisperse;
+import com.teamwizardry.refraction.common.effect.EffectGravity;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -28,8 +33,11 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by Saad on 8/16/2016.
@@ -72,43 +80,52 @@ public class BlockElectronExciter extends BlockModContainer implements ILightSin
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
-		if(beam.aesthetic) return true;
-		if(beam.effect == null) return true;
+		if(beam.effect == null || beam.isAesthetic()) return true;
 
 		if (beam.effect instanceof EffectAttract) {
-			if (beam.color.getAlpha() > 128) {
+			if (beam.getAlpha() > 128) {
 				EnumFacing block = world.getBlockState(pos).getValue(FACING);
 				if (isIncomingBeamValid(world, pos, block, beam)) {
 					TileElectronExciter exciter = getTE(world, pos);
 					if (exciter != null) {
 						exciter.hasCardinalBeam = true;
 
-						if (isNeighborValid(world, pos, block)) {
+						if (!getValidNeighbors(world, pos, block, true).isEmpty()) {
 							exciter.expire = Constants.SOURCE_TIMER;
 							if (world.isAirBlock(pos.offset(block)))
 								world.setBlockState(pos.offset(block), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
 						}
 					}
-					//return true;
+				}
+			}
+		} else if (beam.effect instanceof EffectDisperse) {
+			EnumFacing block = world.getBlockState(pos).getValue(FACING);
+			if (beam.slope.normalize().dotProduct(new Vec3d(block.getOpposite().getDirectionVec())) > 0.999) {
+
+				Set<EnumFacing> exciters = getValidNeighbors(world, pos, block, false);
+				if (!exciters.isEmpty()) {
+					for (EnumFacing facing : exciters) {
+						beam.createSimilarBeam(PosUtils.getSideCenter(pos.offset(facing), block), PosUtils.getVecFromFacing(block), new EffectGravity())
+								.spawn();
+					}
 				}
 			}
 		}
 		return true;
 	}
 
-	private boolean isNeighborValid(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing block) {
-		boolean hasValidNeighbor = false;
+	private Set<EnumFacing> getValidNeighbors(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing block, boolean requresCardinal) {
+		Set<EnumFacing> exciters = new HashSet<>();
 		for (EnumFacing facing : EnumFacing.VALUES) {
 			if (facing != block || facing != block.getOpposite()) {
 				TileElectronExciter neighbor = getTE(world, pos.offset(facing));
 				if (neighbor != null)
-					if (neighbor.hasCardinalBeam && world.getBlockState(pos.offset(facing)).getValue(FACING) == block) {
-						hasValidNeighbor = true;
-						break;
+					if (world.getBlockState(pos.offset(facing)).getValue(FACING) == block && (!requresCardinal || neighbor.hasCardinalBeam)) {
+						exciters.add(facing);
 					}
 			}
 		}
-		return hasValidNeighbor;
+		return exciters;
 	}
 
 	private boolean isIncomingBeamValid(@Nonnull World world, @Nonnull BlockPos pos,@Nonnull EnumFacing block, @Nonnull Beam beam) {

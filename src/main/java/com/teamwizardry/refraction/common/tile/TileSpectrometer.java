@@ -30,8 +30,8 @@ public class TileSpectrometer extends MultipleBeamTile {
 			return;
 		}
 
-		if (outputBeam != null && !Utils.doColorsMatch(currentColor, outputBeam.color)) {
-			currentColor = Utils.mixColors(currentColor, outputBeam.color, 0.9);
+		if (outputBeam != null && !Utils.doColorsMatch(currentColor, outputBeam.getColor())) {
+			currentColor = Utils.mixColors(currentColor, outputBeam.getColor(), 0.9);
 			alpha = currentColor.getAlpha();
 			markDirty();
 		}

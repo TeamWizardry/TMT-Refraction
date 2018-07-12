@@ -14,12 +14,18 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 /**
  * Created by LordSaad.
  */
 public class EffectRedstone extends Effect {
+
+	@Nonnull
+	protected Color getEffectColor() {
+		return Color.ORANGE;
+	}
 
 	@Override
 	public void runFinalBlock(World world, BlockPos pos, int potency) {
@@ -55,10 +61,5 @@ public class EffectRedstone extends Effect {
 	public void runEntity(World world, Entity entity, int potency) {
 		if (entity instanceof EntityLivingBase)
 			((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.SPEED, 50, 5 * potency / 255, true, false));
-	}
-
-	@Override
-	public Color getColor() {
-		return Color.ORANGE;
 	}
 }

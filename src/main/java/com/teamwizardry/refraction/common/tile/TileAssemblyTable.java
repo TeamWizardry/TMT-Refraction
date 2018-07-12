@@ -6,6 +6,7 @@ import com.teamwizardry.librarianlib.features.network.PacketHandler;
 import com.teamwizardry.librarianlib.features.saving.Save;
 import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
 import com.teamwizardry.refraction.api.MultipleBeamTile;
+import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.recipe.AssemblyBehaviors;
 import com.teamwizardry.refraction.api.recipe.IAssemblyBehavior;
 import com.teamwizardry.refraction.common.network.PacketAssemblyDoneParticles;
@@ -149,7 +150,7 @@ public class TileAssemblyTable extends MultipleBeamTile {
 		if (world.isRemote || inputBeams.isEmpty()) return;
 		if (!world.isBlockPowered(getPos()) && world.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
 
-		Color color = outputBeam.color;
+		Color color = outputBeam.getColor();
 
 		if (behavior != null) {
 			if (behavior.tick(color, inventory, output, craftingTime++))

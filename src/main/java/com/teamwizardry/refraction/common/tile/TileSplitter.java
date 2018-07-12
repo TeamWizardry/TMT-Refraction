@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.features.base.block.tile.TileMod;
 import com.teamwizardry.librarianlib.features.math.Matrix4;
 import com.teamwizardry.librarianlib.features.saving.Save;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.EffectTracker;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -87,9 +88,8 @@ public class TileSplitter extends TileMod implements ITickable {
 		Vec3d incomingDir = beam.finalLoc.subtract(beam.initLoc).normalize();
 		Vec3d outgoingDir = incomingDir.subtract(normal.scale(incomingDir.dotProduct(normal) * 2));
 
-		Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), beam.color.getAlpha() / 2);
-		beam.createSimilarBeam(outgoingDir).setColor(c).spawn();
-		beam.createSimilarBeam(incomingDir).setColor(c).spawn();
+		beam.createSimilarBeam(outgoingDir).setEffect(beam.effect.copy().setPotency(beam.getColor().getAlpha() / 2)).spawn();
+		beam.createSimilarBeam(incomingDir).setEffect(beam.effect.copy().setPotency(beam.getColor().getAlpha() / 2)).spawn();
 	}
 
 	@Override

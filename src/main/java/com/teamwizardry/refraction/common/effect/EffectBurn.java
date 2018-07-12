@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +27,11 @@ import java.util.concurrent.ThreadLocalRandom;
  * Will set any entities that touch it on fire as well.
  */
 public class EffectBurn extends Effect {
+
+	@Nonnull
+	protected Color getEffectColor() {
+		return Color.RED;
+	}
 
 	public static Set<BlockPos> burnedTileTracker = new HashSet<>();
 
@@ -73,10 +79,5 @@ public class EffectBurn extends Effect {
 			}
 		}
 		if (pass) entity.setFire(potency);
-	}
-
-	@Override
-	public Color getColor() {
-		return Color.RED;
 	}
 }

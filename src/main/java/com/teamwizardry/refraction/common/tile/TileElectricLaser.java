@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.features.base.block.tile.TileModTickable;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.EffectTracker;
 import com.teamwizardry.refraction.common.caps.DualEnergyStorage;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,7 +35,7 @@ public class TileElectricLaser extends TileModTickable {
 			Vec3d vec = PosUtils.getVecFromFacing(face);
 
 			Color color = new Color(255, 255, 255, ConfigValues.ELECTRIC_ALPHA);
-			new Beam(world, center, vec, color).spawn();
+			new Beam(world, center, vec, EffectTracker.getEffect(color)).spawn();
 
 			energy.extractEnergy(ConfigValues.TESLA_PER_TICK, false);
 		}

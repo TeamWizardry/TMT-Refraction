@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -24,6 +25,11 @@ import static com.teamwizardry.refraction.api.beam.EffectTracker.gravityReset;
  * Will attract any entities that intersect with the beam. < 128 only attracts item entities.
  */
 public class EffectAttract extends Effect {
+
+	@Nonnull
+	protected Color getEffectColor() {
+		return Color.CYAN;
+	}
 
 	@Override
 	public EffectType getType() {
@@ -95,10 +101,5 @@ public class EffectAttract extends Effect {
 				world.spawnEntity(item);
 			}
 		}
-	}
-
-	@Override
-	public Color getColor() {
-		return Color.CYAN;
 	}
 }

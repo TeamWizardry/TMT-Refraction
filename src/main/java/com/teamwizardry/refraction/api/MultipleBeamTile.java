@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.api;
 import com.teamwizardry.librarianlib.features.base.block.tile.TileMod;
 import com.teamwizardry.librarianlib.features.utilities.NBTTypes;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.api.beam.EffectTracker;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
@@ -103,7 +104,7 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 		int red = 0, green = 0, blue = 0, alpha = 0;
 
 		for (Beam beam : inputBeams.keySet()) {
-			Color color = beam.color;
+			Color color = beam.getColor();
 
 			double colorCount = 0;
 			if (color.getRed() > 0) colorCount++;
@@ -128,7 +129,7 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.min(alpha, 255));
 
-		Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), outputDir, color);
+		Beam beam = new Beam(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), outputDir, EffectTracker.getEffect(color));
 
 		if (outputBeam == null || !beam.doBeamsMatch(outputBeam)) {
 			outputBeam = beam;

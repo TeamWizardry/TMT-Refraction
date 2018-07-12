@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.item;
 
 import com.teamwizardry.librarianlib.features.base.item.ItemMod;
 import com.teamwizardry.refraction.api.beam.Beam;
+import com.teamwizardry.refraction.common.effect.EffectAesthetic;
 import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,7 +61,7 @@ public class ItemLaserPen extends ItemMod {
 		if (!handMod) cross = cross.scale(-1);
 		Vec3d playerVec = new Vec3d(player.posX + cross.x, player.posY + player.getEyeHeight() + cross.y, player.posZ + cross.z);
 
-		new Beam(player.getEntityWorld(), playerVec, player.getLook(1), new Color(0x20FF0000, true))
+		new Beam(player.getEntityWorld(), playerVec, player.getLook(1), (new EffectAesthetic()).setColor(new Color(0x20FF0000, true)))
 				.setUUIDToSkip(player.getUniqueID())
 				.spawn();
 	}

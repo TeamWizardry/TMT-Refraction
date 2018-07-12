@@ -74,8 +74,7 @@ public class BlockReflectiveAlloyBlock extends BlockMod implements ILightSink {
 			default:
 				outgoingDir = incomingDir;
 		}
-		Color c = new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / 1.05));
-		beam.createSimilarBeam(outgoingLoc, outgoingDir, c).spawn();
+		beam.createSimilarBeam(outgoingLoc, outgoingDir, beam.effect.copy().setPotency((int) (beam.getAlpha() / 1.05))).spawn();
 		return true;
 	}
 

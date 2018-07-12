@@ -4,6 +4,7 @@ import com.teamwizardry.librarianlib.features.network.PacketHandler;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.raytrace.EntityTrace;
+import com.teamwizardry.refraction.common.effect.EffectAesthetic;
 import com.teamwizardry.refraction.common.network.PacketBeamParticle;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -47,12 +48,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	 * and let this class handleBeam it unless you know what you're doing.
 	 */
 	public Vec3d finalLoc;
-
-	/**
-	 * The color of the beam including it's alpha.
-	 */
-	@Nonnull
-	public Color color = Color.WHITE;
 
 	/**
 	 * The world the beam will spawn in.
@@ -104,25 +99,16 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	 */
 	public String customName = "";
 
-	/**
-	 * Is the Beam aesthetic use only
-	 */
-	public boolean aesthetic = false;
-
-	public Beam(@Nonnull World world, @Nonnull Vec3d initLoc, @Nonnull Vec3d slope, @Nonnull Color color) {
+	public Beam(@Nonnull World world, @Nonnull Vec3d initLoc, @Nonnull Vec3d slope, @Nonnull Effect effect) {
 		this.world = world;
 		this.initLoc = initLoc;
 		this.slope = slope;
 		this.finalLoc = slope.normalize().scale(128).add(initLoc);
-		this.color = color;
+		this.effect = effect.setBeam(this);
 	}
 
-	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Color color) {
-		this(world, new Vec3d(initX, initY, initZ), new Vec3d(slopeX, slopeY, slopeZ), color);
-	}
-
-	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, float red, float green, float blue, float alpha) {
-		this(world, initX, initY, initZ, slopeX, slopeY, slopeZ, new Color(red, green, blue, alpha));
+	public Beam(World world, double initX, double initY, double initZ, double slopeX, double slopeY, double slopeZ, Effect effect) {
+		this(world, new Vec3d(initX, initY, initZ), new Vec3d(slopeX, slopeY, slopeZ), effect);
 	}
 
 	public Beam(NBTTagCompound compound) {
@@ -130,7 +116,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public boolean doBeamsMatch(@Nonnull Beam beam) {
-		return beam.color.getRGB() == color.getRGB()
+		return beam.getColor() == getColor()
 				&& beam.slope.x == slope.x
 				&& beam.slope.y == slope.y
 				&& beam.slope.z == slope.z
@@ -156,8 +142,8 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	 *
 	 * @return The new beam created. Can be modified as needed.
 	 */
-	public Beam createSimilarBeam(Color color) {
-		return createSimilarBeam(initLoc, finalLoc, color);
+	public Beam createSimilarBeam(Effect effect) {
+		return createSimilarBeam(initLoc, finalLoc, effect);
 	}
 
 	/**
@@ -181,7 +167,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	 * @return The new beam created. Can be modified as needed.
 	 */
 	public Beam createSimilarBeam(Vec3d init, Vec3d dir) {
-		return createSimilarBeam(init, dir, color);
+		return createSimilarBeam(init, dir, effect);
 	}
 
 	/**
@@ -191,15 +177,13 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	 * @param dir  The direction or slope or final destination or location the beam will point to.
 	 * @return The new beam created. Can be modified as needed.
 	 */
-	public Beam createSimilarBeam(Vec3d init, Vec3d dir, Color color) {
-		return new Beam(world, init, dir, color)
+	public Beam createSimilarBeam(Vec3d init, Vec3d dir, Effect effect) {
+		return new Beam(world, init, dir, effect)
 				.setAllowedBounceTimes(allowedBounceTimes)
 				.setBouncedTimes(bouncedTimes)
 				.incrementBouncedTimes()
 				.setRange(range)
-				.setCaster(caster)
-				.setAesthetic(aesthetic)
-				.setEffect(effect);
+				.setCaster(caster);
 	}
 
 	/**
@@ -280,17 +264,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	}
 
 	/**
-	 * Will change the color of the beam with the alpha.
-	 *
-	 * @param color The color of the new beam.
-	 * @return This beam itself for the convenience of editing a beam in one line/chain.
-	 */
-	public Beam setColor(@Nonnull Color color) {
-		this.color = color;
-		return this;
-	}
-
-	/**
 	 * Will set the beam's new starting position or origin and will continue on towards the slope still specified.
 	 *
 	 * @param initLoc The new initial location to set the beam to exciterPos from.
@@ -314,17 +287,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	}
 
 	/**
-	 * Will set the Beam to be asthetic only.
-	 *
-	 * @param aesthetic If the beam should be aesthetic only. Default: false
-	 * @return This beam itself for the convenience of editing a beam in one line/chain.
-	 */
-	public Beam setAesthetic(boolean aesthetic) {
-		this.aesthetic = aesthetic;
-		return this;
-	}
-
-	/**
 	 * Will set the effect the beam will have.
 	 *
 	 * @param effect Beam effect. Default: null
@@ -335,21 +297,20 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		return this;
 	}
 
+	public Color getColor() {
+		return this.effect.getColor();
+	}
+	public int getAlpha() { return this.getColor().getAlpha(); }
+	public boolean isAesthetic() {return this.effect instanceof EffectAesthetic;}
+
 
 	/**
 	 * Will spawn the final complete beam.
 	 */
 	public void spawn() {
 		if (world.isRemote) return;
-		if (color.getAlpha() <= 1) return;
+		if (this.getAlpha() <= 1) return;
 		if (bouncedTimes > allowedBounceTimes) return;
-
-		// EFFECT CHECKING //
-		if (effect == null) {
-			Effect tempEffect = EffectTracker.getEffect(this);
-			if (tempEffect != null) effect = tempEffect;
-		} else effect = null;
-		// EFFECT CHECKING //
 
 		EntityTrace entityTrace = new EntityTrace(world, initLoc, slope).setUUIDToSkip(uuidToSkip).setRange(range);
 		trace = entityTrace.cast();
@@ -381,9 +342,11 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 					traceCompleted = true;
 					if (state.getBlock() instanceof ILightSink) {
 						traceCompleted = (((ILightSink) state.getBlock()).handleBeam(world, pos, this));
+						pass = false;
 					}
 				} else {
 					traceCompleted = event.getResult() == Event.Result.DENY;
+					pass = event.getResult() == Event.Result.ALLOW;
 				}
 			} else {
 				traceCompleted = trace.typeOfHit != RayTraceResult.Type.ENTITY ||
@@ -393,7 +356,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		}
 
 		// Effect handling
-		if (effect != null && !aesthetic) {
+		if (effect != null && !(effect instanceof EffectAesthetic)) {
 			if (effect.getType() == Effect.EffectType.BEAM)
 				EffectTracker.addEffect(world, this);
 
@@ -427,9 +390,9 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 			}
 			if (flag) {
 				createSimilarBeam(entity.getLook(0)).setUUIDToSkip(entity.getUniqueID()).spawn();
-			} else if (color.getAlpha() >= 32) {
+			} else if (getAlpha() >= 32) {
 				entity.setFire(1);
-				entity.maxHurtResistantTime = Math.max(5, (10 - (color.getAlpha() / 255) * 10));
+				entity.maxHurtResistantTime = Math.max(5, (10 - (getAlpha() / 255) * 10));
 			}
 		}
 		// ENTITY REFLECTING
@@ -439,7 +402,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
 		// PARTICLES
 		if (ThreadLocalRandom.current().nextInt(10) == 0)
-			PacketHandler.NETWORK.sendToAllAround(new PacketBeamParticle(initLoc, trace.hitVec, color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.x, initLoc.y, initLoc.z, 30));
+			PacketHandler.NETWORK.sendToAllAround(new PacketBeamParticle(initLoc, trace.hitVec, effect.getColor()), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.x, initLoc.y, initLoc.z, 30));
 		// PARTICLES
 	}
 
@@ -474,7 +437,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		compound.setDouble("slope_x", slope.x);
 		compound.setDouble("slope_y", slope.y);
 		compound.setDouble("slope_z", slope.z);
-		compound.setInteger("color", color.getRGB());
+		compound.setInteger("color", effect.getColor().getRGB());
 		compound.setInteger("world", world.provider.getDimension());
 		compound.setInteger("bounce_times", bouncedTimes);
 		compound.setInteger("allowed_bounce_times", allowedBounceTimes);
@@ -498,7 +461,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		} else throw new NullPointerException("'slope' key not found or missing in deserialized beam object.");
 
 		if (nbt.hasKey("color")) {
-			color = new Color(nbt.getInteger("color"), true);
+			effect = EffectTracker.getEffect(new Color(nbt.getInteger("color"), true)).setBeam(this);
 		} else
 			throw new NullPointerException("'color' or 'color_alpha' keys not found or missing in deserialized beam object.");
 

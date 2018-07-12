@@ -64,7 +64,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
-		if(beam.aesthetic) return true;
+		if(beam.isAesthetic()) return true;
 		IBlockState state = world.getBlockState(pos);
 		fireColor(world, pos, state, beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, beam);
 		return true;
@@ -90,7 +90,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 						ref = oldRef; // it'll bounce back on itself and cause a NaN vector, that means we should stop
 						break;
 					}
-					showBeam(world, hitPos, r.hitVec, beam.color);
+					showBeam(world, hitPos, r.hitVec, beam.getColor());
 					hitPos = r.hitVec;
 				}
 			}

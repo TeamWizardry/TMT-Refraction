@@ -52,7 +52,7 @@ public class BlockDiscoBall extends BlockModContainer implements ILightSink {
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
-		if(beam.aesthetic) return true;
+		if(beam.isAesthetic()) return true;
 		TileEntity te = world.getTileEntity(pos);
 		if (te != null)
 			((TileDiscoBall) te).handleBeam(beam);

@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 import static com.teamwizardry.refraction.api.beam.EffectTracker.gravityReset;
@@ -21,14 +22,14 @@ import static com.teamwizardry.refraction.api.beam.EffectTracker.gravityReset;
  */
 public class EffectGravity extends Effect {
 
-	@Override
-	public EffectType getType() {
-		return EffectType.BEAM;
+	@Nonnull
+	protected Color getEffectColor() {
+		return new Color(0x0096FF);
 	}
 
 	@Override
-	public Color getColor() {
-		return new Color(0x0096FF);
+	public EffectType getType() {
+		return EffectType.BEAM;
 	}
 
 	@Override

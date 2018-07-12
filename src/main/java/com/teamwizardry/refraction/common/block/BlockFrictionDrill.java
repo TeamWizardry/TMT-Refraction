@@ -25,7 +25,7 @@ public class BlockFrictionDrill extends BlockModContainer implements ILightSink 
 
 	@Override
 	public boolean handleBeam(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam) {
-		if(beam.aesthetic) return true;
+		if(beam.isAesthetic()) return true;
 		TileFrictionDrill drill = (TileFrictionDrill) world.getTileEntity(pos);
 		if (drill == null) return true;
 

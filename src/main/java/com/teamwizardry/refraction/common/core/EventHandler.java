@@ -10,6 +10,7 @@ import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.common.block.BlockLens;
 import com.teamwizardry.refraction.common.block.BlockPrism;
+import com.teamwizardry.refraction.common.effect.EffectAesthetic;
 import com.teamwizardry.refraction.common.network.PacketAXYZMarks;
 import com.teamwizardry.refraction.common.network.PacketLaserDisplayTick;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -66,10 +67,10 @@ public class EventHandler {
 			dye = Utils.getColorFromDyeEnum(event.getState().getValue(BlockStainedGlass.COLOR));
 		} else if (event.getState().getBlock() == Blocks.GLASS_PANE
 				|| event.getState().getBlock() == Blocks.GLASS) {
-			dye = beam.color;
+			dye = beam.getColor();
 		} else return;
 
-		Color color = new Color(dye.getRed(), dye.getGreen(), dye.getBlue(), (int) (beam.color.getAlpha() / 1.4));
+		Color color = new Color(dye.getRed(), dye.getGreen(), dye.getBlue(), (int) (beam.getAlpha() / 1.4));
 		fireColor(event.getWorld(), event.getPos(), event.getState(), beam.finalLoc, beam.finalLoc.subtract(beam.initLoc).normalize(), ConfigValues.GLASS_IOR, color, beam);
 		event.setResult(Event.Result.DENY);
 	}
@@ -99,7 +100,7 @@ public class EventHandler {
 				}
 			}
 
-			beam.createSimilarBeam(hitPos, ref, color).setAesthetic(true).spawn();
+			beam.createSimilarBeam(hitPos, ref, new EffectAesthetic().setColor(color)).spawn();
 		}
 	}
 

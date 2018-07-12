@@ -78,7 +78,7 @@ public class BlockTracker {
 		if (world.get() != null) {
 			for (BlockPos pos : locations.keySet()) {
 				for (Beam beam : locations.get(pos)) {
-					EffectTracker.addEffect(world.get(), new Vec3d(pos), EffectTracker.getEffect(beam));
+					EffectTracker.addEffect(world.get(), new Vec3d(pos), beam.effect);
 				}
 			}
 		}

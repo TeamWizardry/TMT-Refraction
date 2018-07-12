@@ -64,7 +64,7 @@ public class TileDiscoBall extends MultipleBeamTile {
 		if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) return;
 		if (beam.customName.equals("disco_ball_beam")) return;
 		if (beamlifes.size() > 20) return;
-		if (!colors.contains(beam.color)) colors.add(beam.color);
+		if (!colors.contains(beam.getColor())) colors.add(beam.getColor());
 
 		double radius = 5, rotX = ThreadLocalRandom.current().nextDouble(0, 360), rotZ = ThreadLocalRandom.current().nextDouble(0, 360);
 		int x = (int) (radius * MathHelper.cos((float) Math.toRadians(rotX)));
@@ -75,7 +75,7 @@ public class TileDiscoBall extends MultipleBeamTile {
 		Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getDirectionVec()).scale(0.2));
 
 		Beam subBeam = beam.createSimilarBeam(center, dest)
-				.setColor(new Color(beam.color.getRed(), beam.color.getGreen(), beam.color.getBlue(), (int) (beam.color.getAlpha() / ThreadLocalRandom.current().nextDouble(2, 4))))
+				.setEffect(beam.effect.copy().setPotency( (int) (beam.getColor().getAlpha() / ThreadLocalRandom.current().nextDouble(2, 4))))
 				.setAllowedBounceTimes(ConfigValues.DISCO_BALL_BEAM_BOUNCE_LIMIT)
 				.setName("disco_ball_beam");
 		beamlifes.put(subBeam, 0);
@@ -117,7 +117,7 @@ public class TileDiscoBall extends MultipleBeamTile {
 		Set<Color> primaryTemp = new HashSet<>();
 		Beam beam = outputBeam;
 		if (beam != null)
-			primaryTemp.add(beam.color);
+			primaryTemp.add(beam.getColor());
 
 		boolean pass = true;
 		for (Color color1 : primaryTemp) {

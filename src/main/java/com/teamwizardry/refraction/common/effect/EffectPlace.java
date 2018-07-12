@@ -18,6 +18,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.UUID;
 
@@ -25,6 +26,11 @@ import java.util.UUID;
  * Created by Saad on 9/15/2016.
  */
 public class EffectPlace extends Effect {
+
+	@Nonnull
+	protected Color getEffectColor() {
+		return Color.PINK;
+	}
 
 	private static FakePlayer fakePlayer;
 
@@ -112,10 +118,5 @@ public class EffectPlace extends Effect {
 
 		fakePlayer.interactionManager.processRightClickBlock(fakePlayer, world, chosenStack, EnumHand.MAIN_HAND, beam.trace.getBlockPos().offset(facing), facing, 0, 0, 0);
 		if (chosenStack.getCount() <= 0) player.inventory.removeStackFromSlot(player.inventory.getSlotFor(chosenStack));
-	}
-
-	@Override
-	public Color getColor() {
-		return Color.PINK;
 	}
 }

@@ -10,12 +10,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 /**
  * Created by LordSaad44
  */
 public class EffectBonemeal extends Effect {
+
+	@Nonnull
+	protected Color getEffectColor() {
+		return Color.GREEN;
+	}
 
 	@Override
 	public int getChance(int potency) {
@@ -34,10 +40,5 @@ public class EffectBonemeal extends Effect {
 			EntityPlayer player = (EntityPlayer) entity;
 			player.getFoodStats().addStats(1, 0.5f);
 		}
-	}
-
-	@Override
-	public Color getColor() {
-		return Color.GREEN;
 	}
 }
