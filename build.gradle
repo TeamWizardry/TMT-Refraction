@@ -13,9 +13,9 @@ buildscript {
 
 apply plugin: "net.minecraftforge.gradle.forge"
 
-version = "$mod_version"
+version = "$mod_version.$patch_version"
 group = "com.teamwizardry"
-archivesBaseName = "refraction"
+archivesBaseName = "refraction-$mc_version"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
