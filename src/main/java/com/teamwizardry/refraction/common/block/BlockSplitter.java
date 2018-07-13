@@ -37,7 +37,7 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPrecision, ILightSink {
 

@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class SoundManager {
 
@@ -152,7 +152,7 @@ public class SoundManager {
 		IBlockState state = world.getBlockState(pos);
 		if (state.getBlock() instanceof ISoundEmitter) {
 			ISoundEmitter soundEmitter = (ISoundEmitter) state.getBlock();
-			if (soundEmitter.shouldEmit(world, pos)) return true;
+			return soundEmitter.shouldEmit(world, pos);
 		}
 		return false;
 	}

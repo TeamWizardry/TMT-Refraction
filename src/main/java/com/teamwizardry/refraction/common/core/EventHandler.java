@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class EventHandler {
 	public static final EventHandler INSTANCE = new EventHandler();

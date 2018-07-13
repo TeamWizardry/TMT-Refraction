@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 import java.awt.*;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class ItemPhotonCannon extends ItemMod implements IAmmoConsumer, IItemColorProvider {
 

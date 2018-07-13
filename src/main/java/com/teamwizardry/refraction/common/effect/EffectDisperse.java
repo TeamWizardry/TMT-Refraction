@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.google.common.base.Optional;
 import com.teamwizardry.librarianlib.features.methodhandles.MethodHandleHelper;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
@@ -23,7 +22,7 @@ import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  * Will disperse any entities that intersect with the beam. Potency < 128 only disperses item entities.
  */
 public class EffectDisperse extends Effect {

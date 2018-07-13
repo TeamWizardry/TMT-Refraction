@@ -7,7 +7,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class SpeakerNode implements INBTSerializable<NBTTagCompound> {
 

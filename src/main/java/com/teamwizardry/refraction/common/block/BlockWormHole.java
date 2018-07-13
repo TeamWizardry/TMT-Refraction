@@ -22,7 +22,7 @@ import java.awt.*;
 import java.util.Set;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class BlockWormHole extends BlockModContainer implements ILightSink {
 

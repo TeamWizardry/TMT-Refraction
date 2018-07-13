@@ -2,13 +2,12 @@ package com.teamwizardry.refraction.init;
 
 import com.teamwizardry.refraction.api.lib.LibOreDict;
 import com.teamwizardry.refraction.common.block.*;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class ModBlocks {
 

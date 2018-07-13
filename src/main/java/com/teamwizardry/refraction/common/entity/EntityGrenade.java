@@ -18,7 +18,7 @@ import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class EntityGrenade extends EntityThrowable {
 

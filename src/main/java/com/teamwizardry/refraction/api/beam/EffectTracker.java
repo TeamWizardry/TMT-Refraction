@@ -1,11 +1,7 @@
 package com.teamwizardry.refraction.api.beam;
 
-import java.awt.Color;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.WeakHashMap;
+import com.google.common.collect.HashMultimap;
+import com.teamwizardry.refraction.api.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -17,11 +13,16 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import com.google.common.collect.HashMultimap;
-import com.teamwizardry.refraction.api.Utils;
+
+import java.awt.*;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.WeakHashMap;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class EffectTracker {
 

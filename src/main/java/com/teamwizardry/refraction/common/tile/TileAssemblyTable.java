@@ -6,7 +6,6 @@ import com.teamwizardry.librarianlib.features.network.PacketHandler;
 import com.teamwizardry.librarianlib.features.saving.Save;
 import com.teamwizardry.refraction.api.EventAssemblyTableCraft;
 import com.teamwizardry.refraction.api.MultipleBeamTile;
-import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.recipe.AssemblyBehaviors;
 import com.teamwizardry.refraction.api.recipe.IAssemblyBehavior;
 import com.teamwizardry.refraction.common.network.PacketAssemblyDoneParticles;
@@ -29,7 +28,7 @@ import javax.annotation.Nullable;
 import java.awt.*;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 @TileRegister("assembly_table")
 public class TileAssemblyTable extends MultipleBeamTile {

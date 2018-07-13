@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class BlockSensor extends BlockMod implements ILightSink {
 

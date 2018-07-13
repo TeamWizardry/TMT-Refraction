@@ -12,7 +12,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 @TileRegister("electron_exciter")
 public class TileElectronExciter extends TileMod implements ITickable {

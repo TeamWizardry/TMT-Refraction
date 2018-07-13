@@ -26,7 +26,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,7 +33,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class BlockAssemblyTable extends BlockModContainer implements ILightSink {
 

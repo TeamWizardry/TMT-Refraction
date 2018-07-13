@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import java.awt.*;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 @TileRegister("creative_laser")
 public class TileCreativeLaser extends TileMod implements ITickable {

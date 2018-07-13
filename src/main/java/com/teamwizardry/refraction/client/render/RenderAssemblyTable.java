@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class RenderAssemblyTable extends TileEntitySpecialRenderer<TileAssemblyTable> {
 

@@ -27,7 +27,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class CommonProxy {
 

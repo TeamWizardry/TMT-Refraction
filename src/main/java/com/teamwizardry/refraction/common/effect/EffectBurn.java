@@ -22,7 +22,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Created by LordSaad
+ * Created by Demoniaque
  * Will set any block on fire if it can be set on fire.
  * Will set any entities that touch it on fire as well.
  */
@@ -44,7 +44,7 @@ public class EffectBurn extends Effect {
 	public void runBlock(World world, BlockPos pos, int potency) {
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && (tile instanceof IInventory || tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))) {
-			if (!burnedTileTracker.contains(pos)) burnedTileTracker.add(pos);
+			burnedTileTracker.add(pos);
 			if (potency > 128 && tile instanceof TileEntityFurnace) {
 				((TileEntityFurnace) tile).setField(0, potency);
 				((TileEntityFurnace) tile).setField(1, 255);

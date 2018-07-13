@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 import java.awt.*;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class EffectFreeze extends Effect {
 

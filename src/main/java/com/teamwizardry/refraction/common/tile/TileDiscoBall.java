@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 @TileRegister("disco_ball")
 public class TileDiscoBall extends MultipleBeamTile {
@@ -64,7 +64,7 @@ public class TileDiscoBall extends MultipleBeamTile {
 		if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) return;
 		if (beam.customName.equals("disco_ball_beam")) return;
 		if (beamlifes.size() > 20) return;
-		if (!colors.contains(beam.getColor())) colors.add(beam.getColor());
+		colors.add(beam.getColor());
 
 		double radius = 5, rotX = ThreadLocalRandom.current().nextDouble(0, 360), rotZ = ThreadLocalRandom.current().nextDouble(0, 360);
 		int x = (int) (radius * MathHelper.cos((float) Math.toRadians(rotX)));

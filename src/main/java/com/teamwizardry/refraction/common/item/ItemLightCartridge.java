@@ -5,10 +5,8 @@ import com.teamwizardry.librarianlib.features.base.item.ItemMod;
 import com.teamwizardry.librarianlib.features.helpers.ItemNBTHelper;
 import com.teamwizardry.librarianlib.features.utilities.client.ColorUtils;
 import com.teamwizardry.refraction.api.IAmmo;
-import com.teamwizardry.refraction.common.block.BlockFilter;
 import kotlin.jvm.functions.Function2;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,7 +17,7 @@ import javax.annotation.Nullable;
 import java.awt.*;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class ItemLightCartridge extends ItemMod implements IAmmo, IItemColorProvider {
 

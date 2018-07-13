@@ -11,7 +11,7 @@ import com.teamwizardry.refraction.client.gui.builder.GuiBuilder;
 import com.teamwizardry.refraction.common.network.PacketBuilderGridSaver;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class OptionFill extends LeftSidebar {
 

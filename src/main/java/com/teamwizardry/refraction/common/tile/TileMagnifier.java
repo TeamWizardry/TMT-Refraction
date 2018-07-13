@@ -15,7 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import java.awt.*;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 @TileRegister("magnifier")
 public class TileMagnifier extends TileMod implements ITickable {

@@ -3,7 +3,6 @@ package com.teamwizardry.refraction.client.gui.builder;
 import com.teamwizardry.librarianlib.core.client.ClientTickHandler;
 import com.teamwizardry.librarianlib.features.gui.EnumMouseButton;
 import com.teamwizardry.librarianlib.features.gui.GuiBase;
-import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponentEvents;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentList;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
@@ -26,7 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import javax.annotation.Nullable;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class GuiBuilder extends GuiBase {
 

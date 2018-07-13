@@ -24,7 +24,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.teamwizardry.refraction.common.entity.EntityGrenade.DATA_COLOR;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class RenderGrenade extends RenderSnowball<EntityGrenade> {
 

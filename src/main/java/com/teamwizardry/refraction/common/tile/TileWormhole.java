@@ -18,7 +18,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 @TileRegister("wormhole")
 public class TileWormhole extends MultipleBeamTile {

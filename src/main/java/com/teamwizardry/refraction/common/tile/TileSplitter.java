@@ -5,7 +5,6 @@ import com.teamwizardry.librarianlib.features.base.block.tile.TileMod;
 import com.teamwizardry.librarianlib.features.math.Matrix4;
 import com.teamwizardry.librarianlib.features.saving.Save;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.EffectTracker;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -13,11 +12,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
 
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 @TileRegister("splitter")
 public class TileSplitter extends TileMod implements ITickable {

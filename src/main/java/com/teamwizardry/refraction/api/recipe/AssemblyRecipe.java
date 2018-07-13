@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  * <p>
  * All items stored as an {@code ItemStack} or {@code ArrayList<ItemStack>}
  */

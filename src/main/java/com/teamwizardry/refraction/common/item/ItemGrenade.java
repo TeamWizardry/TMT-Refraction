@@ -27,7 +27,7 @@ import java.awt.*;
 import static net.minecraft.item.ItemBow.getArrowVelocity;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class ItemGrenade extends ItemMod implements IItemColorProvider {
 

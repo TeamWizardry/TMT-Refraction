@@ -6,7 +6,7 @@ import com.teamwizardry.librarianlib.features.saving.Save;
 import net.minecraft.util.ITickable;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 @TileRegister("invisible_redstone")
 public class TileInvisibleRedstone extends TileMod implements ITickable {

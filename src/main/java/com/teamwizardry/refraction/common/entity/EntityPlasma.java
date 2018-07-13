@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import java.awt.*;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class EntityPlasma extends Entity {
 

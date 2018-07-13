@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class LeftSidebar {
 

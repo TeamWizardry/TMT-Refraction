@@ -29,7 +29,7 @@ import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 @TileRegister("laser")
 public class TileLaser extends TileMod implements ITickable {

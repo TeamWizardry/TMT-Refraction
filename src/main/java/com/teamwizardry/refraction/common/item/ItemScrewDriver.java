@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
 import static com.teamwizardry.refraction.api.IPrecision.Helper.*;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class ItemScrewDriver extends ItemMod {
 

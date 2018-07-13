@@ -14,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 

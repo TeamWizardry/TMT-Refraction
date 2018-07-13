@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class BlockMagnifier extends BlockModContainer implements ILightSink {
 

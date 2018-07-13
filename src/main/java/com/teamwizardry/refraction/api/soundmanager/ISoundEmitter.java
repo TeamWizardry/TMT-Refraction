@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public interface ISoundEmitter {
 

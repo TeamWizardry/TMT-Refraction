@@ -4,7 +4,7 @@ import com.teamwizardry.librarianlib.features.base.block.BlockModDirectional;
 import net.minecraft.block.material.Material;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class BlockProjector extends BlockModDirectional {
 

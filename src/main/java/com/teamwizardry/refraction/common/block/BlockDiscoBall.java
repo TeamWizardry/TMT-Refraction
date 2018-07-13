@@ -15,7 +15,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class BlockDiscoBall extends BlockModContainer implements ILightSink {
 

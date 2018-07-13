@@ -11,7 +11,7 @@ import net.minecraft.world.IBlockAccess;
 import javax.annotation.Nullable;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class BlockInvisible extends BlockMod {
 

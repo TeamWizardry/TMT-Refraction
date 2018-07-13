@@ -23,7 +23,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class ItemArmorReflectiveAlloy extends ItemModArmor implements IReflectiveArmor, ISpecialArmor {
 

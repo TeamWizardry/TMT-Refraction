@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.block;
 
-import com.teamwizardry.librarianlib.features.base.block.BlockMod;
 import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.ILightSink;
@@ -15,7 +14,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class BlockFrictionDrill extends BlockModContainer implements ILightSink {
 

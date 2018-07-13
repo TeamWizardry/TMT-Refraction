@@ -22,7 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.teamwizardry.refraction.common.entity.EntityPlasma.*;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class RenderPlasma extends Render<EntityPlasma> {
 

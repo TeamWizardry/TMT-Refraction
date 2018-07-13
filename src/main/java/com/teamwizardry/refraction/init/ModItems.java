@@ -7,7 +7,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class ModItems {
 

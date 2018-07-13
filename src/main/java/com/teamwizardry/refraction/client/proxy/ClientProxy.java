@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class ClientProxy extends CommonProxy implements IResourceManagerReloadListener {
 

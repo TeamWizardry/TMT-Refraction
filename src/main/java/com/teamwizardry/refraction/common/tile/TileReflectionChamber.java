@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 @TileRegister("reflection_chamber")
 public class TileReflectionChamber extends MultipleBeamTile {

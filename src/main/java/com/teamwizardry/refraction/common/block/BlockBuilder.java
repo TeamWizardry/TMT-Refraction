@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class BlockBuilder extends BlockModContainer implements ILightSink {
 

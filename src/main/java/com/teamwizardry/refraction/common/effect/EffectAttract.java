@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.teamwizardry.refraction.api.beam.EffectTracker.gravityReset;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  * Will attract any entities that intersect with the beam. < 128 only attracts item entities.
  */
 public class EffectAttract extends Effect {

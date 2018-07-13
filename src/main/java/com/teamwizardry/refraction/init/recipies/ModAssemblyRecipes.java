@@ -13,7 +13,7 @@ import static com.teamwizardry.refraction.api.lib.LibOreDict.*;
 import static com.teamwizardry.refraction.api.recipe.AssemblyBehaviors.register;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class ModAssemblyRecipes {
 

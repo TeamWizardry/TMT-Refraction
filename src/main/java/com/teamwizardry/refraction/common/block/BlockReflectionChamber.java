@@ -8,7 +8,6 @@ import com.teamwizardry.refraction.api.IOpticConnectable;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.client.render.RenderReflectionChamber;
-import com.teamwizardry.refraction.common.effect.EffectAesthetic;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileReflectionChamber;
 import net.minecraft.block.SoundType;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class BlockReflectionChamber extends BlockModContainer implements IOpticConnectable, ILightSink {
 

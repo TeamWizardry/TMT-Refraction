@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
 import java.awt.*;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class EffectRedstone extends Effect {
 

@@ -1,6 +1,5 @@
 package com.teamwizardry.refraction.common.effect;
 
-import com.teamwizardry.refraction.api.beam.BeamHitEvent;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +17,7 @@ import java.awt.*;
 import static com.teamwizardry.refraction.api.beam.EffectTracker.gravityReset;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class EffectGravity extends Effect {
 

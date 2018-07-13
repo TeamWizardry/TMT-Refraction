@@ -7,7 +7,7 @@ import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.refraction.client.gui.LeftSidebar;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class ModeSelector extends LeftSidebar {
 

@@ -16,7 +16,7 @@ import net.minecraftforge.common.util.Constants;
 import java.awt.*;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 @TileRegister("builder")
 public class TileBuilder extends MultipleBeamTile {

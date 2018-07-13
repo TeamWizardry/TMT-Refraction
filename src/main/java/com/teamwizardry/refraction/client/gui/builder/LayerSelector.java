@@ -7,7 +7,7 @@ import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.refraction.client.gui.RightSidebar;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class LayerSelector extends RightSidebar {
 

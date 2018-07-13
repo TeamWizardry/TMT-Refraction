@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
 

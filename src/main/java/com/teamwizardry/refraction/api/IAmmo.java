@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public interface IAmmo {
 	boolean hasColor(@Nonnull ItemStack stack);

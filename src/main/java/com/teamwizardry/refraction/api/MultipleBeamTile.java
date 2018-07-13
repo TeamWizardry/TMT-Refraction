@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  * <p>
  * Extend this class in for a tile entity to have it handle multiple inputBeams properly.
  * You can access the list of merged inputBeams via the beamOutputs hashmap.

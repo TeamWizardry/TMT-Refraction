@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class BlockInvisibleRedstone extends BlockModContainer {
 

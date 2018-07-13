@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 @TileRegister("electric_laser")
 public class TileElectricLaser extends TileModTickable {

@@ -12,10 +12,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
 
 /**
- * Created by LordSaad44
+ * Created by Demoniaque
  */
 @TileRegister("mirror")
 public class TileMirror extends TileMod implements ITickable {

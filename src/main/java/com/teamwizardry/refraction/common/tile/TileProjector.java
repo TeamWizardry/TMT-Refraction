@@ -5,7 +5,7 @@ import com.teamwizardry.librarianlib.features.base.block.tile.TileMod;
 import net.minecraft.util.ITickable;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 @TileRegister("projector")
 public class TileProjector extends TileMod implements ITickable {

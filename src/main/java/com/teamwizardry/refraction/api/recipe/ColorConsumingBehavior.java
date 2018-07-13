@@ -15,7 +15,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Created by LordSaad.
+ * Created by Demoniaque.
  */
 public class ColorConsumingBehavior implements IAssemblyBehavior {
 
