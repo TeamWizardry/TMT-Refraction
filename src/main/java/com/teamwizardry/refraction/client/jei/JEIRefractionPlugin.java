@@ -66,9 +66,9 @@ public class JEIRefractionPlugin implements IModPlugin {
 
 	private void blacklist(IIngredientBlacklist blacklist) {
 		blacklistBlock(blacklist, ModBlocks.WORMHOLE);
-		blacklistBlock(blacklist, ModBlocks.DRILL);
-		blacklistBlock(blacklist, ModBlocks.PROJECTOR);
-		blacklistBlock(blacklist, ModBlocks.BUILDER);
+		//blacklistBlock(blacklist, ModBlocks.DRILL);
+		//blacklistBlock(blacklist, ModBlocks.PROJECTOR);
+		//blacklistBlock(blacklist, ModBlocks.BUILDER);
 	}
 	private void blacklistBlock(IIngredientBlacklist bl, Block block) {
 		bl.addIngredientToBlacklist(new ItemStack(block));

@@ -33,9 +33,9 @@ public class ModBlocks {
 	public static BlockFilter FILTER;
 	public static BlockInvisible INVISIBLE;
 	public static BlockInvisibleRedstone INVISIBLE_REDSTONE;
-	public static BlockBuilder BUILDER;
-	public static BlockProjector PROJECTOR;
-	public static BlockFrictionDrill DRILL;
+	//public static BlockBuilder BUILDER;
+	//public static BlockProjector PROJECTOR;
+	//public static BlockFrictionDrill DRILL;
 	public static BlockWormHole WORMHOLE;
 	public static BlockElectricLaser ELECTRIC_LASER;
 	public static BlockDarkBridge DARK_BRIDGE;
@@ -63,9 +63,9 @@ public class ModBlocks {
 		FILTER = new BlockFilter();
 		INVISIBLE = new BlockInvisible();
 		INVISIBLE_REDSTONE = new BlockInvisibleRedstone();
-		BUILDER = new BlockBuilder();
-		PROJECTOR = new BlockProjector();
-		DRILL = new BlockFrictionDrill();
+		//BUILDER = new BlockBuilder();
+		//PROJECTOR = new BlockProjector();
+		//DRILL = new BlockFrictionDrill();
 		WORMHOLE = new BlockWormHole();
 		ELECTRIC_LASER = new BlockElectricLaser();
 		DARK_BRIDGE = new BlockDarkBridge();
