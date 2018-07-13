@@ -3,11 +3,13 @@ package com.teamwizardry.refraction.client.gui.tablet;
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
+import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
 import com.teamwizardry.librarianlib.features.gui.provided.book.IBookGui;
 import com.teamwizardry.librarianlib.features.gui.provided.book.TranslationHolder;
 import com.teamwizardry.librarianlib.features.gui.provided.book.hierarchy.entry.Entry;
 import com.teamwizardry.librarianlib.features.gui.provided.book.hierarchy.page.Page;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
+import com.teamwizardry.refraction.api.book.ITextModularCallback;
 import com.teamwizardry.refraction.api.book.ITextModularParser;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -16,15 +18,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
 
-public class PageTextModular implements Page {
+public class PageTextModular implements Page, ITextModularCallback {
 
 	private TranslationHolder langText;
 	private Entry entry;
 	private static List<ITextModularParser> parsers = new ArrayList<>();
+	private Map<String, GuiComponent> customComponents = new HashMap<>();
 
 	public static void registerParser(ITextModularParser parser) {
 		parsers.add(parser);
@@ -45,9 +47,9 @@ public class PageTextModular implements Page {
 	@Override
 	public List<GuiComponent> createBookComponents(@NotNull IBookGui book, @NotNull Vec2d size) {
 		List<GuiComponent> pages = new ArrayList<>();
-		String text = langText.toString();
+		String text = langText.toString().replace("<br>", "\n");
 		for ( ITextModularParser parser : parsers) {
-			text = parser.parse(text);
+			text = parser.parse(this, text);
 		}
 
 		int lineCount = lineCount(size);
@@ -74,14 +76,39 @@ public class PageTextModular implements Page {
 			sections.add(String.join("\n", page));
 
 		for (String section : sections) {
-			ComponentText sectionComponent = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
-			sectionComponent.getText().setValue(section);
-			sectionComponent.getWrap().setValue(size.getXi());
-			sectionComponent.getUnicode().setValue(true);
-
-			pages.add(sectionComponent);
+			pages.add(createSection(section, size));
 		}
 		return pages;
+	}
+
+	private GuiComponent createSection(String text, @NotNull Vec2d size) {
+		ComponentVoid content = new ComponentVoid(0,0);
+		StringBuilder prevText = new StringBuilder(text.length());
+
+		for (String word : text.split(" ")) {
+			if (customComponents.containsKey(word)) {
+				if ( prevText.length() > 0) {
+					content.add(createTextPart(prevText.toString(), size));
+					prevText = new StringBuilder(text.length() - prevText.length());
+				}
+				content.add(customComponents.get(word));
+			} else {
+				prevText.append(word);
+				prevText.append(" ");
+			}
+		}
+
+		if ( prevText.length() > 0)
+			content.add(createTextPart(prevText.toString(), size));
+		return content;
+	}
+
+	private GuiComponent createTextPart(String text, @NotNull Vec2d size) {
+		ComponentText textComp = new ComponentText(0, 0, ComponentText.TextAlignH.LEFT, ComponentText.TextAlignV.TOP);
+		textComp.getText().setValue(text);
+		textComp.getWrap().setValue(size.getXi());
+		textComp.getUnicode().setValue(true);
+		return textComp;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -99,5 +126,12 @@ public class PageTextModular implements Page {
 	@Override
 	public Collection<String> getSearchableKeys() {
 		return null;
+	}
+
+	@Override
+	public String addCustomComponent(GuiComponent component) {
+		String newKey = "[~~~" + customComponents.size() + "~~~]";
+		customComponents.put( newKey, component);
+		return newKey;
 	}
 }

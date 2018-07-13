@@ -15,8 +15,8 @@ public class ComponentPicture extends GuiComponent {
 
 		int x = (int)(-8 + getSize().getX() / 2.0 - 24.0 - 16d);
 		int y = (int)(-8 + getSize().getY() / 2.0 - 16D - 8.0);
-		ComponentSprite pic = new ComponentSprite(new Sprite(picLoc), x, y, 16, 16);
-		add(pic);
+
+		add(new ComponentSprite(new Sprite(picLoc), x, y, 16, 16));
 
 		if (subtext != null) {
 			ComponentText text = new ComponentText(getSize().getXi() / 2, getSize().getYi() * 3 / 4, ComponentText.TextAlignH.CENTER, ComponentText.TextAlignV.TOP);

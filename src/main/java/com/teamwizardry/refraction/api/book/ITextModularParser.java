@@ -5,5 +5,5 @@ import org.jetbrains.annotations.NotNull;
 public interface ITextModularParser {
 
 	@NotNull
-	String parse(String text);
+	String parse(ITextModularCallback callback, String text);
 }

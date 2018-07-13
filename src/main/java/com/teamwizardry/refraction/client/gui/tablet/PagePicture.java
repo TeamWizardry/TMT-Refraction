@@ -28,6 +28,7 @@ public class PagePicture implements Page {
 			subtext = TranslationHolder.Companion.fromJson(jsonElement.get("subtext"));
 		pictureLoc = new ResourceLocation(jsonElement.get("picture").getAsString());
 		this.entry = entry;
+
 	}
 
 	@NotNull
@@ -35,9 +36,9 @@ public class PagePicture implements Page {
 	@SideOnly(Side.CLIENT)
 	@SuppressWarnings("unchecked")
 	public List<GuiComponent> createBookComponents(@NotNull IBookGui book, @NotNull Vec2d size) {
-		return new ArrayList<GuiComponent>() {{
-			new ComponentPicture(0, 0, size.getXi(), size.getYi(), pictureLoc, subtext);
-		}};
+		List<GuiComponent> comps = new ArrayList<>();
+		comps.add( new ComponentPicture(0, 0, size.getXi(), size.getYi(), pictureLoc, subtext));
+		return comps;
 	}
 
 	@Nullable
