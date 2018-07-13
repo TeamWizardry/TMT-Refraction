@@ -111,7 +111,7 @@ refraction.book.start.title=Getting Started
 
 refraction.book.start.hello.title=Refraction
 refraction.book.start.hello.desc=Blinded by the Light
-refraction.book.start.hello.content1=Hello there, [player]! I'm Eve, your personal assistant! \n I'm here to help you &m<study phys&kics&r&m>&rlearn how to manipulate light using reflection and refraction!
+refraction.book.start.hello.content1=Hello there, [player]! I'm Eve, your personal assistant! <br> I'm here to help you &m<study phys&kics&r&m>&rlearn how to manipulate light using reflection and refraction!
 refraction.book.start.hello.content2=Ever wanted to suck items and entities with a single beam of light? Ever wanted to create a disco ball based quarry? How about creating a laser defense system? Or, heck, maybe you just wanted to make an epic laser show?
 refraction.book.start.hello.content3=Well then, [player], welcome to my world of reflection and refraction! You will not be disappointed at the results of mirror arrays and rainbows. Let's get started, shall we?
 
@@ -123,9 +123,8 @@ refraction.book.start.rainbow.content2=Light also has a strength, or in more tec
 refraction.book.start.rainbow.content3=So now we have RGB and A (or RGBA). You start off with a white beam (which we will get to later in [Baby Steps]). A white beam or white color in general is a color mix of all three primary colors. It contains red, green, and blue in equal amounts merged.
 refraction.book.start.rainbow.content4=You will be basing your work on this knowledge because you want to acquire the many different colors from white beams which will be split (later on).
 refraction.book.start.rainbow.content5=The way we represent the rgb values (in recipes and the spectrometer) is using ratios. So if the spectrometer is showing half red and half blue, it means it doesn't matter 'how much of blue and red in values' you have, it means that you just need a perfectly equal amount of both with respect to each other.
-refraction.book.start.rainbow.content6=The value that DOES matter and not as a ratio is the white bar which indicates alpha/strength/amount.
-refraction.book.start.rainbow.content7=You can see the recipe of the Reflection Chamber on the right tab to see an example of the bars viewed in the recipes.
-refraction.book.start.rainbow.content8=&c&l[!] FOR FUTURE REFERENCE [!]&r \n Solar alpha/strength (used in magnifiers): [config:solar_strength] \n Glowstone alpha/strength (used in laser blocks): [config:glowstone_strength]
+refraction.book.start.rainbow.content6=The value that DOES matter and not as a ratio is the white bar which indicates alpha/strength/amount. You can see the recipe of the Reflection Chamber on the right tab to see an example of the bars viewed in the recipes.
+refraction.book.start.rainbow.content7=&c&l[!] FOR FUTURE REFERENCE [!]&r <br> Solar alpha/strength (used in magnifiers): [config:solar_strength] <br> Glowstone alpha/strength (used in laser blocks): [config:glowstone_strength]
 
 refraction.book.start.baby.title=Baby Steps
 refraction.book.start.baby.desc=Initial Setup

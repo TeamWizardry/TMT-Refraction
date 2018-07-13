@@ -8,7 +8,10 @@
   "content": [
     "refraction.book.start.merging.content1",
     "refraction.book.start.merging.content2",
-    "refraction.book.start.merging.content3",
+    {
+      "type": "textmodular",
+      "text": "refraction.book.start.merging.content3"
+    },
     "refraction.book.start.merging.content4",
     "refraction.book.start.merging.content5",
     "refraction.book.start.merging.content6",

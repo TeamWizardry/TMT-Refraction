@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.init;
 import com.teamwizardry.librarianlib.features.gui.provided.book.provider.PageTypes;
 import com.teamwizardry.refraction.client.gui.tablet.PagePicture;
 import com.teamwizardry.refraction.client.gui.tablet.PageTextModular;
+import com.teamwizardry.refraction.client.gui.tablet.TextModularConfigParser;
 import com.teamwizardry.refraction.client.gui.tablet.TextModularPlayerParser;
 
 public class ModGuiPages {
@@ -13,5 +14,6 @@ public class ModGuiPages {
 
 
 		PageTextModular.registerParser(new TextModularPlayerParser());
+		PageTextModular.registerParser(new TextModularConfigParser());
 	}
 }

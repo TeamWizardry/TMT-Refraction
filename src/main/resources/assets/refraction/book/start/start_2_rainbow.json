@@ -12,7 +12,9 @@
     "refraction.book.start.rainbow.content4",
     "refraction.book.start.rainbow.content5",
     "refraction.book.start.rainbow.content6",
-    "refraction.book.start.rainbow.content7",
-    "refraction.book.start.rainbow.content8"
+    {
+      "type": "textmodular",
+      "text": "refraction.book.start.rainbow.content7"
+    }
   ]
 }

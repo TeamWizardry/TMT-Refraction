@@ -10,9 +10,15 @@
     "refraction.book.start.reflection.content2",
     "refraction.book.start.reflection.content3",
     "refraction.book.start.reflection.content4",
-    "refraction.book.start.reflection.content5",
+    {
+      "type": "textmodular",
+      "text": "refraction.book.start.reflection.content5"
+    },
     "refraction.book.start.reflection.content6",
-    "refraction.book.start.reflection.content7",
+    {
+      "type": "textmodular",
+      "text": "refraction.book.start.reflection.content7"
+    },
     "refraction.book.start.reflection.content8",
     "refraction.book.start.reflection.content9"
   ]
