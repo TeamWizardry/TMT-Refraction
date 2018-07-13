@@ -275,7 +275,6 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 					EnumFacing baseExciterFacing = baseExciterState.getValue(BlockElectronExciter.FACING);
 					TileElectronExciter exciter = (TileElectronExciter) world.getTileEntity(backwards);
 					if (exciter != null)  {
-
 						// Check for adjacent exciters
 						if (isNeighborValid(world, pos, backwards, baseExciterFacing)) {
 							exciter.expire = Constants.SOURCE_TIMER;
@@ -286,7 +285,6 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 					} else world.setBlockToAir(pos);
 				} else if (world.getBlockState(backwards).getBlock() == Blocks.AIR) {
 					world.setBlockToAir(pos);
-					return false;
 				}
 			}
 		}
@@ -295,7 +293,7 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 		return false;
 	}
 
-	protected boolean isNeighborValid(@Nonnull World world, @Nonnull BlockPos origin, @Nonnull BlockPos backwards, EnumFacing baseExciterFacing) {
+	private boolean isNeighborValid(@Nonnull World world, @Nonnull BlockPos origin, @Nonnull BlockPos backwards, EnumFacing baseExciterFacing) {
 		boolean hasValidNeighbor = false;
 		for (EnumFacing facing : EnumFacing.VALUES) {
 			if (facing != baseExciterFacing || facing != baseExciterFacing.getOpposite()) {
@@ -311,7 +309,7 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 		return hasValidNeighbor;
 	}
 
-	protected void fireColor(World world, BlockPos pos, Vec3d hitPos, Vec3d ref, double IORMod, Beam beam) {
+	private void fireColor(World world, BlockPos pos, Vec3d hitPos, Vec3d ref, double IORMod, Beam beam) {
 		IBlockState state = world.getBlockState(pos);
 		BlockPrism.RayTraceResultData<Vec3d> r = collisionRayTraceLaser(state, world, pos, hitPos.subtract(ref), hitPos.add(ref));
 		assert r != null;

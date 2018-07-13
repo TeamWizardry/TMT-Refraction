@@ -5,6 +5,7 @@ import com.teamwizardry.librarianlib.features.base.block.tile.TileMod;
 import com.teamwizardry.librarianlib.features.saving.Save;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.common.block.BlockElectronExciter;
+import com.teamwizardry.refraction.common.block.BlockLightBridgeBase;
 import com.teamwizardry.refraction.init.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -33,7 +34,7 @@ public class TileElectronExciter extends TileMod implements ITickable {
 			int size = 1;
 			while (size < ConfigValues.BEAM_RANGE) {
 				BlockPos bridgePos = pos.offset(facing, size);
-				if (world.getBlockState(bridgePos).getBlock() == ModBlocks.LIGHT_BRIDGE) {
+				if (world.getBlockState(bridgePos).getBlock() instanceof BlockLightBridgeBase) {
 					world.setBlockToAir(bridgePos);
 					size++;
 				} else break;
