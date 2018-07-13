@@ -5,12 +5,8 @@ import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
-import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.ILightSink;
-import com.teamwizardry.refraction.common.effect.EffectAesthetic;
-import com.teamwizardry.refraction.common.effect.EffectAttract;
-import com.teamwizardry.refraction.common.effect.EffectDisperse;
-import com.teamwizardry.refraction.common.effect.EffectGravity;
+import com.teamwizardry.refraction.common.effect.*;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileElectronExciter;
 import com.teamwizardry.refraction.init.ModBlocks;
@@ -33,7 +29,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -84,19 +79,7 @@ public class BlockElectronExciter extends BlockModContainer implements ILightSin
 
 		if (beam.effect instanceof EffectAttract) {
 			if (beam.getAlpha() > 128) {
-				EnumFacing block = world.getBlockState(pos).getValue(FACING);
-				if (isIncomingBeamValid(world, pos, block, beam)) {
-					TileElectronExciter exciter = getTE(world, pos);
-					if (exciter != null) {
-						exciter.hasCardinalBeam = true;
-
-						if (!getValidNeighbors(world, pos, block, true).isEmpty()) {
-							exciter.expire = Constants.SOURCE_TIMER;
-							if (world.isAirBlock(pos.offset(block)))
-								world.setBlockState(pos.offset(block), ModBlocks.LIGHT_BRIDGE.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
-						}
-					}
-				}
+				trySpawnBridge(world, pos, beam, ModBlocks.LIGHT_BRIDGE);
 			}
 		} else if (beam.effect instanceof EffectDisperse) {
 			EnumFacing block = world.getBlockState(pos).getValue(FACING);
@@ -110,8 +93,27 @@ public class BlockElectronExciter extends BlockModContainer implements ILightSin
 					}
 				}
 			}
+		} else if (beam.effect instanceof EffectBurn) {
+			if (beam.getAlpha() > 128) {
+				trySpawnBridge(world, pos, beam, ModBlocks.DARK_BRIDGE);
+			}
 		}
 		return true;
+	}
+
+	private void trySpawnBridge(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Beam beam, BlockLightBridgeBase bridgeBlock) {
+		EnumFacing block = world.getBlockState(pos).getValue(FACING);
+		if (isIncomingBeamValid(world, pos, block, beam)) {
+			TileElectronExciter exciter = getTE(world, pos);
+			if (exciter != null) {
+				exciter.hasCardinalBeam = true;
+				if (!getValidNeighbors(world, pos, block, true).isEmpty()) {
+					exciter.expire = Constants.SOURCE_TIMER;
+					if (world.isAirBlock(pos.offset(block)))
+						world.setBlockState(pos.offset(block), bridgeBlock.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
+				}
+			}
+		}
 	}
 
 	private Set<EnumFacing> getValidNeighbors(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing block, boolean requresCardinal) {
@@ -218,7 +220,7 @@ public class BlockElectronExciter extends BlockModContainer implements ILightSin
 
 	@Override
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.CUTOUT;
+		return layer == BlockRenderLayer.SOLID;
 	}
 
 	@Override

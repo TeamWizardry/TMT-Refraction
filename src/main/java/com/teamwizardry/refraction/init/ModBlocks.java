@@ -38,6 +38,7 @@ public class ModBlocks {
 	public static BlockFrictionDrill DRILL;
 	public static BlockWormHole WORMHOLE;
 	public static BlockElectricLaser ELECTRIC_LASER;
+	public static BlockDarkBridge DARK_BRIDGE;
 
 	public static void init() {
 
@@ -67,6 +68,7 @@ public class ModBlocks {
 		DRILL = new BlockFrictionDrill();
 		WORMHOLE = new BlockWormHole();
 		ELECTRIC_LASER = new BlockElectricLaser();
+		DARK_BRIDGE = new BlockDarkBridge();
 	}
 
 	public static void initOreDict() {
