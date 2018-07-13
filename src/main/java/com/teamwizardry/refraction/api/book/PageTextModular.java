@@ -1,4 +1,4 @@
-package com.teamwizardry.refraction.client.gui.tablet;
+package com.teamwizardry.refraction.api.book;
 
 import com.google.gson.JsonObject;
 import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
