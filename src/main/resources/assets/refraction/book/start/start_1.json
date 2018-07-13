@@ -6,8 +6,14 @@
   "title": "refraction.book.start.hello.title",
   "description": "refraction.book.start.hello.desc",
   "content": [
-    "refraction.book.start.hello.content1",
+    {
+      "type": "textmodular",
+      "text": "refraction.book.start.hello.content1"
+    },
     "refraction.book.start.hello.content2",
-    "refraction.book.start.hello.content3"
+    {
+      "type": "textmodular",
+      "text": "refraction.book.start.hello.content3"
+    }
   ]
 }

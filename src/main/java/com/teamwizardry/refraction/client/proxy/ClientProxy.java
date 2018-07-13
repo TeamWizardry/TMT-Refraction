@@ -14,6 +14,7 @@ import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import com.teamwizardry.refraction.common.entity.EntityPlasma;
 import com.teamwizardry.refraction.common.proxy.CommonProxy;
 import com.teamwizardry.refraction.init.ModBlocks;
+import com.teamwizardry.refraction.init.ModGuiPages;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
@@ -43,6 +44,7 @@ public class ClientProxy extends CommonProxy implements IResourceManagerReloadLi
 		EventHandlerClient.INSTANCE.getClass(); // ditto
 		ModBlocks.initModels();
 		ModItems.initModels();
+		ModGuiPages.init();
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityLaserPointer.class, RenderLaserPoint::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityPlasma.class, RenderPlasma::new);

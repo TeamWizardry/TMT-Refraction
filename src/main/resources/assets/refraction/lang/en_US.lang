@@ -124,7 +124,7 @@ refraction.book.start.rainbow.content3=So now we have RGB and A (or RGBA). You s
 refraction.book.start.rainbow.content4=You will be basing your work on this knowledge because you want to acquire the many different colors from white beams which will be split (later on).
 refraction.book.start.rainbow.content5=The way we represent the rgb values (in recipes and the spectrometer) is using ratios. So if the spectrometer is showing half red and half blue, it means it doesn't matter 'how much of blue and red in values' you have, it means that you just need a perfectly equal amount of both with respect to each other.
 refraction.book.start.rainbow.content6=The value that DOES matter and not as a ratio is the white bar which indicates alpha/strength/amount.
-refraction.book.start.rainbow.content7=You can see the recipe of the [recipe:refraction:reflection_chamber] on the right tab to see an example of the bars viewed in the recipes.
+refraction.book.start.rainbow.content7=You can see the recipe of the Reflection Chamber on the right tab to see an example of the bars viewed in the recipes.
 refraction.book.start.rainbow.content8=&c&l[!] FOR FUTURE REFERENCE [!]&r \n Solar alpha/strength (used in magnifiers): [config:solar_strength] \n Glowstone alpha/strength (used in laser blocks): [config:glowstone_strength]
 
 refraction.book.start.baby.title=Baby Steps
@@ -139,7 +139,7 @@ refraction.book.start.shiny.content1=Neither gold nor iron have the reflective p
 
 refraction.book.start.reflection.title=Reflection
 refraction.book.start.reflection.desc=Mirror Array
-refraction.book.start.reflection.content1=Now that you have more reflective resources, you can dispense with the annoyance of placing the [recipe:refraction:magnifier] exactly above the table. By creating a [recipe:refraction:mirror] with reflective alloys and rotating it using a [recipe:refraction:screw_driver] you can redirect beams to any direction.
+refraction.book.start.reflection.content1=Now that you have more reflective resources, you can dispense with the annoyance of placing the [recipe:refraction:magnifier] exactly above the table. By creating a Mirror with reflective alloys and rotating it using a [recipe:refraction:screw_driver] you can redirect beams to any direction.
 refraction.book.start.reflection.content2=You can craft a Mirror using the assembly table you crafted. The Assembly table will allow you to make such materials, by using magnifiers to focus beams into it and providing a &lredstone signal&r, it will fuse the items inside of it together provided the beams being pointed into it evaluate to the correct color range and add up to the proper beam strength value (that also has a max and min per recipe).
 refraction.book.start.reflection.content3=&lIN LAYMAN'S TERMS:&r Each assembly table recipe requires different colored beams to be pointed at it and a specific alpha value range that needs to be met for it to be able to craft your item.&r
 refraction.book.start.reflection.content4=If you focus multiple beams into an assembly table, it'll be able to do more intense recipes, granting you more components to play with which you can read about later. For now, let me tell you how to craft the mirror:
@@ -200,7 +200,7 @@ refraction.book.items.screw.content7=&c&l[!] WARNING [!]&r Powering a dispenser 
 
 refraction.book.items.alloy.title=Reflective Alloy
 refraction.book.items.alloy.desc=TODO
-refraction.book.items.alloy.content1=You've already seen the [recipe:refraction:reflective_alloy] ingots, but what you didn't know is that it has a block variation. The block form of this alloy will reflect/bounce all beams that intersect with it in the cardinal direction hit. In a way, it's sort of a cheap precisionless mirror. This block is considered as great protection against volatile or dangerous beams.
+refraction.book.items.alloy.content1=You've already seen the Reflective Alloy ingots, but what you didn't know is that it has a block variation. The block form of this alloy will reflect/bounce all beams that intersect with it in the cardinal direction hit. In a way, it's sort of a cheap precisionless mirror. This block is considered as great protection against volatile or dangerous beams.
 refraction.book.items.alloy.content2=You can also craft reflective alloy armor with this ingot. Each piece will decrease the potency of any beam effect that hits you. A full set wont completely negate effects, but you will become a walking mirror. IE: Beams will literally bounce and reflect off of you in the direction you face.
 
 
@@ -262,7 +262,7 @@ refraction.book.blocks.spectro.content1=The spectrometer is a block that can sho
 refraction.book.blocks.exciter.title=Electron Exciter
 refraction.book.blocks.exciter.desc=TODO
 refraction.book.blocks.exciter.content1=Our friends at aperture science have provided us with their amazing technology of hard light bridges!
-refraction.book.blocks.exciter.content2=By pointing 2 (or more) attraction (cyan) beams perfectly parallel and pointing straight into 2 adjacent [recipe:refraction:electron_exciter]s, a bridge made out of pure light will form between them.
+refraction.book.blocks.exciter.content2=By pointing 2 (or more) attraction (cyan) beams perfectly parallel and pointing straight into 2 adjacent Electron Exciters, a bridge made out of pure light will form between them.
 refraction.book.blocks.exciter.content3=This bridge is indestructible, and therefore great for a plethora of uses. You can stack multiple bridges next to each other and in any direction.
 refraction.book.blocks.exciter.content4=My friend, GlAdOs, told me to send you this message: 'These bridges are made from natural light that we pumped in from the surface. If you rubbed your cheek on one, it would be like standing outside with the sun shining on your face. It would also set your hair on fire, so don't actually do it.
 
