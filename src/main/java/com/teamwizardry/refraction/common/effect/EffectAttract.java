@@ -62,7 +62,7 @@ public class EffectAttract extends Effect {
 
 	@Override
 	public void runBlock(World world, BlockPos pos, int potency) {
-		if (beam.trace == null) return;
+		if (beam.trace == null || beam.trace.getBlockPos() == null) return;
 		TileEntity tile = world.getTileEntity(beam.trace.getBlockPos());
 		if (tile == null) return;
 		if (!EffectBurn.burnedTileTracker.contains(beam.trace.getBlockPos())) return;
