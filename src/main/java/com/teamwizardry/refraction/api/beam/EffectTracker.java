@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.api.beam;
 
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.common.effect.EffectMundane;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -56,9 +58,9 @@ public class EffectTracker {
 		return effectInstances.putIfAbsent(world, new EffectTracker(world)) == null;
 	}
 
-	public static Effect getEffect(Color color) {
+	public static @Nonnull Effect getEffect(Color color) {
 		double closestDist = Utils.getColorDistance(color, Color.WHITE);
-		Effect closestColor = null;
+		Effect closestColor = new EffectMundane();
 
 		for (Effect effect : effectRegistry) {
 			double dist = Utils.getColorDistance(color, effect.getColor());
@@ -68,7 +70,7 @@ public class EffectTracker {
 			}
 		}
 
-		return closestColor == null ? null : closestColor.copy().setPotency(color.getAlpha());
+		return closestColor.copy().setPotency(color.getAlpha());
 	}
 
 	public static void registerEffect(Effect effect) {
@@ -83,7 +85,7 @@ public class EffectTracker {
 
 			World w = world.get();
 			effects.keySet().removeIf(effect -> {
-				if (effect != null && w != null && effects.get(effect) != null) {
+				if (effect != null && w != null && effects.get(effect) != null && effect.beam.trace != null) {
 					// RUN EFFECT METHODS //
 					effect.run(w);
 					if (effect.beam.caster != null) {

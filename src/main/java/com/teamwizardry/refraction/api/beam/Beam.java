@@ -2,8 +2,8 @@ package com.teamwizardry.refraction.api.beam;
 
 import com.teamwizardry.librarianlib.features.network.PacketHandler;
 import com.teamwizardry.refraction.api.ConfigValues;
+import com.teamwizardry.refraction.api.raytrace.RayTrace;
 import com.teamwizardry.refraction.api.Utils;
-import com.teamwizardry.refraction.api.raytrace.EntityTrace;
 import com.teamwizardry.refraction.common.effect.EffectAesthetic;
 import com.teamwizardry.refraction.common.network.PacketBeamParticle;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +24,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -86,7 +85,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	 * The uuid of the entity that will not be affected by the beam.
 	 */
 	@Nullable
-	public UUID uuidToSkip;
+	public Entity entityToSkip;
 
 	/**
 	 * The person theoretically casting the beam.
@@ -214,8 +213,8 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	 * @param uuidToSkip The uuid to skip the first time it's detected
 	 * @return The new beam created. Can be modified as needed.
 	 */
-	public Beam setUUIDToSkip(UUID uuidToSkip) {
-		this.uuidToSkip = uuidToSkip;
+	public Beam setEntitySkip(Entity entity) {
+		this.entityToSkip = entity;
 		return this;
 	}
 
@@ -312,13 +311,12 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		if (this.getAlpha() <= 1) return;
 		if (bouncedTimes > allowedBounceTimes) return;
 
-		EntityTrace entityTrace = new EntityTrace(world, initLoc, slope).setUUIDToSkip(uuidToSkip).setRange(range);
-		trace = entityTrace.cast();
+		trace = new RayTrace(world, slope, initLoc, range)
+	//			.setEntityFilter( entity -> entity == entityToSkip )
+				.trace();
 
-		if (trace != null && trace.hitVec != null) this.finalLoc = trace.hitVec;
-
-		if (trace == null) return;
-		if (trace.hitVec == null) return;
+		if (trace.hitVec != null) this.finalLoc = trace.hitVec;
+		else return;
 
 		// EFFECT HANDLING //
 		boolean pass = true;
@@ -331,9 +329,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		// ILightSink handling
 		while (!traceCompleted && tries < 100) {
 			tries++;
-			if (trace == null)
-				return;
-			else if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
+			if (trace.typeOfHit == RayTraceResult.Type.BLOCK) {
 				BlockPos pos = trace.getBlockPos();
 				IBlockState state = world.getBlockState(pos);
 				BeamHitEvent event = new BeamHitEvent(world, this, pos, state);
@@ -377,19 +373,8 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		// ENTITY REFLECTING
 		if (trace.typeOfHit == RayTraceResult.Type.ENTITY && trace.entityHit instanceof EntityLivingBase) {
 			EntityLivingBase entity = (EntityLivingBase) trace.entityHit;
-			boolean flag = true;
-			for (ItemStack armor : entity.getArmorInventoryList()) {
-				if (armor == null) {
-					flag = false;
-					break;
-				}
-				if (!(armor.getItem() instanceof IReflectiveArmor)) {
-					flag = false;
-					break;
-				}
-			}
-			if (flag) {
-				createSimilarBeam(entity.getLook(0)).setUUIDToSkip(entity.getUniqueID()).spawn();
+			if (Utils.entityWearsFullReflective(entity)) {
+				createSimilarBeam(entity.getLook(0)).setEntitySkip(entity).spawn();
 			} else if (getAlpha() >= 32) {
 				entity.setFire(1);
 				entity.maxHurtResistantTime = Math.max(5, (10 - (getAlpha() / 255) * 10));
@@ -407,13 +392,15 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private boolean recast() {
-		EntityTrace entityTrace = new EntityTrace(world, this).setUUIDToSkip(uuidToSkip);
-		if (entityTrace.range <= 0) return true;
 
-		if (entityTrace.rayTraceResult != null)
-			trace = entityTrace.cast();
+		double tempRange = range - initLoc.distanceTo(finalLoc);
 
-		if (trace != null && trace.hitVec != null) this.finalLoc = trace.hitVec;
+		RayTrace rayTrace = new RayTrace(world, slope, finalLoc.add(slope.scale(0.05)), tempRange)
+				.setEntityFilter( entity -> entity == entityToSkip );
+		if (tempRange <= 0) return true;
+		trace = rayTrace.trace();
+
+		if (trace.hitVec != null) this.finalLoc = trace.hitVec;
 
 		return false;
 	}
@@ -437,13 +424,13 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		compound.setDouble("slope_x", slope.x);
 		compound.setDouble("slope_y", slope.y);
 		compound.setDouble("slope_z", slope.z);
-		compound.setInteger("color", effect.getColor().getRGB());
+		compound.setInteger("color", getColor().getRGB());
 		compound.setInteger("world", world.provider.getDimension());
 		compound.setInteger("bounce_times", bouncedTimes);
 		compound.setInteger("allowed_bounce_times", allowedBounceTimes);
 		compound.setDouble("range", range);
 		compound.setString("name", customName);
-		if (uuidToSkip != null) compound.setUniqueId("uuid_to_skip", uuidToSkip);
+		if (entityToSkip != null) compound.setUniqueId("uuid_to_skip", entityToSkip.getUniqueID());
 		return compound;
 	}
 
@@ -466,7 +453,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 			throw new NullPointerException("'color' or 'color_alpha' keys not found or missing in deserialized beam object.");
 
 		if (nbt.hasKey("name")) customName = nbt.getString("name");
-		if (nbt.hasKey("uuid_to_skip")) uuidToSkip = nbt.getUniqueId("uuid_to_skip");
+		//if (nbt.hasKey("uuid_to_skip"))  = nbt.getUniqueId("uuid_to_skip");
 		if (nbt.hasKey("range")) range = nbt.getDouble("range");
 		if (nbt.hasKey("bounce_times")) bouncedTimes = nbt.getInteger("bounce_times");
 		if (nbt.hasKey("allowed_bounce_times")) allowedBounceTimes = nbt.getInteger("allowed_bounce_times");

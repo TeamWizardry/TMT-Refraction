@@ -170,8 +170,8 @@ public abstract class Effect implements Cloneable {
 
 	List<Entity> filterEntities(List<Entity> entityList) {
 		entityList.removeIf(entity -> getPotency() < 1
-				|| (beam.uuidToSkip != null
-				&& beam.uuidToSkip.equals(entity.getUniqueID()))
+				|| (beam.entityToSkip != null
+				&& beam.entityToSkip.equals(entity))
 				|| (entity instanceof EntityLivingBase
 				&& ((EntityLivingBase) entity).getActivePotionEffect(MobEffects.INVISIBILITY) != null)
 				|| (entity instanceof EntityPlayer
