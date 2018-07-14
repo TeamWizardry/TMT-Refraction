@@ -107,8 +107,8 @@ public class BlockElectronExciter extends BlockModContainer implements ILightSin
 			TileElectronExciter exciter = getTE(world, pos);
 			if (exciter != null) {
 				exciter.hasCardinalBeam = true;
+				exciter.expire = Constants.SOURCE_TIMER;
 				if (!getValidNeighbors(world, pos, block, true).isEmpty()) {
-					exciter.expire = Constants.SOURCE_TIMER;
 					if (world.isAirBlock(pos.offset(block)))
 						world.setBlockState(pos.offset(block), bridgeBlock.getDefaultState().withProperty(BlockLightBridge.FACING, block.getAxis()), 3);
 				}
