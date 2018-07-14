@@ -44,7 +44,7 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
 		IModel model;
 		if (ball == null) {
 			try {
-				model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID, "block/disco_ball.obj"));
+				model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID, "block/disco_model"));
 				ball = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM,
 						location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
 			} catch (Exception e) {
@@ -55,7 +55,6 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
 
 	@Override
 	public void render(TileDiscoBall te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-	//public void renderTileEntityFast(TileDiscoBall te, double x, double y, double z, float partialTicks, int destroyStage, float partial, net.minecraft.client.renderer.BufferBuilder buffer) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		if (Minecraft.isAmbientOcclusionEnabled())
 			GlStateManager.shadeModel(GL11.GL_SMOOTH);

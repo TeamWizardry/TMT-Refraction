@@ -1,34 +1,22 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "refraction:disco_ball.obj"
-  },
-  "variants": {
-    "facing": {
-      "up": {
-        "x": 180
-      },
-      "down": {
-        "x": 0
-      },
-      "north": {
-        "x": 90,
-        "y": -180
-      },
-      "south": {
-        "x": 90
-      },
-      "west": {
-        "x": 90,
-        "y": 90
-      },
-      "east": {
-        "x": 90,
-        "y": -90
-      }
-    },
-    "inventory": [
-      {}
-    ]
-  }
+	"variants": {
+		"facing=down": {
+			"model": "refraction:disco_ball"
+		},
+		"facing=up": {
+			"model": "refraction:disco_ball"
+		},
+		"facing=north": {
+			"model": "refraction:disco_ball"
+		},
+		"facing=south": {
+			"model": "refraction:disco_ball"
+		},
+		"facing=west": {
+			"model": "refraction:disco_ball"
+		},
+		"facing=east": {
+			"model": "refraction:disco_ball"
+		}
+	}
 }

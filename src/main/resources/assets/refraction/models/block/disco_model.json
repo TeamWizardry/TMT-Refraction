@@ -1,0 +1,33 @@
+{
+	"credit": "Made by Tristaric, utilizing Blockbench.",
+	"textures": {
+		"0": "refraction:blocks/whomst_0",
+		"1": "refraction:blocks/whomst_1",
+		"particle": "refraction:blocks/whomst_0"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [13, 10, 13],
+			"faces": {
+				"north": {"uv": [5.016, 5.016, 9.984, 9.984], "texture": "#0"},
+				"east": {"uv": [0.016, 5.016, 4.984, 9.984], "texture": "#0"},
+				"south": {"uv": [0.016, 10.016, 4.984, 14.984], "texture": "#0"},
+				"west": {"uv": [10.016, 5.016, 14.984, 9.984], "texture": "#0"},
+				"up": {"uv": [5.016, 0.016, 9.984, 4.984], "texture": "#0"},
+				"down": {"uv": [10.016, 0.016, 14.984, 4.984], "texture": "#0", "cullface": "down"}
+			}
+		},
+		{
+			"from": [7, 10, 7],
+			"to": [9, 16, 9],
+			"faces": {
+				"north": {"uv": [2.016, 2.016, 3.984, 7.984], "texture": "#1"},
+				"east": {"uv": [0.016, 2.016, 1.984, 7.984], "texture": "#1"},
+				"south": {"uv": [6.016, 2.016, 7.984, 7.984], "texture": "#1"},
+				"west": {"uv": [4.016, 2.016, 5.984, 7.984], "texture": "#1"},
+				"up": {"uv": [2.016, 0.016, 3.984, 1.984], "texture": "#1", "cullface": "up"}
+			}
+		}
+	]
+}
