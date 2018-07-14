@@ -9,8 +9,6 @@ import com.teamwizardry.librarianlib.features.gui.provided.book.TranslationHolde
 import com.teamwizardry.librarianlib.features.gui.provided.book.hierarchy.entry.Entry;
 import com.teamwizardry.librarianlib.features.gui.provided.book.hierarchy.page.Page;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
-import com.teamwizardry.refraction.api.book.ITextModularCallback;
-import com.teamwizardry.refraction.api.book.ITextModularParser;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.relauncher.Side;

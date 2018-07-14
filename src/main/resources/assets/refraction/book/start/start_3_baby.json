@@ -8,20 +8,21 @@
   "content": [
     "refraction.book.start.baby.content1",
     {
-      "type": "picture",
-      "picture": "refraction:textures/gui/tabletimages/assembly_table_setup.png",
-      "subtext": "hello world"
-    },
-    {
       "type": "recipe",
       "recipe": "refraction:assembly_table",
-      "subtext": "hello world2"
+      "subtext": "Assembly Table"
     },
     "refraction.book.start.baby.content2",
     {
       "type": "recipe",
-      "recipe": "refraction:magnifier"
+      "recipe": "refraction:magnifier",
+      "subtext": "Magnifier"
     },
-    "refraction.book.start.baby.content3"
+    "refraction.book.start.baby.content3",
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/assembly_table_setup.png",
+      "subtext": "Assembly Table Setup"
+    }
   ]
 }
