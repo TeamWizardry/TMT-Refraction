@@ -9,7 +9,6 @@ import com.teamwizardry.refraction.common.network.PacketBeamParticle;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -297,7 +296,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public Color getColor() {
-		return this.effect.getColor();
+		return this.effect.color;
 	}
 	public int getAlpha() { return this.getColor().getAlpha(); }
 	public boolean isAesthetic() {return this.effect instanceof EffectAesthetic;}
@@ -387,7 +386,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
 		// PARTICLES
 		if (ThreadLocalRandom.current().nextInt(10) == 0)
-			PacketHandler.NETWORK.sendToAllAround(new PacketBeamParticle(initLoc, trace.hitVec, effect.getColor()), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.x, initLoc.y, initLoc.z, 30));
+			PacketHandler.NETWORK.sendToAllAround(new PacketBeamParticle(initLoc, trace.hitVec, effect.color), new NetworkRegistry.TargetPoint(world.provider.getDimension(), initLoc.x, initLoc.y, initLoc.z, 30));
 		// PARTICLES
 	}
 
@@ -395,8 +394,8 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
 		double tempRange = range - initLoc.distanceTo(finalLoc);
 
-		RayTrace rayTrace = new RayTrace(world, slope, finalLoc.add(slope.scale(0.05)), tempRange)
-				.setEntityFilter( entity -> entity == entityToSkip );
+		RayTrace rayTrace = new RayTrace(world, slope, finalLoc.add(slope.scale(0.05)), tempRange);
+				//.setEntityFilter( entity -> entity == entityToSkip );
 		if (tempRange <= 0) return true;
 		trace = rayTrace.trace();
 

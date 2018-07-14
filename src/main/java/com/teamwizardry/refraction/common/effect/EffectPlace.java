@@ -37,8 +37,8 @@ public class EffectPlace extends Effect {
 	private static FakePlayer fakePlayer;
 
 	@Override
-	public boolean doesTrigger() {
-		return ThreadLocalRandom.current().nextInt((int)( 1.5 * ConfigValues.BEAM_EFFECT_TRIGGER_CHANCE ) / getPotency()) == 0;
+	public boolean doesTrigger(int potency) {
+		return ThreadLocalRandom.current().nextInt((int)( 1.5 * ConfigValues.BEAM_EFFECT_TRIGGER_CHANCE ) / potency) == 0;
 	}
 
 	@Override

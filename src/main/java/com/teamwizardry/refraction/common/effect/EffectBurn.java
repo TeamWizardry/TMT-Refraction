@@ -75,7 +75,6 @@ public class EffectBurn extends Effect {
 					ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
 					EntityItem cooked = new EntityItem(world, item.posX, item.posY, item.posZ);
 					cooked.dropItem(result.getItem(), 1);
-					//cooked.isImmuneToFire();
 					cooked.setNoPickupDelay();
 					stack.setCount(stack.getCount()-1);
 				}

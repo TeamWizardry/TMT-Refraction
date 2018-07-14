@@ -63,7 +63,7 @@ public class EffectTracker {
 		Effect closestColor = new EffectMundane();
 
 		for (Effect effect : effectRegistry) {
-			double dist = Utils.getColorDistance(color, effect.getColor());
+			double dist = Utils.getColorDistance(color, effect.color);
 			if (dist <= closestDist) {
 				closestDist = dist;
 				closestColor = effect;

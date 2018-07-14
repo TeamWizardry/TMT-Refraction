@@ -121,6 +121,12 @@ public class BlockDiscoBall extends BlockModContainer implements ILightSink {
 
 	@SuppressWarnings("deprecation")
 	@Override
+	public boolean isFullBlock(IBlockState state) {
+		return false;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}

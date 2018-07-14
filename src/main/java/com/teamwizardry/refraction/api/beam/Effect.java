@@ -23,16 +23,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class Effect implements Cloneable {
 
 	public Beam beam;
-	public HashMultimap<BlockPos, Entity> entities = HashMultimap.create();
-	public Set<BlockPos> blocks = new HashSet<>();
-	private HashMap<BlockPos, Integer> blockPotencies = new HashMap<>();
-	private HashMap<UUID, Integer> entityPotencies = new HashMap<>();
 
-	protected Color color;
+	public Color color;
 
 	public Effect() {
 		this.color = getEffectColor();
 	}
+
 	@Nonnull
 	protected abstract Color getEffectColor();
 
@@ -48,6 +45,10 @@ public abstract class Effect implements Cloneable {
 	public Effect setBeam(Beam beam) {
 		this.beam = beam;
 		return this;
+	}
+
+	public EffectType getType() {
+		return EffectType.SINGLE;
 	}
 
 	/**
@@ -125,45 +126,43 @@ public abstract class Effect implements Cloneable {
 	}
 
 	void addEntity(@Nonnull World world, @Nonnull Entity entity) {
-		if (doesTrigger() && !stillFail()) {
-			int potency = calculateEntityPotency(entity);
-			entities.put(entity.getPosition(), entity);
+		int potency = calculateEntityPotency(entity);
+		if (doesTrigger(potency) && !stillFail()) {
 			runEntity(world, entity, potency);
 		}
 	}
 
 	void addBlock(@Nonnull World world, @Nonnull BlockPos pos) {
-		if (doesTrigger() && !stillFail()) {
-			blocks.add(pos);
-			runBlock(world, pos, calculateBlockPotency(pos));
+		int potency = calculateBlockPotency(pos);
+		if (doesTrigger(potency) && !stillFail()) {
+			runBlock(world, pos, potency);
 		}
 	}
 
 	void addFinalBlock(@Nonnull World world, @Nonnull BlockPos pos) {
-		if (doesTrigger() && !stillFail()) {
-			blocks.add(pos);
-			runFinalBlock(world, pos, calculateBlockPotency(pos));
+		int potency = calculateBlockPotency(pos);
+		if (doesTrigger(potency) && !stillFail()) {
+			runFinalBlock(world, pos, potency);
 		}
 	}
 
 	void specialAddBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityLivingBase caster) {
-		if (doesTrigger() && !stillFail()) {
-			blocks.add(pos);
-			specialRunBlock(world, pos, caster, calculateBlockPotency(pos));
+		int potency = calculateBlockPotency(pos);
+		if (doesTrigger(potency) && !stillFail()) {
+			specialRunBlock(world, pos, caster, potency);
 		}
 	}
 
 	void specialAddFinalBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityLivingBase caster) {
-		if (doesTrigger() && !stillFail()) {
-			blocks.add(pos);
-			specialRunFinalBlock(world, pos, caster, calculateBlockPotency(pos));
+		int potency = calculateBlockPotency(pos);
+		if (doesTrigger(potency) && !stillFail()) {
+			specialRunFinalBlock(world, pos, caster, potency);
 		}
 	}
 
 	void specialAddEntity(@Nonnull World world, @Nonnull Entity entity, @Nonnull EntityLivingBase caster) {
-		if (doesTrigger() && !stillFail()) {
-			int potency = calculateEntityPotency(entity);
-			entities.put(entity.getPosition(), entity);
+		int potency = calculateEntityPotency(entity);
+		if (doesTrigger(potency) && !stillFail()) {
 			specialRunEntity(world, entity, caster, potency);
 		}
 	}
@@ -180,9 +179,7 @@ public abstract class Effect implements Cloneable {
 	}
 
 	private int calculateBlockPotency(BlockPos pos) {
-		int potency = Math.max(0, this.getPotency() - PosUtils.getDistance(beam.initLoc, beam.slope, pos) * ConfigValues.DISTANCE_LOSS);
-		blockPotencies.put(pos, potency);
-		return potency;
+		return Math.max(0, this.getPotency() - PosUtils.getDistance(beam.initLoc, beam.slope, pos) * ConfigValues.DISTANCE_LOSS);
 	}
 
 	private int calculateEntityPotency(Entity entity) {
@@ -190,25 +187,15 @@ public abstract class Effect implements Cloneable {
 		for (ItemStack armor : entity.getArmorInventoryList())
 			if (armor != null && armor.getItem() instanceof IReflectiveArmor)
 				potency /= ((IReflectiveArmor) armor.getItem()).reflectionDampeningConstant(armor, this);
-		entityPotencies.put(entity.getUniqueID(), potency);
 		return potency;
 	}
 
-	public boolean doesTrigger() {
-		return ThreadLocalRandom.current().nextInt(( 255 * ConfigValues.BEAM_EFFECT_TRIGGER_CHANCE ) / getPotency()) == 0;
+	public boolean doesTrigger(int potency) {
+		return ThreadLocalRandom.current().nextInt(( 255 * ConfigValues.BEAM_EFFECT_TRIGGER_CHANCE ) / potency) == 0;
 	}
 
 	public boolean stillFail() {
 		return false;
-	}
-
-	@Nonnull
-	public Color getColor() {
-		return this.color;
-	}
-
-	public EffectType getType() {
-		return EffectType.SINGLE;
 	}
 
 	public Effect copy() {
