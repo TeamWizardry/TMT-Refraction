@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.common.effect;
 
 import com.mojang.authlib.GameProfile;
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.entity.Entity;
@@ -21,6 +22,7 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Saad on 9/15/2016.
@@ -35,8 +37,13 @@ public class EffectPlace extends Effect {
 	private static FakePlayer fakePlayer;
 
 	@Override
-	public int getChance(int potency) {
-		return potency == 0 ? 0 : 355 / potency;
+	public boolean doesTrigger() {
+		return ThreadLocalRandom.current().nextInt((int)( 1.5 * ConfigValues.BEAM_EFFECT_TRIGGER_CHANCE ) / getPotency()) == 0;
+	}
+
+	@Override
+	public boolean stillFail() {
+		return ConfigValues.EXTRA_FAIL_CHANCE_PINK > 1 && ThreadLocalRandom.current().nextInt(ConfigValues.EXTRA_FAIL_CHANCE_PINK) == 0;
 	}
 
 	@Override

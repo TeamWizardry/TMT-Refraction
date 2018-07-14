@@ -125,7 +125,7 @@ public abstract class Effect implements Cloneable {
 	}
 
 	void addEntity(@Nonnull World world, @Nonnull Entity entity) {
-		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
+		if (doesTrigger() && !stillFail()) {
 			int potency = calculateEntityPotency(entity);
 			entities.put(entity.getPosition(), entity);
 			runEntity(world, entity, potency);
@@ -133,35 +133,35 @@ public abstract class Effect implements Cloneable {
 	}
 
 	void addBlock(@Nonnull World world, @Nonnull BlockPos pos) {
-		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
+		if (doesTrigger() && !stillFail()) {
 			blocks.add(pos);
 			runBlock(world, pos, calculateBlockPotency(pos));
 		}
 	}
 
 	void addFinalBlock(@Nonnull World world, @Nonnull BlockPos pos) {
-		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
+		if (doesTrigger() && !stillFail()) {
 			blocks.add(pos);
 			runFinalBlock(world, pos, calculateBlockPotency(pos));
 		}
 	}
 
 	void specialAddBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityLivingBase caster) {
-		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
+		if (doesTrigger() && !stillFail()) {
 			blocks.add(pos);
 			specialRunBlock(world, pos, caster, calculateBlockPotency(pos));
 		}
 	}
 
 	void specialAddFinalBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityLivingBase caster) {
-		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
+		if (doesTrigger() && !stillFail()) {
 			blocks.add(pos);
 			specialRunFinalBlock(world, pos, caster, calculateBlockPotency(pos));
 		}
 	}
 
 	void specialAddEntity(@Nonnull World world, @Nonnull Entity entity, @Nonnull EntityLivingBase caster) {
-		if ((getChance(getPotency()) > 0 && ThreadLocalRandom.current().nextInt(getChance(getPotency())) == 0) || getChance(getPotency()) <= 0) {
+		if (doesTrigger() && !stillFail()) {
 			int potency = calculateEntityPotency(entity);
 			entities.put(entity.getPosition(), entity);
 			specialRunEntity(world, entity, caster, potency);
@@ -194,8 +194,12 @@ public abstract class Effect implements Cloneable {
 		return potency;
 	}
 
-	public int getChance(int potency) {
-		return -1;
+	public boolean doesTrigger() {
+		return ThreadLocalRandom.current().nextInt(( 255 * ConfigValues.BEAM_EFFECT_TRIGGER_CHANCE ) / getPotency()) == 0;
+	}
+
+	public boolean stillFail() {
+		return false;
 	}
 
 	@Nonnull

@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.effect;
 
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect;
 import net.minecraft.block.state.IBlockState;
@@ -38,8 +39,8 @@ public class EffectBurn extends Effect {
 	public static Set<BlockPos> burnedTileTracker = new HashSet<>();
 
 	@Override
-	public int getChance(int potency) {
-		return potency == 0 ? 0 : 2550 / potency;
+	public boolean stillFail() {
+		return ConfigValues.EXTRA_FAIL_CHANCE_RED > 1 && ThreadLocalRandom.current().nextInt(ConfigValues.EXTRA_FAIL_CHANCE_RED) == 0;
 	}
 
 	@Override

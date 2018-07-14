@@ -85,4 +85,25 @@ public final class ConfigValues {
 	@ConfigDoubleRange(min = 0, max = 2)
 	@ConfigProperty(category = "index_of_refraction", comment = "IOR of blue")
 	public static double BLUE_IOR = 0.2;
+
+
+	@ConfigIntRange(min = 1, max = 1000)
+	@ConfigProperty(category = "balancing", comment = "1 in X chance the strongest laser triggers beam effects (the strongest laser has an alpha of 255 while the weakest has a alpha of 5)[formulat: 1 in 255 * BEAM_EFFECT_TRIGGER_CHANCE / alpha]")
+	public static int BEAM_EFFECT_TRIGGER_CHANCE = 10;
+
+	@ConfigIntRange(min = 1, max = 1000)
+	@ConfigProperty(category = "balancing", comment = "When a green laser would normally trigger, this setting adds a 1 in X chance for it to still fail (1 = disabled")
+	public static int EXTRA_FAIL_CHANCE_GREEN = 1;
+
+	@ConfigIntRange(min = 1, max = 1000)
+	@ConfigProperty(category = "balancing", comment = "When a yellow laser would normally trigger, this setting adds a 1 in X chance for it to still fail (1 = disabled")
+	public static int EXTRA_FAIL_CHANCE_YELLOW = 10;
+
+	@ConfigIntRange(min = 1, max = 1000)
+	@ConfigProperty(category = "balancing", comment = "When a red laser would normally trigger, this setting adds a 1 in X chance for it to still fail (1 = disabled")
+	public static int EXTRA_FAIL_CHANCE_RED = 1;
+
+	@ConfigIntRange(min = 1, max = 1000)
+	@ConfigProperty(category = "balancing", comment = "When a pink laser would normally trigger, this setting adds a 1 in X chance for it to still fail (1 = disabled")
+	public static int EXTRA_FAIL_CHANCE_PINK = 1;
 }

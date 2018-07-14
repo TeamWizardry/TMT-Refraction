@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.effect;
 
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect;
 import net.minecraft.block.IGrowable;
@@ -14,6 +15,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Demoniaque
@@ -26,8 +28,8 @@ public class EffectBonemeal extends Effect {
 	}
 
 	@Override
-	public int getChance(int potency) {
-        return potency == 0 ? 0 : 2550 / potency;
+	public boolean stillFail() {
+        return ConfigValues.EXTRA_FAIL_CHANCE_GREEN > 1 && ThreadLocalRandom.current().nextInt(ConfigValues.EXTRA_FAIL_CHANCE_GREEN) == 0;
     }
 
 	@Override

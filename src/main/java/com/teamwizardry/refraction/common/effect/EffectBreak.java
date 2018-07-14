@@ -1,5 +1,6 @@
 package com.teamwizardry.refraction.common.effect;
 
+import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
 import com.teamwizardry.refraction.api.beam.IBeamImmune;
@@ -9,6 +10,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class EffectBreak extends Effect {
 
@@ -18,8 +20,8 @@ public class EffectBreak extends Effect {
 	}
 
 	@Override
-	public int getChance(int potency) {
-		return potency == 0 ? 0 : 5550 / potency;
+	public boolean stillFail() {
+		return ConfigValues.EXTRA_FAIL_CHANCE_YELLOW > 1 && ThreadLocalRandom.current().nextInt(ConfigValues.EXTRA_FAIL_CHANCE_YELLOW) == 0;
 	}
 
 	@Override
