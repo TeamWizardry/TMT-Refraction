@@ -1,8 +1,10 @@
 package com.teamwizardry.refraction.api;
 
+import com.teamwizardry.refraction.api.beam.IReflectiveArmor;
 import com.teamwizardry.refraction.api.internal.DummyInternalHandler;
 import com.teamwizardry.refraction.api.internal.IInternalHandler;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -253,5 +255,16 @@ public final class Utils {
 
 		}
 		return stack;
+	}
+
+	public static boolean entityWearsFullReflective(EntityLivingBase entity) {
+		boolean flag = true;
+		for (ItemStack armor : entity.getArmorInventoryList()) {
+			if (armor == null || !(armor.getItem() instanceof IReflectiveArmor)) {
+				flag = false;
+				break;
+			}
+		}
+		return flag;
 	}
 }

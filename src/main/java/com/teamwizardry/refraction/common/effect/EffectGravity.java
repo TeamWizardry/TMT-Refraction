@@ -1,9 +1,11 @@
 package com.teamwizardry.refraction.common.effect;
 
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -33,6 +35,7 @@ public class EffectGravity extends Effect {
 
 	@Override
 	public void runEntity(World world, Entity entity, int potency) {
+		if(entity instanceof EntityLivingBase && Utils.entityWearsFullReflective((EntityLivingBase)entity)) return;
 		if (entity instanceof EntityFallingBlock) return;
 		entity.setNoGravity(true);
 		gravityReset.put(entity, 30);

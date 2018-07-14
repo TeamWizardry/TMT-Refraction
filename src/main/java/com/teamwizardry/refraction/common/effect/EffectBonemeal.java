@@ -1,8 +1,10 @@
 package com.teamwizardry.refraction.common.effect;
 
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect;
 import net.minecraft.block.IGrowable;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemDye;
@@ -36,7 +38,7 @@ public class EffectBonemeal extends Effect {
 
 	@Override
 	public void runEntity(World world, Entity entity, int potency) {
-		if (entity instanceof EntityPlayer) {
+		if (entity instanceof EntityPlayer &&  Utils.entityWearsFullReflective((EntityLivingBase) entity)) {
 			EntityPlayer player = (EntityPlayer) entity;
 			player.getFoodStats().addStats(1, 0.5f);
 		}

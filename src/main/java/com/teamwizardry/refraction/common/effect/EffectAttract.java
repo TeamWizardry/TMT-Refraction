@@ -1,8 +1,10 @@
 package com.teamwizardry.refraction.common.effect;
 
 import com.teamwizardry.refraction.api.CapsUtils;
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -50,8 +52,10 @@ public class EffectAttract extends Effect {
 
 	@Override
 	public void runEntity(World world, Entity entity, int potency) {
+		if(entity instanceof EntityLivingBase && Utils.entityWearsFullReflective((EntityLivingBase)entity)) return;
+		if(entity instanceof EntityPlayer && ((EntityPlayer)entity).isCreative()) return;
 		setEntityMotion(entity, potency);
-		gravityReset.put(entity, 30);
+		gravityReset.put(entity, 10);
 		if (entity instanceof EntityPlayer)
 			((EntityPlayer) entity).velocityChanged = true;
 	}

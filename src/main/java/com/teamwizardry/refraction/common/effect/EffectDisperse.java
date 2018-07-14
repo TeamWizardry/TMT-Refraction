@@ -1,10 +1,12 @@
 package com.teamwizardry.refraction.common.effect;
 
 import com.teamwizardry.librarianlib.features.methodhandles.MethodHandleHelper;
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
 import kotlin.jvm.functions.Function0;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -56,6 +58,9 @@ public class EffectDisperse extends Effect {
 
 	@Override
 	public void runEntity(World world, Entity entity, int potency) {
+		if(entity instanceof EntityLivingBase && Utils.entityWearsFullReflective((EntityLivingBase)entity)) return;
+		if(entity instanceof EntityPlayer && ((EntityPlayer)entity).isCreative()) return;
+		
 		setEntityMotion(entity, potency);
 		EffectTracker.gravityReset.put(entity, 30);
 

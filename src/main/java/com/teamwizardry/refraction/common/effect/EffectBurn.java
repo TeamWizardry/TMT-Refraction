@@ -1,8 +1,10 @@
 package com.teamwizardry.refraction.common.effect;
 
+import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Effect;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -62,6 +64,7 @@ public class EffectBurn extends Effect {
 
 	@Override
 	public void runEntity(World world, Entity entity, int potency) {
+		if(entity instanceof EntityLivingBase && Utils.entityWearsFullReflective((EntityLivingBase)entity)) return;
 		boolean pass = true;
 		if (entity instanceof EntityItem) {
 			EntityItem item = (EntityItem) entity;
