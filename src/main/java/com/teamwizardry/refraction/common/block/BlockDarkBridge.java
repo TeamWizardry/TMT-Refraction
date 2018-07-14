@@ -30,7 +30,7 @@ public class BlockDarkBridge extends BlockLightBridgeBase {
 	}
 
 	@Override
-	public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
+	public void randomTick( @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random random) {
 		WorldServer world = (WorldServer) worldIn;
 		if (world.getLightFromNeighbors(pos.up()) >= 9) return;
 

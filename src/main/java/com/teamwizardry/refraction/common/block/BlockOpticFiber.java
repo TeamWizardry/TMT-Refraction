@@ -227,6 +227,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, ILig
 
 	@Nonnull
 	@Override
+	@SuppressWarnings("deprecation")
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return AABBS[state.getValue(FACING).ordinal()];
 	}
@@ -317,7 +318,8 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, ILig
 	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
+	@SuppressWarnings("deprecation")
+	public void addCollisionBoxToList(IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull AxisAlignedBB entityBox,@Nonnull List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
 		addCollisionBoxToList(pos, entityBox, collidingBoxes, CENTER);
 
 		EnumBiFacing biFacing = state.getValue(FACING);
@@ -386,11 +388,13 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, ILig
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}

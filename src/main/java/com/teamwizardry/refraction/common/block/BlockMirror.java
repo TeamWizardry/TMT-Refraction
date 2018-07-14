@@ -119,11 +119,13 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}
@@ -211,12 +213,12 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState iBlockState) {
 		return new TileMirror();
 	}
 
 	@Override
-	public boolean isToolEffective(String type, IBlockState state) {
+	public boolean isToolEffective(String type, @Nonnull IBlockState state) {
 		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 }

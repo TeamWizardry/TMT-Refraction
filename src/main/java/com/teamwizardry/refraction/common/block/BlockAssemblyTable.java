@@ -65,7 +65,7 @@ public class BlockAssemblyTable extends BlockModContainer implements ILightSink 
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated( @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand hand, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		ItemStack heldItem = playerIn.getHeldItem(hand);
 
@@ -99,7 +99,7 @@ public class BlockAssemblyTable extends BlockModContainer implements ILightSink 
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
 		TileAssemblyTable table = (TileAssemblyTable) worldIn.getTileEntity(pos);
 		if (table != null) {
 			for (ItemStack stack : CapsUtils.getListOfItems(table.inventory))
@@ -116,23 +116,25 @@ public class BlockAssemblyTable extends BlockModContainer implements ILightSink 
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState iBlockState) {
 		return new TileAssemblyTable();
 	}
 
 	@Override
-	public boolean isToolEffective(String type, IBlockState state) {
+	public boolean isToolEffective(String type, @Nonnull IBlockState state) {
 		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 }

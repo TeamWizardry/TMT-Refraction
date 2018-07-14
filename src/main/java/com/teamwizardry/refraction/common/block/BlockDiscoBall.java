@@ -64,7 +64,7 @@ public class BlockDiscoBall extends BlockModContainer implements ILightSink {
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+	public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos) {
 		return worldIn.getBlockState(pos.west()).isSideSolid(worldIn, pos.west(), EnumFacing.EAST) ||
 				worldIn.getBlockState(pos.east()).isSideSolid(worldIn, pos.east(), EnumFacing.WEST) ||
 				worldIn.getBlockState(pos.north()).isSideSolid(worldIn, pos.north(), EnumFacing.SOUTH) ||
@@ -89,12 +89,12 @@ public class BlockDiscoBall extends BlockModContainer implements ILightSink {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public @Nonnull IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(FACING, facing);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public @Nonnull IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
 	}
 
@@ -104,7 +104,7 @@ public class BlockDiscoBall extends BlockModContainer implements ILightSink {
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState() {
+	protected @Nonnull BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING);
 	}
 
@@ -132,13 +132,13 @@ public class BlockDiscoBall extends BlockModContainer implements ILightSink {
 	}
 
 	@Override
-	public boolean isToolEffective(String type, IBlockState state) {
+	public boolean isToolEffective(String type, @Nonnull IBlockState state) {
 		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
+	public TileEntity createTileEntity( @Nonnull World world, @Nonnull IBlockState iBlockState) {
 		return new TileDiscoBall();
 	}
 }

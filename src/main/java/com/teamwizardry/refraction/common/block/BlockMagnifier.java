@@ -40,7 +40,7 @@ public class BlockMagnifier extends BlockModContainer implements ILightSink {
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public @Nonnull BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
@@ -50,23 +50,25 @@ public class BlockMagnifier extends BlockModContainer implements ILightSink {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState iBlockState) {
 		return new TileMagnifier();
 	}
 
 	@Override
-	public boolean isToolEffective(String type, IBlockState state) {
+	public boolean isToolEffective(String type, @Nonnull IBlockState state) {
 		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 }

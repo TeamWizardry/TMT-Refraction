@@ -67,12 +67,12 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState() {
+	protected @Nonnull BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, DIRECTION, CONNECTED);
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public @Nonnull IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		IBlockState fiber = worldIn.getBlockState(pos.offset(state.getValue(DIRECTION).getOpposite()));
 		return state.withProperty(CONNECTED,
 				fiber.getBlock() instanceof BlockOpticFiber &&
@@ -80,12 +80,13 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public @Nonnull IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(DIRECTION, EnumFacing.VALUES[meta % EnumFacing.VALUES.length]);
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	@SuppressWarnings("deprecation")
+	public @Nonnull AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		switch (state.getValue(DIRECTION)) {
 			case DOWN:
 				return DOWN_AABB;
@@ -110,11 +111,13 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}
@@ -130,7 +133,7 @@ public class BlockTranslocator extends BlockMod implements IOpticConnectable {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public @Nonnull IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return getDefaultState().withProperty(DIRECTION, facing.getOpposite());
 	}
 

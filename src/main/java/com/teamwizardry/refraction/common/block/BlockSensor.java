@@ -51,6 +51,7 @@ public class BlockSensor extends BlockMod implements ILightSink {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing enumfacing = state.getValue(FACING);
 
@@ -104,37 +105,43 @@ public class BlockSensor extends BlockMod implements ILightSink {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public @Nonnull IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return getDefaultState().withProperty(FACING, facing);
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullBlock(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	@SuppressWarnings("deprecation")
+	public boolean isSideSolid(IBlockState base_state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, EnumFacing side) {
 		return false;
 	}
 
@@ -144,16 +151,19 @@ public class BlockSensor extends BlockMod implements ILightSink {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return state.getValue(ON) ? 15 : 0;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return blockState.getValue(ON) ? 15 : 0;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean canProvidePower(IBlockState state) {
 		return true;
 	}
@@ -164,7 +174,7 @@ public class BlockSensor extends BlockMod implements ILightSink {
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public @Nonnull IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(ON, (meta & 8) != 0);
 	}
 
@@ -174,7 +184,7 @@ public class BlockSensor extends BlockMod implements ILightSink {
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState() {
+	protected @Nonnull BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, ON);
 	}
 
@@ -190,7 +200,7 @@ public class BlockSensor extends BlockMod implements ILightSink {
 	}
 
 	@Override
-	public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
+	public void randomTick(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random random) {
 		// NO-OP
 	}
 

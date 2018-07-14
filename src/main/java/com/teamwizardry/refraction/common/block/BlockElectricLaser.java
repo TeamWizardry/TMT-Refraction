@@ -21,10 +21,9 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,11 +95,13 @@ public class BlockElectricLaser extends BlockModContainer implements IBeamImmune
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}
@@ -112,17 +113,17 @@ public class BlockElectricLaser extends BlockModContainer implements IBeamImmune
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(@NotNull World world, @NotNull IBlockState iBlockState) {
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState iBlockState) {
 		return new TileElectricLaser();
 	}
 
 	@Override
-	public boolean shouldEmit(@NotNull World world, @NotNull BlockPos pos) {
+	public boolean shouldEmit(@Nonnull World world, @Nonnull BlockPos pos) {
 		return getTE(world, pos).canFire();
 	}
 
 	@Override
-	public boolean isImmune(@NotNull World world, @NotNull BlockPos pos) {
+	public boolean isImmune(@Nonnull World world, @Nonnull BlockPos pos) {
 		return true;
 	}
 }

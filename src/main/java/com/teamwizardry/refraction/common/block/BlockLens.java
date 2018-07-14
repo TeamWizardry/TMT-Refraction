@@ -51,8 +51,6 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 		Vec3d second = normal.scale(Math.sqrt(1 - ratio*ratio*mag));
 		
 		return first.subtract(second);
-//		double r = from / to, c = -normal.dotProduct(vec);
-//		return vec.scale(r).add(normal.scale((r * c) - Math.sqrt(1 - (r * r) * (1 - (c * c)))));
 	}
 
 	public static void showBeam(World world, Vec3d start, Vec3d end, Color color) {
@@ -172,7 +170,8 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	@SuppressWarnings("deprecation")
+	public @Nonnull AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return new AxisAlignedBB(0, 0, 0, 1, 0.5, 1);
 	}
 
@@ -183,7 +182,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 
 	@SuppressWarnings("deprecation")
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(IBlockState blockState, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, EnumFacing side) {
 		IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
 		Block block = iblockstate.getBlock();
 		return blockState != iblockstate || block != this && block != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
@@ -191,16 +190,18 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public @Nonnull BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}

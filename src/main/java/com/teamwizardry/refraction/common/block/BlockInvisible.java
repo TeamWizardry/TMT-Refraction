@@ -8,6 +8,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -37,7 +38,8 @@ public class BlockInvisible extends BlockMod {
 
 	@Override
 	@Deprecated
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+	public @Nonnull
+	EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.INVISIBLE;
 	}
 

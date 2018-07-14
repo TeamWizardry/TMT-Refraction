@@ -34,7 +34,7 @@ public class BlockFrictionDrill extends BlockModContainer implements ILightSink 
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState iBlockState) {
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState iBlockState) {
 		return new TileFrictionDrill();
 	}
 }

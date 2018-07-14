@@ -1,7 +1,6 @@
 package com.teamwizardry.refraction.common.block;
 
 import com.teamwizardry.librarianlib.features.base.block.BlockMod;
-import com.teamwizardry.librarianlib.features.base.block.tile.BlockModContainer;
 import com.teamwizardry.librarianlib.features.utilities.client.TooltipHelper;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.Utils;
@@ -21,7 +20,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -79,7 +77,7 @@ public class BlockReflectiveAlloyBlock extends BlockMod implements ILightSink {
 	}
 
 	@Override
-	public boolean isToolEffective(String type, IBlockState state) {
+	public boolean isToolEffective(String type, @Nonnull IBlockState state) {
 		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 

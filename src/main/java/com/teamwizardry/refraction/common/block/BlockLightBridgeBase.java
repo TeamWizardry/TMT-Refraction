@@ -81,7 +81,7 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		EnumFacing.Axis axis = state.getValue(FACING);
 		EnumFacing[] facings = SPINS[axis.ordinal()];
 		IBlockState upState = worldIn.getBlockState(pos.offset(facings[0]));
@@ -106,7 +106,8 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
+	@SuppressWarnings("deprecation")
+	public void addCollisionBoxToList(IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull AxisAlignedBB entityBox, @Nonnull List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
 		EnumFacing.Axis enumfacing = state.getValue(FACING);
 		EnumFacing[] facings = SPINS[enumfacing.ordinal()];
 
@@ -160,7 +161,8 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	@SuppressWarnings("deprecation")
+	public @Nonnull AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing.Axis enumfacing = state.getValue(FACING);
 		EnumFacing[] facings = SPINS[enumfacing.ordinal()];
 
@@ -218,7 +220,7 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public @Nonnull IBlockState getStateFromMeta(int meta) {
 		meta = meta % 3;
 		return getDefaultState().withProperty(FACING, EnumFacing.Axis.values()[meta]);
 
@@ -230,21 +232,23 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState() {
+	protected @Nonnull BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, UP, DOWN, LEFT, RIGHT);
 	}
 
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public @Nonnull BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState blockState) {
 		return false;
 	}
@@ -338,7 +342,7 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
 		super.breakBlock(worldIn, pos, state);
 	}
 

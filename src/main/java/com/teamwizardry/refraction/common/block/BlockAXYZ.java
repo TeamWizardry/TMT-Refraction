@@ -124,22 +124,26 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullBlock(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	@SuppressWarnings("deprecation")
+	public @Nonnull AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return AABB;
 	}
 
@@ -302,7 +306,7 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 
 			@Nonnull
 			@Override
-			public String getUnlocalizedName(ItemStack par1ItemStack) {
+			public String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
 				if (par1ItemStack.getItemDamage() == 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 					if (RAND_NAMES == 0)
 						for (RAND_NAMES = 0; I18n.hasKey(super.getUnlocalizedName(par1ItemStack) + "." + (RAND_NAMES + 1) + ".name"); RAND_NAMES++)

@@ -139,43 +139,51 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 
 	@Nonnull
 	@Override
+	@SuppressWarnings("deprecation")
 	public IBlockState withRotation(@Nonnull IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Nonnull
 	@Override
+	@SuppressWarnings("deprecation")
 	public IBlockState withMirror(@Nonnull IBlockState state, Mirror mirrorIn) {
 		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isBlockNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean isFullBlock(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	@SuppressWarnings("deprecation")
+	public boolean isSideSolid(IBlockState base_state,@Nonnull IBlockAccess world,@Nonnull BlockPos pos, EnumFacing side) {
 		return false;
 	}
 
@@ -190,8 +198,6 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 		EnumFacing facing = blockState.getValue(FACING);
 		Matrix4 matrixA = new Matrix4();
 		Matrix4 matrixB = new Matrix4();
-//		matrixA.translate(new Vec3d(-0.5, -0.5, -0.5));
-//		matrixB.translate(new Vec3d(0.5, 0.5, 0.5));
 		switch (facing) {
 			case UP:
 			case DOWN:
@@ -210,8 +216,6 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 				matrixB.rotate(Math.toRadians(180), new Vec3d(0, 1, 0));
 				break;
 		}
-//		matrixA.translate(new Vec3d(0.5, 0.5, 0.5));
-//		matrixB.translate(new Vec3d(-0.5, -0.5, -0.5));
 
 		Vec3d
 				a = new Vec3d(0.001, 0.001, 0), // This needs to be offset
@@ -262,7 +266,7 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 	}
 
 	@Override
-	public boolean isToolEffective(String type, IBlockState state) {
+	public boolean isToolEffective(String type,@Nonnull IBlockState state) {
 		return super.isToolEffective(type, state) || Objects.equals(type, ItemScrewDriver.SCREWDRIVER_TOOL_CLASS);
 	}
 
