@@ -62,7 +62,7 @@ public class EffectDisperse extends Effect {
 		if(entity instanceof EntityPlayer && ((EntityPlayer)entity).isCreative()) return;
 		
 		setEntityMotion(entity, potency);
-		EffectTracker.gravityReset.put(entity, 30);
+		EffectTracker.gravityReset.put(entity, 10);
 
 		if (entity instanceof EntityPlayer)
 			((EntityPlayer) entity).velocityChanged = true;
