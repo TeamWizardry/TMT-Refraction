@@ -191,7 +191,7 @@ public abstract class Effect implements Cloneable {
 	}
 
 	public boolean doesTrigger(int potency) {
-		return ThreadLocalRandom.current().nextInt(( 255 * ConfigValues.BEAM_EFFECT_TRIGGER_CHANCE ) / potency) == 0;
+		return potency > 0 && ThreadLocalRandom.current().nextInt(( 255 * ConfigValues.BEAM_EFFECT_TRIGGER_CHANCE ) / potency) == 0;
 	}
 
 	public boolean stillFail() {

@@ -40,7 +40,7 @@ public class EffectBonemeal extends Effect {
 
 	@Override
 	public void runEntity(World world, Entity entity, int potency) {
-		if (entity instanceof EntityPlayer &&  Utils.entityWearsFullReflective((EntityLivingBase) entity)) {
+		if (entity instanceof EntityPlayer && Utils.entityWearsFullReflective((EntityLivingBase) entity)) {
 			EntityPlayer player = (EntityPlayer) entity;
 			player.getFoodStats().addStats(1, 0.5f);
 		}

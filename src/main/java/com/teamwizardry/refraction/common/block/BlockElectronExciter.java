@@ -94,7 +94,7 @@ public class BlockElectronExciter extends BlockModContainer implements ILightSin
 					}
 				}
 			}
-		} else if (beam.effect instanceof EffectBurn) {
+		} else if (beam.effect instanceof EffectVoid) {
 			if (beam.getAlpha() > 128) {
 				trySpawnBridge(world, pos, beam, ModBlocks.DARK_BRIDGE);
 			}
