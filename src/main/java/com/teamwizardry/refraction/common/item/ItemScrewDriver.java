@@ -51,14 +51,7 @@ public class ItemScrewDriver extends ItemMod {
 			((IPrecision) block).adjust(worldIn, pos, stack, player.isSneaking(), facing);
 			return EnumActionResult.SUCCESS;
 		} else {
-			int ori = getRotationIndex(stack);
-			int i = MathHelper.clamp(player.isSneaking() ? ori - 1 : ori + 1, 0, multipliers.length - 1);
-
-			if (ori == i) return EnumActionResult.FAIL;
-
-			ItemNBTHelper.setInt(stack, MODE_TAG, i);
-
-			return EnumActionResult.SUCCESS;
+			return changeRotationIndex(stack, player);
 		}
 	}
 
@@ -66,13 +59,17 @@ public class ItemScrewDriver extends ItemMod {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand hand) {
 		ItemStack stack = playerIn.getHeldItem(hand);
+		return ActionResult.newResult(changeRotationIndex(stack, playerIn), stack);
+	}
+
+	private EnumActionResult changeRotationIndex(ItemStack stack, EntityPlayer playerIn) {
 		int ori = getRotationIndex(stack);
 		int i = MathHelper.clamp(playerIn.isSneaking() ? ori - 1 : ori + 1, 0, multipliers.length - 1);
-		if (ori == i)
-			return ActionResult.newResult(EnumActionResult.FAIL, stack);
 
-		ItemNBTHelper.setInt(stack, MODE_TAG, MathHelper.clamp(i, 0, multipliers.length - 1));
-		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+		if (ori == i) return EnumActionResult.FAIL;
+
+		ItemNBTHelper.setInt(stack, MODE_TAG, MathHelper.clamp(i, 0, i));
+		return EnumActionResult.SUCCESS;
 	}
 
 	@Nonnull
