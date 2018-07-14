@@ -13,6 +13,5 @@ public class ModGuiPages {
 
 		PageTextModular.registerParser(new TextModularPlayerParser());
 		PageTextModular.registerParser(new TextModularConfigParser());
-		PageTextModular.registerParser(new TextModularItemParser());
 	}
 }
