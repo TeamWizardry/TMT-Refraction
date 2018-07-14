@@ -124,7 +124,7 @@ refraction.book.start.rainbow.content3=So now we have RGB and A (or RGBA). You s
 refraction.book.start.rainbow.content4=You will be basing your work on this knowledge because you want to acquire the many different colors from white beams which will be split (later on).
 refraction.book.start.rainbow.content5=The way we represent the rgb values (in recipes and the spectrometer) is using ratios. So if the spectrometer is showing half red and half blue, it means it doesn't matter 'how much of blue and red in values' you have, it means that you just need a perfectly equal amount of both with respect to each other.
 refraction.book.start.rainbow.content6=The value that DOES matter and not as a ratio is the white bar which indicates alpha/strength/amount. You can see the recipe of the Reflection Chamber on the right tab to see an example of the bars viewed in the recipes.
-refraction.book.start.rainbow.content7=&c&l[!] FOR FUTURE REFERENCE [!]&r <br> Solar alpha/strength (used in magnifiers): [config:solar_strength] <br> Glowstone alpha/strength (used in laser blocks): [config:glowstone_strength]
+refraction.book.start.rainbow.content7=&c&l[!FOR FUTURE REFERENCE!]&r <br> Solar alpha/strength (used in magnifiers): [config:solar_strength] <br> Glowstone alpha/strength (used in laser blocks): [config:glowstone_strength]
 
 refraction.book.start.baby.title=Baby Steps
 refraction.book.start.baby.desc=Initial Setup

@@ -9,6 +9,11 @@
     "refraction.book.blocks.disco.content1",
     "refraction.book.blocks.disco.content2",
     "refraction.book.blocks.disco.content3",
-    "refraction.book.blocks.disco.content4"
+    "refraction.book.blocks.disco.content4",
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/disco_ball.png",
+      "subtext": "Party Hard"
+    }
   ]
 }

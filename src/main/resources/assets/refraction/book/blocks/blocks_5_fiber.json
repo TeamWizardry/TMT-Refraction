@@ -8,6 +8,11 @@
   "content": [
     "refraction.book.blocks.fiber.content1",
     "refraction.book.blocks.fiber.content2",
-    "refraction.book.blocks.fiber.content3"
+    "refraction.book.blocks.fiber.content3",
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/optic_fiber.png",
+      "subtext": "fast ethernet"
+    }
   ]
 }

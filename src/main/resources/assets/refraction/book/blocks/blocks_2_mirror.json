@@ -6,6 +6,11 @@
   "title": "refraction.book.blocks.mirror.title",
   "description": "refraction.book.blocks.mirror.desc",
   "content": [
-    "refraction.book.blocks.mirror.content1"
+    "refraction.book.blocks.mirror.content1",
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/splitter.png",
+      "subtext": "Party Hard"
+    }
   ]
 }

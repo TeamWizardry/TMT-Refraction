@@ -20,6 +20,11 @@
       "text": "refraction.book.start.reflection.content7"
     },
     "refraction.book.start.reflection.content8",
-    "refraction.book.start.reflection.content9"
+    "refraction.book.start.reflection.content9",
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/reflection_chamber.png",
+      "subtext": "color mixin"
+    }
   ]
 }

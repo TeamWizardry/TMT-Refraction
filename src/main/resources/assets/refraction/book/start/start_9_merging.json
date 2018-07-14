@@ -16,6 +16,11 @@
     "refraction.book.start.merging.content5",
     "refraction.book.start.merging.content6",
     "refraction.book.start.merging.content7",
-    "refraction.book.start.merging.content8"
+    "refraction.book.start.merging.content8",
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/reflection_chamber.png",
+      "subtext": "color mixin"
+    }
   ]
 }

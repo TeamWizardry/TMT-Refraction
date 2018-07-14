@@ -1,5 +1,5 @@
 {
-  "parent": "item/generated",
+  "parent": "refraction:block/disco_ball",
   "textures": {
     "layer0": "refraction:items/disco_ball"
   }

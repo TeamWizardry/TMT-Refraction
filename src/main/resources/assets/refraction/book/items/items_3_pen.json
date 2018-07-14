@@ -10,6 +10,11 @@
     {
       "type": "recipe",
       "recipe": "refraction:laser_pen"
+    },
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/laser_pen.png",
+      "subtext": "KATLAZORS"
     }
   ]
 }

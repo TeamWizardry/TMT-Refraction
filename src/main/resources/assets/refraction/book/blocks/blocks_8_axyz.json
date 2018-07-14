@@ -10,6 +10,11 @@
     "refraction.book.blocks.axyz.content2",
     "refraction.book.blocks.axyz.content3",
     "refraction.book.blocks.axyz.content4",
-    "refraction.book.blocks.axyz.content5"
+    "refraction.book.blocks.axyz.content5",
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/wormhole.png",
+      "subtext": "Party Hard"
+    }
   ]
 }

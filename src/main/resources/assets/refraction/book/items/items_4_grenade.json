@@ -6,6 +6,11 @@
   "title": "refraction.book.items.grenade.title",
   "description": "refraction.book.items.grenade.desc",
   "content": [
-    "refraction.book.items.grenade.content1"
+    "refraction.book.items.grenade.content1",
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/photon_grenade.png",
+      "subtext": "fire in the hole"
+    }
   ]
 }

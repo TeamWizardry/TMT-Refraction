@@ -8,6 +8,11 @@
   "content": [
     "refraction.book.misc.inv.content1",
     "refraction.book.misc.inv.content2",
-    "refraction.book.misc.inv.content3"
+    "refraction.book.misc.inv.content3",
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/insert_extract.png",
+      "subtext": "untested"
+    }
   ]
 }

@@ -8,6 +8,11 @@
   "content": [
     "refraction.book.blocks.laser.content1",
     "refraction.book.blocks.laser.content2",
-    "refraction.book.blocks.laser.content3"
+    "refraction.book.blocks.laser.content3",
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/laser_block.png",
+      "subtext": "i'm firing my lazor"
+    }
   ]
 }

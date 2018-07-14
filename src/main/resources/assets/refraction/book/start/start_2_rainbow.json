@@ -15,6 +15,11 @@
     {
       "type": "textmodular",
       "text": "refraction.book.start.rainbow.content7"
+    },
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/prism_splitting.png",
+      "subtext": "taste the rainbow"
     }
   ]
 }

@@ -9,6 +9,11 @@
     "refraction.book.blocks.exciter.content1",
     "refraction.book.blocks.exciter.content2",
     "refraction.book.blocks.exciter.content3",
-    "refraction.book.blocks.exciter.content4"
+    "refraction.book.blocks.exciter.content4",
+    {
+      "type": "picture",
+      "picture": "refraction:textures/gui/tabletimages/light_bridge.png",
+      "subtext": "too much star wars"
+    }
     ]
 }
