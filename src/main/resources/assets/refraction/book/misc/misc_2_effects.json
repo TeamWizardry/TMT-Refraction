@@ -1,0 +1,14 @@
+{
+  "type": "entry",
+  "icon": {
+    "item": "refraction:book"
+  },
+  "title": "refraction.book.misc.effects.title",
+  "description": "refraction.book.misc.effects.desc",
+  "content": [
+    "refraction.book.misc.effects.content1",
+    "refraction.book.misc.effects.content2",
+    "refraction.book.misc.effects.content3",
+    "refraction.book.misc.effects.content4"
+  ]
+}

@@ -53,7 +53,7 @@
       "description": "test",
       "entries": [
         "refraction:misc/misc_1_inv",
-        "refraction:misc/misc_2_gravity"
+        "refraction:misc/misc_2_effects"
       ]
     }
   ]
