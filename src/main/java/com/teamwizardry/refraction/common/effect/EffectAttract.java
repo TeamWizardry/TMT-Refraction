@@ -67,7 +67,7 @@ public class EffectAttract extends Effect {
 		if (tile == null) return;
 		if (!EffectBurn.burnedTileTracker.contains(beam.trace.getBlockPos())) return;
 		EffectBurn.burnedTileTracker.remove(beam.trace.getBlockPos());
-		if (ThreadLocalRandom.current().nextInt(potency > 0 ? 2550 / potency : 1) != 0) return;
+		if (ThreadLocalRandom.current().nextInt(potency > 0 ? 10 * potency : 1) == 0) return;
 
 		if (tile instanceof IInventory) {
 			IInventory inv = (IInventory) tile;

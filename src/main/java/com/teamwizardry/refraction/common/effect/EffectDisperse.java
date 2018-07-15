@@ -58,14 +58,13 @@ public class EffectDisperse extends Effect {
 
 	@Override
 	public void runEntity(World world, Entity entity, int potency) {
-		if(entity instanceof EntityLivingBase && Utils.entityWearsFullReflective((EntityLivingBase)entity)) return;
-		if(entity instanceof EntityPlayer && ((EntityPlayer)entity).isCreative()) return;
-		
+		if (entity instanceof EntityLivingBase && Utils.entityWearsFullReflective((EntityLivingBase) entity)) return;
+		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative()) return;
+
 		setEntityMotion(entity, potency);
 		EffectTracker.gravityReset.put(entity, 10);
 
-		if (entity instanceof EntityPlayer)
-			((EntityPlayer) entity).velocityChanged = true;
+		if (entity instanceof EntityPlayer) ((EntityPlayer) entity).velocityChanged = true;
 		if (entity instanceof EntityItem) {
 
 			ItemStack itemstack = entity.getDataManager().get(ITEM);
@@ -77,7 +76,7 @@ public class EffectDisperse extends Effect {
 				if (tileEntity == null) continue;
 				if (!EffectBurn.burnedTileTracker.contains(beam.trace.getBlockPos())) continue;
 				EffectBurn.burnedTileTracker.remove(beam.trace.getBlockPos());
-				if (ThreadLocalRandom.current().nextInt(potency > 0 ? 2550 / potency : 1) != 0) return;
+				if (ThreadLocalRandom.current().nextInt(potency > 0 ? 10 * potency : 1) == 0) return;
 
 				if (!tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))
 					continue;

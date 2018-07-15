@@ -25,7 +25,7 @@ public class EffectGravity extends Effect {
 
 	@Nonnull
 	protected Color getEffectColor() {
-		return new Color(0x0096FF);
+		return new Color(0x0080FF);
 	}
 
 	@Override

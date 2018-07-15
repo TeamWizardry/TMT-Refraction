@@ -52,20 +52,18 @@ public class EffectBurn extends Effect {
 				((TileEntityFurnace) tile).setField(0, potency);
 				((TileEntityFurnace) tile).setField(1, 255);
 			}
-			return;
-		}
-
-		EnumFacing facing = beam.trace.sideHit;
-		if (facing != null) {
-			IBlockState state = world.getBlockState(pos);
-			if (state.getBlock() == Blocks.AIR)
-				world.setBlockState(pos, Blocks.FIRE.getDefaultState());
+		} else {
+			EnumFacing facing = beam.trace.sideHit;
+			if (facing != null) {
+				IBlockState state = world.getBlockState(pos);
+				if (state.getBlock() == Blocks.AIR) world.setBlockState(pos, Blocks.FIRE.getDefaultState());
+			}
 		}
 	}
 
 	@Override
 	public void runEntity(World world, Entity entity, int potency) {
-		if(entity instanceof EntityLivingBase && Utils.entityWearsFullReflective((EntityLivingBase)entity)) return;
+		if (entity instanceof EntityLivingBase && Utils.entityWearsFullReflective((EntityLivingBase) entity)) return;
 		boolean pass = true;
 		if (entity instanceof EntityItem) {
 			EntityItem item = (EntityItem) entity;
