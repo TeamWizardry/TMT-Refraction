@@ -38,7 +38,7 @@ public class EffectPlace extends Effect {
 
 	@Override
 	public boolean doesTrigger(int potency) {
-		return ThreadLocalRandom.current().nextInt((int)( 1.5 * ConfigValues.BEAM_EFFECT_TRIGGER_CHANCE ) / potency) == 0;
+		return potency > 0 && ThreadLocalRandom.current().nextInt((int)( 1.5 * ConfigValues.BEAM_EFFECT_TRIGGER_CHANCE ) / potency) == 0;
 	}
 
 	@Override
