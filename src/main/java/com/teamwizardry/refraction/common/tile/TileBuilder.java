@@ -18,7 +18,7 @@ import java.awt.*;
 /**
  * Created by Demoniaque.
  */
-@TileRegister("builder")
+//@TileRegister("builder") unused
 public class TileBuilder extends MultipleBeamTile {
 
 	public GuiBuilder.TileType[][][] grid;

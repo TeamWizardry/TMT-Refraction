@@ -46,7 +46,7 @@ public class CommonProxy {
 		SoundManager.INSTANCE.getClass();
 
 		EasyConfigHandler.init();
-		NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler());
+		//NetworkRegistry.INSTANCE.registerGuiHandler(Refraction.instance, new GuiHandler()); //unused anyway
 		PacketHandler.register(PacketLaserFX.class, Side.CLIENT);
 		PacketHandler.register(PacketAXYZMarks.class, Side.CLIENT);
 		PacketHandler.register(PacketAssemblyProgressParticles.class, Side.CLIENT);
@@ -55,7 +55,7 @@ public class CommonProxy {
 		PacketHandler.register(PacketAmmoColorChange.class, Side.SERVER);
 		PacketHandler.register(PacketLaserDisplayTick.class, Side.CLIENT);
 		PacketHandler.register(PacketWormholeParticles.class, Side.CLIENT);
-		PacketHandler.register(PacketBuilderGridSaver.class, Side.SERVER);
+		//PacketHandler.register(PacketBuilderGridSaver.class, Side.SERVER); // Unused
 
 		if (Loader.isModLoaded("crafttweaker"))
 			MTRefractionPlugin.init();
