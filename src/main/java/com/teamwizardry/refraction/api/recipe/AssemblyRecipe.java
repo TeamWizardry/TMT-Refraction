@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.api.recipe;
 import com.teamwizardry.librarianlib.core.LibrarianLog;
 import com.teamwizardry.refraction.api.CapsUtils;
 import com.teamwizardry.refraction.api.Utils;
+import com.teamwizardry.refraction.common.mt.OreDictEntryWithAmount;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -54,6 +55,15 @@ public class AssemblyRecipe implements IAssemblyBehavior {
 				this.recipe.add(Collections.singletonList(new ItemStack((Item) obj)));
 			} else if (obj instanceof Block) {
 				this.recipe.add(Collections.singletonList(new ItemStack((Block) obj)));
+			} else if (obj instanceof OreDictEntryWithAmount) {
+				List<ItemStack> oreDicts = OreDictionary.getOres(((OreDictEntryWithAmount) obj).oreDictName);
+				if (oreDicts == null || oreDicts.size() <= 0) {
+					LibrarianLog.INSTANCE.warn("Invalid OreDict entry " + obj + " in recipe for " + result.getDisplayName());
+					continue;
+				}
+				for (int i = 0; i < ((OreDictEntryWithAmount) obj).amount; i++) {
+					this.recipe.add(oreDicts);
+				}
 			} else if (obj instanceof String) {
 				List<ItemStack> oreDicts = OreDictionary.getOres((String) obj);
 				if (oreDicts == null || oreDicts.size() <= 0) {

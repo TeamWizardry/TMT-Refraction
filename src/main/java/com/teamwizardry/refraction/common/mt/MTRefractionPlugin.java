@@ -19,16 +19,16 @@ public class MTRefractionPlugin {
 		return (ItemStack) iStack.getInternal();
 	}
 
-	public static Object toObject(IIngredient iStack) {
+	public static Object toObject(IIngredient iStack, int amount) {
 		if (iStack == null)
 			return null;
 		if (iStack instanceof IOreDictEntry)
-			return ((IOreDictEntry) iStack).getName();
+			return new OreDictEntryWithAmount(((IOreDictEntry) iStack).getName(), amount);
 		if (iStack instanceof IItemStack)
 			return toStack((IItemStack) iStack);
 		if (iStack instanceof IngredientStack) {
 			IIngredient ingr = ReflectionHelper.getPrivateValue(IngredientStack.class, (IngredientStack) iStack, "ingredient");
-			return toObject(ingr);
+			return toObject(ingr, amount);
 		}
 		return null;
 	}
@@ -36,7 +36,7 @@ public class MTRefractionPlugin {
 	public static Object[] toObjects(IIngredient[] iStacks) {
 		Object[] objects = new Object[iStacks.length];
 		for (int i = 0; i < iStacks.length; i++)
-			objects[i] = toObject(iStacks[i]);
+			objects[i] = toObject(iStacks[i], iStacks[i].getAmount());
 		return objects;
 	}
 }
