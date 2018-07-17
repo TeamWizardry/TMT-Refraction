@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 public class RenderAssemblyTable extends TileEntitySpecialRenderer<TileAssemblyTable> {
 
 	public void render(TileAssemblyTable te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-	//public void renderTileEntityAt(TileAssemblyTable te, double x, double y, double z, float partialTicks, int destroyStage) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 

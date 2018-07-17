@@ -292,6 +292,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	 */
 	public Beam setEffect(Effect effect) {
 		this.effect = effect;
+		this.effect.setBeam(this);
 		return this;
 	}
 

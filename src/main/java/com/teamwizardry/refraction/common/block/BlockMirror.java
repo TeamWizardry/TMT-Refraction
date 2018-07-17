@@ -138,7 +138,7 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 		AxisAlignedBB aabb = new AxisAlignedBB(p, 0, p, 1 - p, p, 1 - p).offset(-0.5, -p / 2, -0.5);
 
 
-		RayTraceResult superResult = super.collisionRayTrace(blockState, worldIn, pos, startRaw, endRaw);
+		RayTraceResult superResult = blockState.collisionRayTrace(worldIn, pos, startRaw, endRaw);
 
 		TileMirror tile = (TileMirror) worldIn.getTileEntity(pos);
 		if (tile == null) return null;
