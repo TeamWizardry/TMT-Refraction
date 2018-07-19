@@ -11,9 +11,4 @@ public class EffectAesthetic extends Effect {
 	protected Color getEffectColor() {
 		return Color.WHITE;
 	}
-
-	public EffectAesthetic setColor(Color color) {
-		this.color = color;
-		return this;
-	}
 }

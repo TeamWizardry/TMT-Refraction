@@ -70,7 +70,7 @@ public class EffectTracker {
 			}
 		}
 
-		return closestColor.copy().setPotency(color.getAlpha());
+		return closestColor.copy().setColor(color);
 	}
 
 	public static void registerEffect(Effect effect) {

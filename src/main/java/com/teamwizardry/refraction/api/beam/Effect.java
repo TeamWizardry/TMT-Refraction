@@ -3,6 +3,7 @@ package com.teamwizardry.refraction.api.beam;
 import com.google.common.collect.HashMultimap;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.PosUtils;
+import com.teamwizardry.refraction.common.effect.EffectAesthetic;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,6 +45,11 @@ public abstract class Effect implements Cloneable {
 
 	public Effect setBeam(Beam beam) {
 		this.beam = beam;
+		return this;
+	}
+
+	public Effect setColor(Color color) {
+		this.color = color;
 		return this;
 	}
 
