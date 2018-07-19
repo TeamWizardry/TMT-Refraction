@@ -312,7 +312,10 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		if (bouncedTimes > allowedBounceTimes) return;
 
 		trace = new RayTrace(world, slope, initLoc, range)
-	//			.setEntityFilter( entity -> entity == entityToSkip )
+				.setEntityFilter( entity -> {
+					if ( entity == null || entityToSkip == null ) return true;
+					else return entity.getUniqueID() != entityToSkip.getUniqueID();
+				})
 				.trace();
 
 		if (trace.hitVec != null) this.finalLoc = trace.hitVec;
@@ -375,7 +378,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 			EntityLivingBase entity = (EntityLivingBase) trace.entityHit;
 			if (Utils.entityWearsFullReflective(entity)) {
 				createSimilarBeam(entity.getLook(0)).setEntitySkip(entity).spawn();
-			} else if (getAlpha() >= 32) {
+			} else if (getAlpha() >= 32 && !isAesthetic()) {
 				entity.setFire(1);
 				entity.maxHurtResistantTime = Math.max(5, (10 - (getAlpha() / 255) * 10));
 			}

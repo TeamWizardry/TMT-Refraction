@@ -62,6 +62,7 @@ public class ItemLaserPen extends ItemMod {
 		Vec3d playerVec = new Vec3d(player.posX + cross.x, player.posY + player.getEyeHeight() + cross.y, player.posZ + cross.z);
 
 		new Beam(player.getEntityWorld(), playerVec, player.getLook(1), (new EffectAesthetic()).setColor(new Color(0x20FF0000, true)))
+				.setEntitySkip(player)
 				.spawn();
 	}
 }
