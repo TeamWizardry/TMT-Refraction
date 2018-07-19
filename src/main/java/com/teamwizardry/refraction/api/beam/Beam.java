@@ -9,6 +9,7 @@ import com.teamwizardry.refraction.common.network.PacketBeamParticle;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -50,7 +51,6 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	/**
 	 * The world the beam will spawn in.
 	 */
-	@Nonnull
 	public World world;
 
 	/**
@@ -378,7 +378,8 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 			EntityLivingBase entity = (EntityLivingBase) trace.entityHit;
 			if (Utils.entityWearsFullReflective(entity)) {
 				createSimilarBeam(entity.getLook(0)).setEntitySkip(entity).spawn();
-			} else if (getAlpha() >= 32 && !isAesthetic()) {
+			} else if (((entity instanceof EntityPlayer && ConfigValues.ALL_BEAM_HARM_PLAYERS) || ConfigValues.ALL_BEAM_HARM_NON_PLAYERS)
+					&& getAlpha() >= 32 && !isAesthetic()) {
 				entity.setFire(1);
 				entity.maxHurtResistantTime = Math.max(5, (10 - (getAlpha() / 255) * 10));
 			}

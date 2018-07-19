@@ -53,6 +53,12 @@ public final class ConfigValues {
 	@ConfigProperty(category = "general", comment = "The amount of times a beam is allowed to bounce or reflect MAXIMUM. If this number is decreased, inputBeams will stop after reflecting or bouncing for that amount of times. This is mainly a safety check against trapped infinitely bouncing inputBeams.")
 	public static int BEAM_BOUNCE_LIMIT = 50;
 
+	@ConfigProperty(category = "general", comment = "Walking through a beam will set players on fire.")
+	public static boolean ALL_BEAM_HARM_PLAYERS = true;
+
+	@ConfigProperty(category = "general", comment = "Walking through a beam will set non_players on fire.")
+	public static boolean ALL_BEAM_HARM_NON_PLAYERS = true;
+
 	@ConfigDoubleRange(min = 0, max = 3)
 	@ConfigProperty(category = "general", comment = "When a player wearing full reflective alloy armor stands infront of a beam, it will reflect the beam but divide it's strength by this amount.")
 	public static double PLAYER_BEAM_REFLECT_STRENGTH_DIVSION = 1.4;
