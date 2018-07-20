@@ -114,7 +114,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public boolean doBeamsMatch(@Nonnull Beam beam) {
-		return beam.getColor() == getColor()
+		return beam.getColor().equals(getColor())
 				&& beam.slope.x == slope.x
 				&& beam.slope.y == slope.y
 				&& beam.slope.z == slope.z
