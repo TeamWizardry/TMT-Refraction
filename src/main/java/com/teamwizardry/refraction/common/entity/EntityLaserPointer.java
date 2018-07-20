@@ -1,14 +1,13 @@
 package com.teamwizardry.refraction.common.entity;
 
 import com.google.common.collect.ImmutableList;
+import com.teamwizardry.librarianlib.features.base.entity.LivingBaseEntityMod;
 import com.teamwizardry.refraction.common.item.ItemLaserPen;
 import com.teamwizardry.refraction.init.ModItems;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -28,7 +27,7 @@ import java.util.UUID;
 /**
  * Created by TheCodeWarrior
  */
-public class EntityLaserPointer extends EntityLivingBase implements IEntityAdditionalSpawnData {
+public class EntityLaserPointer extends LivingBaseEntityMod implements IEntityAdditionalSpawnData {
 	public static final DataParameter<Byte> AXIS_HIT = EntityDataManager.createKey(EntityLaserPointer.class, DataSerializers.BYTE);
 	public static final DataParameter<Boolean> HAND_HIT = EntityDataManager.createKey(EntityLaserPointer.class, DataSerializers.BOOLEAN);
 
@@ -120,24 +119,15 @@ public class EntityLaserPointer extends EntityLivingBase implements IEntityAddit
 		return ImmutableList.of();
 	}
 
-	@Nullable
+	@Nonnull
 	@Override
 	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
-		return null;
+		return ItemStack.EMPTY;
 	}
+
 
 	@Override
 	public void setItemStackToSlot(EntityEquipmentSlot slotIn, @Nullable ItemStack stack) {
-
-	}
-
-	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-
-	}
-
-	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
 
 	}
 
