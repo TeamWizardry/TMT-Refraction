@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.features.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.features.base.block.tile.TileMod;
+import com.teamwizardry.librarianlib.features.base.block.tile.TileModTickable;
 import com.teamwizardry.librarianlib.features.math.Matrix4;
 import com.teamwizardry.librarianlib.features.saving.Save;
 import com.teamwizardry.refraction.api.beam.Beam;
@@ -18,7 +19,7 @@ import javax.annotation.Nonnull;
  * Created by Demoniaque
  */
 @TileRegister("splitter")
-public class TileSplitter extends TileMod implements ITickable {
+public class TileSplitter extends TileModTickable {
 
 	@Save
 	public float rotXUnpowered, rotYUnpowered, rotXPowered = Float.NaN, rotYPowered = Float.NaN;
@@ -91,7 +92,7 @@ public class TileSplitter extends TileMod implements ITickable {
 	}
 
 	@Override
-	public void update() {
+	public void tick() {
 		double transitionTimeMaxX = Math.max(3, Math.min(Math.abs((rotPrevX - rotDestX) / 2.0), 10)),
 				transitionTimeMaxY = Math.max(3, Math.min(Math.abs((rotPrevY - rotDestY) / 2.0), 10));
 		double worldTimeTransition = (world.getTotalWorldTime() - worldTime);

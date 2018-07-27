@@ -11,6 +11,7 @@ import com.teamwizardry.refraction.api.raytrace.ILaserTrace;
 import com.teamwizardry.refraction.client.render.RenderMirror;
 import com.teamwizardry.refraction.common.item.ItemScrewDriver;
 import com.teamwizardry.refraction.common.tile.TileMirror;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +25,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -45,6 +45,7 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 		super("mirror", Material.IRON);
 		setHardness(1F);
 		setSoundType(SoundType.METAL);
+		setTickRandomly(true);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -88,16 +89,16 @@ public class BlockMirror extends BlockModContainer implements ILaserTrace, IPrec
 	}
 
 	@Override
-	public void onNeighborChange(IBlockAccess worldIn, BlockPos pos, BlockPos neighbor) {
-		TileMirror mirror = getTE((World) worldIn, pos);
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		TileMirror mirror = getTE(worldIn, pos);
 		if (mirror == null) return;
 
 		if (mirror.isPowered()) {
-			if (!((World) worldIn).isBlockPowered(pos) || ((World) worldIn).isBlockIndirectlyGettingPowered(pos) == 0) {
+			if (!worldIn.isBlockPowered(pos) || worldIn.isBlockIndirectlyGettingPowered(pos) == 0) {
 				mirror.setPowered(false);
 			}
 		} else {
-			if (((World) worldIn).isBlockPowered(pos) || ((World) worldIn).isBlockIndirectlyGettingPowered(pos) > 0)
+			if (worldIn.isBlockPowered(pos) || worldIn.isBlockIndirectlyGettingPowered(pos) > 0)
 				mirror.setPowered(true);
 		}
 	}
