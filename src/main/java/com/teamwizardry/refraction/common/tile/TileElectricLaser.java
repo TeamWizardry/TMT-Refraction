@@ -14,6 +14,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -22,7 +23,7 @@ import java.awt.*;
  * Created by Demoniaque
  */
 @TileRegister("electric_laser")
-public class TileElectricLaser extends TileModTickable {
+public class TileElectricLaser extends TileModTickable implements IEnergyStorage {
 
 	public DualEnergyStorage energy = new DualEnergyStorage(ConfigValues.MAX_TESLA, ConfigValues.TESLA_PER_TICK * 2, ConfigValues.TESLA_PER_TICK);
 
@@ -71,5 +72,35 @@ public class TileElectricLaser extends TileModTickable {
 	@SuppressWarnings("unchecked")
 	public <T> T getCapability(@NotNull Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityEnergy.ENERGY || capability == DualEnergyStorage.CAPABILITY_CONSUMER ? (T) energy : super.getCapability(capability, facing);
+	}
+
+	@Override
+	public int receiveEnergy(int maxReceive, boolean simulate) {
+		return this.energy.receiveEnergy(maxReceive, simulate);
+	}
+
+	@Override
+	public int extractEnergy(int maxExtract, boolean simulate) {
+		return this.energy.extractEnergy(maxExtract, simulate);
+	}
+
+	@Override
+	public int getEnergyStored() {
+		return this.energy.getEnergyStored();
+	}
+
+	@Override
+	public int getMaxEnergyStored() {
+		return this.energy.getMaxEnergyStored();
+	}
+
+	@Override
+	public boolean canExtract() {
+		return this.energy.canExtract();
+	}
+
+	@Override
+	public boolean canReceive() {
+		return this.energy.canReceive();
 	}
 }
