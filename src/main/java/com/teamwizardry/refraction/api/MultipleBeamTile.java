@@ -33,7 +33,7 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 	public Beam outputBeam;
 
 	@Override
-	public void writeCustomNBT(NBTTagCompound cmp, boolean sync) {
+	public void writeCustomNBT(@Nonnull NBTTagCompound cmp, boolean sync) {
 		if (outputBeam != null)
 			cmp.setTag("output", outputBeam.serializeNBT());
 
@@ -48,7 +48,7 @@ public class MultipleBeamTile extends TileMod implements ITickable {
 	}
 
 	@Override
-	public void readCustomNBT(NBTTagCompound cmp) {
+	public void readCustomNBT(@Nonnull NBTTagCompound cmp) {
 		if (cmp.hasKey("output"))
 			outputBeam = new Beam(cmp.getCompoundTag("output"));
 

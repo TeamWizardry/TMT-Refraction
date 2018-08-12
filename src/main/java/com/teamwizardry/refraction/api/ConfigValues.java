@@ -18,11 +18,11 @@ public final class ConfigValues {
 	public static int DISTANCE_LOSS = 1;
 
 	@ConfigIntRange(min = 0, max = 255)
-	@ConfigProperty(category = "general", comment = "This will specify the strength the sun will provide to magnifiers. Max: 255")
+	@ConfigProperty(category = "general", name = "solar_alpha", comment = "This will specify the strength the sun will provide to magnifiers. Max: 255")
 	public static int SOLAR_ALPHA = 16;
 
 	@ConfigIntRange(min = 0, max = 255)
-	@ConfigProperty(category = "general", comment = "This will specify the strength glowstone will provide to the glowstone laser. Max: 255 ")
+	@ConfigProperty(category = "general", name = "glow_alpha", comment = "This will specify the strength glowstone will provide to the glowstone laser. Max: 255 ")
 	public static int GLOWSTONE_ALPHA = 64;
 
 	@ConfigIntRange(min = 0, max = 255)

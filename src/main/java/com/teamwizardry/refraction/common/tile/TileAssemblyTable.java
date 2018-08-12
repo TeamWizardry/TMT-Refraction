@@ -22,6 +22,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,11 +39,13 @@ public class TileAssemblyTable extends MultipleBeamTile {
 
 	@Nonnull
 	public ItemStackHandler output = new ItemStackHandler(1) {
+		@Nonnull
 		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
 			return stack;
 		}
 
+		@Nonnull
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
 			if (behavior != null) return ItemStack.EMPTY;
@@ -57,13 +60,15 @@ public class TileAssemblyTable extends MultipleBeamTile {
 
 	@Nonnull
 	public ItemStackHandler inventory = new ItemStackHandler(54) {
+		@Nonnull
 		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
 			if (!output.getStackInSlot(0).isEmpty()) return stack;
 			if (behavior != null) return stack;
 			return super.insertItem(slot, stack, simulate);
 		}
 
+		@Nonnull
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
 			if (!output.getStackInSlot(0).isEmpty()) return ItemStack.EMPTY;
@@ -72,7 +77,7 @@ public class TileAssemblyTable extends MultipleBeamTile {
 		}
 
 		@Override
-		protected int getStackLimit(int slot, ItemStack stack) {
+		protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
 			return 1;
 		}
 
@@ -85,19 +90,14 @@ public class TileAssemblyTable extends MultipleBeamTile {
 	public int craftingTime = 0;
 
 	@Override
-	public boolean getUseFastSync() {
-		return false;
-	}
-
-	@Override
-	public void readCustomNBT(NBTTagCompound cmp) {
+	public void readCustomNBT(@Nonnull NBTTagCompound cmp) {
 		behavior = AssemblyBehaviors.getBehaviors().get(cmp.getString("behavior"));
 		inventory.deserializeNBT(cmp.getCompoundTag("items"));
 		output.deserializeNBT(cmp.getCompoundTag("beamOutputs"));
 	}
 
 	@Override
-	public void writeCustomNBT(NBTTagCompound cmp, boolean sync) {
+	public void writeCustomNBT(@Nonnull NBTTagCompound cmp, boolean sync) {
 		if (behavior != null)
 			cmp.setString("behavior", AssemblyBehaviors.getBehaviors().inverse().get(behavior));
 		cmp.setTag("items", inventory.serializeNBT());
@@ -105,7 +105,7 @@ public class TileAssemblyTable extends MultipleBeamTile {
 	}
 
 	@Override
-	public void readCustomBytes(ByteBuf buf) {
+	public void readCustomBytes(@NotNull ByteBuf buf) {
 		if (CommonUtilMethods.hasNullSignature(buf)) behavior = null;
 		else behavior = AssemblyBehaviors.getBehaviors().get(CommonUtilMethods.readString(buf));
 		inventory.deserializeNBT(CommonUtilMethods.readTag(buf));
@@ -113,7 +113,7 @@ public class TileAssemblyTable extends MultipleBeamTile {
 	}
 
 	@Override
-	public void writeCustomBytes(ByteBuf buf, boolean sync) {
+	public void writeCustomBytes(@NotNull ByteBuf buf, boolean sync) {
 		if (behavior == null) CommonUtilMethods.writeNullSignature(buf);
 		else {
 			CommonUtilMethods.writeNonnullSignature(buf);
@@ -124,14 +124,14 @@ public class TileAssemblyTable extends MultipleBeamTile {
 	}
 
 	@Override
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
+	public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Nonnull
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
+	public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ?
 				(facing == EnumFacing.DOWN ? (T) output : (T) inventory) : super.getCapability(capability, facing);
 	}

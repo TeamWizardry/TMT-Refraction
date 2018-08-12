@@ -5,10 +5,12 @@ import com.teamwizardry.librarianlib.features.gui.component.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentText;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
 import com.teamwizardry.librarianlib.features.gui.provided.book.IBookGui;
-import com.teamwizardry.librarianlib.features.gui.provided.book.TranslationHolder;
+import com.teamwizardry.librarianlib.features.gui.provided.book.context.Bookmark;
+import com.teamwizardry.librarianlib.features.gui.provided.book.helper.TranslationHolder;
 import com.teamwizardry.librarianlib.features.gui.provided.book.hierarchy.entry.Entry;
 import com.teamwizardry.librarianlib.features.gui.provided.book.hierarchy.page.Page;
 import com.teamwizardry.librarianlib.features.math.Vec2d;
+import kotlin.jvm.functions.Function0;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -43,8 +45,8 @@ public class PageTextModular implements Page, ITextModularCallback {
 
 	@NotNull
 	@Override
-	public List<GuiComponent> createBookComponents(@NotNull IBookGui book, @NotNull Vec2d size) {
-		List<GuiComponent> pages = new ArrayList<>();
+	public List<Function0<GuiComponent>> createBookComponents(@NotNull IBookGui book, @NotNull Vec2d size) {
+		List<Function0<GuiComponent>> pages = new ArrayList<>();
 		String text = langText.toString().replace("<br>", "\n");
 		for ( ITextModularParser parser : parsers) {
 			text = parser.parse(this, text);
@@ -74,13 +76,13 @@ public class PageTextModular implements Page, ITextModularCallback {
 			sections.add(String.join("\n", page));
 
 		for (String section : sections) {
-			pages.add(createSection(section, size));
+			pages.add(() -> createSection(section, size));
 		}
 		return pages;
 	}
 
 	private GuiComponent createSection(String text, @NotNull Vec2d size) {
-		ComponentVoid content = new ComponentVoid(0,0);
+		ComponentVoid content = new ComponentVoid(16,16);
 		StringBuilder prevText = new StringBuilder(text.length());
 
 		for (String word : text.split(" ")) {
@@ -131,5 +133,11 @@ public class PageTextModular implements Page, ITextModularCallback {
 		String newKey = "[~~~" + customComponents.size() + "~~~]";
 		customComponents.put( newKey, component);
 		return newKey;
+	}
+
+	@NotNull
+	@Override
+	public List<Bookmark> getExtraBookmarks() {
+		return new ArrayList<>();
 	}
 }

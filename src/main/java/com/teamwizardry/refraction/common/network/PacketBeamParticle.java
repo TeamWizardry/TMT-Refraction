@@ -1,10 +1,10 @@
 package com.teamwizardry.refraction.common.network;
 
 import com.teamwizardry.librarianlib.features.math.interpolate.StaticInterp;
+import com.teamwizardry.librarianlib.features.math.interpolate.numeric.InterpFloatInOut;
 import com.teamwizardry.librarianlib.features.network.PacketBase;
 import com.teamwizardry.librarianlib.features.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.features.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.features.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.features.saving.Save;
 import com.teamwizardry.refraction.api.Constants;
 import net.minecraft.client.Minecraft;
@@ -49,7 +49,7 @@ public class PacketBeamParticle extends PacketBase {
 			particle1.setRender(new ResourceLocation(Constants.MOD_ID, "particles/star"));
 			particle1.disableRandom();
 			particle1.disableMotionCalculation();
-			particle1.setAlphaFunction(new InterpFadeInOut(0f, 1f));
+			particle1.setAlphaFunction(new InterpFloatInOut(0f, 1f));
 			particle1.setScale(ThreadLocalRandom.current().nextFloat() * 2);
 			particle1.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 10));
 			ParticleSpawner.spawn(particle1, world, new StaticInterp<>(initPos), 1);
@@ -60,7 +60,7 @@ public class PacketBeamParticle extends PacketBase {
 				particle2.disableRandom();
 				particle2.disableMotionCalculation();
 				particle2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ThreadLocalRandom.current().nextInt(10, 15)));
-				particle2.setAlphaFunction(new InterpFadeInOut((float) ThreadLocalRandom.current().nextDouble(0, 1), (float) ThreadLocalRandom.current().nextDouble(0, 1)));
+				particle2.setAlphaFunction(new InterpFloatInOut((float) ThreadLocalRandom.current().nextDouble(0, 1), (float) ThreadLocalRandom.current().nextDouble(0, 1)));
 				particle2.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 2.5));
 				ParticleSpawner.spawn(particle2, world, new StaticInterp<>(initPos), 1);
 			}
@@ -72,7 +72,7 @@ public class PacketBeamParticle extends PacketBase {
 			particle1.setRender(new ResourceLocation(Constants.MOD_ID, "particles/star"));
 			particle1.disableRandom();
 			particle1.disableMotionCalculation();
-			particle1.setAlphaFunction(new InterpFadeInOut(0f, 1f));
+			particle1.setAlphaFunction(new InterpFloatInOut(0f, 1f));
 			particle1.setScale(ThreadLocalRandom.current().nextFloat() * 2);
 			particle1.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 10));
 			ParticleSpawner.spawn(particle1, world, new StaticInterp<>(endPos), 1);
@@ -83,7 +83,7 @@ public class PacketBeamParticle extends PacketBase {
 				particle2.disableRandom();
 				particle2.disableMotionCalculation();
 				particle2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ThreadLocalRandom.current().nextInt(10, 15)));
-				particle2.setAlphaFunction(new InterpFadeInOut((float) ThreadLocalRandom.current().nextDouble(0, 1), (float) ThreadLocalRandom.current().nextDouble(0, 1)));
+				particle2.setAlphaFunction(new InterpFloatInOut((float) ThreadLocalRandom.current().nextDouble(0, 1), (float) ThreadLocalRandom.current().nextDouble(0, 1)));
 				particle2.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 2.5));
 				ParticleSpawner.spawn(particle2, world, new StaticInterp<>(endPos), 1);
 			}

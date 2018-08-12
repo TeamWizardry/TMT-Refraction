@@ -3,9 +3,9 @@ package com.teamwizardry.refraction.common.tile;
 import com.teamwizardry.librarianlib.features.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.features.base.block.tile.TileMod;
 import com.teamwizardry.librarianlib.features.math.interpolate.StaticInterp;
+import com.teamwizardry.librarianlib.features.math.interpolate.numeric.InterpFloatInOut;
 import com.teamwizardry.librarianlib.features.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.features.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.features.particle.functions.InterpFadeInOut;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;
@@ -58,7 +58,7 @@ public class TileLaser extends TileMod implements ITickable {
 			glitter.setScale((float) ThreadLocalRandom.current().nextDouble(0.5, 1));
 			glitter.setAlpha((float) ThreadLocalRandom.current().nextDouble(0.3, 0.7));
 			glitter.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
-			glitter.setAlphaFunction(new InterpFadeInOut(0.1f, 1.0f));
+			glitter.setAlphaFunction(new InterpFloatInOut(0.1f, 1.0f));
 			glitter.setMotion(facingVec.scale(1.0 / 50.0));
 			ParticleSpawner.spawn(glitter, world, new StaticInterp<>(center), 2);
 

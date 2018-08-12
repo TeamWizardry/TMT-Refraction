@@ -1,6 +1,6 @@
 package com.teamwizardry.refraction.init;
 
-import com.teamwizardry.librarianlib.features.gui.provided.book.provider.PageTypes;
+import com.teamwizardry.librarianlib.features.gui.provided.book.helper.PageTypes;
 import com.teamwizardry.refraction.api.book.PageTextModular;
 import com.teamwizardry.refraction.client.gui.tablet.*;
 
