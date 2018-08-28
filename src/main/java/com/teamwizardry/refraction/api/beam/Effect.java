@@ -117,7 +117,7 @@ public abstract class Effect implements Cloneable {
 	 * @param entity  The entity intersected with
 	 * @param potency The strength of the beam.
 	 */
-	public void specialRunEntity(World world, Entity entity, EntityLivingBase caster, int potency) {
+	public void specialRunEntity(@Nonnull World world, Entity entity, EntityLivingBase caster, int potency) {
 		runEntity(world, entity, potency);
 	}
 

@@ -14,7 +14,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
@@ -53,47 +52,53 @@ public class EffectPlace extends Effect {
 	}
 
 	@Override
-	public void runEntity(World world, Entity entity, int potency) {
+	public void runEntity(@Nonnull World world, Entity entity, int potency) {
 		if (!(entity instanceof EntityItem)) return;
+		BlockPos pos = beam.trace.getBlockPos();
+		if (pos == null) return;
 		EntityItem item = (EntityItem) entity;
 
 		if (fakePlayer == null)
 			fakePlayer = FakePlayerFactory.get((WorldServer) world, new GameProfile(UUID.randomUUID(), "Refraction Place Effect"));
 		fakePlayer.setSneaking(true);
 
-		if (world.getTileEntity(beam.trace.getBlockPos()) == null) {
+		fakePlayer.inventory.setPickedItemStack(item.getItem());
+
+		EnumActionResult result = EnumActionResult.PASS;
+
+		if (world.getTileEntity(pos) == null) {
 			for (EnumFacing enumFacing : EnumFacing.VALUES) {
-				EnumActionResult result = fakePlayer.interactionManager.processRightClickBlock(
+				result = fakePlayer.interactionManager.processRightClickBlock(
 						fakePlayer, world, item.getItem(), EnumHand.MAIN_HAND,
-						beam.trace.getBlockPos(),
-						enumFacing, 0, 0, 0);
-				if (result == EnumActionResult.SUCCESS) return;
+						pos, enumFacing, 0.5f, 0.5f, 0.5f);
+				if (result == EnumActionResult.SUCCESS) break;
 			}
 		}
 
-		if (world.getTileEntity(beam.trace.getBlockPos().offset(beam.trace.sideHit)) == null) {
+		if (result != EnumActionResult.SUCCESS && world.getTileEntity(pos.offset(beam.trace.sideHit)) == null) {
 			for (EnumFacing enumFacing : EnumFacing.VALUES) {
 				BlockPos tryPos = beam.trace.getBlockPos().offset(beam.trace.sideHit);
 				if (world.getTileEntity(tryPos) != null) continue;
-				EnumActionResult result = fakePlayer.interactionManager.processRightClickBlock(
+				result = fakePlayer.interactionManager.processRightClickBlock(
 						fakePlayer, world, item.getItem(), EnumHand.MAIN_HAND,
-						tryPos,
-						enumFacing, 0, 0, 0);
-				if (result == EnumActionResult.SUCCESS) return;
+						tryPos, enumFacing, 0, 0, 0);
+				if (result == EnumActionResult.SUCCESS) break;
 			}
 		}
 
-		if (world.getTileEntity(beam.trace.getBlockPos().offset(beam.trace.sideHit).down()) == null) {
+		if (result != EnumActionResult.SUCCESS && world.getTileEntity(pos.offset(beam.trace.sideHit).down()) == null) {
 			for (EnumFacing enumFacing : EnumFacing.VALUES) {
-				BlockPos tryPos = beam.trace.getBlockPos().offset(beam.trace.sideHit).down();
+				BlockPos tryPos = pos.offset(beam.trace.sideHit).down();
 				if (world.getTileEntity(tryPos) != null) continue;
-				EnumActionResult result = fakePlayer.interactionManager.processRightClickBlock(
+				result = fakePlayer.interactionManager.processRightClickBlock(
 						fakePlayer, world, item.getItem(), EnumHand.MAIN_HAND,
-						tryPos,
-						enumFacing, 0, 0, 0);
-				if (result == EnumActionResult.SUCCESS) return;
+						tryPos,	enumFacing, 0, 0, 0);
+				if (result == EnumActionResult.SUCCESS) break;
 			}
 		}
+
+		if (result == EnumActionResult.SUCCESS)
+			item.getItem().shrink(1);
 	}
 
 	@Override
