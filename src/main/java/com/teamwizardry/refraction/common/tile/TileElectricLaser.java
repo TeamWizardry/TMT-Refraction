@@ -29,7 +29,6 @@ public class TileElectricLaser extends TileModTickable implements IEnergyStorage
 
 	@Override
 	public void tick() {
-		World world = getWorld();
 		if (canFire()) {
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			EnumFacing face = world.getBlockState(pos).getValue(BlockDirectional.FACING);
@@ -43,8 +42,7 @@ public class TileElectricLaser extends TileModTickable implements IEnergyStorage
 	}
 
 	public boolean canFire() {
-		World world = getWorld();
-		return !world.isRemote && !world.isBlockPowered(pos) && world.isBlockIndirectlyGettingPowered(pos) == 0 &&
+		return world.getTileEntity(pos) == this && !world.isRemote && !world.isBlockPowered(pos) && world.isBlockIndirectlyGettingPowered(pos) == 0 &&
 				energy.extractEnergy(ConfigValues.TESLA_PER_TICK, true) == ConfigValues.TESLA_PER_TICK;
 	}
 

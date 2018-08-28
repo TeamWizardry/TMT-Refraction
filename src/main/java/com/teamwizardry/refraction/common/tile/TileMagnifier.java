@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.features.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.features.base.block.tile.TileMod;
+import com.teamwizardry.librarianlib.features.base.block.tile.TileModTickable;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.api.PosUtils;
@@ -18,11 +19,11 @@ import java.awt.*;
  * Created by Demoniaque
  */
 @TileRegister("magnifier")
-public class TileMagnifier extends TileMod implements ITickable {
+public class TileMagnifier extends TileModTickable {
 
 	@Override
-	public void update() {
-		if (world.isRemote) return;
+	public void tick() {
+		if (world.isRemote || world.getTileEntity(pos) != this) return;
 
 		int worldTime = (int) (world.getWorldTime() % 24000L);
 		if (!(worldTime >= Constants.NIGHT_START && worldTime < Constants.NIGHT_END)

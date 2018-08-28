@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.features.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.features.base.block.tile.TileMod;
+import com.teamwizardry.librarianlib.features.base.block.tile.TileModTickable;
 import com.teamwizardry.refraction.api.PosUtils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.EffectTracker;
@@ -17,12 +18,11 @@ import java.awt.*;
  * Created by Demoniaque
  */
 @TileRegister("creative_laser")
-public class TileCreativeLaser extends TileMod implements ITickable {
+public class TileCreativeLaser extends TileModTickable {
 
 	@Override
-	public void update() {
-		World world = getWorld();
-		if (world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) return;
+	public void tick() {
+		if (world.getTileEntity(pos) != this || world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) return;
 		Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 		EnumFacing face = world.getBlockState(pos).getValue(BlockDirectional.FACING);
 		Vec3d vec = PosUtils.getVecFromFacing(face);

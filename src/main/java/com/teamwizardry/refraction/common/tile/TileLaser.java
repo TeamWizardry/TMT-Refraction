@@ -2,6 +2,7 @@ package com.teamwizardry.refraction.common.tile;
 
 import com.teamwizardry.librarianlib.features.autoregister.TileRegister;
 import com.teamwizardry.librarianlib.features.base.block.tile.TileMod;
+import com.teamwizardry.librarianlib.features.base.block.tile.TileModTickable;
 import com.teamwizardry.librarianlib.features.math.interpolate.StaticInterp;
 import com.teamwizardry.librarianlib.features.math.interpolate.numeric.InterpFloatInOut;
 import com.teamwizardry.librarianlib.features.particle.ParticleBuilder;
@@ -32,9 +33,10 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by Demoniaque
  */
 @TileRegister("laser")
-public class TileLaser extends TileMod implements ITickable {
+public class TileLaser extends TileModTickable {
 
 	public ItemStackHandler inventory = new ItemStackHandler(1) {
+		@Nonnull
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			if (stack.getItem() == Items.GLOWSTONE_DUST) return super.insertItem(slot, stack, simulate);
@@ -45,9 +47,8 @@ public class TileLaser extends TileMod implements ITickable {
 	public int tick = 0;
 
 	@Override
-	public void update() {
-		World world = getWorld();
-		if (world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) return;
+	public void tick() {
+		if (world.getTileEntity(pos) != this || world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) return;
 		if (!inventory.getStackInSlot(0).isEmpty()) {
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			EnumFacing face = world.getBlockState(pos).getValue(BlockDirectional.FACING);
@@ -75,12 +76,12 @@ public class TileLaser extends TileMod implements ITickable {
 	}
 
 	@Override
-	public void readCustomNBT(NBTTagCompound compound) {
+	public void readCustomNBT(@Nonnull NBTTagCompound compound) {
 		inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 	}
 
 	@Override
-	public void writeCustomNBT(NBTTagCompound compound, boolean sync) {
+	public void writeCustomNBT(@Nonnull NBTTagCompound compound, boolean sync) {
 		compound.setTag("inventory", inventory.serializeNBT());
 	}
 
@@ -90,13 +91,13 @@ public class TileLaser extends TileMod implements ITickable {
 	}
 
 	@Override
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nonnull EnumFacing facing) {
+	public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull EnumFacing facing) {
+	public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) inventory : super.getCapability(capability, facing);
 	}
 }

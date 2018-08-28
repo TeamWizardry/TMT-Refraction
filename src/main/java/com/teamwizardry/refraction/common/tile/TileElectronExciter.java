@@ -25,7 +25,7 @@ public class TileElectronExciter extends TileMod implements ITickable {
 
 	@Override
 	public void update() {
-		if (world.isRemote) return;
+		if (world.isRemote || world.getTileEntity(pos) != this) return;
 		if (expire > 0) expire--;
 		else {
 			hasCardinalBeam = false;

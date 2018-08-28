@@ -112,8 +112,7 @@ public class TileDiscoBall extends MultipleBeamTile {
 			beam.spawn();
 		}
 
-		Set<Color> temp = new HashSet<>();
-		temp.addAll(colors);
+		Set<Color> temp = new HashSet<>(colors);
 		Set<Color> primaryTemp = new HashSet<>();
 		Beam beam = outputBeam;
 		if (beam != null)

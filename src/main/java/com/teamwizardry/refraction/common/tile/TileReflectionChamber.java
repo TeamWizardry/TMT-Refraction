@@ -31,7 +31,7 @@ public class TileReflectionChamber extends MultipleBeamTile {
 	public void update() {
 		super.update();
 		Beam beam = outputBeam;
-		if (beam == null) return;
+		if (beam == null || world.getTileEntity(pos) != this) return;
 		EnumFacing facing = EnumFacing.getFacingFromVector((float) beam.slope.x, (float) beam.slope.y, (float) beam.slope.z);
 		IBlockState state = world.getBlockState(pos.offset(facing));
 		if (state.getBlock() == ModBlocks.OPTIC_FIBER && state.getValue(BlockOpticFiber.FACING).contains(facing))

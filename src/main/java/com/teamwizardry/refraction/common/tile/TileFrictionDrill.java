@@ -10,6 +10,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
@@ -20,23 +21,21 @@ import java.util.ArrayList;
 public class TileFrictionDrill extends TileMod implements ITickable {
 
 	@Save
-	public Vec3d previousAngle = Vec3d.ZERO;
-	@Save
 	public int ticksPassed = 50;
 	@Nullable
-	public Beam lastBeam;
+	private Beam lastBeam;
 	@Save
 	public boolean tick = true;
 
 	@Override
-	public void readCustomNBT(NBTTagCompound cmp) {
+	public void readCustomNBT(@Nonnull NBTTagCompound cmp) {
 		if (cmp.hasKey("last_beam"))
 			lastBeam = new Beam(cmp.getCompoundTag("last_beam"));
 
 	}
 
 	@Override
-	public void writeCustomNBT(NBTTagCompound cmp, boolean sync) {
+	public void writeCustomNBT(@Nonnull NBTTagCompound cmp, boolean sync) {
 		if (cmp.hasKey("last_beam"))
 			lastBeam = new Beam(cmp.getCompoundTag("last_beam"));
 	}
