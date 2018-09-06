@@ -1,9 +1,9 @@
 package com.teamwizardry.refraction.client.render;
 
 import com.teamwizardry.librarianlib.features.math.interpolate.StaticInterp;
+import com.teamwizardry.librarianlib.features.math.interpolate.numeric.InterpFloatInOut;
 import com.teamwizardry.librarianlib.features.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.features.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.features.particle.functions.InterpFadeInOut;
 import com.teamwizardry.refraction.api.Constants;
 import com.teamwizardry.refraction.client.core.StarRenderHelper;
 import com.teamwizardry.refraction.common.entity.EntityGrenade;
@@ -50,7 +50,7 @@ public class RenderGrenade extends RenderSnowball<EntityGrenade> {
 			ParticleBuilder glitter = new ParticleBuilder(ThreadLocalRandom.current().nextInt(10, 30));
 			glitter.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 			glitter.setColor(color);
-			glitter.setAlphaFunction(new InterpFadeInOut(0.0f, 1.0f));
+			glitter.setAlphaFunction(new InterpFloatInOut(0.0f, 1.0f));
 
 			ParticleSpawner.spawn(glitter, entity.world, new StaticInterp<>(entity.getPositionVector()), 15, 0, (i, build) -> {
 				Random random = new Random();
@@ -64,7 +64,7 @@ public class RenderGrenade extends RenderSnowball<EntityGrenade> {
 		if (entity.life <= 0 && entity.explosionTimer > 0) {
 			ParticleBuilder glitter = new ParticleBuilder(ThreadLocalRandom.current().nextInt(10, 30));
 			glitter.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
-			glitter.setAlphaFunction(new InterpFadeInOut(0.0f, 1.0f));
+			glitter.setAlphaFunction(new InterpFloatInOut(0.0f, 1.0f));
 
 			ParticleSpawner.spawn(glitter, entity.world, new StaticInterp<>(entity.getPositionVector()), 15, 0, (i, build) -> {
 				double radius = 0.3;
@@ -81,7 +81,7 @@ public class RenderGrenade extends RenderSnowball<EntityGrenade> {
 
 			ParticleBuilder glitterCore = new ParticleBuilder(ThreadLocalRandom.current().nextInt(10, 20));
 			glitterCore.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
-			glitterCore.setAlphaFunction(new InterpFadeInOut(0.0f, 1.0f));
+			glitterCore.setAlphaFunction(new InterpFloatInOut(0.0f, 1.0f));
 			ParticleSpawner.spawn(glitterCore, entity.world, new StaticInterp<>(entity.getPositionVector()), 5, 0, (i, build) -> {
 				double radius = 0.2;
 				double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();

@@ -49,6 +49,7 @@ public class BlockInvisibleRedstone extends BlockModContainer {
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public @Nonnull
 	IBlockState getStateFromMeta(int meta) {

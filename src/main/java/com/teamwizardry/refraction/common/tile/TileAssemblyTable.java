@@ -147,7 +147,7 @@ public class TileAssemblyTable extends MultipleBeamTile {
 	public void update() {
 		super.update();
 		if (world.isRemote || inputBeams.isEmpty()) return;
-		if (!world.isBlockPowered(getPos()) && world.isBlockIndirectlyGettingPowered(getPos()) == 0) return;
+		if (!world.isBlockPowered(getPos()) && world.getRedstonePowerFromNeighbors(getPos()) == 0) return;
 
 		Color color = outputBeam.getColor();
 

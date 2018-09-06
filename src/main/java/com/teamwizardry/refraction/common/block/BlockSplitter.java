@@ -85,20 +85,21 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getPath());
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		TileSplitter splitter = getTE(worldIn, pos);
 		if (splitter == null) return;
 
 		if (splitter.isPowered()) {
-			if (!worldIn.isBlockPowered(pos) || worldIn.isBlockIndirectlyGettingPowered(pos) == 0) {
+			if (!worldIn.isBlockPowered(pos) || worldIn.getRedstonePowerFromNeighbors(pos) == 0) {
 				splitter.setPowered(false);
 			}
 		} else {
-			if (worldIn.isBlockPowered(pos) || worldIn.isBlockIndirectlyGettingPowered(pos) > 0)
+			if (worldIn.isBlockPowered(pos) || worldIn.getRedstonePowerFromNeighbors(pos) > 0)
 				splitter.setPowered(true);
 		}
 	}
@@ -161,7 +162,7 @@ public class BlockSplitter extends BlockModContainer implements ILaserTrace, IPr
 		Vec3d a = result.hitVec;
 
 		a = inverse.apply(a);
-		a = a.addVector(0.5, 0.5, 0.5);
+		a = a.add(0.5, 0.5, 0.5);
 
 		return new RayTraceResult(a.add(new Vec3d(pos)), superResult == null ? EnumFacing.UP : superResult.sideHit, pos);
 	}

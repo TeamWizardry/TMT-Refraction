@@ -1,11 +1,11 @@
 package com.teamwizardry.refraction.common.network;
 
 import com.teamwizardry.librarianlib.features.math.interpolate.StaticInterp;
+import com.teamwizardry.librarianlib.features.math.interpolate.numeric.InterpFloatInOut;
 import com.teamwizardry.librarianlib.features.network.PacketBase;
 import com.teamwizardry.librarianlib.features.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.features.particle.ParticleSpawner;
 import com.teamwizardry.librarianlib.features.particle.functions.InterpColorFade;
-import com.teamwizardry.librarianlib.features.particle.functions.InterpFadeInOut;
 import com.teamwizardry.refraction.api.Constants;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -33,23 +34,23 @@ public class PacketAssemblyDoneParticles extends PacketBase {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(@NotNull ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(@NotNull ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 	}
 
 	@Override
-	public void handle(MessageContext messageContext) {
+	public void handle(@NotNull MessageContext messageContext) {
 		if (messageContext.side.isServer()) return;
 
 		World world = Minecraft.getMinecraft().player.world;
 
 		ParticleBuilder builder = new ParticleBuilder(1);
-		builder.setAlphaFunction(new InterpFadeInOut(0.1f, 0.3f));
+		builder.setAlphaFunction(new InterpFloatInOut(0.1f, 0.3f));
 		builder.setColorFunction(new InterpColorFade(Color.GREEN, 1, 255, 1));
 		builder.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 		ParticleSpawner.spawn(builder, world, new StaticInterp<>(new Vec3d(pos.getX() + 0.5, pos.getY() + 1.25, pos.getZ() + 0.5)), ThreadLocalRandom.current().nextInt(200, 300), 0, (aFloat, particleBuilder) -> {

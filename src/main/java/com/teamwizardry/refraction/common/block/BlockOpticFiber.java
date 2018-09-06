@@ -222,7 +222,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, ILig
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getPath());
 	}
 
 	@Nonnull
@@ -266,6 +266,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, ILig
 		return Lists.newArrayList(facings.getPrimary(), facings.getSecondary());
 	}
 
+	@SuppressWarnings("deprecation")
 	@Nonnull
 	@Override
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
@@ -370,6 +371,7 @@ public class BlockOpticFiber extends BlockMod implements IOpticConnectable, ILig
 		return state.getValue(FACING).ordinal();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Nonnull
 	@Override
 	public IBlockState getStateFromMeta(int meta) {

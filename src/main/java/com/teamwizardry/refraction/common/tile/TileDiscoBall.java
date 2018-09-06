@@ -61,7 +61,7 @@ public class TileDiscoBall extends MultipleBeamTile {
 	@Override
 	public void handleBeam(Beam beam) {
 		super.handleBeam(beam);
-		if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) return;
+		if (world.getRedstonePowerFromNeighbors(pos) == 0 && !world.isBlockPowered(pos)) return;
 		if (beam.customName.equals("disco_ball_beam")) return;
 		if (beamlifes.size() > 20) return;
 		colors.add(beam.getColor());
@@ -72,7 +72,7 @@ public class TileDiscoBall extends MultipleBeamTile {
 
 		Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
 
-		Vec3d center = new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getDirectionVec()).scale(0.2));
+		Vec3d center = new Vec3d(pos).add(0.5, 0.5, 0.5).add(new Vec3d(world.getBlockState(pos).getValue(BlockDiscoBall.FACING).getDirectionVec()).scale(0.2));
 
 		Beam subBeam = beam.createSimilarBeam(center, dest)
 				.setEffect(beam.effect.copy().setPotency( (int) (beam.getColor().getAlpha() / ThreadLocalRandom.current().nextDouble(2, 4))))
@@ -92,7 +92,7 @@ public class TileDiscoBall extends MultipleBeamTile {
 	@Override
 	public void update() {
 		super.update();
-		if (world.isBlockIndirectlyGettingPowered(pos) == 0 && !world.isBlockPowered(pos)) {
+		if (world.getRedstonePowerFromNeighbors(pos) == 0 && !world.isBlockPowered(pos)) {
 			return;
 		}
 

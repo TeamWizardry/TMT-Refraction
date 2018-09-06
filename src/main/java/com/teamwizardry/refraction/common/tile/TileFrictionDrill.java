@@ -76,7 +76,7 @@ public class TileFrictionDrill extends TileMod implements ITickable {
 
 		BlockPos loc = poses.get(0);
 		world.destroyBlock(loc, true);
-		beam.createSimilarBeam(new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), new Vec3d(loc.subtract(pos)).addVector(0.5, 0.5, 0.5)).spawn();
+		beam.createSimilarBeam(new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5), new Vec3d(loc.subtract(pos)).add(0.5, 0.5, 0.5)).spawn();
 	}
 
 	@Override

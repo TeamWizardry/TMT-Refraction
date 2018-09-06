@@ -12,6 +12,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
@@ -72,11 +73,11 @@ public class ItemScrewDriver extends ItemMod {
 		return EnumActionResult.SUCCESS;
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
-	public String getUnlocalizedName(ItemStack stack) {
+	public String getUnlocalizedNameInefficiently(@NotNull ItemStack stack) {
 		int i = getRotationIndex(stack);
-		return super.getUnlocalizedName(stack) + "." + i;
+		return super.getUnlocalizedNameInefficiently(stack) + "." + i;
 	}
 
 	@Override

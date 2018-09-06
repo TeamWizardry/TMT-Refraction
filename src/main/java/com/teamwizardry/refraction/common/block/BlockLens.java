@@ -126,9 +126,9 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 				a = new Vec3d(0.001, 0.001, 0), // This needs to be offset
 				b = new Vec3d(1, 0.001, 0.5),
 				c = new Vec3d(0.001, 0.001, 1), // and this too. Just so that blue refracts in ALL cases
-				A = a.addVector(0, 0.998, 0),
-				B = b.addVector(0, 0.998, 0), // these y offsets are to fix translocation issues
-				C = c.addVector(0, 0.998, 0);
+				A = a.add(0, 0.998, 0),
+				B = b.add(0, 0.998, 0), // these y offsets are to fix translocation issues
+				C = c.add(0, 0.998, 0);
 
 		Tri[] tris = new Tri[]{
 				new Tri(a, b, c),
@@ -144,8 +144,8 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 				new Tri(b, C, c),
 		};
 
-		Vec3d start = matrixA.apply(startRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
-		Vec3d end = matrixA.apply(endRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
+		Vec3d start = matrixA.apply(startRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).add(0.5, 0.5, 0.5);
+		Vec3d end = matrixA.apply(endRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).add(0.5, 0.5, 0.5);
 
 		Tri hitTri = null;
 		Vec3d hit = null;
@@ -166,7 +166,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 		if (hit == null)
 			return null;
 
-		return new BlockPrism.RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
+		return new BlockPrism.RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).add(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
 	}
 
 	@Override
@@ -177,7 +177,7 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getPath());
 	}
 
 	@SuppressWarnings("deprecation")
@@ -189,8 +189,9 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 
 	}
 
+	@Nonnull
 	@Override
-	public @Nonnull BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 

@@ -67,6 +67,7 @@ public class BlockFilter extends BlockMod implements ILightSink, IOpticConnectab
 		return state.getValue(TYPE).ordinal();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public @Nonnull IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(TYPE, EnumFilterType.values()[meta % EnumFilterType.values().length]);
@@ -104,8 +105,9 @@ public class BlockFilter extends BlockMod implements ILightSink, IOpticConnectab
 		beam.createSimilarBeam(beam.finalLoc, beam.slope, EffectTracker.getEffect(new Color(state.getValue(TYPE).color))).spawn();
 	}
 
+	@Nonnull
 	@Override
-	public @Nonnull BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 

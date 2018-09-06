@@ -96,7 +96,7 @@ public class EntityLaserPointer extends LivingBaseEntityMod implements IEntityAd
 		if (!dataManager.get(HAND_HIT)) cross = cross.scale(-1);
 		Vec3d vec3d = new Vec3d(player.posX + cross.x, player.posY + player.getEyeHeight() + cross.y, player.posZ + cross.z);
 		Vec3d vec3d1 = this.getVectorForRotation(player.rotationPitch, player.rotationYawHead);
-		Vec3d vec3d2 = vec3d.addVector(vec3d1.x * blockReachDistance, vec3d1.y * blockReachDistance, vec3d1.z * blockReachDistance);
+		Vec3d vec3d2 = vec3d.add(vec3d1.x * blockReachDistance, vec3d1.y * blockReachDistance, vec3d1.z * blockReachDistance);
 		return player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
 	}
 

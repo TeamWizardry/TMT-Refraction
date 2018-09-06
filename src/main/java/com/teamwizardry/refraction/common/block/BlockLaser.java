@@ -53,7 +53,7 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getPath());
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 	@Override
 	@SuppressWarnings("deprecation")
 	public @Nonnull IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
+		return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta & 7));
 	}
 
 	@Override
@@ -138,7 +138,7 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 	@Override
 	public boolean shouldEmit(@Nonnull World world, @Nonnull BlockPos pos) {
 		TileLaser laser = (TileLaser) world.getTileEntity(pos);
-		return !(world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) && laser != null && !laser.inventory.getStackInSlot(0).isEmpty();
+		return !(world.isBlockPowered(pos) || world.getStrongPower(pos) > 0) && laser != null && !laser.inventory.getStackInSlot(0).isEmpty();
 	}
 
 	@Override

@@ -97,7 +97,7 @@ public class RenderDiscoBall extends TileEntitySpecialRenderer<TileDiscoBall> {
 		if (ball != null)
 			Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelRenderer().renderModelBrightnessColor(ball, 1.0F, 1, 1, 1);
 
-		if ((te.getWorld().isBlockIndirectlyGettingPowered(te.getPos()) > 0 || te.getWorld().isBlockPowered(te.getPos())) && te.outputBeam != null) {
+		if ((te.getWorld().getRedstonePowerFromNeighbors(te.getPos()) > 0 || te.getWorld().isBlockPowered(te.getPos())) && te.outputBeam != null) {
 			Color color = te.outputBeam.getColor();
 			GlStateManager.translate(0.5, 0.25, 0.5);
 			StarRenderHelper.renderStar(color.getRGB(), 0.5f, 0.5f, 0.5f, color.hashCode());

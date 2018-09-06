@@ -49,7 +49,7 @@ public class BlockElectricLaser extends BlockModContainer implements IBeamImmune
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getPath());
 	}
 
 	@Override
@@ -63,6 +63,7 @@ public class BlockElectricLaser extends BlockModContainer implements IBeamImmune
 		return (int) ((double) energy.getEnergyStored() / (double) energy.getMaxEnergyStored() * 15);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	@Nonnull
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
@@ -72,10 +73,11 @@ public class BlockElectricLaser extends BlockModContainer implements IBeamImmune
 		return this.getStateFromMeta(meta).withProperty(FACING, placer.getAdjustedHorizontalFacing().getOpposite());
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	@Nonnull
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
+		return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta & 7));
 	}
 
 	@Override

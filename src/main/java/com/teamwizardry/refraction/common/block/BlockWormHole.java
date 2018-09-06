@@ -66,14 +66,16 @@ public class BlockWormHole extends BlockModContainer implements ILightSink {
 		super.breakBlock(worldIn, pos, state);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public @Nonnull IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(FACING, facing);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public @Nonnull IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7));
+		return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta & 7));
 	}
 
 	@Override

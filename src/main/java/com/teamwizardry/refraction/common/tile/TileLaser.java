@@ -48,7 +48,7 @@ public class TileLaser extends TileModTickable {
 
 	@Override
 	public void tick() {
-		if (world.getTileEntity(pos) != this || world.isBlockPowered(pos) || world.isBlockIndirectlyGettingPowered(pos) > 0) return;
+		if (world.getTileEntity(pos) != this || world.isBlockPowered(pos) || world.getRedstonePowerFromNeighbors(pos) > 0) return;
 		if (!inventory.getStackInSlot(0).isEmpty()) {
 			Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 			EnumFacing face = world.getBlockState(pos).getValue(BlockDirectional.FACING);

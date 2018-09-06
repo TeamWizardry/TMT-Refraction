@@ -80,6 +80,7 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 		setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.Axis.Y).withProperty(UP, false).withProperty(DOWN, false).withProperty(LEFT, false).withProperty(RIGHT, false));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		EnumFacing.Axis axis = state.getValue(FACING);
@@ -219,6 +220,7 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 		return box;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public @Nonnull IBlockState getStateFromMeta(int meta) {
 		meta = meta % 3;
@@ -387,9 +389,9 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 				a = new Vec3d(0.001, 0.001, 0), // This needs to be offset
 				b = new Vec3d(1, 0.001, 0.5),
 				c = new Vec3d(0.001, 0.001, 1), // and this too. Just so that blue refracts in ALL cases
-				A = a.addVector(0, 0.998, 0),
-				B = b.addVector(0, 0.998, 0), // these y offsets are to fix translocation issues
-				C = c.addVector(0, 0.998, 0);
+				A = a.add(0, 0.998, 0),
+				B = b.add(0, 0.998, 0), // these y offsets are to fix translocation issues
+				C = c.add(0, 0.998, 0);
 
 		Tri[] tris = new Tri[]{
 				new Tri(a, b, c),
@@ -405,8 +407,8 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 				new Tri(b, C, c),
 		};
 
-		Vec3d start = matrixA.apply(startRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
-		Vec3d end = matrixA.apply(endRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5);
+		Vec3d start = matrixA.apply(startRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).add(0.5, 0.5, 0.5);
+		Vec3d end = matrixA.apply(endRaw.subtract(new Vec3d(pos)).subtract(0.5, 0.5, 0.5)).add(0.5, 0.5, 0.5);
 
 		Tri hitTri = null;
 		Vec3d hit = null;
@@ -427,6 +429,6 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 		if (hit == null)
 			return null;
 
-		return new BlockPrism.RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).addVector(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
+		return new BlockPrism.RayTraceResultData<Vec3d>(matrixB.apply(hit.subtract(0.5, 0.5, 0.5)).add(0.5, 0.5, 0.5).add(new Vec3d(pos)), EnumFacing.UP, pos).data(matrixB.apply(hitTri.normal()));
 	}
 }

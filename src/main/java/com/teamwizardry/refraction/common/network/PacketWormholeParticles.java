@@ -1,10 +1,10 @@
 package com.teamwizardry.refraction.common.network;
 
+import com.teamwizardry.librarianlib.features.math.interpolate.numeric.InterpFloatInOut;
 import com.teamwizardry.librarianlib.features.math.interpolate.position.InterpCircle;
 import com.teamwizardry.librarianlib.features.network.PacketBase;
 import com.teamwizardry.librarianlib.features.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.features.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.features.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.features.saving.Save;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
@@ -70,9 +70,9 @@ public class PacketWormholeParticles extends PacketBase {
 		Vec3d normal = new Vec3d(tmp.x, 0, tmp.z);
 
 		ParticleBuilder wormholeVoid = new ParticleBuilder(10);
-		wormholeVoid.setAlphaFunction(new InterpFadeInOut(0.9f, 0.9f));
+		wormholeVoid.setAlphaFunction(new InterpFloatInOut(0.9f, 0.9f));
 		wormholeVoid.setRenderNormalLayer(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
-		ParticleSpawner.spawn(wormholeVoid, world, new InterpCircle(new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(offset), normal, 1.20f, 1f, ThreadLocalRandom.current().nextFloat()), ThreadLocalRandom.current().nextInt(10, 20), 0, (aFloat, particleBuilder) -> {
+		ParticleSpawner.spawn(wormholeVoid, world, new InterpCircle(new Vec3d(pos).add(0.5, 0.5, 0.5).add(offset), normal, 1.20f, 1f, ThreadLocalRandom.current().nextFloat()), ThreadLocalRandom.current().nextInt(10, 20), 0, (aFloat, particleBuilder) -> {
 			int rnd = ThreadLocalRandom.current().nextInt(0, 40);
 			wormholeVoid.setColor(new Color(rnd, 0, rnd));
 			wormholeVoid.setMotion(new Vec3d(
@@ -85,8 +85,8 @@ public class PacketWormholeParticles extends PacketBase {
 		});
 
 		ParticleBuilder wormholeHalo = new ParticleBuilder(5);
-		ParticleSpawner.spawn(wormholeHalo, world, new InterpCircle(new Vec3d(pos).addVector(0.5, 0.5, 0.5).add(offset), normal, 1.25f, 1, ThreadLocalRandom.current().nextFloat()), ThreadLocalRandom.current().nextInt(10, 20), 0, (aFloat, particleBuilder) -> {
-			wormholeHalo.setAlphaFunction(new InterpFadeInOut(0.9f, 0.9f));
+		ParticleSpawner.spawn(wormholeHalo, world, new InterpCircle(new Vec3d(pos).add(0.5, 0.5, 0.5).add(offset), normal, 1.25f, 1, ThreadLocalRandom.current().nextFloat()), ThreadLocalRandom.current().nextInt(10, 20), 0, (aFloat, particleBuilder) -> {
+			wormholeHalo.setAlphaFunction(new InterpFloatInOut(0.9f, 0.9f));
 			wormholeHalo.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 			wormholeHalo.setScale((float) ThreadLocalRandom.current().nextDouble(1.5, 1.75));
 			wormholeHalo.setLifetime(ThreadLocalRandom.current().nextInt(10, 20));

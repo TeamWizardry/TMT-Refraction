@@ -50,6 +50,7 @@ public class BlockSensor extends BlockMod implements ILightSink {
 		setDefaultState(getDefaultState().withProperty(ON, false));
 	}
 
+	@Nonnull
 	@Override
 	@SuppressWarnings("deprecation")
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
@@ -75,11 +76,11 @@ public class BlockSensor extends BlockMod implements ILightSink {
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getPath());
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+	public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos) {
 		return worldIn.getBlockState(pos.west()).isSideSolid(worldIn, pos.west(), EnumFacing.EAST) ||
 				worldIn.getBlockState(pos.east()).isSideSolid(worldIn, pos.east(), EnumFacing.WEST) ||
 				worldIn.getBlockState(pos.north()).isSideSolid(worldIn, pos.north(), EnumFacing.SOUTH) ||
@@ -104,6 +105,7 @@ public class BlockSensor extends BlockMod implements ILightSink {
 		return worldIn.getBlockState(pos.offset(facing.getOpposite())).isSideSolid(worldIn, pos.offset(facing.getOpposite()), facing);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public @Nonnull IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return getDefaultState().withProperty(FACING, facing);
@@ -173,9 +175,10 @@ public class BlockSensor extends BlockMod implements ILightSink {
 		return true;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public @Nonnull IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(ON, (meta & 8) != 0);
+		return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta & 7)).withProperty(ON, (meta & 8) != 0);
 	}
 
 	@Override

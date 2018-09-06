@@ -85,6 +85,7 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 		for (int i = 0; i < PROPS.length; i++) {
@@ -109,7 +110,7 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getResourcePath());
+		TooltipHelper.addToTooltip(tooltip, "simple_name." + Constants.MOD_ID + ":" + getRegistryName().getPath());
 	}
 
 	@Override
@@ -218,7 +219,7 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 							world.setBlockState(pos.offset(dir), ModBlocks.AXYZ.getDefaultState());
 						else if (!world.isRemote) {
 							ItemStack stack = new ItemStack(ModBlocks.AXYZ);
-							world.spawnEntity(new EntityItem(world, x + dir.getFrontOffsetX(), y + dir.getFrontOffsetY(), z + dir.getFrontOffsetZ(), stack));
+							world.spawnEntity(new EntityItem(world, x + dir.getXOffset(), y + dir.getYOffset(), z + dir.getZOffset(), stack));
 						}
 						checkedCoords.add(s);
 						newPos = new DimWithPos(world.provider.getDimension(), pos.offset(dir));
@@ -291,7 +292,7 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 		DimWithPos key = new DimWithPos(dim, pos);
 		if (mappedPositions.containsKey(key)) {
 			BlockPos mapPos = mappedPositions.get(key).getPos();
-			beam.createSimilarBeam(new Vec3d(mapPos).addVector(0.5, 0.5, 0.5), beam.slope).setEffect(beam.effect.copy().setPotency((int) (beam.getAlpha() / 1.05))).spawn();
+			beam.createSimilarBeam(new Vec3d(mapPos).add(0.5, 0.5, 0.5), beam.slope).setEffect(beam.effect.copy().setPotency((int) (beam.getAlpha() / 1.05))).spawn();
 		}
 	}
 
@@ -308,10 +309,10 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 
 			@Nonnull
 			@Override
-			public String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
+			public String getUnlocalizedNameInefficiently(@Nonnull ItemStack par1ItemStack) {
 				if (par1ItemStack.getItemDamage() == 0 && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 					if (RAND_NAMES == 0)
-						for (RAND_NAMES = 0; I18n.hasKey(super.getUnlocalizedName(par1ItemStack) + "." + (RAND_NAMES + 1) + ".name"); RAND_NAMES++)
+						for (RAND_NAMES = 0; I18n.hasKey(super.getUnlocalizedNameInefficiently(par1ItemStack) + "." + (RAND_NAMES + 1) + ".name"); RAND_NAMES++)
 							;
 
 					StackTraceElement stackTrace[] = (new Throwable()).getStackTrace();
@@ -320,10 +321,10 @@ public class BlockAXYZ extends BlockMod implements ILightSink, IOpticConnectable
 						if (curTime - prevTime > 1000L || curRand == -1)
 							curRand = rand.nextInt(RAND_NAMES);
 						prevTime = curTime;
-						return super.getUnlocalizedName(par1ItemStack) + "." + curRand;
+						return super.getUnlocalizedNameInefficiently(par1ItemStack) + "." + curRand;
 					}
 				}
-				return super.getUnlocalizedName(par1ItemStack);
+				return super.getUnlocalizedNameInefficiently(par1ItemStack);
 			}
 		};
 	}

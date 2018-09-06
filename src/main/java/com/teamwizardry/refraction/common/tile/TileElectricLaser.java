@@ -42,7 +42,7 @@ public class TileElectricLaser extends TileModTickable implements IEnergyStorage
 	}
 
 	public boolean canFire() {
-		return world.getTileEntity(pos) == this && !world.isRemote && !world.isBlockPowered(pos) && world.isBlockIndirectlyGettingPowered(pos) == 0 &&
+		return world.getTileEntity(pos) == this && !world.isRemote && !world.isBlockPowered(pos) &&
 				energy.extractEnergy(ConfigValues.TESLA_PER_TICK, true) == ConfigValues.TESLA_PER_TICK;
 	}
 

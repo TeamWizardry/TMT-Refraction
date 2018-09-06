@@ -1,11 +1,11 @@
 package com.teamwizardry.refraction.common.network;
 
 import com.teamwizardry.librarianlib.features.math.interpolate.StaticInterp;
+import com.teamwizardry.librarianlib.features.math.interpolate.numeric.InterpFloatInOut;
 import com.teamwizardry.librarianlib.features.math.interpolate.position.InterpBezier3D;
 import com.teamwizardry.librarianlib.features.network.PacketBase;
 import com.teamwizardry.librarianlib.features.particle.ParticleBuilder;
 import com.teamwizardry.librarianlib.features.particle.ParticleSpawner;
-import com.teamwizardry.librarianlib.features.particle.functions.InterpFadeInOut;
 import com.teamwizardry.librarianlib.features.utilities.DimWithPos;
 import com.teamwizardry.refraction.Refraction;
 import com.teamwizardry.refraction.api.Constants;
@@ -17,6 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class PacketAXYZMarks extends PacketBase {
 	}
 
 	@Override
-	public void handle(MessageContext ctx) {
+	public void handle(@NotNull MessageContext ctx) {
 		if (ctx.side.isServer()) return;
 
 		World world = Refraction.proxy.getWorld();
@@ -62,8 +63,8 @@ public class PacketAXYZMarks extends PacketBase {
 			boolean isAir = world.isAirBlock(pos);
 
 			ParticleBuilder wormholeVoid = new ParticleBuilder(10);
-			ParticleSpawner.spawn(wormholeVoid, world, new StaticInterp<>(new Vec3d(pos).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(isAir ? 5 : 10, isAir ? 10 : 20), 0, (aFloat, particleBuilder) -> {
-				wormholeVoid.setAlphaFunction(new InterpFadeInOut(0.2f, 0.2f));
+			ParticleSpawner.spawn(wormholeVoid, world, new StaticInterp<>(new Vec3d(pos).add(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(isAir ? 5 : 10, isAir ? 10 : 20), 0, (aFloat, particleBuilder) -> {
+				wormholeVoid.setAlphaFunction(new InterpFloatInOut(0.2f, 0.2f));
 				wormholeVoid.setRenderNormalLayer(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 				double radius = 0.4;
 				double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
@@ -78,8 +79,8 @@ public class PacketAXYZMarks extends PacketBase {
 			});
 
 			ParticleBuilder wormholeHalo = new ParticleBuilder(15);
-			ParticleSpawner.spawn(wormholeHalo, world, new StaticInterp<>(new Vec3d(pos).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(isAir ? 5 : 20, isAir ? 10 : 30), 0, (aFloat, particleBuilder) -> {
-				wormholeHalo.setAlphaFunction(new InterpFadeInOut(0.2f, 0.2f));
+			ParticleSpawner.spawn(wormholeHalo, world, new StaticInterp<>(new Vec3d(pos).add(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(isAir ? 5 : 20, isAir ? 10 : 30), 0, (aFloat, particleBuilder) -> {
+				wormholeHalo.setAlphaFunction(new InterpFloatInOut(0.2f, 0.2f));
 				wormholeHalo.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 				double r = isAir ? 0.5 : 1;
 				double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
@@ -91,8 +92,8 @@ public class PacketAXYZMarks extends PacketBase {
 			});
 
 			ParticleBuilder generatorHalo = new ParticleBuilder(10);
-			ParticleSpawner.spawn(generatorHalo, world, new StaticInterp<>(new Vec3d(origin).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(5, 10), 0, (aFloat, particleBuilder) -> {
-				generatorHalo.setAlphaFunction(new InterpFadeInOut(0.3f, 0.3f));
+			ParticleSpawner.spawn(generatorHalo, world, new StaticInterp<>(new Vec3d(origin).add(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(5, 10), 0, (aFloat, particleBuilder) -> {
+				generatorHalo.setAlphaFunction(new InterpFloatInOut(0.3f, 0.3f));
 				generatorHalo.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 				double r = 0.5;
 				double theta = 2.0f * (float) Math.PI * ThreadLocalRandom.current().nextFloat();
@@ -127,8 +128,8 @@ public class PacketAXYZMarks extends PacketBase {
 				controlPoints.put(dimWithPos, new Pair<>(p1, p2));
 
 				ParticleBuilder connection = new ParticleBuilder(30);
-				ParticleSpawner.spawn(connection, world, new StaticInterp<>(new Vec3d(origin).addVector(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(1, 5), 0, (aFloat, particleBuilder) -> {
-					connection.setAlphaFunction(new InterpFadeInOut(0.2f, 0.2f));
+				ParticleSpawner.spawn(connection, world, new StaticInterp<>(new Vec3d(origin).add(0.5, 0.5, 0.5)), ThreadLocalRandom.current().nextInt(1, 5), 0, (aFloat, particleBuilder) -> {
+					connection.setAlphaFunction(new InterpFloatInOut(0.2f, 0.2f));
 					connection.setRender(new ResourceLocation(Constants.MOD_ID, "particles/glow"));
 					Vec3d sub = new Vec3d(pos.subtract(origin));
 					connection.setPositionFunction(new InterpBezier3D(Vec3d.ZERO, sub, controlPoints.get(dimWithPos).getFirst(), controlPoints.get(dimWithPos).getSecond()));
@@ -140,7 +141,7 @@ public class PacketAXYZMarks extends PacketBase {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(@NotNull ByteBuf buf) {
 		buf.writeInt(positions.length);
 		for (int i = 0; i < positions.length; i++) {
 			buf.writeLong(positions[i].toLong());
@@ -150,7 +151,7 @@ public class PacketAXYZMarks extends PacketBase {
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(@NotNull ByteBuf buf) {
 		int len = buf.readInt();
 		positions = new BlockPos[len];
 		originPositions = new BlockPos[len];
