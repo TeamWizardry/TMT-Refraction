@@ -22,11 +22,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PacketBeamParticle extends PacketBase {
 
 	@Save
-	private Vec3d initPos;
+	public Vec3d initPos;
 	@Save
-	private Vec3d endPos;
+	public Vec3d endPos;
 	@Save
-	private Color color;
+	public Color color;
 
 	public PacketBeamParticle() {
 	}

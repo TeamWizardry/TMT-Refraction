@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class PacketAssemblyDoneParticles extends PacketBase {
 
-	private BlockPos pos;
+	public BlockPos pos;
 
 	public PacketAssemblyDoneParticles() {
 	}

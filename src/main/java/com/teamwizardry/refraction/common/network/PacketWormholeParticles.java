@@ -22,9 +22,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PacketWormholeParticles extends PacketBase {
 
 	@Save
-	private BlockPos pos;
+	public BlockPos pos;
 	@Save
-	private EnumFacing facing;
+	public EnumFacing facing;
 
 	public PacketWormholeParticles() {
 	}

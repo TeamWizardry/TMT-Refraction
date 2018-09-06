@@ -13,8 +13,8 @@ import java.awt.*;
  */
 public class PacketLaserFX extends PacketBase {
 
-	protected Vec3d start, end;
-	protected Color color;
+	public Vec3d start, end;
+	public Color color;
 
 	public PacketLaserFX() {
 	}

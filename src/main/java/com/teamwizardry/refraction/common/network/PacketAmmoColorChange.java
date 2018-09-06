@@ -13,8 +13,8 @@ import java.awt.*;
  */
 public class PacketAmmoColorChange extends PacketBase {
 
-	private int slot;
-	private Color color;
+	public int slot;
+	public Color color;
 
 	public PacketAmmoColorChange() {
 

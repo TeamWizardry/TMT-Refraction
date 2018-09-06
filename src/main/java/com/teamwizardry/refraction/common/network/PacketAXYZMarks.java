@@ -27,8 +27,8 @@ public class PacketAXYZMarks extends PacketBase {
 
 	public static final Map<DimWithPos, Pair<Vec3d, Vec3d>> controlPoints = new HashMap<>();
 
-	private BlockPos[] positions, originPositions;
-	private int dimension;
+	public BlockPos[] positions, originPositions;
+	public int dimension;
 
 	public PacketAXYZMarks() {
 		// NO-OP

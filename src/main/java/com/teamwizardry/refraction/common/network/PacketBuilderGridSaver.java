@@ -19,8 +19,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class PacketBuilderGridSaver extends PacketBase {
 
 	@Save
-	private BlockPos pos;
-	private GuiBuilder.TileType[][][] grid;
+	public BlockPos pos;
+	public GuiBuilder.TileType[][][] grid;
 
 	public PacketBuilderGridSaver() {
 	}
