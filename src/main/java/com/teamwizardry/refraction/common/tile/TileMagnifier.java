@@ -30,23 +30,23 @@ public class TileMagnifier extends TileModTickable {
 				&& !world.isRaining()) {
 			for (int y = 1; y < 10; y++) {
 				BlockPos lens = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
-				if (world.getBlockState(lens).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens))
+				if (world.getBlockState(lens).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens))
 					continue;
-				if (world.getBlockState(lens.south()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.south()))
+				if (world.getBlockState(lens.south()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.south()))
 					continue;
-				if (world.getBlockState(lens.north()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.north()))
+				if (world.getBlockState(lens.north()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.north()))
 					continue;
-				if (world.getBlockState(lens.east()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.east()))
+				if (world.getBlockState(lens.east()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.east()))
 					continue;
-				if (world.getBlockState(lens.west()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.west()))
+				if (world.getBlockState(lens.west()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.west()))
 					continue;
-				if (world.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.south().west()))
+				if (world.getBlockState(lens.south().west()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.south().west()))
 					continue;
-				if (world.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.south().east()))
+				if (world.getBlockState(lens.south().east()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.south().east()))
 					continue;
-				if (world.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.north().west()))
+				if (world.getBlockState(lens.north().west()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.north().west()))
 					continue;
-				if (world.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS || !PosUtils.isHighestBlock(world, lens.north().east()))
+				if (world.getBlockState(lens.north().east()).getBlock() != ModBlocks.LENS || !world.canBlockSeeSky(lens.north().east()))
 					continue;
 				Vec3d center = new Vec3d(pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5);
 				Vec3d dir = new Vec3d(0, -1, 0);

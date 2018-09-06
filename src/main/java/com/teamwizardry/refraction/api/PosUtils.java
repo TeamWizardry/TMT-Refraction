@@ -27,27 +27,6 @@ public final class PosUtils {
 		return highest;
 	}
 
-	public static boolean isHighestBlock(World world, BlockPos pos) {
-		BlockPos.MutableBlockPos highest = new BlockPos.MutableBlockPos(pos.getX(), 255, pos.getZ());
-		IBlockState stateHighest = world.getBlockState(highest);
-		while (world.isAirBlock(highest) || !stateHighest.isFullBlock()
-				|| !stateHighest.isOpaqueCube()
-				|| !stateHighest.isBlockNormalCube()
-				|| !stateHighest.isNormalCube()
-				|| stateHighest.isTranslucent()
-				|| stateHighest.getMaterial().isLiquid()
-				|| !stateHighest.getMaterial().isSolid()) {
-			if (highest.getY() <= 0) break;
-
-			highest.move(EnumFacing.DOWN);
-			stateHighest = world.getBlockState(highest);
-
-			if (highest.getY() == pos.getY()) return true;
-		}
-
-		return false;
-	}
-
 	@Nullable
 	public static EnumFacing getFacing(Vec3d p1, Vec3d p2) {
 		Vec3d sub = p2.subtract(p1);
