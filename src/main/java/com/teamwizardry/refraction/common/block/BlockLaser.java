@@ -57,15 +57,15 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(IBlockState state) {
+	public boolean hasComparatorInputOverride(@Nonnull IBlockState state) {
 		return true;
 	}
 
 	@Override
 	public int getComparatorInputOverride(@Nonnull IBlockState blockState, @Nonnull World worldIn, @Nonnull BlockPos pos) {
 		TileLaser te = getTE(worldIn, pos);
-		if (!te.inventory.getStackInSlot(0).isEmpty())
-			return (int) (te.inventory.getStackInSlot(0).getCount() / 64.0 * 15);
+		if (!te.inventory.getHandler().getStackInSlot(0).isEmpty())
+			return (int) (te.inventory.getHandler().getStackInSlot(0).getCount() / 64.0 * 15);
 		else return 0;
 	}
 
@@ -80,7 +80,7 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 			if (laser == null) return false;
 			ItemStack stack = heldItem.copy();
 			stack.setCount(1);
-			ItemStack left = laser.inventory.insertItem(0, stack, false);
+			ItemStack left = laser.inventory.getHandler().insertItem(0, stack, false);
 			if (left.isEmpty()) heldItem.setCount(heldItem.getCount() - 1);
 			laser.markDirty();
 		}
@@ -138,7 +138,7 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 	@Override
 	public boolean shouldEmit(@Nonnull World world, @Nonnull BlockPos pos) {
 		TileLaser laser = (TileLaser) world.getTileEntity(pos);
-		return !(world.isBlockPowered(pos) || world.getStrongPower(pos) > 0) && laser != null && !laser.inventory.getStackInSlot(0).isEmpty();
+		return !(world.isBlockPowered(pos) || world.getStrongPower(pos) > 0) && laser != null && !laser.inventory.getHandler().getStackInSlot(0).isEmpty();
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class BlockLaser extends BlockModContainer implements IBeamImmune, ISound
 	public void breakBlock(@Nonnull World worldIn,@Nonnull BlockPos pos,@Nonnull IBlockState state) {
 		TileLaser laser = (TileLaser) worldIn.getTileEntity(pos);
 		if (laser != null)
-			for (ItemStack stack : CapsUtils.getListOfItems(laser.inventory))
+			for (ItemStack stack : CapsUtils.getListOfItems(laser.inventory.getHandler()))
 				InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
 		super.breakBlock(worldIn, pos, state);
 	}
