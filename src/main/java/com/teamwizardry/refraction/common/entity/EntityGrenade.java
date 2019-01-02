@@ -74,7 +74,7 @@ public class EntityGrenade extends EntityThrowable {
 
 				Vec3d dest = new Vec3d(x, ThreadLocalRandom.current().nextInt(-5, 5), z);
 				Color c = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (color.getAlpha() / ThreadLocalRandom.current().nextDouble(1, 3)));
-				new Beam(world, pos, dest, EffectTracker.getEffect(c)).setCaster(caster).spawn();
+				new Beam(world, pos, dest, EffectTracker.getEffect(c)).setEntitySkip(this).setCaster(caster).spawn();
 			}
 			for (int i = 0; i < 4; i++) playSound(ModSounds.CRACKLE, 1f, ThreadLocalRandom.current().nextFloat());
 		}

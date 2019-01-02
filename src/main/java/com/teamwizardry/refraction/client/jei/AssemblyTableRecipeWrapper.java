@@ -26,7 +26,7 @@ import java.util.List;
 public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 
 	private static final int CENTER_X = 91;
-	private static final int CENTER_Y = 91;
+	private static final int CENTER_Y = 60;
 	private static ResourceLocation loc = new ResourceLocation(Constants.MOD_ID, "textures/gui/assembly_recipe_alpha_bar.png");
 	private static Texture texture = new Texture(loc);
 	private static Sprite SLOT = texture.getSprite("slot", 18, 18);
@@ -35,8 +35,6 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 	private static Sprite OUTLINE = texture.getSprite("outline", 68, 12);
 	private List<List<ItemStack>> inputs;
 	private ItemStack output;
-	private List<FluidStack> fluidInputs = ImmutableList.of();
-	private List<FluidStack> fluidOutputs = ImmutableList.of();
 	private Color minColor, maxColor, currentColor;
 	private int cycleTimer = 0;
 	private int transitionTicks = 0;
@@ -154,7 +152,6 @@ public class AssemblyTableRecipeWrapper implements IRecipeWrapper {
 				return ImmutableList.of("Max Green: " + maxColor.getGreen(), "Min Green: " + minColor.getGreen());
 			if (mouseX >= recipeWidth - 11 && mouseX <= recipeWidth - 3)
 				return ImmutableList.of("Max Blue: " + maxColor.getBlue(), "Min Blue: " + minColor.getBlue());
-
 		}
 		return ImmutableList.of();
 	}

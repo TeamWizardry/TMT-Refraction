@@ -31,6 +31,9 @@ public class EffectBreak extends Effect {
 
 	@Override
 	public void runFinalBlock(World world, BlockPos pos, int potency) {
+		if (!world.isBlockLoaded(pos)) {
+			return;
+		}
 		IBlockState block = world.getBlockState(pos);
 		if (EffectTracker.gravityProtection.containsKey(pos)) return;
 		if (block.getBlock() instanceof IBeamImmune && ((IBeamImmune) block.getBlock()).isImmune(world, pos)) return;

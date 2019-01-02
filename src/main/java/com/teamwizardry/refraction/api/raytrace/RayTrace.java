@@ -225,6 +225,9 @@ public class RayTrace {
 			j1 = MathHelper.floor(start.z) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
 
 			BlockPos targetPos = new BlockPos(l, i1, j1);
+			if (!world.isBlockLoaded(targetPos)) {
+				return returnLastUncollidableBlock ? raytraceresult2 : null;
+			}
 			IBlockState targetState = world.getBlockState(targetPos);
 			Block targetBlock = targetState.getBlock();
 

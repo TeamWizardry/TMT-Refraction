@@ -46,7 +46,7 @@ public class CraftingRecipes {
 				" AA",
 				" BA",
 				"B  ",
-				'A', "ingotIron", 'B', Items.STICK);
+				'A', "ingotIron", 'B', "stickWood");
 
 		GameRegistry.addShapedRecipe(ModItems.LASER_PEN.getRegistryName(), new ResourceLocation( Constants.MOD_ID ),
 				new ItemStack(ModItems.LASER_PEN),
@@ -102,7 +102,7 @@ public class CraftingRecipes {
 				" A ",
 				"ABA",
 				" A ",
-				'A', LibOreDict.REFLECTIVE_ALLOY, 'B', Blocks.GLASS_PANE);
+				'A', LibOreDict.REFLECTIVE_ALLOY, 'B', "paneGlass");
 
 		GameRegistry.addShapedRecipe(ModBlocks.SPECTROMETER.getRegistryName(), new ResourceLocation( Constants.MOD_ID ),
 				new ItemStack(ModBlocks.SPECTROMETER),

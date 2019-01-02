@@ -45,6 +45,10 @@ public class EffectBurn extends Effect {
 
 	@Override
 	public void runBlock(World world, BlockPos pos, int potency) {
+	}
+	
+	@Override
+	public void runFinalBlock(World world, BlockPos pos, int potency) {
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile != null && (tile instanceof IInventory || tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit))) {
 			burnedTileTracker.add(pos);
@@ -55,6 +59,7 @@ public class EffectBurn extends Effect {
 		} else {
 			EnumFacing facing = beam.trace.sideHit;
 			if (facing != null) {
+				pos = pos.offset(beam.trace.sideHit);
 				IBlockState state = world.getBlockState(pos);
 				if (state.getBlock() == Blocks.AIR) world.setBlockState(pos, Blocks.FIRE.getDefaultState());
 			}
@@ -68,13 +73,17 @@ public class EffectBurn extends Effect {
 		if (entity instanceof EntityItem) {
 			EntityItem item = (EntityItem) entity;
 			ItemStack stack = item.getItem();
-			if (FurnaceRecipes.instance().getSmeltingResult(stack) != ItemStack.EMPTY) {
-				if (ThreadLocalRandom.current().nextInt(100) == 0) {
-					ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
-					EntityItem cooked = new EntityItem(world, item.posX, item.posY, item.posZ);
-					cooked.dropItem(result.getItem(), 1);
+			if (!world.isRemote) {
+				ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
+				if (!result.isEmpty()) {
+					EntityItem cooked = new EntityItem(world, item.posX, item.posY, item.posZ, result.copy());
 					cooked.setNoPickupDelay();
-					stack.setCount(stack.getCount()-1);
+					cooked.motionX = entity.motionX;
+					cooked.motionY = entity.motionY;
+					cooked.motionZ = entity.motionZ;
+		            world.spawnEntity(cooked);
+					stack.shrink(1);
+					item.setItem(stack);
 				}
 				pass = false;
 			}

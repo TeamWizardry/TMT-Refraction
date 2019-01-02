@@ -31,7 +31,7 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 //	private boolean forwards = true;
 
 	public AssemblyTableRecipeCategory(IGuiHelper guiHelper) {
-		background = guiHelper.createBlankDrawable(180, 180);
+		background = guiHelper.createBlankDrawable(180, 120);
 		localizedName = I18n.format(Constants.MOD_ID + ".jei.assembly_table");
 	}
 
@@ -81,7 +81,7 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 		for (int i = 0; i < inputs.size(); i++) {
 			double angle = slice * i;
 			int newX = (int) (82 + 50 * Math.cos(angle));
-			int newY = (int) (82 + 50 * Math.sin(angle));
+			int newY = (int) (51 + 50 * Math.sin(angle));
 			recipeLayout.getItemStacks().init(index, true, newX, newY);
 			List<ItemStack> obj = inputs.get(i);
 			if (obj == null)
@@ -90,7 +90,7 @@ public class AssemblyTableRecipeCategory implements IRecipeCategory {
 			index++;
 		}
 
-		recipeLayout.getItemStacks().init(index, true, 82, 82);
+		recipeLayout.getItemStacks().init(index, true, 82, 51);
 		recipeLayout.getItemStacks().set(index, ingredients.getOutputs(ItemStack.class).get(0));
 	}
 }

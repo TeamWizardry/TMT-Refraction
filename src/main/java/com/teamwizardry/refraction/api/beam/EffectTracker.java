@@ -85,7 +85,7 @@ public class EffectTracker {
 
 			World w = world.get();
 			effects.keySet().removeIf(effect -> {
-				if (effect != null && w != null && effects.get(effect) != null && effect.beam.trace != null) {
+				if (effect != null && w != null && w.isBlockLoaded(new BlockPos(effect.beam.initLoc)) && effects.get(effect) != null && effect.beam.trace != null) {
 					// RUN EFFECT METHODS //
 					effect.run(w);
 					if (effect.beam.caster != null) {
