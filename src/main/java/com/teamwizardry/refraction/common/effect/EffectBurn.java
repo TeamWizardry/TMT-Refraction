@@ -81,7 +81,7 @@ public class EffectBurn extends Effect {
 					cooked.motionX = entity.motionX;
 					cooked.motionY = entity.motionY;
 					cooked.motionZ = entity.motionZ;
-		            world.spawnEntity(cooked);
+					world.spawnEntity(cooked);
 					stack.shrink(1);
 					item.setItem(stack);
 				}

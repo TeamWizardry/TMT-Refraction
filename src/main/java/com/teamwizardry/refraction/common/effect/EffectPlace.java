@@ -13,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -100,9 +99,9 @@ public class EffectPlace extends Effect {
 		}
 		FakePlayer fakePlayer;
 		if (fakePlayerHolder == null || (fakePlayer = fakePlayerHolder.get()) == null)
-        {
-            fakePlayerHolder = new WeakReference<>((fakePlayer = FakePlayerFactory.get((WorldServer) world, new GameProfile(UUID.randomUUID(), "Refraction Place Effect"))));
-        }
+		{
+			fakePlayerHolder = new WeakReference<>((fakePlayer = FakePlayerFactory.get((WorldServer) world, new GameProfile(UUID.randomUUID(), "Refraction Place Effect"))));
+		}
 
 		fakePlayer.rotationPitch = (float) Math.asin(beam.slope.y) / 0.017453292F;
 		fakePlayer.rotationYaw = (float) (-MathHelper.atan2(beam.slope.x, beam.slope.z) * (180D / Math.PI));
