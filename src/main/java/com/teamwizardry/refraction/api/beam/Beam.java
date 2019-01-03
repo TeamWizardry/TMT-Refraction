@@ -5,6 +5,7 @@ import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.raytrace.RayTrace;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.common.effect.EffectAesthetic;
+import com.teamwizardry.refraction.common.entity.EntityLaserPointer;
 import com.teamwizardry.refraction.common.network.PacketBeamParticle;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -314,7 +315,8 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		trace = new RayTrace(world, slope, initLoc, range)
 				.setEntityFilter( entity -> {
 					if ( entity == null || entityToSkip == null ) return true;
-					else return entity.getUniqueID() != entityToSkip.getUniqueID();
+					if ( entity.getClass() == EntityLaserPointer.class ) return false;
+					return entity.getUniqueID() != entityToSkip.getUniqueID();
 				})
 				.trace();
 
