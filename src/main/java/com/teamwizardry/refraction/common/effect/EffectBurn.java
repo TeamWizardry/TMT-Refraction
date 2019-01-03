@@ -73,7 +73,7 @@ public class EffectBurn extends Effect {
 		if (entity instanceof EntityItem) {
 			EntityItem item = (EntityItem) entity;
 			ItemStack stack = item.getItem();
-			if (!world.isRemote) {
+			if (!world.isRemote && (ConfigValues.EXTRA_FAIL_CHANCE_ITEM_SMELTING == 1 || ThreadLocalRandom.current().nextInt(ConfigValues.EXTRA_FAIL_CHANCE_ITEM_SMELTING) == 0)) {
 				ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
 				if (!result.isEmpty()) {
 					EntityItem cooked = new EntityItem(world, item.posX, item.posY, item.posZ, result.copy());
@@ -83,10 +83,10 @@ public class EffectBurn extends Effect {
 					cooked.motionZ = entity.motionZ;
 					world.spawnEntity(cooked);
 					stack.shrink(1);
-					item.setItem(stack);
+					item.setItem(stack); // sync changes to client
 				}
-				pass = false;
 			}
+			pass = false;
 		}
 		if (pass) entity.setFire(potency);
 	}

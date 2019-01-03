@@ -116,4 +116,8 @@ public final class ConfigValues {
 	@ConfigIntRange(min = 1, max = 1000)
 	@ConfigProperty(category = "balancing", comment = "When a purple laser would normally trigger, this setting adds a 1 in X chance for it to still fail (1 = disabled")
 	public static int EXTRA_FAIL_CHANCE_PURPLE = 5;
+
+	@ConfigIntRange(min = 1, max = 1000)
+	@ConfigProperty(category = "balancing", comment = "When a red laser would trigger item smelting, this setting adds a 1 in X chance for it to still fail (1 = disabled")
+	public static int EXTRA_FAIL_CHANCE_ITEM_SMELTING = 100;
 }
