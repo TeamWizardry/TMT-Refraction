@@ -314,8 +314,9 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 
 		trace = new RayTrace(world, slope, initLoc, range)
 				.setEntityFilter( entity -> {
-					if ( entity == null || entityToSkip == null ) return true;
+					if ( entity == null ) return true;
 					if ( entity.getClass() == EntityLaserPointer.class ) return false;
+					if ( entityToSkip == null ) return true;
 					return entity.getUniqueID() != entityToSkip.getUniqueID();
 				})
 				.trace();
