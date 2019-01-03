@@ -133,9 +133,9 @@ public class BlockPrism extends BlockMod implements ILaserTrace, ILightSink {
 		return new BlockStateContainer(this, FACING);
 	}
 
-	@Nonnull
+	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
