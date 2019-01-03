@@ -34,7 +34,7 @@ public class EffectFreeze extends Effect {
 
 		if (entity instanceof EntityLivingBase) {
 			EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
-			entityLivingBase.setFire(0);
+			entityLivingBase.extinguish();
 			int effectDuration = 50;
 
 			entityLivingBase.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, effectDuration, 5 * potency / 255, true, false));

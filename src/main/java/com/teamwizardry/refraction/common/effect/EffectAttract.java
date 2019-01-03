@@ -11,6 +11,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -74,36 +75,34 @@ public class EffectAttract extends Effect {
 
 			int lastSlot = 0;
 			for (int i = inv.getSizeInventory() - 1; i > 0; i--) {
-				if (inv.getStackInSlot(i) != ItemStack.EMPTY) {
+				if (!inv.getStackInSlot(i).isEmpty()) {
 					lastSlot = i;
 					break;
 				}
 			}
 			ItemStack slotStack = inv.getStackInSlot(lastSlot);
-			if (slotStack == ItemStack.EMPTY) return;
+			if (slotStack.isEmpty()) return;
 
 			ItemStack stack = inv.decrStackSize(lastSlot, slotStack.getCount() < potency / 50 ? slotStack.getCount() : potency / 50);
-			if (stack == ItemStack.EMPTY) return;
-
-			EntityItem item = new EntityItem(world, beam.trace.hitVec.x, beam.trace.hitVec.y, beam.trace.hitVec.z, stack);
-			item.motionX = 0;
-			item.motionY = 0;
-			item.motionZ = 0;
-			world.spawnEntity(item);
-
+			if (!stack.isEmpty()) extractItem(world, beam.trace, stack);
 		} else if (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit)) {
 			IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, beam.trace.sideHit);
 			int lastSlot = CapsUtils.getLastOccupiedSlot(cap);
 			if (CapsUtils.getOccupiedSlotCount(cap) > 0) {
 				ItemStack stack = cap.extractItem(lastSlot, cap.getStackInSlot(lastSlot).getCount() < potency / 50 ? cap.getStackInSlot(lastSlot).getCount() : potency / 50, false);
-				if (stack == ItemStack.EMPTY) return;
-
-				EntityItem item = new EntityItem(world, beam.trace.hitVec.x, beam.trace.hitVec.y, beam.trace.hitVec.z, stack);
-				item.motionX = 0;
-				item.motionY = 0;
-				item.motionZ = 0;
-				world.spawnEntity(item);
+				if (!stack.isEmpty()) extractItem(world, beam.trace, stack);
 			}
 		}
+	}
+
+	private static void extractItem(World world, RayTraceResult trace, ItemStack stack)
+	{
+		Vec3d posVec = new Vec3d(trace.getBlockPos().getX() + 0.5, trace.getBlockPos().getY() + 0.5, trace.getBlockPos().getZ() + 0.5);
+		Vec3d popVec = posVec.add(trace.hitVec.subtract(posVec).scale(1.5));
+		EntityItem item = new EntityItem(world, popVec.x, popVec.y, popVec.z, stack);
+		item.motionX = 0;
+		item.motionY = 0;
+		item.motionZ = 0;
+		world.spawnEntity(item);
 	}
 }

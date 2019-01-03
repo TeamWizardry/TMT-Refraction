@@ -183,10 +183,14 @@ public class BlockLens extends BlockMod implements ILaserTrace, ILightSink {
 	@SuppressWarnings("deprecation")
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockState blockState, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, EnumFacing side) {
-		IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
-		Block block = iblockstate.getBlock();
-		return blockState != iblockstate || block != this && block != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-
+		if (side.getHorizontalIndex() >= 0) { // is horizontal
+			IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
+			Block block = iblockstate.getBlock();
+			if (block == this) {
+				return false;
+			}
+		}
+		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}
 
 	@Nonnull

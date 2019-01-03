@@ -3,7 +3,10 @@ package com.teamwizardry.refraction.client.render;
 import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.client.core.RenderLaserUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -12,6 +15,9 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.GL_ONE;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 
 import java.awt.*;
 import java.util.Map;
@@ -45,28 +51,33 @@ public class LaserRenderer {
 
 	@SubscribeEvent
 	public void renderWorldLast(RenderWorldLastEvent event) {
-		GlStateManager.pushMatrix();
-		GlStateManager.pushAttrib();
-
 		EntityPlayer rootPlayer = Minecraft.getMinecraft().player;
 		double x = rootPlayer.lastTickPosX + (rootPlayer.posX - rootPlayer.lastTickPosX) * event.getPartialTicks();
 		double y = rootPlayer.lastTickPosY + (rootPlayer.posY - rootPlayer.lastTickPosY) * event.getPartialTicks();
 		double z = rootPlayer.lastTickPosZ + (rootPlayer.posZ - rootPlayer.lastTickPosZ) * event.getPartialTicks();
-		GlStateManager.translate(-x, -y, -z);
+
+		GlStateManager.disableCull();
+		GlStateManager.depthMask(false);
+		GlStateManager.enableBlend();
+		GlStateManager.enableAlpha();
+		GlStateManager.alphaFunc(GL11.GL_GEQUAL, 1f / 255f);
+		if (ConfigValues.ADDITIVE_BLENDING) {
+			GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE);
+		}
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bb = tessellator.getBuffer();
+		bb.setTranslation(-x, -y, -z);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
 		// vvv actual rendering stuff vvv
 
-		GlStateManager.enableBlend();
-		GlStateManager.alphaFunc(GL11.GL_GEQUAL, 1f / 255f);
-		RenderLaserUtil.startRenderingLasers();
 		for (LaserRenderInfo info : lasers.keySet())
-			RenderLaserUtil.renderLaser(info.color, info.start, info.end);
-		RenderLaserUtil.finishRenderingLasers();
-		GlStateManager.disableBlend();
-		GlStateManager.disableAlpha();
+			RenderLaserUtil.renderLaser(info.color, info.start, info.end, bb);
 
-		GlStateManager.popMatrix();
-		GlStateManager.popAttrib();
+		tessellator.draw();
+		bb.setTranslation(0, 0, 0);
+		GlStateManager.enableCull();
+		GlStateManager.disableBlend();
 	}
 
 	@SubscribeEvent

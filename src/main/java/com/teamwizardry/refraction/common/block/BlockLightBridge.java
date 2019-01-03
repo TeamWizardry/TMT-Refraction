@@ -32,4 +32,9 @@ public class BlockLightBridge extends BlockLightBridgeBase {
 	public boolean shouldEmit(@Nonnull World world, @Nonnull BlockPos pos) {
 		return true;
 	}
+
+	@Override
+	public String getTranslationKey() {
+		return "tile." + getRegistryName();
+	}
 }

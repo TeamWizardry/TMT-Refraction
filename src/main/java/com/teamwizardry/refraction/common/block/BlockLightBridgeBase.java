@@ -238,8 +238,9 @@ public abstract class BlockLightBridgeBase extends BlockMod implements ILightSin
 		return new BlockStateContainer(this, FACING, UP, DOWN, LEFT, RIGHT);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
-	public @Nonnull BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
