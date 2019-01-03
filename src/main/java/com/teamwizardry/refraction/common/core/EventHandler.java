@@ -6,8 +6,6 @@ import com.teamwizardry.refraction.api.ConfigValues;
 import com.teamwizardry.refraction.api.Utils;
 import com.teamwizardry.refraction.api.beam.Beam;
 import com.teamwizardry.refraction.api.beam.BeamHitEvent;
-import com.teamwizardry.refraction.api.beam.Effect;
-import com.teamwizardry.refraction.api.beam.EffectTracker;
 import com.teamwizardry.refraction.api.beam.ILightSink;
 import com.teamwizardry.refraction.api.raytrace.Tri;
 import com.teamwizardry.refraction.common.block.BlockLens;
@@ -102,8 +100,7 @@ public class EventHandler {
 				}
 			}
 
-			Effect effect = beam.isAesthetic() ? new EffectAesthetic().setColor(color) : EffectTracker.getEffect(color);
-			beam.createSimilarBeam(hitPos, ref, effect).spawn();
+			beam.createSimilarBeam(hitPos, ref, new EffectAesthetic().setColor(color)).spawn();
 		}
 	}
 
