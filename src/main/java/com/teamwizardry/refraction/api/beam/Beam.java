@@ -311,6 +311,7 @@ public class Beam implements INBTSerializable<NBTTagCompound> {
 		if (world.isRemote) return;
 		if (this.getAlpha() <= 1) return;
 		if (bouncedTimes > allowedBounceTimes) return;
+		if (initLoc.squareDistanceTo(finalLoc) < 0.1) return;
 
 		trace = new RayTrace(world, slope, initLoc, range)
 				.setEntityFilter( entity -> {
