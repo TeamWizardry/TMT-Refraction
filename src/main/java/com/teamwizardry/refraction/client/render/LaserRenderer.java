@@ -5,6 +5,8 @@ import com.teamwizardry.refraction.client.core.RenderLaserUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GlStateManager.DestFactor;
+import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,10 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.opengl.GL11;
 
-import static org.lwjgl.opengl.GL11.GL_ONE;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-
-import java.awt.*;
+import java.awt.Color;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -62,7 +61,7 @@ public class LaserRenderer {
 		GlStateManager.enableAlpha();
 		GlStateManager.alphaFunc(GL11.GL_GEQUAL, 1f / 255f);
 		if (ConfigValues.ADDITIVE_BLENDING) {
-			GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE);
+			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE);
 		}
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bb = tessellator.getBuffer();
@@ -76,8 +75,12 @@ public class LaserRenderer {
 
 		tessellator.draw();
 		bb.setTranslation(0, 0, 0);
+		if (ConfigValues.ADDITIVE_BLENDING) {
+			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+		}
 		GlStateManager.enableCull();
 		GlStateManager.disableBlend();
+		GlStateManager.depthMask(true);
 	}
 
 	@SubscribeEvent
