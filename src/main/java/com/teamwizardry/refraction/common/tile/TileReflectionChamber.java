@@ -29,6 +29,7 @@ public class TileReflectionChamber extends MultipleBeamTile {
 
 	@Override
 	public void update() {
+		if (world.isRemote) return;
 		super.update();
 		Beam beam = outputBeam;
 		if (beam == null || world.getTileEntity(pos) != this) return;
