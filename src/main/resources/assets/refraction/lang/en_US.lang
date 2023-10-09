@@ -29,15 +29,15 @@ tile.refraction:axyz.8.name=AFDQTA (A Fool Doesn't Question This Acronym)
 tile.refraction:axyz.9.name=AFDQTA (Atomically Flan Decrementing Quality Total Annihilator)
 tile.refraction:light_bridge.name=Light Bridge
 
-tile.refraction:filter_white.name=White Creative Filter
-tile.refraction:filter_red.name=Red Creative Filter
-tile.refraction:filter_green.name=Green Creative Filter
-tile.refraction:filter_blue.name=Blue Creative Filter
-tile.refraction:filter_cyan.name=Cyan Creative Filter
-tile.refraction:filter_yellow.name=Yellow Creative Filter
-tile.refraction:filter_magenta.name=Magenta Creative Filter
-tile.refraction:filter_pink.name=Pink Creative Filter
-tile.refraction:filter_orange.name=Orange Creative Filter
+tile.refraction:filter_white.name=White Filter
+tile.refraction:filter_red.name=Red Filter
+tile.refraction:filter_green.name=Green Filter
+tile.refraction:filter_blue.name=Blue Filter
+tile.refraction:filter_cyan.name=Cyan Filter
+tile.refraction:filter_yellow.name=Yellow Filter
+tile.refraction:filter_magenta.name=Magenta Filter
+tile.refraction:filter_pink.name=Pink Filter
+tile.refraction:filter_orange.name=Orange Filter
 
 
 item.refraction:laser_pen.name=Laser Pen

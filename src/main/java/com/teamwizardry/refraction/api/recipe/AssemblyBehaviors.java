@@ -4,6 +4,7 @@ import com.google.common.collect.HashBiMap;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
+import java.util.function.Function;
 
 import static com.teamwizardry.librarianlib.features.helpers.CommonUtilMethods.getCurrentModId;
 
@@ -28,5 +29,9 @@ public final class AssemblyBehaviors {
 
 	public static IAssemblyBehavior register(String key, ItemStack output, Color one, Color two, Object... inputs) {
 		return register(key, new AssemblyRecipe(output, one, two, inputs));
+	}
+
+	public static IAssemblyBehavior register(String key, ItemStack output, Function<ItemStack, ItemStack> function, Color one, Color two, Object... inputs) {
+		return register(key, new AssemblyRecipe(function.apply(output), one, two, inputs));
 	}
 }

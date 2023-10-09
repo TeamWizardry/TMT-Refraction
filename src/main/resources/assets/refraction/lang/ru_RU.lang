@@ -28,15 +28,15 @@ tile.refraction:axyz.7.name=АПКТА (Атомный примитивный к
 tile.refraction:axyz.8.name=АПКТА (Анатомический практически конспирологический транспортный автобус)
 tile.refraction:axyz.9.name=АПКТА (Атмосферно проективное коммерческое телефонное агенство)
 
-tile.refraction:filter_white.name=Белый творческий фильтр
-tile.refraction:filter_red.name=Красный творческий фильтр
-tile.refraction:filter_green.name=Зеленый творческий фильтр
-tile.refraction:filter_blue.name=Синий творческий фильтр
-tile.refraction:filter_cyan.name=Бирюзовый творческий фильтр
-tile.refraction:filter_yellow.name=Желтый творческий фильтр
-tile.refraction:filter_magenta.name=Фиолетовый творческий фильтр
-tile.refraction:filter_pink.name=Розовый творческий фильтр
-tile.refraction:filter_orange.name=Оранжевый творческий фильтр
+tile.refraction:filter_white.name=Белый фильтр
+tile.refraction:filter_red.name=Красный фильтр
+tile.refraction:filter_green.name=Зеленый фильтр
+tile.refraction:filter_blue.name=Синий фильтр
+tile.refraction:filter_cyan.name=Бирюзовый фильтр
+tile.refraction:filter_yellow.name=Желтый фильтр
+tile.refraction:filter_magenta.name=Фиолетовый фильтр
+tile.refraction:filter_pink.name=Розовый фильтр
+tile.refraction:filter_orange.name=Оранжевый фильтр
 
 
 item.refraction:laser_pen.name=Лазерная указка

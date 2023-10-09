@@ -1,79 +1,95 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-    }
-    dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
-    }
+plugins {
+    id 'net.minecraftforge.gradle' version '5.+'
+    id 'wtf.gofancy.fancygradle' version '1.1.2-5'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.7'
+    id 'org.jetbrains.kotlin.jvm' version "1.9.0"
 }
-
-apply plugin: "net.minecraftforge.gradle.forge"
 
 version = "$mod_version.$patch_version"
 group = "com.teamwizardry"
 archivesBaseName = "refraction-$mc_version"
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+sourceCompatibility = targetCompatibility = 1.8
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+fancyGradle {
+    patches {
+        coremods
+    }
+}
 
 minecraft {
-    version = "$mc_version-$forge_version"
-    runDir = "run"
-    mappings = "$mcp_version"
+    mappings channel: 'stable', version: '39-1.12'
 
-    replace 'GRADLE:VERSION', "$mod_version"
-    replace 'required-before:librarianlib', 'required-before:librarianlib@' + liblib_version
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            environment 'MC_VERSION', '1.12.2'
+        }
 
-    replaceIn 'Constants.java'
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            environment 'MC_VERSION', '1.12.2'
+        }
+    }
 }
 
 repositories {
     mavenCentral()
-    maven { url = "http://maven.bluexin.be/repository/snapshots/" }
-    maven { url = "http://dvs1.progwml6.com/files/maven" }
-    maven { url = "http://maven.tterrag.com/" }
-    maven { url = "http://maven.blamejared.com" }
-    maven { url = 'http://maven.mcmoddev.com' }
+    maven { url = "https://maven.bluexin.be/repository/snapshots/" }
+    maven { url = "https://dvs1.progwml6.com/files/maven" }
+    maven { url = "https://maven.tterrag.com/" }
+    maven { url = "https://maven.blamejared.com" }
+    maven { url = 'https://maven.mcmoddev.com' }
+    maven { url = "https://mvnrepository.com/artifact/org.jetbrains/annotations" }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+    mavenLocal()
 }
 
 dependencies {
-    compile "com.teamwizardry.librarianlib:librarianlib-1.12.2:$liblib_version-SNAPSHOT:deobf"
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
 
-    deobfCompile "mezz.jei:jei_1.12.2:$jei_version:api"
-    compile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-$ct_version"
-    compile "net.darkhax.tesla:Tesla-1.12.2:$tesla_version"
-
-    runtime "mezz.jei:jei_1.12.2:$jei_version"
+    implementation 'org.jetbrains:annotations:16.0.2'
+    implementation fg.deobf("com.teamwizardry.librarianlib:librarianlib-1.12.2:$liblib_version-SNAPSHOT:deobf")
+    compileOnly "mezz.jei:jei_1.12.2:$jei_version:api"
+    implementation fg.deobf("curse.maven:forgelin-continuous-456403:4635770")
+    implementation fg.deobf("curse.maven:shadowfacts-forgelin-248453:2785465")
+    implementation fg.deobf("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-$ct_version")
+    runtimeOnly fg.deobf("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-$ct_version")
+    implementation fg.deobf("CraftTweaker2:CraftTweaker2-API:$ct_version")
+    runtimeOnly fg.deobf("CraftTweaker2:CraftTweaker2-API:$ct_version")
+    implementation fg.deobf("CraftTweaker2:ZenScript:$ct_version")
+    runtimeOnly fg.deobf("CraftTweaker2:ZenScript:$ct_version")
+    implementation fg.deobf("net.darkhax.tesla:Tesla-1.12.2:$tesla_version")
+    runtimeOnly "mezz.jei:jei_1.12.2:$jei_version"
 }
 
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
-
-        // replace version and mcversion
-        expand "version": project.version,
-                "mcversion": project.minecraft.version
-    }
-
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "mcmod.info"
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "refraction",
+                "Specification-Vendor": "Mysticpasta1",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"Mysticpasta1",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
     }
 }
 
-idea {
-    module {
-        inheritOutputDirs = false
-        outputDir = compileJava.destinationDir
-        testOutputDir = compileTestJava.destinationDir
-    }
-}
+jar.finalizedBy('reobfJar')

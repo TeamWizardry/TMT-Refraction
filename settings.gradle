@@ -1,0 +1,19 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name 'Garden of Fancy'
+            url 'https://maven.gofancy.wtf/releases'
+        }
+
+        maven {
+            url = 'https://maven.minecraftforge.net'
+        }
+    }
+
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id.startsWith("org.jetbrains.kotlin")) useVersion("1.9.0")
+        }
+    }
+}

@@ -1,6 +1,7 @@
 package com.teamwizardry.refraction.init.recipies;
 
 import com.teamwizardry.refraction.api.recipe.ColorConsumingBehavior;
+import com.teamwizardry.refraction.common.block.BlockFilter;
 import com.teamwizardry.refraction.init.ModBlocks;
 import com.teamwizardry.refraction.init.ModItems;
 import net.minecraft.init.Blocks;
@@ -8,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.awt.*;
+import java.util.function.Function;
 
 import static com.teamwizardry.refraction.api.lib.LibOreDict.*;
 import static com.teamwizardry.refraction.api.recipe.AssemblyBehaviors.register;
@@ -36,10 +38,12 @@ public class ModAssemblyRecipes {
 				LENS, LENS, LENS, LENS, LENS, LENS,
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
 				"ingotIron", "ingotIron", "ingotIron");
+
 		register("splitter", new ItemStack(ModBlocks.SPLITTER),
 				new Color(0, 255, 0, 16), new Color(0, 255, 0, 32),
 				LENS, LENS, LENS,
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
+
 		register("sensor", new ItemStack(ModBlocks.SENSOR),
 				new Color(255, 96, 0, 16), new Color(255, 160, 0, 64),
 				LENS, LENS, LENS, LENS, LENS, LENS,
@@ -64,10 +68,12 @@ public class ModAssemblyRecipes {
 				"dustGlowstone",
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY,
 				LENS, LENS, LENS);
+
 		register("disco", new ItemStack(ModBlocks.DISCO_BALL),
 				new Color(255, 0, 255, 64), new Color(255, 0, 255, 128),
 				"gemDiamond", "gemDiamond", "gemDiamond", "gemDiamond",
 				REFLECTIVE_ALLOY, REFLECTIVE_ALLOY, REFLECTIVE_ALLOY);
+
 		register("optic_fiber", new ItemStack(ModBlocks.OPTIC_FIBER, 4),
 				new Color(96, 0, 255, 64), new Color(160, 0, 255, 128),
 				LENS, LENS, LENS,
@@ -80,6 +86,52 @@ public class ModAssemblyRecipes {
 				OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER, OPTIC_FIBER,
 				"enderpearl",
 				"ingotIron");
+
+		register("white_filter", new ItemStack(ModBlocks.FILTER), applyMeta(0),
+				new Color(255, 255, 255, 128), new Color(255, 255, 255, 255),
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+
+		register("red_filter", new ItemStack(ModBlocks.FILTER), applyMeta(1),
+				new Color(255, 0, 0, 128), new Color(255, 0, 0, 255),
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+
+		register("green_filter", new ItemStack(ModBlocks.FILTER), applyMeta(2),
+				new Color(0, 255, 0, 128), new Color(0, 255, 0, 255),
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+
+		register("blue_filter", new ItemStack(ModBlocks.FILTER), applyMeta(3),
+				new Color(0, 0, 255, 128), new Color(0, 0, 255, 255),
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+
+		register("cyan_filter", new ItemStack(ModBlocks.FILTER), applyMeta(4),
+				new Color(0, 128, 255, 128), new Color(0, 128, 255, 255),
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+
+		register("yellow_filter", new ItemStack(ModBlocks.FILTER), applyMeta(5),
+				new Color(255, 255, 0, 128), new Color(255, 255, 0, 255),
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+
+		register("magenta_filter", new ItemStack(ModBlocks.FILTER), applyMeta(6),
+				new Color(255, 0, 255, 128), new Color(255, 0, 255, 255),
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+
+		register("pink_filter", new ItemStack(ModBlocks.FILTER), applyMeta(7),
+				new Color(255, 128, 255, 128), new Color(255, 128, 255, 255),
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+
+		register("orange_filter", new ItemStack(ModBlocks.FILTER), applyMeta(8),
+				new Color(255, 128, 0, 128), new Color(255, 128, 128, 255),
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+
 		register("electron_exciter", new ItemStack(ModBlocks.ELECTRON_EXCITER),
 				new Color(0, 255, 96, 128), new Color(0, 255, 160, 255),
 				LENS, LENS, LENS, LENS, LENS, LENS,
@@ -98,5 +150,12 @@ public class ModAssemblyRecipes {
 		// Other
 		register("ammo", new ColorConsumingBehavior(new ItemStack(ModItems.LIGHT_CARTRIDGE), new ItemStack(ModItems.LIGHT_CARTRIDGE)));
 		register("grenade", new ColorConsumingBehavior(new ItemStack(ModItems.GRENADE), new ItemStack(ModItems.GRENADE)));
+	}
+
+	public static Function<ItemStack, ItemStack> applyMeta(int meta) {
+		return itemStack -> {
+			itemStack.setItemDamage(meta);
+			return itemStack;
+		};
 	}
 }

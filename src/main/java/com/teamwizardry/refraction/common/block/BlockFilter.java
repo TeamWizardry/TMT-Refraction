@@ -52,8 +52,7 @@ public class BlockFilter extends BlockMod implements ILightSink, IOpticConnectab
 
 	public BlockFilter() {
 		super("filter", Material.GLASS, VARIANTS);
-		setBlockUnbreakable();
-		setHardness(100000);
+		setHardness(2F);
 		setSoundType(SoundType.GLASS);
 	}
 
