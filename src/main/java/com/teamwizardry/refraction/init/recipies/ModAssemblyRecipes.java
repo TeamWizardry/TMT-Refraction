@@ -90,47 +90,47 @@ public class ModAssemblyRecipes {
 		register("white_filter", new ItemStack(ModBlocks.FILTER), applyMeta(0),
 				new Color(255, 255, 255, 128), new Color(255, 255, 255, 255),
 				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
-				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY);
 
 		register("red_filter", new ItemStack(ModBlocks.FILTER), applyMeta(1),
 				new Color(255, 0, 0, 128), new Color(255, 0, 0, 255),
 				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
-				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY);
 
 		register("green_filter", new ItemStack(ModBlocks.FILTER), applyMeta(2),
 				new Color(0, 255, 0, 128), new Color(0, 255, 0, 255),
 				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
-				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY);
 
 		register("blue_filter", new ItemStack(ModBlocks.FILTER), applyMeta(3),
 				new Color(0, 0, 255, 128), new Color(0, 0, 255, 255),
 				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
-				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY);
 
 		register("cyan_filter", new ItemStack(ModBlocks.FILTER), applyMeta(4),
-				new Color(0, 128, 255, 128), new Color(0, 128, 255, 255),
+				new Color(0, 255, 255, 128), new Color(0, 255, 255, 255),
 				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
-				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY);
 
 		register("yellow_filter", new ItemStack(ModBlocks.FILTER), applyMeta(5),
 				new Color(255, 255, 0, 128), new Color(255, 255, 0, 255),
 				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
-				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY);
 
 		register("magenta_filter", new ItemStack(ModBlocks.FILTER), applyMeta(6),
 				new Color(255, 0, 255, 128), new Color(255, 0, 255, 255),
 				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
-				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY);
 
 		register("pink_filter", new ItemStack(ModBlocks.FILTER), applyMeta(7),
-				new Color(255, 128, 255, 128), new Color(255, 128, 255, 255),
+				new Color(255, 85, 85, 128), new Color(255, 200, 200, 255),
 				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
-				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY);
 
 		register("orange_filter", new ItemStack(ModBlocks.FILTER), applyMeta(8),
-				new Color(255, 128, 0, 128), new Color(255, 128, 128, 255),
+				new Color(255, 85, 0, 128), new Color(255, 200, 0, 255),
 				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY,
-				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS);
+				LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY, LENS, REFLECTIVE_ALLOY);
 
 		register("electron_exciter", new ItemStack(ModBlocks.ELECTRON_EXCITER),
 				new Color(0, 255, 96, 128), new Color(0, 255, 160, 255),
